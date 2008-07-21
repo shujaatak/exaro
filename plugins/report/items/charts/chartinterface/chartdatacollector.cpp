@@ -17,15 +17,18 @@
 #include <QSqlField>
 
 #include <sqlquery.h>
+#include <reportinterface.h>
 #include "chartdatacollector.h"
 
 namespace Report {
 
-ChartDataCollector::ChartDataCollector(QGraphicsItem* parent, QObject* parentObject)
- : Report::ItemInterface(parent, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted)
+ChartDataCollector::ChartDataCollector(QGraphicsItem* parentItem, QObject* parentObject)
+ : Report::ItemInterface(parentItem, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted)
 {
 	m_otherValue.value=0;
 	m_otherValue.key=tr("Other");
+	if (reportObject())
+		connect(reportObject(),SIGNAL(beforeExec()),SLOT(setupConnections()));
 }
 
 
@@ -40,16 +43,7 @@ ChartDataCollector::ChartDataSource ChartDataCollector::chartDataSource()
 void ChartDataCollector::setChartDataSource(ChartDataSource chartDataSource)
 {
 	m_chartDataSource=chartDataSource;
-	if (m_chartDataSource!=FromStaticData && m_query.length() && findQuery(m_query))
-	{
-		findQuery(m_query)->disconnect();
-		connect(findQuery(m_query),SIGNAL(afterFirst()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterNext()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterPrevious()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterLast()),SLOT(collectData()));
-	}
-	else
-		collectStaticData();
+	collectStaticData();
 }
 
 QStringList ChartDataCollector::staticData()
@@ -69,14 +63,6 @@ QString ChartDataCollector::query()
 void ChartDataCollector::setQuery(QString query)
 {
 	m_query=query;
-	if (m_chartDataSource!=FromStaticData && m_query.length() && findQuery(m_query))
-	{
-		findQuery(m_query)->disconnect();
-		connect(findQuery(m_query),SIGNAL(afterFirst()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterNext()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterPrevious()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterLast()),SLOT(collectData()));
-	}
 }
 
 QString ChartDataCollector::keyScript()
@@ -181,6 +167,19 @@ QColor ChartDataCollector::generateNextColor()
 	return QColor(qrand()%255,qrand()%255,qrand()%255,255);
 }
 
+void ChartDataCollector::setupConnections()
+{
+	m_chartValues.clear();
+	m_otherValue.value=0;
+	if (m_chartDataSource!=FromStaticData && m_query.length() && findQuery(m_query))
+	{
+		findQuery(m_query)->disconnect();
+		connect(findQuery(m_query),SIGNAL(afterFirst()),SLOT(collectData()));
+		connect(findQuery(m_query),SIGNAL(afterNext()),SLOT(collectData()));
+		connect(findQuery(m_query),SIGNAL(afterPrevious()),SLOT(collectData()));
+		connect(findQuery(m_query),SIGNAL(afterLast()),SLOT(collectData()));
+	}
+}
 void ChartDataCollector::addChartValue(const Report::ChartInterface::_chartValue & value)
 {
 	if (m_showOnlyFirstValues<1 || m_showOnlyFirstValues>m_chartValues.size())
@@ -238,7 +237,21 @@ void ChartDataCollector::collectData()
 			if (ok)
 				addChartValue(cv);
 			break;
+
 		case FromScript:
+			if (!m_valueScript.length() || !scriptEngine())
+				break;
+			cv.value=scriptEngine()->evaluate(m_valueScript).toVariant().toDouble(&ok);
+			if (!ok)
+				break;
+			if (m_keyScript.length())
+				cv.key=scriptEngine()->evaluate(m_keyScript).toString();
+
+			if (m_colorScript.length())
+				cv.color=scriptEngine()->evaluate(m_colorScript).toVariant().value<QColor>();
+			else
+				cv.color=generateNextColor();
+			addChartValue(cv);
 			break;
 		default:
 			break;
@@ -261,11 +274,12 @@ QList<Report::ChartInterface::_chartValue> ChartDataCollector::values()
 
 void ChartDataCollector::collectStaticData()
 {
+	m_chartValues.clear();
+	m_otherValue.value=0;
+
 	if (m_chartDataSource!=FromStaticData)
 		return;	
 
-	m_chartValues.clear();
-	m_otherValue.value=0;
 	foreach(QString line, m_staticData)
 	{
 		QStringList chart=line.split(',');
