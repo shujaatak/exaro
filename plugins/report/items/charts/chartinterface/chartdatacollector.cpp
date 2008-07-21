@@ -163,6 +163,7 @@ QString ChartDataCollector::otherKey()
 void ChartDataCollector::setOtherKey(const QString &otherKey)
 {
 	m_otherValue.key=otherKey;
+	update();
 }
 
 ChartDataCollector::SortDirection ChartDataCollector::sortDirection()
