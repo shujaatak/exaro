@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>content.xml</file>
+        <file>manifest.xml</file>
+        <file>meta.xml</file>
+    </qresource>
+</RCC>

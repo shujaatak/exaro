@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>images/zoom-in.png</file>
+        <file>images/zoom-out.png</file>
+        <file>images/go-first.png</file>
+        <file>images/go-previous.png</file>
+        <file>images/go-next.png</file>
+        <file>images/go-last.png</file>
+        <file>images/export.png</file>
+        <file>images/edit-find.png</file>
+        <file>images/print.png</file>
+        <file>images/quit.png</file>
+        <file>images/search-up.png</file>
+        <file>images/search-down.png</file>
+        <file>images/designer1.png</file>
+        <file>images/designer2.png</file>
+        <file>images/designer3.png</file>
+        <file>images/designer4.png</file>
+	<file>images/switch-painting-system.png</file>
+    </qresource>
+</RCC>
