@@ -32,6 +32,7 @@ namespace Report
 {
 
 class SqlQuery;
+class ReportInterface;
 
 /** @class ItemInterface
 * @brief Interface for items
@@ -429,6 +430,12 @@ public:
 	 * @return script engine
 	 */
 	QScriptEngine * scriptEngine();
+
+	/**
+	 * Returns the report object of the item
+	 * @return report object
+	 */
+	ReportInterface	* reportObject();
 
 	/**
 	* Return the item opacity

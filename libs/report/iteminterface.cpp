@@ -405,18 +405,25 @@ QRectF ItemInterface::parentGeometry()
 
 QScriptEngine * ItemInterface::scriptEngine()
 {
-	QObject * p = parent();
+	ReportInterface	* p = reportObject();
 
+	if (p)
+		return p->scriptEngine();
+	else
+		return 0;
+}
+
+ReportInterface	* ItemInterface::reportObject()
+{
+	QObject * p = parent();
 	while (p)
 	{
 		if (dynamic_cast<ReportInterface*>(p))
 			break;
-
 		p = p->parent();
 	}
 
 	if (p)
-		return (dynamic_cast<ReportInterface*>(p))->scriptEngine();
-	else
-		return 0;
+		return (dynamic_cast<ReportInterface*>(p));
+	return 0;
 }
