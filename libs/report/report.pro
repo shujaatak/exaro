@@ -5,9 +5,9 @@ exceptions \
   rtti \
  uitools
 
-macx{
-	CONFIG -= dll
-	CONFIG += lib_bundle
+macx {
+    CONFIG -= dll
+    CONFIG += lib_bundle
 }
 
 win32 : DEFINES += LIB_EXPORTS
@@ -62,4 +62,6 @@ target.path = $$[EXARO_INSTALL_LIBS]
 
 INSTALLS += include target
 
+
+VERSION = 1.1
 
