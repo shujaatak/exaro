@@ -111,6 +111,7 @@ protected:
 public slots:
 	void clear();
 	void collectData();
+	void setupConnections();
 
 private:
 	QStringList m_staticData;
