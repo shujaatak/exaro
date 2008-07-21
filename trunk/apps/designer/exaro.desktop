@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0 RC9
+Name=eXaro
+GenericName=eXaro report designer
+GenericName[ro]=eXaro designer de rapoarte
+Icon=application-bdrt
+Comment=
+TryExec=exaro
+Exec=exaro
+MimeType=application/bdrt;
+X-KDE-NativeMimeType=application/bdrt;
+Categories=Qt;KDE;Development;GUIDesigner;Office;

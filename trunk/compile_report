@@ -1,0 +1,30 @@
+#!/bin/sh
+
+qmake -set ZINT_INSTALL_LIBS /usr/local/lib
+qmake -set ZINT_INSTALL_HEADERS /usr/local/include
+
+qmake -set QUAZIP_INSTALL_LIBS /usr/local/lib
+qmake -set QUAZIP_INSTALL_HEADERS /usr/local/include
+
+qmake -set EXARO_INSTALL_BINS /usr/local/bin
+qmake -set EXARO_INSTALL_LIBS /usr/local/lib
+qmake -set EXARO_INSTALL_HEADERS /usr/local/include
+qmake -set EXARO_INSTALL_PLUGINS /usr/local/lib
+
+qmake -set EXARO_INSTALL_MIMELNKS /usr/local/share/mimelnk/application
+qmake -set EXARO_INSTALL_MIMES /usr/local/share/mime
+qmake -set EXARO_INSTALL_MENUS /usr/local/share/applications
+qmake -set EXARO_INSTALL_ICONS /usr/local/share/icons
+
+qmake -set EXARO_INSTALL_TRANSLATIONS /usr/local/share/eXaro/translations
+
+cd libs
+qmake && make -j2 && make install
+cd ../plugins
+qmake && make -j2 && make install
+cd ../report
+qmake && make -j2 && make install
+cd ../apps
+qmake && make -j2 && make install
+cd ..
+ldconfig
