@@ -61,7 +61,7 @@ void Legend::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	painter->drawRect(rect);
 	painter->translate(rect.topLeft());
 	painter->scale(rect.height()/((painter->fontMetrics().height()+2)*val.size()), rect.height()/((painter->fontMetrics().height()+2)*val.size()));
-	int y=2;
+	int y=1;
 	foreach (ChartInterface::_chartValue cv, val)
 	{
 		painter->fillRect(QRectF(2,y+1,m_legendColorRectWidth,painter->fontMetrics().height()),QBrush(cv.color));
