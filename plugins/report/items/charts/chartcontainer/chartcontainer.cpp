@@ -51,14 +51,12 @@ void ChartContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem * 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
+	{
 		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
-
-	painter->drawText(rect,Qt::AlignBottom|Qt::AlignRight,tr("Chart container"));
-
+		setupPainter(painter);
+		adjustRect(rect);
+		painter->drawText(rect,Qt::AlignBottom|Qt::AlignRight,tr("Chart container"));
+	}
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
 }
