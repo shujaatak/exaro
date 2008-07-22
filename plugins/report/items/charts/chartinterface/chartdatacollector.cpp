@@ -23,7 +23,7 @@
 namespace Report {
 
 ChartDataCollector::ChartDataCollector(QGraphicsItem* parentItem, QObject* parentObject)
- : Report::ItemInterface(parentItem, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted)
+ : Report::ItemInterface(parentItem, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted),m_colorOpacity(100)
 {
 	m_otherValue.value=0;
 	m_otherValue.key=tr("Other");
@@ -269,6 +269,9 @@ QList<Report::ChartInterface::_chartValue> ChartDataCollector::values()
 	if (m_sortDirection==Descendent)
 		qSort(vl.begin(),vl.end(),  compChartD);
 
+	for(int i=0;i<vl.size();i++)
+		vl[i].color.setAlpha(255.*(m_colorOpacity/100.));
+
 	return vl;
 }
 
@@ -313,4 +316,17 @@ bool ChartDataCollector::compChartD(Report::ChartInterface::_chartValue a, Repor
 	return a.value>b.value;
 }
 
+int ChartDataCollector::colorOpacity()
+{
+	return m_colorOpacity;
+}
+void ChartDataCollector::setColorOpacity(int colorOpacity)
+{
+	if (colorOpacity < 1)
+		colorOpacity = 1;
+	if (colorOpacity > 100)
+		colorOpacity = 100;
+	m_colorOpacity =  colorOpacity;
+	update();
+}
 }

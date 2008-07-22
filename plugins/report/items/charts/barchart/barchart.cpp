@@ -17,7 +17,7 @@
 #include <QBrush>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QDebug>
+#include <QLinearGradient>
 
 #include "barchart.h"
 
@@ -26,7 +26,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(barchart);
 }
 
-BarChart::BarChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), m_barsIdentation(1/UNIT), m_showLabels(false)
+BarChart::BarChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), m_barsIdentation(1/UNIT), m_showLabels(false),m_toColorFactor(1),m_drawBorder(false)
 {
 	initMyResource();
 }
@@ -65,16 +65,20 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 			maxVal=cv.value;
 
 	painter->fillRect(rect,brush());
-	painter->drawRect(rect);
+	if (m_drawBorder)
+		painter->drawRect(rect);
 	painter->translate(rect.topLeft());
 	int x=m_barsIdentation;
 	qreal barWidth=(rect.width()-m_barsIdentation*(val.size()+1))/val.size();
-	qreal maxHeight=rect.height()-(m_showLabels?painter->fontMetrics().height():0);
-
+	qreal maxHeight=rect.height()-(m_showLabels?painter->fontMetrics().height():1);
 	foreach(ChartInterface::_chartValue cv, val)
 	{
 		qreal barHeight=maxHeight*(cv.value/maxVal)-4;
-		painter->fillRect(QRectF(x,maxHeight-barHeight+2,barWidth, barHeight),QBrush(cv.color));
+		QLinearGradient lg(QPointF(x+barWidth/2,maxHeight-barHeight), QPointF(x+barWidth,maxHeight-barHeight));
+		lg.setSpread(QGradient::ReflectSpread);
+		lg.setColorAt(0, cv.color);
+		lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));
+		painter->fillRect(QRectF(x,maxHeight-barHeight,barWidth, barHeight),QBrush(lg));
 
 		if (m_showLabels)
 			painter->drawText(QRectF(x-m_barsIdentation/2, maxHeight, barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
@@ -128,6 +132,32 @@ bool BarChart::showLabels()
 void BarChart::setShowLabels(bool showLabels)
 {
 	m_showLabels=showLabels;
+	update();
+}
+
+qreal BarChart::toColorFactor()
+{
+	return m_toColorFactor;
+}
+
+void BarChart::setToColorFactor(qreal toColorFactor)
+{
+	if (toColorFactor>10)
+		toColorFactor=10;
+
+	if (toColorFactor<0.1)
+		toColorFactor=0.1;
+	m_toColorFactor=toColorFactor;
+	update();
+}
+
+bool BarChart::drawBorder()
+{
+	return m_drawBorder;
+}
+void BarChart::setDrawBorder(bool drawBorder)
+{
+	m_drawBorder=drawBorder;
 	update();
 }
 
