@@ -30,6 +30,7 @@ class ChartDataCollector: public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
+	Q_PROPERTY(int chartColorOpacity READ colorOpacity WRITE setColorOpacity )
 	Q_PROPERTY(ChartDataSource chartDataSource READ chartDataSource WRITE setChartDataSource)
 
 	Q_PROPERTY(QStringList staticData READ staticData WRITE setStaticData)
@@ -57,6 +58,9 @@ public:
 public:
 	ChartDataCollector(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 	~ChartDataCollector();
+
+	int colorOpacity();
+	void setColorOpacity(int colorOpacity);
 
 	ChartDataSource chartDataSource();
 	void setChartDataSource(ChartDataSource chartDataSource);
@@ -128,6 +132,8 @@ private:
 	int m_showOnlyFirstValues;
 	bool m_showOtherValue;
 	SortDirection m_sortDirection;
+	int m_colorOpacity;
+
 private:
 	void collectStaticData();
 	static bool compChart(Report::ChartInterface::_chartValue a, Report::ChartInterface::_chartValue b);

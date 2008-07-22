@@ -23,8 +23,10 @@ class BarChart : public Report::ChartInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ChartInterface);
 
-	Q_PROPERTY(int barsIdentation READ barsIdentation WRITE setBarsIdentation)
 	Q_PROPERTY(bool showLabels READ showLabels WRITE setShowLabels)
+	Q_PROPERTY(bool drawBorder READ drawBorder WRITE setDrawBorder)
+	Q_PROPERTY(int barsIdentation READ barsIdentation WRITE setBarsIdentation)
+	Q_PROPERTY(qreal toColorFactor READ toColorFactor WRITE setToColorFactor)
 
 public:
 	BarChart(QGraphicsItem* parent = 0, QObject* parentObject = 0);
@@ -41,12 +43,20 @@ public:
 	int barsIdentation();
 	void setBarsIdentation(int barsIdentation);
 
+	bool drawBorder();
+	void setDrawBorder(bool drawBorder);
+
 	bool showLabels();
 	void setShowLabels(bool showLabels);
+
+	qreal toColorFactor();
+	void setToColorFactor(qreal toColorFactor);
 
 private:
 	int m_barsIdentation;
 	bool m_showLabels;
+	qreal m_toColorFactor;
+	bool m_drawBorder;
 };
 
 #endif
