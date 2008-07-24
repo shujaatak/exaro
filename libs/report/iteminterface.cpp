@@ -333,17 +333,7 @@ qreal ItemInterface::minWidth() const
 QRectF ItemInterface::adjustRect(QRectF & rect)
 {
 	qreal penwidth = pen().widthF();
-
-	if (penwidth < 2)
-		return rect;
-
-	penwidth -= 2;
-	qreal width = rect.width();
-	qreal height = rect.height();
-	rect.setX(rect.x() + (int)penwidth / 2);
-	rect.setY(rect.y() + (int)penwidth / 2);
-	rect.setWidth(width - penwidth);
-	rect.setHeight(height - penwidth);
+	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
 	return rect;
 }
 
