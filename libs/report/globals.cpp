@@ -84,7 +84,6 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 		case QVariant::ULongLong://<tag_name type="ULongLong">string_value</tag_name>
 		case QVariant::Bool:	//<tag_name type="Bool">string_value</tag_name>
 		case QVariant::Char:	//<tag_name type="Char">string_value</tag_name>
-		case QVariant::Color:	//<tag_name type="Color">string_value</tag_name>
 		case QVariant::Date:	//<tag_name type="Date">string_value</tag_name>
 		case QVariant::DateTime://<tag_name type="DateTime">string_value</tag_name>
 		case QVariant::Font:	//<tag_name type="Font">string_value</tag_name>
@@ -109,6 +108,10 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 
 		case QVariant::ByteArray://<tag_name type="ByteArray">string_value</tag_name>
 			dom.appendChild(doc->createTextNode(value.toByteArray().toBase64()));
+			break;
+
+		case QVariant::Color:	//<tag_name type="Color">red,green,blue,alpha</tag_name>
+			dom.appendChild(doc->createTextNode(QString("%1,%2,%3,%4").arg(value.value<QColor>().red()).arg(value.value<QColor>().green()).arg(value.value<QColor>().blue()).arg(value.value<QColor>().alpha())));
 			break;
 
 		case QVariant::Rect:	//<tag_name type="Rect">x,y,w,h</tag_name>
@@ -364,10 +367,6 @@ QVariant domToVariant(const QDomElement & dom)
 			value = dom.text().toULongLong();
 			break;
 
-		case QVariant::Color:	//<tag_name type="Color">string_value</tag_name>
-			value = QVariant(dom.text()).value<QColor>();
-			break;
-
 		case QVariant::Date:	//<tag_name type="Date">string_value</tag_name>
 			value = QVariant(dom.text()).toDate();
 			break;
@@ -394,6 +393,12 @@ QVariant domToVariant(const QDomElement & dom)
 
 		case QVariant::ByteArray://<tag_name type="ByteArray">string_value</tag_name>
 			value = QByteArray::fromBase64(dom.text().toAscii());
+			break;
+
+		case QVariant::Color:	//<tag_name type="Color">red,green,blue,alpha</tag_name>
+			rect = dom.text().split(',');
+			if (rect.size() == 4)
+				value = QColor(rect[0].toInt(), rect[1].toInt(), rect[2].toInt(), rect[3].toInt());
 			break;
 
 		case QVariant::Rect:	//<tag_name type="Rect">x,y,w,h</tag_name>
@@ -484,10 +489,8 @@ QVariant domToVariant(const QDomElement & dom)
 			*/
 			brush.setTexture(domToVariant(dom.firstChildElement("texture")).value<QPixmap>());
 			brush.setColor(domToVariant(dom.firstChildElement("color")).value<QColor>());
-			brush.setStyle((Qt::BrushStyle)domToVariant(dom.firstChildElement("style")).toInt());
 			if (!dom.firstChildElement("gradient").isNull())
 			{
-				qDebug()<<"ici";
 				QDomElement gel=dom.firstChildElement("gradient");
 				QGradient *gr=0;
 				switch(domToVariant(gel.firstChildElement("type")).toInt())
@@ -502,24 +505,26 @@ QVariant domToVariant(const QDomElement & dom)
 						gr = new QConicalGradient(domToVariant(gel.firstChildElement("angle")).toPointF(), domToVariant(gel.firstChildElement("center")).toDouble());
 						break;
 				}
-				gr->setSpread((QGradient::Spread)domToVariant(gel.firstChildElement("spread")).toInt());
 				gr->setCoordinateMode((QGradient::CoordinateMode)domToVariant(gel.firstChildElement("coordinateMode")).toInt());
+				gr->setSpread((QGradient::Spread)domToVariant(gel.firstChildElement("spread")).toInt());
 				QGradientStops gsps;
-				node = gel.firstChildElement("stops");
+				node = gel.firstChildElement("stops").firstChildElement("stop");
 				for (;!node.isNull();node = node.nextSiblingElement())
 				{
-					qDebug()<<node.text();
 					QGradientStop gsp;
 					gsp.first=domToVariant(node.firstChildElement("point")).toDouble();
 					gsp.second=domToVariant(node.firstChildElement("color")).value<QColor>();
-					qDebug()<<domToVariant(node.firstChildElement("color")).toString();
 					gsps.push_back(gsp);
 				}
-				value = *(new QBrush(*gr));
+				gr->setStops(gsps);
+				value = QBrush(*gr);
 				delete gr;
-				break;
 			}
-			value = brush;
+			else
+			{
+				brush.setStyle((Qt::BrushStyle)domToVariant(dom.firstChildElement("style")).toInt());
+				value = brush;
+			}
 			break;
 
 		case QVariant::Pen:
