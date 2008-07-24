@@ -130,8 +130,8 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 			dom.appendChild(doc->createTextNode(QString("%1,%2").arg(value.toSizeF().width()).arg(value.toSizeF().height())));
 			break;
 
-		case QVariant::Point:	//<tag_name type="Size">x,y</tag_name>
-		case QVariant::PointF:	//<tag_name type="SizeF">x,y</tag_name>
+		case QVariant::Point:	//<tag_name type="Point">x,y</tag_name>
+		case QVariant::PointF:	//<tag_name type="PointF">x,y</tag_name>
 			dom.appendChild(doc->createTextNode(QString("%1,%2").arg(value.toPointF().x()).arg(value.toPointF().y())));
 			break;
 
@@ -156,11 +156,78 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				<color>color_value</color>
 				<style>style_value</style>
 				<texture type="Pixmap" fromat="QImage::Format">base64image</texture>
+				<gradient>
+					<spread>spread_value</spread>
+					<coordinateMode>coordinatemode_value</coordinateMode>
+					<type>type_value</type>
+
+					<!-- QConicalGradient --!>
+					<angle>angle_value</angle>
+					<center>x,y</center>
+					<!-- QConicalGradient --!>
+
+					<!-- QRadialGradient --!>
+					<center>x,y</center>
+					<radius>radius_value</radius>
+					<focalPoint>x,y</focalPoint>
+					<!-- QRadialGradient --!>
+
+					<!-- QLinearGradient --!>
+					<start>x,y</start>
+					<final>x,y</final>
+					<!-- QLinearGradient --!>
+					<stops>
+						<stop>
+							<point>point_value</point>
+							<color>color_value</color>
+						</stop>
+						.....
+						<stop>
+							<point>point_value</point>
+							<color>color_value</color>
+						</stop>
+					</stops>
+				</gradient>
 			</tag_name>
 			*/
 			dom.appendChild(variatToDom(doc, "color", value.value<QBrush>().color()));
 			dom.appendChild(variatToDom(doc, "style", value.value<QBrush>().style()));
 			dom.appendChild(variatToDom(doc, "texture", value.value<QBrush>().texture()));
+			if (value.value<QBrush>().gradient() && value.value<QBrush>().gradient()->type()!=QGradient::NoGradient)
+			{
+				QDomElement gel=doc->createElement("gradient");
+				gel.appendChild(variatToDom(doc, "spread", value.value<QBrush>().gradient()->spread()));
+				gel.appendChild(variatToDom(doc, "coordinateMode", value.value<QBrush>().gradient()->coordinateMode()));
+				gel.appendChild(variatToDom(doc, "type", value.value<QBrush>().gradient()->type()));
+				switch(value.value<QBrush>().gradient()->type())
+				{
+					case QGradient::LinearGradient:
+						gel.appendChild(variatToDom(doc, "start",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->start()));
+						gel.appendChild(variatToDom(doc, "final",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->finalStop()));
+						break;
+					case QGradient::RadialGradient:
+						gel.appendChild(variatToDom(doc, "center",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->center()));
+						gel.appendChild(variatToDom(doc, "radius",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->radius()));
+						gel.appendChild(variatToDom(doc, "focalPoint",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->focalPoint()));
+						break;
+					case QGradient::ConicalGradient:
+						gel.appendChild(variatToDom(doc, "angle",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->angle()));
+						gel.appendChild(variatToDom(doc, "center",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->center()));
+						break;
+					default:
+						break;
+				}
+				QDomElement stops=doc->createElement("stops");
+				foreach(QGradientStop stop, value.value<QBrush>().gradient()->stops())
+				{
+					QDomElement stp=doc->createElement("stop");
+					stp.appendChild(variatToDom(doc, "point",stop.first));
+					stp.appendChild(variatToDom(doc, "color", stop.second));
+					stops.appendChild(stp);
+				}
+				gel.appendChild(stops);
+				dom.appendChild(gel);
+			}
 			break;
 
 		case QVariant::Pen:
@@ -381,11 +448,77 @@ QVariant domToVariant(const QDomElement & dom)
 				<color>color_value</color>
 				<style>style_value</style>
 				<texture type="Pixmap" fromat="QImage::Format">base64image</texture>
+				<gradient>
+					<spread>spread_value</spread>
+					<coordinateMode>coordinatemode_value</coordinateMode>
+					<type>type_value</type>
+
+					<!-- QConicalGradient --!>
+					<angle>angle_value</angle>
+					<center>x,y</center>
+					<!-- QConicalGradient --!>
+
+					<!-- QRadialGradient --!>
+					<center>x,y</center>
+					<radius>radius_value</radius>
+					<focalPoint>x,y</focalPoint>
+					<!-- QRadialGradient --!>
+
+					<!-- QLinearGradient --!>
+					<start>x,y</start>
+					<final>x,y</final>
+					<!-- QLinearGradient --!>
+					<stops>
+						<stop>
+							<point>point_value</point>
+							<color>color_value</color>
+						</stop>
+						.....
+						<stop>
+							<point>point_value</point>
+							<color>color_value</color>
+						</stop>
+					</stops>
+				</gradient>
 			</tag_name>
 			*/
 			brush.setTexture(domToVariant(dom.firstChildElement("texture")).value<QPixmap>());
 			brush.setColor(domToVariant(dom.firstChildElement("color")).value<QColor>());
 			brush.setStyle((Qt::BrushStyle)domToVariant(dom.firstChildElement("style")).toInt());
+			if (!dom.firstChildElement("gradient").isNull())
+			{
+				qDebug()<<"ici";
+				QDomElement gel=dom.firstChildElement("gradient");
+				QGradient *gr=0;
+				switch(domToVariant(gel.firstChildElement("type")).toInt())
+				{
+					case QGradient::LinearGradient:
+						gr = new QLinearGradient(domToVariant(gel.firstChildElement("start")).toPointF(), domToVariant(gel.firstChildElement("final")).toPointF());
+						break;
+					case QGradient::RadialGradient:
+						gr = new QRadialGradient(domToVariant(gel.firstChildElement("center")).toPointF(), domToVariant(gel.firstChildElement("radius")).toDouble(), domToVariant(gel.firstChildElement("focalPoint")).toPointF());
+						break;
+					case QGradient::ConicalGradient:
+						gr = new QConicalGradient(domToVariant(gel.firstChildElement("angle")).toPointF(), domToVariant(gel.firstChildElement("center")).toDouble());
+						break;
+				}
+				gr->setSpread((QGradient::Spread)domToVariant(gel.firstChildElement("spread")).toInt());
+				gr->setCoordinateMode((QGradient::CoordinateMode)domToVariant(gel.firstChildElement("coordinateMode")).toInt());
+				QGradientStops gsps;
+				node = gel.firstChildElement("stops");
+				for (;!node.isNull();node = node.nextSiblingElement())
+				{
+					qDebug()<<node.text();
+					QGradientStop gsp;
+					gsp.first=domToVariant(node.firstChildElement("point")).toDouble();
+					gsp.second=domToVariant(node.firstChildElement("color")).value<QColor>();
+					qDebug()<<domToVariant(node.firstChildElement("color")).toString();
+					gsps.push_back(gsp);
+				}
+				value = *(new QBrush(*gr));
+				delete gr;
+				break;
+			}
 			value = brush;
 			break;
 
