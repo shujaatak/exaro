@@ -24,6 +24,7 @@ class BarChart : public Report::ChartInterface
 	Q_INTERFACES(Report::ChartInterface);
 
 	Q_PROPERTY(bool showLabels READ showLabels WRITE setShowLabels)
+	Q_PROPERTY(bool showGrid READ showGrid WRITE setShowGrid)
 	Q_PROPERTY(bool drawBorder READ drawBorder WRITE setDrawBorder)
 	Q_PROPERTY(int barsIdentation READ barsIdentation WRITE setBarsIdentation)
 	Q_PROPERTY(qreal toColorFactor READ toColorFactor WRITE setToColorFactor)
@@ -46,6 +47,9 @@ public:
 	bool drawBorder();
 	void setDrawBorder(bool drawBorder);
 
+	bool showGrid();
+	void setShowGrid(bool showGrid);
+
 	bool showLabels();
 	void setShowLabels(bool showLabels);
 
@@ -57,6 +61,7 @@ private:
 	bool m_showLabels;
 	qreal m_toColorFactor;
 	bool m_drawBorder;
+	bool m_showGrid;
 };
 
 #endif
