@@ -13,48 +13,25 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
+#ifndef EXAROAPPLICATION_H
+#define EXAROAPPLICATION_H
 
+#include <QApplication>
 
-#include <QTranslator>
-#include <QDir>
-
-//#include <QSplashScreen>
-//#include <QPixmap>
-#include "exaroapplication.h"
-#include "mainwindow.h"
-
-int main(int argc, char **argv)
-{
-	QApplication::setOrganizationName("licentia");
-	QApplication::setOrganizationDomain("licentia.eu");
-	QApplication::setApplicationName("eXaro");
-	ExaroApplication app(argc, argv);
-
-	QDir dir;
-#if defined(Q_OS_WIN)
-	dir.setPath(app.applicationDirPath()+"/translations/");
-#elif defined(Q_OS_MAC)
-	dir.setPath(app.applicationDirPath()+"/translations/");
-#else
-	dir.setPath(app.applicationDirPath()+"/../share/eXaro/translations/");
-#endif
-	QTranslator translator;
-	if (dir.exists())
-		foreach (QString file, dir.entryList(QStringList()<<QString("*_%1.qm").arg(QLocale::system().name()),QDir::Readable|QDir::Files))
-		{
-			translator.load(file,dir.absolutePath()+"/");
-			app.installTranslator(&translator);
-		}
-/*
-
-	QPixmap pixmap(":/images/exaro_splash.png");
-	QSplashScreen splash(pixmap);
-	splash.show();
+/**
+	@author BogDan Vatra <taipan@omnidatagrup.ro>
 */
-	mainWindow w;
-	w.show();
 
-//	splash.finish(&w);
-	return app.exec();
-}
+class ExaroApplication : public QApplication
+{
+	Q_OBJECT
 
+public:
+	ExaroApplication(int & argc, char ** argv);
+	bool notify(QObject * receiver, QEvent * event);
+
+	~ExaroApplication();
+
+};
+
+#endif
