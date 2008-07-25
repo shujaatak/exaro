@@ -27,7 +27,8 @@ SOURCES +=   main.cpp \
    designeruitype.cpp \
    sqldatabasedialog.cpp \
    objectmodel.cpp \
-   aboutdialog.cpp
+   aboutdialog.cpp \
+   exaroapplication.cpp
 
 FORMS +=   mainwindow.ui \
   designerquerywidget.ui \
@@ -47,7 +48,8 @@ HEADERS +=   mainwindow.h \
    designeruitype.h \
    sqldatabasedialog.h \
    objectmodel.h \
-   aboutdialog.h
+   aboutdialog.h \
+   exaroapplication.h
 
 RESOURCES +=   report.qrc
 
@@ -57,11 +59,11 @@ DESTDIR = .
 INCLUDEPATH += $$[EXARO_INSTALL_HEADERS]
 
 
-macx{
-	QMAKE_LFLAGS +=  -F$$[EXARO_INSTALL_LIBS]
- 	LIBS += -framework Report -framework PropertyEditor
-}else{
-	LIBS += -L$$[EXARO_INSTALL_LIBS] -lReport -lPropertyEditor
+macx {
+    QMAKE_LFLAGS +=  -F$$[EXARO_INSTALL_LIBS]
+    LIBS += -framework Report -framework PropertyEditor
+}else {
+    LIBS += -L$$[EXARO_INSTALL_LIBS] -lReport -lPropertyEditor
 }
 
 
@@ -69,26 +71,26 @@ target.path = $$[EXARO_INSTALL_BINS]
 
 INSTALLS += target
 
-win32:{
+win32 {
     RC_FILE = exaro.rc
 
     icon.files = exaro.ico exaro.nsi
     icon.path = $$[EXARO_INSTALL_BINS]
     INSTALLS += icon
 }
-unix:{
-!macx:{
-    setup.commands = update-mime-database $$[EXARO_INSTALL_MIMES]
-    QMAKE_EXTRA_UNIX_TARGETS += setup
-    icon.files = application-bdrt.png
-    icon.path = $$[EXARO_INSTALL_ICONS]
-    menu.files = exaro.desktop
-    menu.path = $$[EXARO_INSTALL_MENUS]
-    mimelnk.files = bdrt.desktop
-    mimelnk.path = $$[EXARO_INSTALL_MIMELNKS]
-    mimelnk.depends = setup
-    mime.files = bdrt.xml
-    mime.path = $$[EXARO_INSTALL_MIMES]/packages
-    INSTALLS += icon menu mime mimelnk 
-}
+unix {
+    !macx {
+        setup.commands = update-mime-database $$[EXARO_INSTALL_MIMES]
+        QMAKE_EXTRA_UNIX_TARGETS += setup
+        icon.files = application-bdrt.png
+        icon.path = $$[EXARO_INSTALL_ICONS]
+        menu.files = exaro.desktop
+        menu.path = $$[EXARO_INSTALL_MENUS]
+        mimelnk.files = bdrt.desktop
+        mimelnk.path = $$[EXARO_INSTALL_MIMELNKS]
+        mimelnk.depends = setup
+        mime.files = bdrt.xml
+        mime.path = $$[EXARO_INSTALL_MIMES]/packages
+        INSTALLS += icon menu mime mimelnk 
+    }
 }
