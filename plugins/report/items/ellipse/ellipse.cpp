@@ -24,7 +24,7 @@
 
 inline void initMyResource()
 {
-	Q_INIT_RESOURCE(elipse);
+	Q_INIT_RESOURCE(ellipse);
 }
 
 Ellipse::Ellipse(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
@@ -66,7 +66,7 @@ void Ellipse::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 
 QIcon Ellipse::toolBoxIcon()
 {
-	return QIcon(":/elipse.png");
+	return QIcon(":/ellipse.png");
 }
 
 QString Ellipse::toolBoxText()

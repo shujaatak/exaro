@@ -33,7 +33,11 @@ include_directories(
         )
 add_subdirectory(libs)
 add_subdirectory(plugins)
-add_subdirectory(apps)
+
+find_package(PropertyEditor)
+if (PROPERTYEDITOR_FOUND)
+    add_subdirectory(apps)
+endif(PROPERTYEDITOR_FOUND)
 
 CONFIGURE_FILE(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
