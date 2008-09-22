@@ -42,6 +42,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		emit beforePrint(this);
 
 	painter->save();
+	QTransform transform;
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
@@ -121,20 +122,19 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		int y=0;
 		for(int i=0;i<maxVal/chartStep+1+((quint64)maxVal%(quint64)chartStep?1:0);i++)
 		{
-			painter->drawText(QRectF(0,y,maxLabelWidth,painter->fontMetrics().height()),Qt::AlignVCenter|Qt::AlignRight,QString::number((maxpv-chartStep*i)/powVal));
+			painter->drawText(QRectF(0,y,maxLabelWidth,painter->fontMetrics().height()),Qt::AlignRight|Qt::AlignVCenter,QString::number((maxpv-chartStep*i)/powVal));
 			y+=valstep;
 		}
 
 		painter->drawLine(rc.x()+maxLabelWidth+1,0,rc.x()+maxLabelWidth+1,rect.height());
 		rc=rc.adjusted(maxLabelWidth+1,0,0,0);
 	}
-	painter->translate(rc.topLeft());
 	if (m_showGrid)
 	{
 		int y=0;
 		for(int i=0;i<maxVal/chartStep+1+((quint64)maxVal%(quint64)chartStep?1:0);i++)
 		{
-			painter->drawLine(0,y,rc.width(),y);
+			painter->drawLine(rc.x(),rc.y()+y,rc.x()+rc.width(),rc.y()+y);
 			y+=valstep;
 		}
 	}
@@ -148,9 +148,9 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		lg.setSpread(QGradient::ReflectSpread);
 		lg.setColorAt(0, cv.color);
 		lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));
-		painter->fillRect(QRectF(x,py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),QBrush(lg));
+		painter->fillRect(QRectF(rc.x()+x,rc.y()+py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),QBrush(lg));
 		if (m_showLabels)
-			painter->drawText(QRectF(x-m_barsIdentation/2, py*maxpv-((cv.value>=0)?painter->fontMetrics().height():0), barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
+			painter->drawText(QRectF(rc.x()+x-m_barsIdentation/2, rc.y()+py*maxpv-((cv.value>=0)?painter->fontMetrics().height():0), barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
 		x+=barWidth+m_barsIdentation;
 	}
 
