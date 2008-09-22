@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += rectangle \
  arc \
  chord \
- elipse \
+ ellipse \
  line \
  pie \
  text \
