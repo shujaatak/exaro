@@ -21,7 +21,9 @@
 #include <QFontMetricsF>
 
 #include "barcode.h"
-#include "barcoderender.h"
+#include "qzint.h"
+
+using namespace Zint;
 
 inline void initMyResource()
 {
@@ -30,7 +32,7 @@ inline void initMyResource()
 
 Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
 {
-	m_barcodeType = (Barcode::BarcodeTypes)BARCODE_CODE128;
+	m_barcodeType = (BarcodeTypes)BARCODE_CODE128;
 	m_paintType = IgnoreAspectRatio;
 	m_frameType = NO_FRAME;
 	m_barcodeHeight = 10/UNIT;
@@ -235,11 +237,11 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 
 	adjustRect(rect);
 
-	Zint::BareCode bc;
+	Zint::QZint bc;
 
 	bc.setSymbol(m_barcodeType);
 	bc.setPrimaryMessage(m_primaryMessage);
-	bc.setBorder((Zint::BareCode::BorderType)m_frameType);
+	bc.setBorderType((Zint::QZint::BorderType)m_frameType);
 	bc.setHeight(m_barcodeHeight);
 	bc.setWidth(m_barcodeWidth);
 	bc.setSecurityLevel(m_barcodeSecurityLevel);
@@ -249,7 +251,7 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 	bc.setBgColor(m_barcodeBackgroundColor);
 	bc.setText(m_text);
 
-	bc.render(*painter,QRectF(rect.x()+1,rect.y()+1+((m_drawTextType==DRAW_ABOVE)?painter->fontMetrics().height():0),rect.width()-2, rect.height()-2-((m_drawTextType==DRAW_ABOVE || m_drawTextType==DRAW_BELOW)?painter->fontMetrics().height():0)),(Zint::BareCode::AspectRatioMode)m_paintType);
+	bc.render(*painter,QRectF(rect.x()+1,rect.y()+1+((m_drawTextType==DRAW_ABOVE)?painter->fontMetrics().height():0),rect.width()-2, rect.height()-2-((m_drawTextType==DRAW_ABOVE || m_drawTextType==DRAW_BELOW)?painter->fontMetrics().height():0)),(Zint::QZint::AspectRatioMode)m_paintType);
 
 	switch (m_drawTextType)
 	{
