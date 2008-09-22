@@ -6,9 +6,9 @@ exceptions \
   rtti \
  uitools
 
-TARGET = Elipse
+TARGET = Ellipse
 
-RESOURCES += elipse.qrc
+RESOURCES += ellipse.qrc
 
 HEADERS += ellipse.h
 
