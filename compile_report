@@ -22,8 +22,6 @@ cd libs
 qmake && make -j2 && make install
 cd ../plugins
 qmake && make -j2 && make install
-cd ../report
-qmake && make -j2 && make install
 cd ../apps
 qmake && make -j2 && make install
 cd ..
