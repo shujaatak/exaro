@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/" >
-        <file>elipse.png</file>
+        <file>ellipse.png</file>
     </qresource>
 </RCC>
