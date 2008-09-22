@@ -3,14 +3,14 @@
 project(Report)
 
 set(Report_SRCS bandinterface.cpp    iteminterface.cpp     paintdevice.cpp    reportengine.cpp
-document.cpp         page.cpp              paintengine.cpp    reportinterface.cpp
-exportinterface.cpp  pagegraphicsitem.cpp  previewdialog.cpp  searchwidget.cpp
-globals.cpp          pageinterface.cpp     previewwidget.cpp  sqlquery.cpp)
+		document.cpp         page.cpp              paintengine.cpp    reportinterface.cpp
+		exportinterface.cpp  pagegraphicsitem.cpp  previewdialog.cpp  searchwidget.cpp
+		globals.cpp          pageinterface.cpp     previewwidget.cpp  sqlquery.cpp)
 
-QT4_WRAP_CPP(Report_SRCS bandinterface.h    iteminterface.h     paintdevice.h    reportengine.h
-document.h         pagegraphicsitem.h  paintengine.h    reportinterface.h
-exportinterface.h  page.h              previewdialog.h  searchwidget.h
-globals.h          pageinterface.h     previewwidget.h  sqlquery.h)
+QT4_WRAP_CPP(Report_SRCS bandinterface.h    iteminterface.h    reportengine.h
+			reportinterface.h
+			exportinterface.h  previewdialog.h  searchwidget.h
+			pageinterface.h     previewwidget.h  sqlquery.h)
 
 QT4_ADD_RESOURCES(Report_SRCS preview.qrc)
 
