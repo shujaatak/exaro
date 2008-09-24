@@ -15,4 +15,4 @@ add_dependencies(Chord Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Chord Report ${QT_LIBRARIES})
 
-install(TARGETS Chord LIBRARY DESTINATION lib/report)
+install(TARGETS Chord DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

@@ -15,4 +15,4 @@ add_dependencies(DetailFooter Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(DetailFooter Report ${QT_LIBRARIES})
 
-install(TARGETS DetailFooter LIBRARY DESTINATION lib/report)
+install(TARGETS DetailFooter DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

@@ -15,4 +15,4 @@ add_dependencies(Picture Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Picture Report ${QT_LIBRARIES})
 
-install(TARGETS Picture LIBRARY DESTINATION lib/report)
+install(TARGETS Picture DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

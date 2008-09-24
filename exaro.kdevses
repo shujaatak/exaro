@@ -1,7 +1,11 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="0" />
+ <DocsAndViews NumberOfDocuments="1" >
+  <Doc0 NumberOfViews="1" URL="file:///root/work/exaro-cmake/plugins/report/items/barcode/barcode.cpp" >
+   <View0 Encoding="" line="333" Type="Source" />
+  </Doc0>
+ </DocsAndViews>
  <pluginList>
   <kdevdebugger>
    <breakpointList/>
@@ -12,7 +16,11 @@
    <AStyle IndentPreprocessors="1" FillCount="4" PadParenthesesOut="0" IndentNamespaces="0" IndentLabels="0" Fill="Tabs" MaxStatement="40" Brackets="Break" MinConditional="-1" IndentBrackets="0" PadParenthesesUn="1" BlockBreak="1" KeepStatements="0" KeepBlocks="0" BlockIfElse="1" IndentSwitches="1" PadOperators="0" FStyle="UserDefined" IndentCases="0" FillEmptyLines="0" BracketsCloseHeaders="0" BlockBreakAll="0" PadParenthesesIn="0" IndentClasses="0" IndentBlocks="0" FillForce="0" />
   </kdevastyle>
   <kdevbookmarks>
-   <bookmarks/>
+   <bookmarks>
+    <bookmark url="/root/work/exaro-cmake/plugins/report/items/barcode/barcode.h" >
+     <mark line="204" />
+    </bookmark>
+   </bookmarks>
   </kdevbookmarks>
   <kdevvalgrind>
    <executable path="" params="" />

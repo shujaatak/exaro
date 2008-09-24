@@ -15,4 +15,4 @@ add_dependencies(PageFooter Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(PageFooter Report ${QT_LIBRARIES})
 
-install(TARGETS PageFooter LIBRARY DESTINATION lib/report)
+install(TARGETS PageFooter DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

@@ -15,4 +15,4 @@ add_dependencies(Rectangle Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Rectangle Report ${QT_LIBRARIES})
 
-install(TARGETS Rectangle LIBRARY DESTINATION lib/report)
+install(TARGETS Rectangle DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

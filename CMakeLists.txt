@@ -5,7 +5,7 @@ project(exaro-package)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 #comment or remove the above line before release
 
 set (EXARO_VERSION_MAJOR 1)
@@ -16,6 +16,10 @@ set (EXARO_VERSION "${EXARO_VERSION_MAJOR}.${EXARO_VERSION_MINOR}.${EXARO_VERSIO
 add_definitions (-DEXARO_VERSION=\"${EXARO_VERSION}\")
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" )
+
+include(SetPaths.cmake)
+
+find_package(SharedMimeInfo REQUIRED)
 
 find_package(Qt4 REQUIRED)
 set( QT_USE_QTGUI TRUE )

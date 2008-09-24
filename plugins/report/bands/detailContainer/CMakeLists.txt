@@ -15,4 +15,4 @@ add_dependencies(DetailContainer Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(DetailContainer Report ${QT_LIBRARIES})
 
-install(TARGETS DetailContainer LIBRARY DESTINATION lib/report)
+install(TARGETS DetailContainer DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

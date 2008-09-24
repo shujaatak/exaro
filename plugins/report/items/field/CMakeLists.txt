@@ -15,4 +15,4 @@ add_dependencies(Field Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Field Report ${QT_LIBRARIES})
 
-install(TARGETS Field LIBRARY DESTINATION lib/report)
+install(TARGETS Field DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
