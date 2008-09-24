@@ -91,6 +91,6 @@ unix {
         mimelnk.depends = setup
         mime.files = bdrt.xml
         mime.path = $$[EXARO_INSTALL_MIMES]/packages
-        INSTALLS += icon menu mime mimelnk 
+        INSTALLS += icon menu mime mimelnk
     }
 }
