@@ -70,18 +70,17 @@ void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 	else
 		if (scriptEngine())
 		{
-/*
+#if QT_VERSION >= 0x040402
 			QWebPage wp(this);
 			wp.mainFrame()->setHtml(scriptEngine()->evaluate(m_script).toString());
-			qDebug()<<scriptEngine()->evaluate(m_script).toString()<<wp.mainFrame()->toHtml();
 			wp.setViewportSize(wp.mainFrame()->contentsSize());
-			wp.mainFrame()->render(painter);//,QRegion(rect.toRect()));
-//			painter->drawText(rect, textFlags(), scriptEngine()->evaluate(m_script).toString());
-*/
-			QTextDocument td; // until QWebPage will work I think QTextDocument is the beste choise
+			wp.mainFrame()->render(painter,QRegion(rect.toRect()));
+#else
+			QTextDocument td; // until QWebPage will work I think QTextDocument is the best choise
 			td.setHtml(scriptEngine()->evaluate(m_script).toString());
 			painter->translate(rect.topLeft());
 			td.drawContents(painter,QRectF(QPointF(0,0),rect.size()));
+#endif
 		}
 
 	if (option->type != QStyleOption::SO_GraphicsItem)

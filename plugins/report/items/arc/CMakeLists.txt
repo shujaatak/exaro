@@ -15,4 +15,4 @@ add_dependencies(Arc Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Arc Report ${QT_LIBRARIES})
 
-install(TARGETS Arc LIBRARY DESTINATION lib/report)
+install(TARGETS Arc DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

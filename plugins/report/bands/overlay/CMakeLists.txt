@@ -15,4 +15,4 @@ add_dependencies(Overlay Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Overlay Report ${QT_LIBRARIES})
 
-install(TARGETS Overlay LIBRARY DESTINATION lib/report)
+install(TARGETS Overlay DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

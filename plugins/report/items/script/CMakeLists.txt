@@ -15,4 +15,4 @@ add_dependencies(Script Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Script Report ${QT_LIBRARIES})
 
-install(TARGETS Script LIBRARY DESTINATION lib/report)
+install(TARGETS Script DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

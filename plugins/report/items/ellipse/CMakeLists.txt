@@ -15,4 +15,4 @@ add_dependencies(Ellipse Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Ellipse Report ${QT_LIBRARIES})
 
-install(TARGETS Ellipse LIBRARY DESTINATION lib/report)
+install(TARGETS Ellipse DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

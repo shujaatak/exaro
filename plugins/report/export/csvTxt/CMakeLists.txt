@@ -15,4 +15,4 @@ add_dependencies(CsvTxt Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(CsvTxt Report ${QT_LIBRARIES})
 
-install(TARGETS CsvTxt LIBRARY DESTINATION lib/report/export)
+install(TARGETS CsvTxt  DESTINATION "${PLUGIN_INSTALL_DIR}/export" RUNTIME)

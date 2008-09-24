@@ -13,4 +13,4 @@ add_dependencies(Html Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Html Report ${QT_LIBRARIES})
 
-install(TARGETS Html LIBRARY DESTINATION lib/report/export)
+install(TARGETS Html  DESTINATION "${PLUGIN_INSTALL_DIR}/export" RUNTIME)

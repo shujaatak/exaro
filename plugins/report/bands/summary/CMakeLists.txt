@@ -15,4 +15,4 @@ add_dependencies(Summary Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Summary Report ${QT_LIBRARIES})
 
-install(TARGETS Summary LIBRARY DESTINATION lib/report)
+install(TARGETS Summary DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

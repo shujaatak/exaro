@@ -15,4 +15,4 @@ add_dependencies(HtmlScript Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(HtmlScript Report ${QT_LIBRARIES})
 
-install(TARGETS HtmlScript LIBRARY DESTINATION lib/report)
+install(TARGETS HtmlScript DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

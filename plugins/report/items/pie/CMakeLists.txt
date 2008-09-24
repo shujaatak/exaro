@@ -15,4 +15,4 @@ add_dependencies(Pie Report)
 link_directories( " ../../../../libs/report" )
 target_link_libraries(Pie Report ${QT_LIBRARIES})
 
-install(TARGETS Pie LIBRARY DESTINATION lib/report)
+install(TARGETS Pie DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
