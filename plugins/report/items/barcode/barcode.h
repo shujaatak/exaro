@@ -25,7 +25,7 @@ class Barcode : public Report::ItemInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
 
-	Q_ENUMS(BarcodeTypes PaintTypes FrameTypes DrawTextTypes);
+	Q_ENUMS(BarcodeTypes PaintTypes FrameTypes DrawTextTypes MsiPlessey);
 	Q_PROPERTY(PaintTypes howToPaintBarcode READ paintType WRITE setPaintType)
 	Q_PROPERTY(FrameTypes frameType READ frameType WRITE setFrameType)
 	Q_PROPERTY(BarcodeTypes barcodeType READ barcodeType WRITE setBarcodeType)
@@ -37,12 +37,23 @@ class Barcode : public Report::ItemInterface
 	Q_PROPERTY(int barcodeWidth READ barcodeWidth WRITE setBarcodeWidth)
 	Q_PROPERTY(int barcodeSecurityLevel READ barcodeSecurityLevel WRITE setBarcodeSecurityLevel)
 	Q_PROPERTY(int pdf417Max READ pdf417Max WRITE setPdf417Max)
+	Q_PROPERTY(MsiPlessey msiPlessey READ msiPlessey WRITE setMsiPlessey)
+	Q_PROPERTY(bool exCode39_43Extension READ exCode39_43Extension WRITE setExCode39_43Extension)
 	Q_PROPERTY(DrawTextTypes drawTextType READ drawTextType WRITE setDrawTextType)
 	Q_PROPERTY(QString primaryMessage READ primaryMessage WRITE setPrimaryMessage)
 	Q_PROPERTY(QString script READ script WRITE setScript)
 	Q_PROPERTY(QString testText READ testText WRITE setTestText)
 
 public:
+	enum MsiPlessey
+	{
+		MSI_PLESSEY_ 	= 0,
+		MSI_10		= 1,
+		MSI_10_10	= 2,
+		MSI_11		= 3,
+		MSI_11_10	= 4
+	};
+
 	enum DrawTextTypes
 	{
 		NO_TEXT = 0,
@@ -51,6 +62,7 @@ public:
 		DRAW_ABOVE = 3,
 		DRAW_BELOW = 4
 	};
+
 	enum FrameTypes
 	{
 		NO_FRAME = 0,
@@ -67,78 +79,81 @@ public:
 
 	enum BarcodeTypes
 	{
-		BARCODE_CODE11 = 1,
-		BARCODE_C25MATRIX = 2,
-		BARCODE_C25INTER = 3,
-		BARCODE_C25IATA = 4,
-		BARCODE_C25LOGIC = 6,
-		BARCODE_C25IND = 7,
-		BARCODE_CODE39 = 8,
-		BARCODE_EXCODE39 = 9,
-		BARCODE_EANX = 13,
-		BARCODE_EAN128 = 16,
-		BARCODE_CODABAR = 18,
-		BARCODE_CODE128 = 20,
-		BARCODE_DPLEIT = 21,
-		BARCODE_DPIDENT = 22,
-		BARCODE_CODE16K = 23,
-		BARCODE_CODE93 = 25,
-		BARCODE_FLAT = 28,
-		BARCODE_RSS14 = 29,
-		BARCODE_RSS_LTD = 30,
-		BARCODE_RSS_EXP = 31,
-		BARCODE_TELEPEN = 32,
-		BARCODE_UPCA = 34,
-		BARCODE_UPCE = 37,
-		BARCODE_POSTNET = 40,
-		BARCODE_MSI_PLESSEY = 47,
-		BARCODE_FIM = 49,
-		BARCODE_LOGMARS = 50,
-		BARCODE_PHARMA = 51,
-		BARCODE_PZN = 52,
-		BARCODE_PHARMA_TWO = 53,
-		BARCODE_PDF417 = 55,
-		BARCODE_PDF417TRUNC = 56,
-		BARCODE_MAXICODE = 57,
-		BARCODE_QRCODE = 58,
-		BARCODE_CODE128B = 60,
-		BARCODE_AUSPOST = 63,
-		BARCODE_AUSREPLY = 66,
-		BARCODE_AUSROUTE = 67,
-		BARCODE_AUSREDIRECT = 68,
-		BARCODE_ISBNX = 69,
-		BARCODE_RM4SCC = 70,
-		BARCODE_DATAMATRIX = 71,
-		BARCODE_ITF14 = 72,
-		BARCODE_NVE18 = 75,
-		BARCODE_KOREAPOST = 77,
-		BARCODE_RSS14STACK = 79,
-		BARCODE_RSS14STACK_OMNI = 80,
-		BARCODE_RSS_EXPSTACK = 81,
-		BARCODE_PLANET = 82,
-		BARCODE_MICROPDF417 = 84,
-		BARCODE_ONECODE = 85,
-		BARCODE_PLESSEY = 86,
-		BARCODE_TELEPEN_NUM = 100,
-		BARCODE_MSI_10 = 101,
-		BARCODE_MSI_10_10 = 102,
-		BARCODE_MSI_11 = 103,
-		BARCODE_MSI_11_10 = 104,
-		BARCODE_CODE39_43 = 105,
-		BARCODE_EXCODE39_43 = 106,
-		BARCODE_AZTEC = 107,
-		BARCODE_SUPER = 108,
-		BARCODE_ULTRA = 109,
-		BARCODE_EANX_CC = 110,
-		BARCODE_EAN128_CC = 111,
-		BARCODE_RSS14_CC = 112,
-		BARCODE_RSS_LTD_CC = 113,
-		BARCODE_RSS_EXP_CC = 114,
-		BARCODE_UPCA_CC = 115,
-		BARCODE_UPCE_CC = 116,
-		BARCODE_RSS14STACK_CC = 117,
-		BARCODE_RSS14_OMNI_CC = 118,
-		BARCODE_RSS_EXPSTACK_CC = 119,
+		CODE11		=1,
+		C25MATRIX	=2,
+		C25INTER	=3,
+		C25IATA		=4,
+		C25LOGIC	=6,
+		C25IND		=7,
+		CODE39		=8,
+		EXCODE39	=9,
+		EANX		=13,
+		EAN128		=16,
+		CODABAR		=18,
+		CODE128		=20,
+		DPLEIT		=21,
+		DPIDENT		=22,
+		CODE16K		=23,
+		CODE93		=25,
+		FLAT		=28,
+		RSS14		=29,
+		RSS_LTD		=30,
+		RSS_EXP		=31,
+		TELEPEN		=32,
+		UPCA		=34,
+		UPCE		=37,
+		POSTNET		=40,
+		MSI_PLESSEY	=47,
+		FIM		=49,
+		LOGMARS		=50,
+		PHARMA		=51,
+		PZN		=52,
+		PHARMA_TWO	=53,
+		PDF417		=55,
+		PDF417TRUNC	=56,
+		MAXICODE	=57,
+		QRCODE		=58,
+		CODE128B	=60,
+		AUSPOST		=63,
+		AUSREPLY	=66,
+		AUSROUTE	=67,
+		AUSREDIRECT	=68,
+		ISBNX		=69,
+		RM4SCC		=70,
+		DATAMATRIX	=71,
+		ITF14		=72,
+		CODABLOCKF	=74,
+		NVE18		=75,
+		KOREAPOST	=77,
+		RSS14STACK	=79,
+		RSS14STACK_OMNI	=80,
+		RSS_EXPSTACK	=81,
+		PLANET		=82,
+		MICROPDF417	=84,
+		ONECODE		=85,
+		PLESSEY		=86,
+		
+		/* Tbarcode 8 codes */
+		KIX		=90,
+		AZTEC		=92,
+		DAFT		=93,
+		ITALYPOST	=94,
+		DPD		=96,
+		MICROQR		=97,
+		
+		/* Zint specific */
+		TELEPEN_NUM	=128,
+		CODE32		=129,
+		EANX_CC		=130,
+		EAN128_CC	=131,
+		RSS14_CC	=132,
+		RSS_LTD_CC	=133,
+		RSS_EXP_CC	=134,
+		UPCA_CC		=135,
+		UPCE_CC		=136,
+		RSS14STACK_CC	=137,
+		RSS14_OMNI_CC	=138,
+		RSS_EXPSTACK_CC	=139
 	};
 
 public:
@@ -184,6 +199,12 @@ public:
 	int pdf417Max();
 	void setPdf417Max(int pdf417Max);
 
+	MsiPlessey msiPlessey();
+	void setMsiPlessey(MsiPlessey msiPlessey);
+
+	bool exCode39_43Extension();
+	void setExCode39_43Extension(bool exCode39_43Extension);
+
 	DrawTextTypes drawTextType();
 	void setDrawTextType(DrawTextTypes drawTextType);
 
@@ -214,6 +235,8 @@ private:
 	QString m_testText;
 	QString m_primaryMessage;
 	QString m_script;
+	bool	m_exCode39_43Extension;
+	MsiPlessey m_msiPlessey;
 };
 
 

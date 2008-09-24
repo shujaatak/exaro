@@ -46,6 +46,8 @@ Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	m_testText = "05072006";
 	m_drawTextType = NO_TEXT;
 	m_pdf417Max = 928;
+	m_msiPlessey=MSI_PLESSEY_;
+	m_exCode39_43Extension=false;
 	initMyResource();
 	setWidth(50/UNIT);
 	setHeight(10/UNIT);
@@ -169,6 +171,26 @@ void Barcode::setPdf417Max(int pdf417Max)
 		m_pdf417Max=1900;
 }
 
+Barcode::MsiPlessey Barcode::msiPlessey()
+{
+	return m_msiPlessey;
+}
+void Barcode::setMsiPlessey(MsiPlessey msiPlessey)
+{
+	m_msiPlessey=msiPlessey;
+	update();
+}
+
+bool Barcode::exCode39_43Extension()
+{
+	return m_exCode39_43Extension;
+}
+void Barcode::setExCode39_43Extension(bool exCode39_43Extension)
+{
+	m_exCode39_43Extension=exCode39_43Extension;
+	update();
+}
+
 Barcode::DrawTextTypes Barcode::drawTextType()
 {
 	return m_drawTextType;
@@ -240,6 +262,18 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 	Zint::QZint bc;
 
 	bc.setSymbol(m_barcodeType);
+	switch(m_barcodeType)
+	{
+		case  MSI_PLESSEY:
+			bc.setMsiExtraSymbology(m_msiPlessey);
+			break;
+		case  CODE39:
+			bc.setCode39ExtraSymbology(m_exCode39_43Extension);
+			break;
+		case  EXCODE39:
+			bc.setExcode39ExtraSymbology(m_exCode39_43Extension);
+			break;
+	}
 	bc.setPrimaryMessage(m_primaryMessage);
 	bc.setBorderType((Zint::QZint::BorderType)m_frameType);
 	bc.setHeight(m_barcodeHeight);
