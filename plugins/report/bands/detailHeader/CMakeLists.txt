@@ -2,7 +2,7 @@
 
 project(DetailHeader)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(DetailHeader_SRCS detailheader.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(DetailHeader_SRCS detailHeader.qrc)
 
 add_library(DetailHeader SHARED ${DetailHeader_SRCS})
 add_dependencies(DetailHeader Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(DetailHeader Report ${QT_LIBRARIES})
 
 install(TARGETS DetailHeader DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

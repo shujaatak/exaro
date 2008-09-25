@@ -2,7 +2,7 @@
 
 project(Barcode)
 
-include_directories(BEFORE ../../../../libs/report ${ZINT_INCLUDE_DIR} ${QZINT_INCLUDE_DIR})
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${ZINT_INCLUDE_DIR} ${QZINT_INCLUDE_DIR})
 
 set(Barcode_SRCS barcode.cpp)
 
@@ -13,7 +13,7 @@ QT4_ADD_RESOURCES(Barcode_SRCS barcode.qrc)
 
 add_library(Barcode SHARED ${Barcode_SRCS})
 add_dependencies(Barcode Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Barcode Report ${QT_LIBRARIES} ${ZINT_LIBRARY} ${QZINT_LIBRARY})
 
 install(TARGETS Barcode DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

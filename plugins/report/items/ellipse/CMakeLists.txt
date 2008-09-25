@@ -2,7 +2,7 @@
 
 project(Ellipse)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Ellipse_SRCS ellipse.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Ellipse_SRCS ellipse.qrc)
 
 add_library(Ellipse SHARED ${Ellipse_SRCS})
 add_dependencies(Ellipse Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Ellipse Report ${QT_LIBRARIES})
 
 install(TARGETS Ellipse DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

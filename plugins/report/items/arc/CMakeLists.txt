@@ -2,7 +2,7 @@
 
 project(Arc)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Arc_SRCS arc.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Arc_SRCS arc.qrc)
 
 add_library(Arc SHARED ${Arc_SRCS})
 add_dependencies(Arc Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Arc Report ${QT_LIBRARIES})
 
 install(TARGETS Arc DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

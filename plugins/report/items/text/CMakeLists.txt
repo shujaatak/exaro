@@ -2,7 +2,7 @@
 
 project(Text)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Text_SRCS text.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Text_SRCS text.qrc)
 
 add_library(Text SHARED ${Text_SRCS})
 add_dependencies(Text Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Text Report ${QT_LIBRARIES})
 
 install(TARGETS Text DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
