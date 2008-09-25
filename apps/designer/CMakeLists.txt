@@ -2,7 +2,7 @@
 
 project(exaro)
 
-include_directories(BEFORE ../../libs/report ${PROPERTYEDITOR_INCLUDE_DIR})
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_INCLUDE_DIR})
 
 set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.cpp
 		designerpage.cpp         main.cpp              scriptsyntaxhighlighter.cpp
@@ -22,7 +22,7 @@ QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
 add_executable(exaro ${exaro_SRCS})
 add_dependencies(exaro Report)
-link_directories( " ../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(exaro Report ${QT_LIBRARIES} ${PROPERTYEDITOR_LIBRARY})
 
 install(TARGETS exaro RUNTIME DESTINATION bin)
