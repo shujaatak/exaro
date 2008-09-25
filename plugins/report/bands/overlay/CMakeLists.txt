@@ -2,7 +2,7 @@
 
 project(Overlay)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Overlay_SRCS overlay.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Overlay_SRCS overlay.qrc)
 
 add_library(Overlay SHARED ${Overlay_SRCS})
 add_dependencies(Overlay Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Overlay Report ${QT_LIBRARIES})
 
 install(TARGETS Overlay DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

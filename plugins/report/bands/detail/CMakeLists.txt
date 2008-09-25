@@ -2,7 +2,7 @@
 
 project(Detail)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Detail_SRCS detail.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Detail_SRCS detail.qrc)
 
 add_library(Detail SHARED ${Detail_SRCS})
 add_dependencies(Detail Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Detail Report ${QT_LIBRARIES})
 
 install(TARGETS Detail DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

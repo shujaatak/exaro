@@ -2,7 +2,7 @@
 
 project(Rectangle)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Rectangle_SRCS rectangle.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Rectangle_SRCS rectangle.qrc)
 
 add_library(Rectangle SHARED ${Rectangle_SRCS})
 add_dependencies(Rectangle Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Rectangle Report ${QT_LIBRARIES})
 
 install(TARGETS Rectangle DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)

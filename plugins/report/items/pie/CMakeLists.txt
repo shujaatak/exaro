@@ -2,7 +2,7 @@
 
 project(Pie)
 
-include_directories(BEFORE ../../../../libs/report)
+include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report")
 
 set(Pie_SRCS pie.cpp)
 
@@ -12,7 +12,7 @@ QT4_ADD_RESOURCES(Pie_SRCS pie.qrc)
 
 add_library(Pie SHARED ${Pie_SRCS})
 add_dependencies(Pie Report)
-link_directories( " ../../../../libs/report" )
+link_directories( "${CMAKE_SOURCE_DIR}/libs/report" )
 target_link_libraries(Pie Report ${QT_LIBRARIES})
 
 install(TARGETS Pie DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
