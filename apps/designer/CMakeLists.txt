@@ -17,6 +17,19 @@ QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.u
 			designerquerywidget.ui  designeruiwidget.ui  sqldatabasedialog.ui)
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
+if(WIN32)
+  if(MINGW)
+    # resource compilation for mingw
+    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o
+                       COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR}
+                                           -i${CMAKE_CURRENT_SOURCE_DIR}/exaro.rc
+                                           -o ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
+    SET(sim_EXE_SRCS ${sim_EXE_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
+  else(MINGW)
+    SET(sim_EXE_SRCS ${sim_EXE_SRCS} exaro.rc)
+  endif(MINGW)
+endif(WIN32)
+
 add_executable(exaro ${exaro_SRCS})
 add_dependencies(exaro Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
