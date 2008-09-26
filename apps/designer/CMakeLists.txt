@@ -24,9 +24,9 @@ if(WIN32)
                        COMMAND windres.exe -I${CMAKE_CURRENT_SOURCE_DIR}
                                            -i${CMAKE_CURRENT_SOURCE_DIR}/exaro.rc
                                            -o ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
-    SET(sim_EXE_SRCS ${sim_EXE_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
+    SET(exaro_SRCS ${exaro_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
   else(MINGW)
-    SET(sim_EXE_SRCS ${sim_EXE_SRCS} exaro.rc)
+    SET(exaro_SRCS ${exaro_SRCS} exaro.rc)
   endif(MINGW)
 endif(WIN32)
 
