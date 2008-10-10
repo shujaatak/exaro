@@ -1,7 +1,7 @@
 # (c) 2008 by BogDan Vatra < bogdan@licentia.eu >
 
 add_subdirectory(arc)
-#add_subdirectory(charts)
+add_subdirectory(charts)
 add_subdirectory(field)
 add_subdirectory(picture)
 add_subdirectory(rectangle)
