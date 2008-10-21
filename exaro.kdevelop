@@ -98,8 +98,8 @@
       <designerpluginpaths/>
     </qt>
     <references>
-      <pcs>automatic_%2Froot%2Fwork%2Fexaro</pcs>
       <pcs>Qt4</pcs>
+      <pcs>automatic_%2Froot%2Fwork%2Fexaro-1.0</pcs>
     </references>
     <codecompletion>
       <automaticCodeCompletion>false</automaticCodeCompletion>
@@ -147,7 +147,7 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir>apps/designer</activedir>
+      <activedir>libs/report</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>

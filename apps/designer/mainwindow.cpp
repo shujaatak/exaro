@@ -313,9 +313,9 @@ void mainWindow::del()
 
 	item->setParentItem(0);
 	dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->removeItem();
-	m_lastSelectedObject = 0;
+	delete dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject);
+	m_lastSelectedObject = parent;
 	m_pe->setObject(parent);
-	QApplication::processEvents();
 	m_objectModel.setRootObject(m_report);
 	selectObject(parent, m_objectModel.index(0,0));
 }

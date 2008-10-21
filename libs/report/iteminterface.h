@@ -449,7 +449,7 @@ public:
 	 */
 	QRectF parentGeometry();
 
-	virtual void removeItem(){deleteLater();};
+	virtual void removeItem(){/*deleteLater();*/};
 
 protected:
 	/**
