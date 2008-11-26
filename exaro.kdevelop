@@ -147,7 +147,7 @@
   </kdevfilecreate>
   <kdevtrollproject>
     <general>
-      <activedir>libs/report</activedir>
+      <activedir>apps</activedir>
     </general>
     <run>
       <directoryradio>executable</directoryradio>
