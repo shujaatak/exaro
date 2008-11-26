@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>eXaro v1.0.0</string>
+   <string>eXaro v1.0.1</string>
   </property>
   <property name="windowIcon" >
    <iconset resource="report.qrc" >
