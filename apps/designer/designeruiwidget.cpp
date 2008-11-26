@@ -61,7 +61,8 @@ void DesignerUiWidget::editItem()
 	file.write(m_uis[m_listWidget->currentItem()->text()].toByteArray());
 	QString fileName = file.fileName();
 	file.close();
-
+	if (!m_uis[m_listWidget->currentItem()->text()].toByteArray().size())
+		file.remove();
 	QSettings s;
 	s.beginGroup("Tools");
 	QString m_designerTool = s.value("designer", "designer").toString();
@@ -78,13 +79,15 @@ void DesignerUiWidget::editItem()
 	while (!designer.waitForFinished(500)) // wait designer to quit
 		qApp->processEvents();
 
-	if (!file.open())
+	QFile uiFile(fileName);
+	if (!uiFile.open(QIODevice::ReadWrite))
 	{
 		qCritical() << tr("Can't open temp file");
 		return;
 	}
-	m_uis[m_listWidget->currentItem()->text()] = QString(file.readAll());
-	file.close();
+	m_uis[m_listWidget->currentItem()->text()] = QString(uiFile.readAll());
+	uiFile.close();
+	uiFile.remove();
 }
 
 void DesignerUiWidget::editName()
@@ -120,16 +123,18 @@ void DesignerUiWidget::createItem()
 	i->setText(text);
 	m_listWidget->addItem(i);
 	m_listWidget->setCurrentItem(i);
-
 	refreshButtons();
+	m_uis[text] = "";
 	DesignerUiType uitype;
 	uitype.exec();
-	if (uitype.widgetRadioButton->isChecked())
-		m_uis[text] = "<ui version=\"4.0\" ><class>Form</class><widget class=\"QWidget\" name=\"Form\"><property name=\"windowTitle\" ><string>Form</string></property></widget></ui>";
+
+	if (uitype.customRadioButton->isChecked())
+		m_uis[text] ="";
 	else
-		m_uis[text] = "<ui version=\"4.0\" ><class>Dialog</class><widget class=\"QDialog\" name=\"Dialog\"><property name=\"windowTitle\" ><string>Dialog</string></property></widget></ui>";
-
-
+		if (uitype.widgetRadioButton->isChecked())
+			m_uis[text] = "<ui version=\"4.0\" ><class>Form</class><widget class=\"QWidget\" name=\"Form\"><property name=\"windowTitle\" ><string>Form</string></property></widget></ui>";
+		else
+			m_uis[text] = "<ui version=\"4.0\" ><class>Dialog</class><widget class=\"QDialog\" name=\"Dialog\"><property name=\"windowTitle\" ><string>Dialog</string></property></widget></ui>";
 }
 
 QMap <QString, QVariant> DesignerUiWidget::uis()
