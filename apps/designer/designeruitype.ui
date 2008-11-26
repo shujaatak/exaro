@@ -5,21 +5,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>156</width>
-    <height>154</height>
+    <width>157</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Ui</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
+   <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
       <string>[ Ui base class ]</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" >
-      <item row="0" column="0" >
+     <layout class="QVBoxLayout" name="verticalLayout" >
+      <item>
        <widget class="QRadioButton" name="widgetRadioButton" >
         <property name="text" >
          <string>Q&amp;Widget</string>
@@ -29,17 +29,24 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
+      <item>
        <widget class="QRadioButton" name="dialogRadioButton" >
         <property name="text" >
          <string>Q&amp;Dialog</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QRadioButton" name="customRadioButton" >
+        <property name="text" >
+         <string>&amp;Custom</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" >
+   <item>
     <widget class="QPushButton" name="pushButton" >
      <property name="text" >
       <string>&amp;Ok</string>
