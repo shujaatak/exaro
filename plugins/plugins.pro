@@ -1,4 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += propertyEditor \
- report 
+SUBDIRS += report
