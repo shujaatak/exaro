@@ -1,6 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += propertyEditor \
- report \
- zint \
- quazip
+SUBDIRS += report

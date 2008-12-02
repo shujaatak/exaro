@@ -63,8 +63,14 @@ ReportEngine::ReportEngine(QObject *parent)
 
 	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
 	{
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+		QPluginLoader loader;
+		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint|QLibrary::LoadArchiveMemberHint);
+		loader.setFileName(pluginsDir.absoluteFilePath(fileName));
+		if (!loader.load())
+		{
+			qCritical() << loader.errorString();
+			continue;
+		}
 		QObject *plugin = loader.instance();
 
 		if (plugin)
