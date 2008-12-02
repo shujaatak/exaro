@@ -18,6 +18,7 @@
 #include <QPainter>
 #include <QPointF>
 #include <QStyleOptionGraphicsItem>
+#include <QDebug>
 
 #include "line.h"
 
@@ -30,7 +31,6 @@ inline void initMyResource()
 Line::Line(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_lineStyle(BackwardDiagonal)
 {
 	initMyResource();
-
 }
 
 
@@ -63,7 +63,6 @@ void Line::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 	setupPainter(painter);
 
 	adjustRect(rect);
-
 	switch (lineStyle())
 	{
 		case Vertical:
