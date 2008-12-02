@@ -48,6 +48,8 @@ QRectF Detail::boundingRect() const
 
 void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
+	if (option->type != QStyleOption::SO_GraphicsItem)
+		emit beforePrint(this);
 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
