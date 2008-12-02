@@ -28,29 +28,29 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(line);
 }
 
-Line::Line(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_lineStyle(BackwardDiagonal)
+LineItem::LineItem(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_lineStyle(BackwardDiagonal)
 {
 	initMyResource();
 }
 
 
-QRectF Line::boundingRect() const
+QRectF LineItem::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
 }
 
-Line::LineStyle Line::lineStyle()
+LineItem::LineStyle LineItem::lineStyle()
 {
 	return m_lineStyle;
 }
 
-void Line::setLinestyle(LineStyle lineStyle)
+void LineItem::setLinestyle(LineStyle lineStyle)
 {
 	m_lineStyle = lineStyle;
 	update();
 }
 
-void Line::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void LineItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit beforePrint(this);
@@ -83,24 +83,24 @@ void Line::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 		emit afterPrint(this);
 }
 
-QIcon Line::toolBoxIcon()
+QIcon LineItem::toolBoxIcon()
 {
 	return QIcon(":/line.png");
 }
 
-QString Line::toolBoxText()
+QString LineItem::toolBoxText()
 {
-	return tr("Line");
+	return tr("LineItem");
 }
 
-QString Line::toolBoxGroup()
+QString LineItem::toolBoxGroup()
 {
 	return tr("Shapes");
 }
 
-QObject * Line::createInstance(QGraphicsItem* parent, QObject* parentObject)
+QObject * LineItem::createInstance(QGraphicsItem* parent, QObject* parentObject)
 {
-	return new Line(parent, parentObject);
+	return new LineItem(parent, parentObject);
 }
 
-Q_EXPORT_PLUGIN2(line, Line)
+Q_EXPORT_PLUGIN2(line, LineItem)
