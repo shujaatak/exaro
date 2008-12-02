@@ -57,7 +57,7 @@ void BandInterface::removeItem()
 {
 	m_deleting = true;
 	emit(bandDelete(m_bandType, m_order));
-	ItemInterface::removeItem();
+        ItemInterface::removeItem();
 }
 
 BandInterface::~BandInterface()
