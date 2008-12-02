@@ -18,7 +18,7 @@
 
 #include <iteminterface.h>
 
-class Line : public Report::ItemInterface
+class LineItem : public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
@@ -28,7 +28,7 @@ class Line : public Report::ItemInterface
 public:
 	enum LineStyle {Vertical, Horizontal, BackwardDiagonal, ForwardDiagonal};
 public:
-	Line(QGraphicsItem* parent = 0, QObject* parentObject = 0);
+	LineItem(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
