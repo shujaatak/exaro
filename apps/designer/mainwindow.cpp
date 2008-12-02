@@ -339,8 +339,7 @@ void mainWindow::setupDatabase()
 
 void mainWindow::executeReport()
 {
-	if (!m_report->exec())
-		return;
+	m_report->exec();
 }
 
 void mainWindow::closeEvent(QCloseEvent *event)

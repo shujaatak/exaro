@@ -2,8 +2,8 @@
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
  <DocsAndViews NumberOfDocuments="1" >
-  <Doc0 NumberOfViews="1" URL="file:///root/work/exaro-cmake/plugins/report/items/barcode/barcode.cpp" >
-   <View0 Encoding="" line="333" Type="Source" />
+  <Doc0 NumberOfViews="1" URL="file:///root/work/exaro-cmake/apps/designer/mainwindow.cpp" >
+   <View0 Encoding="" line="310" Type="Source" />
   </Doc0>
  </DocsAndViews>
  <pluginList>
