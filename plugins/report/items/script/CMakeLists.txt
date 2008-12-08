@@ -13,4 +13,4 @@ add_dependencies(Script Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Script Report ${QT_LIBRARIES})
 
-install(TARGETS Script DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Script ${INSTALL_PLUGINS_DEFAULT_ARGS})

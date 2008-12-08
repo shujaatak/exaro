@@ -13,4 +13,4 @@ add_dependencies(Field Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Field Report ${QT_LIBRARIES})
 
-install(TARGETS Field DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Field ${INSTALL_PLUGINS_DEFAULT_ARGS})

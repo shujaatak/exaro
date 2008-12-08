@@ -12,4 +12,4 @@ add_dependencies(Html Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Html Report ${QT_LIBRARIES})
 
-install(TARGETS Html  DESTINATION "${PLUGIN_INSTALL_DIR}/export" RUNTIME)
+install(TARGETS Html  ${INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS})

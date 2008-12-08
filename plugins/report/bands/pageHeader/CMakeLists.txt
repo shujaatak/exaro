@@ -13,4 +13,4 @@ add_dependencies(PageHeader Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(PageHeader Report ${QT_LIBRARIES})
 
-install(TARGETS PageHeader DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS PageHeader ${INSTALL_PLUGINS_DEFAULT_ARGS})

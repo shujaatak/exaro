@@ -13,4 +13,4 @@ add_dependencies(DetailHeader Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(DetailHeader Report ${QT_LIBRARIES})
 
-install(TARGETS DetailHeader DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS DetailHeader ${INSTALL_PLUGINS_DEFAULT_ARGS})

@@ -14,4 +14,4 @@ add_dependencies(Barcode Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Barcode Report ${QT_LIBRARIES} ${ZINT_LIBRARY} ${QZINT_LIBRARY})
 
-install(TARGETS Barcode DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Barcode ${INSTALL_PLUGINS_DEFAULT_ARGS})

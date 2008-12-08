@@ -14,4 +14,4 @@ add_dependencies(Piechart ChartInterface)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" "../chartinterface")
 target_link_libraries(Piechart ChartInterface Report ${QT_LIBRARIES})
 
-install(TARGETS Piechart DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Piechart ${INSTALL_PLUGINS_DEFAULT_ARGS})

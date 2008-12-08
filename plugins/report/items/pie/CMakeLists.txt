@@ -13,4 +13,4 @@ add_dependencies(Pie Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Pie Report ${QT_LIBRARIES})
 
-install(TARGETS Pie DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Pie ${INSTALL_PLUGINS_DEFAULT_ARGS})

@@ -14,4 +14,4 @@ add_dependencies(Barchart ChartInterface)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" "../chartinterface")
 target_link_libraries(Barchart ChartInterface Report ${QT_LIBRARIES})
 
-install(TARGETS Barchart DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Barchart ${INSTALL_PLUGINS_DEFAULT_ARGS})

@@ -79,7 +79,7 @@ if (WIN32)
    set(LIBEXEC_INSTALL_DIR  "${BIN_INSTALL_DIR}"          ) # The subdirectory relative to the install prefix where libraries will be installed (default is ${BIN_INSTALL_DIR})
    set(INCLUDE_INSTALL_DIR  "include"                     ) # The subdirectory to the header prefix
 
-   set(PLUGIN_INSTALL_DIR       "lib${LIB_SUFFIX}/report" ) # The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)
+   set(PLUGIN_INSTALL_DIR       "bin/report" ) # The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)
    set(CONFIG_INSTALL_DIR       "share/config"            ) # The config file install dir
    set(DATA_INSTALL_DIR         "share/apps"              ) # The parent directory where applications can install their data
    set(HTML_INSTALL_DIR         "share/doc/HTML"          ) # The HTML install dir for documentation
@@ -200,6 +200,14 @@ endif (WIN32)
 set(INSTALL_TARGETS_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}"
                                   LIBRARY DESTINATION "${LIB_INSTALL_DIR}"
                                   ARCHIVE DESTINATION "${LIB_INSTALL_DIR}" COMPONENT Devel )
+
+set(INSTALL_PLUGINS_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/report"
+                                  LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report"
+                                  ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/report" COMPONENT Devel )
+
+set(INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/report/export"
+                                  LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report/export"
+                                  ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/report/export" COMPONENT Devel )
 
 
 

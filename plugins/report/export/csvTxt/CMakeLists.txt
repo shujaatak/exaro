@@ -13,4 +13,4 @@ add_dependencies(CsvTxt Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(CsvTxt Report ${QT_LIBRARIES})
 
-install(TARGETS CsvTxt  DESTINATION "${PLUGIN_INSTALL_DIR}/export" RUNTIME)
+install(TARGETS CsvTxt  ${INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS})
