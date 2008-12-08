@@ -13,4 +13,4 @@ add_dependencies(Ellipse Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Ellipse Report ${QT_LIBRARIES})
 
-install(TARGETS Ellipse DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Ellipse ${INSTALL_PLUGINS_DEFAULT_ARGS})

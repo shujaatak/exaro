@@ -12,4 +12,4 @@ add_dependencies(StdReport Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(StdReport Report ${QT_LIBRARIES})
 
-install(TARGETS StdReport DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS StdReport ${INSTALL_PLUGINS_DEFAULT_ARGS})

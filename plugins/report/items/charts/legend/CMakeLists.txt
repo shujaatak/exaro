@@ -14,4 +14,4 @@ add_dependencies(Legend ChartInterface)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" "../chartinterface")
 target_link_libraries(Legend ChartInterface Report ${QT_LIBRARIES})
 
-install(TARGETS Legend DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Legend ${INSTALL_PLUGINS_DEFAULT_ARGS})

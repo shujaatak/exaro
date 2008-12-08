@@ -13,4 +13,4 @@ add_dependencies(PageFooter Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(PageFooter Report ${QT_LIBRARIES})
 
-install(TARGETS PageFooter DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS PageFooter ${INSTALL_PLUGINS_DEFAULT_ARGS})

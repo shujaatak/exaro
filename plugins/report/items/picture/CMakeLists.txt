@@ -13,4 +13,4 @@ add_dependencies(Picture Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Picture Report ${QT_LIBRARIES})
 
-install(TARGETS Picture DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Picture ${INSTALL_PLUGINS_DEFAULT_ARGS})

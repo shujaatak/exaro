@@ -13,4 +13,4 @@ add_dependencies(Line Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Line ${QT_LIBRARIES} Report)
 
-install(TARGETS Line DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Line ${INSTALL_PLUGINS_DEFAULT_ARGS})

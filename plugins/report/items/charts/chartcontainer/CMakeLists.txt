@@ -14,4 +14,4 @@ add_dependencies(ChartContainer ChartInterface)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" "../chartinterface")
 target_link_libraries(ChartContainer ChartInterface Report ${QT_LIBRARIES})
 
-install(TARGETS ChartContainer DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS ChartContainer ${INSTALL_PLUGINS_DEFAULT_ARGS})

@@ -13,4 +13,4 @@ add_dependencies(Rectangle Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Rectangle Report ${QT_LIBRARIES})
 
-install(TARGETS Rectangle DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS Rectangle ${INSTALL_PLUGINS_DEFAULT_ARGS})

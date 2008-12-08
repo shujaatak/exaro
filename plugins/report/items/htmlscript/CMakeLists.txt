@@ -13,4 +13,4 @@ add_dependencies(HtmlScript Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(HtmlScript Report ${QT_LIBRARIES})
 
-install(TARGETS HtmlScript DESTINATION "${PLUGIN_INSTALL_DIR}" RUNTIME)
+install(TARGETS HtmlScript ${INSTALL_PLUGINS_DEFAULT_ARGS})

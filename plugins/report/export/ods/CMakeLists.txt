@@ -14,4 +14,4 @@ add_dependencies(Ods Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(Ods Report ${QT_LIBRARIES} ${QUAZIP_LIBRARY})
 
-install(TARGETS Ods DESTINATION "${PLUGIN_INSTALL_DIR}/export" RUNTIME)
+install(TARGETS Ods ${INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS})
