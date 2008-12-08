@@ -50,14 +50,14 @@ void DetailContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem *
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit beforePrint(this);
 
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
+		QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 		setupPainter(painter);
 		drawSelection(painter, rect);
 		painter->drawText(boundingRect(), tr("DetailContainer"));
 	}
+
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
 }
