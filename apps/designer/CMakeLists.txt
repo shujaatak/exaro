@@ -25,6 +25,7 @@ if(WIN32)
                                            -i${CMAKE_CURRENT_SOURCE_DIR}/exaro.rc
                                            -o ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
     SET(exaro_SRCS ${exaro_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/exaro_rc.o)
+    SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows")
   else(MINGW)
     SET(exaro_SRCS ${exaro_SRCS} exaro.rc)
   endif(MINGW)
