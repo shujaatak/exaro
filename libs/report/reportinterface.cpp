@@ -384,13 +384,17 @@ void ReportInterface::setScriptEngineGlobalVariables()
 bool ReportInterface::exec()
 {
 	m_reportCanceled=false;
-	m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 5)));
+	m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 4)));
 	m_splashScreen.show();
+	qApp->processEvents();
 	m_scriptEngine = new QScriptEngine(this);
-
 	foreach(QString extention, m_scriptEngine->availableExtensions())
 		if (!m_scriptEngine->importedExtensions().contains(extention))
+		{
+			m_splashScreen.showMessage(tr("Importing extension: %1").arg(extention));
 			m_scriptEngine->importExtension(extention);
+		}
+
 
 	// prepare queries
 	foreach(QString key, m_queries.keys())
