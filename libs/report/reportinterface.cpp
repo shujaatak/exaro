@@ -390,7 +390,7 @@ void ReportInterface::scriptException(const QScriptValue & exception )
 bool ReportInterface::exec()
 {
 	m_reportCanceled=false;
-	m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 4)));
+	m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 5)));
 	m_splashScreen.show();
 	qApp->processEvents();
 	m_scriptEngine = new QScriptEngine(this);
