@@ -27,6 +27,7 @@
 #include <QCoreApplication>
 #include <QPrintPreviewWidget>
 #include <QSqlField>     
+#include <QMessageBox>
 
 #include "previewdialog.h"
 #include "paintdevice.h"
@@ -381,6 +382,11 @@ void ReportInterface::setScriptEngineGlobalVariables()
 		m_scriptEngine->globalObject().setProperty(obj->objectName(), m_scriptEngine->newQObject(obj), QScriptValue::ReadOnly);
 }
 
+void ReportInterface::scriptException(const QScriptValue & exception )
+{
+	QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(exception.engine()->uncaughtExceptionLineNumber()), exception.toString());
+}
+
 bool ReportInterface::exec()
 {
 	m_reportCanceled=false;
@@ -420,7 +426,13 @@ bool ReportInterface::exec()
 
 	setScriptEngineGlobalVariables();
 
+	connect(m_scriptEngine, SIGNAL(signalHandlerException(QScriptValue)), SLOT(scriptException(QScriptValue)));
+
 	m_scriptEngine->evaluate(m_script);
+	if (m_scriptEngine->hasUncaughtException())
+		QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(m_scriptEngine->uncaughtExceptionLineNumber()), m_scriptEngine->uncaughtException().toString());
+
+
 
 	emit beforeExec();
 

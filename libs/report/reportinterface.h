@@ -212,6 +212,9 @@ private:
 	void cleanUpObjects();
 	bool isNumber(QVariant::Type type);
 
+private slots:
+	void scriptException(const QScriptValue & exception );
+
 private:
 	bool m_reportCanceled;
 	QString m_name;
