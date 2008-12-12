@@ -16,6 +16,7 @@
         <file>images/designer2.png</file>
         <file>images/designer3.png</file>
         <file>images/designer4.png</file>
+	<file>images/designer5.png</file>
 	<file>images/switch-painting-system.png</file>
     </qresource>
 </RCC>
