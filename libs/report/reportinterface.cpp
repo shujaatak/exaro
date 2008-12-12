@@ -414,6 +414,9 @@ bool ReportInterface::exec()
 
 	//prepare uis
 	QUiLoader loader;
+	foreach(QString path, m_uiPluginsPaths)
+		loader.addPluginPath( path );
+
 	foreach(QString key, m_uis.keys())
 	{
 		QBuffer buf(this);
@@ -569,6 +572,11 @@ void ReportInterface::setGlobalObjects(const QObjectList & objectList)
 void ReportInterface::setDatabase(const QSqlDatabase & db)
 {
 	m_sqlDatabase=db;
+}
+
+void ReportInterface::setUiPluginsPaths(const QStringList & uiPluginsPaths)
+{
+	m_uiPluginsPaths=uiPluginsPaths;
 }
 
 }

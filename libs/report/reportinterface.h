@@ -170,6 +170,13 @@ public:
 	 */
 	void setDatabase(const QSqlDatabase & db);
 
+	/**
+	 * Sets the plugins paths for the uis.
+	 * @param Paths
+	 */
+	void setUiPluginsPaths(const QStringList & uiPluginsPaths);
+
+
 public slots:
 	/**
 	 * Call this slot to cancel the report execution
@@ -233,6 +240,7 @@ private:
 	PageInterface * m_currentPage;
 	QSplashScreen m_splashScreen;
 	QSqlDatabase m_sqlDatabase;
+	QStringList m_uiPluginsPaths;
 };
 }
 Q_DECLARE_INTERFACE(Report::ReportInterface, "ro.bigendian.ReportDesigner.ReportInterface/1.0");
