@@ -38,7 +38,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_opacity = 100;
 	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
 	m_font=QFont("Serif");
-	m_font.setPointSizeF(5);
+	m_font.setPointSizeF(3.5);
 	m_font.setStyleStrategy(QFont::PreferMatch);
 	m_font.setStyleStrategy(QFont::ForceOutline);
 }
