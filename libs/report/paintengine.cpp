@@ -171,32 +171,54 @@ void PaintEngine::drawPoints(const QPoint *points, int pointCount)
 
 void PaintEngine::drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode)
 {
-	if (QPaintEngine::PolylineMode != mode)
+	QPainterPath p;
+
+	switch(mode) 
 	{
-		qWarning() << "drawPolygon is not fully implemented. Only PolylineMode is working";
-		return;
+		case OddEvenMode:
+			p.setFillRule(Qt::OddEvenFill);
+			break;
+		case ConvexMode:
+		case WindingMode:
+			p.setFillRule(Qt::WindingFill);
+			break;
+		default:
+			break;
 	}
 
-	for (int i = 1;i < pointCount;i++)
-	{
-		QLineF line = QLineF(points[i-1].x(), points[i-1].y(), points[i].x(), points[i].y());
-		drawLines(&line, 1);
-	}
+	p.moveTo(points[0]);
+	for (int i = 1; i < pointCount; ++i)
+		p.lineTo(points[i]);
+
+	if (mode != PolylineMode)
+		p.closeSubpath();
+	drawPath(p);
 }
 
 void PaintEngine::drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode)
 {
-	if (QPaintEngine::PolylineMode != mode)
+	QPainterPath p;
+
+	switch(mode) 
 	{
-		qWarning() << "drawPolygon is not fully implemented. Only PolylineMode is working";
-		return;
+		case OddEvenMode:
+			p.setFillRule(Qt::OddEvenFill);
+			break;
+		case ConvexMode:
+		case WindingMode:
+			p.setFillRule(Qt::WindingFill);
+			break;
+		default:
+			break;
 	}
 
-	for (int i = 1;i < pointCount;i++)
-	{
-		QLine line = QLine(points[i-1].x(), points[i-1].y(), points[i].x(), points[i].y());
-		drawLines(&line, 1);
-	}
+	p.moveTo(points[0]);
+	for (int i = 1; i < pointCount; ++i)
+		p.lineTo(points[i]);
+
+	if (mode != PolylineMode)
+		p.closeSubpath();
+	drawPath(p);
 }
 
 void PaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
