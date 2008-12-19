@@ -118,7 +118,7 @@ void ItemInterface::setupPainter(QPainter * painter)
 	painter->setPen(pen());
 	painter->setBackgroundMode((Qt::BGMode)m_BGMode);
 	painter->setBackground(backgroundBrush());
-	QFont f=font();(font().family());
+	QFont f=font();
 	f.setPixelSize(font().pointSizeF()/UNIT);
 	painter->setFont(f);
 	painter->setOpacity((qreal)m_opacity/100.);

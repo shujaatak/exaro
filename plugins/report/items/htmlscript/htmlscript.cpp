@@ -18,9 +18,14 @@
 #include <QBrush>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QWebPage>
-#include <QWebFrame>
-#include <QTextDocument>
+#include <QDebug>
+
+#if QT_VERSION >= 0x040402
+	#include <QWebPage>
+	#include <QWebFrame>
+#else
+	#include <QTextDocument>
+#endif
 
 #include "htmlscript.h"
 
@@ -64,25 +69,32 @@ void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 
 	setupPainter(painter);
 	adjustRect(rect);
-
+	painter->save();
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		painter->drawText(rect, m_script);
 	else
 		if (scriptEngine())
 		{
-/*
-			QWebPage wp(this);
+#if QT_VERSION >= 0x040402
+			QWebPage wp;
+			wp.setViewportSize(QSize(rect.width()/2.54, rect.height()/2.54));
 			wp.mainFrame()->setHtml(scriptEngine()->evaluate(m_script).toString());
-			qDebug()<<scriptEngine()->evaluate(m_script).toString()<<wp.mainFrame()->toHtml();
-			wp.setViewportSize(wp.mainFrame()->contentsSize());
-			wp.mainFrame()->render(painter);//,QRegion(rect.toRect()));
-//			painter->drawText(rect, textFlags(), scriptEngine()->evaluate(m_script).toString());
-*/
-			QTextDocument td; // until QWebPage will work I think QTextDocument is the beste choise
+			painter->setClipRect( rect );
+			painter->translate( rect.topLeft() );
+			painter->scale( 2.54 ,  2.54 );
+			QRect r (0,0,rect.width()*2.54, rect.height()*2.54);
+			wp.mainFrame()->render(painter);
+#else
+			QTextDocument td; // until QWebPage will work I think QTextDocument is the best choise
 			td.setHtml(scriptEngine()->evaluate(m_script).toString());
+			painter->setClipRect( rect );
 			painter->translate(rect.topLeft());
+			painter->scale( 2.54 ,  2.54 );
 			td.drawContents(painter,QRectF(QPointF(0,0),rect.size()));
+#endif
 		}
+
+	painter->restore();
 
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
