@@ -26,11 +26,20 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(field);
 }
 
-Field::Field(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0),m_fieldName(tr("field")),m_queryName(tr("query"))
+Field::Field(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0),m_fieldName(tr("field")),m_queryName(tr("query")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(30/UNIT);
 	setHeight(5/UNIT);
+}
+
+Field::SizePolicy Field::sizePolicy()
+{
+	return m_sizePolicy;
+}
+void Field::setSizePolicy(SizePolicy sizePolicy)
+{
+	m_sizePolicy=sizePolicy;
 }
 
 Field::TextFlags Field::textFlags()
@@ -70,6 +79,30 @@ void Field::setQueryName(const QString &queryName)
 QRectF Field::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
+}
+
+void Field::prepare(QPainter * painter)
+{
+	ItemInterface::prepare(painter);
+	if (m_sizePolicy==None)
+		return;
+
+	QRectF rect = boundingRect();
+	adjustRect(rect);
+	QFontMetricsF fm(painter->font());
+	QString m_text=queryField(m_queryName,m_fieldName).toString();
+	if (m_sizePolicy==AutoSize)
+	{
+		qreal wd=fm.width(m_text);
+		if (wd>width())
+			setWidth(wd);
+	}
+	else
+	{
+		QRectF rc=fm.boundingRect(rect, textFlags(), m_text);
+		if (rc.height()>rect.height())
+			setStretch(rc.height()-rect.height());
+	}
 }
 
 void Field::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)

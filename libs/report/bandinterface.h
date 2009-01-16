@@ -156,11 +156,6 @@ public:
 	*/
 	void setIndentation(int indentation);
 
-
-	/**
-	* Set the height of the band
-	* @param height new height
-	*/
 	virtual void setHeight(qreal height);
 
 	/**

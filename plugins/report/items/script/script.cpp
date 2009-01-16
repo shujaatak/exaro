@@ -26,11 +26,20 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(script);
 }
 
-Script::Script(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_script(tr("1+1"))
+Script::Script(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_script(tr("1+1")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(25/UNIT);
 	setHeight(5/UNIT);
+}
+
+Script::SizePolicy Script::sizePolicy()
+{
+	return m_sizePolicy;
+}
+void Script::setSizePolicy(SizePolicy sizePolicy)
+{
+	m_sizePolicy=sizePolicy;
 }
 
 Script::TextFlags Script::textFlags()
@@ -58,6 +67,30 @@ void Script::setScript(const QString & script)
 QRectF Script::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
+}
+
+void Script::prepare(QPainter * painter)
+{
+	ItemInterface::prepare(painter);
+	if (m_sizePolicy==None)
+		return;
+
+	QRectF rect = boundingRect();
+	adjustRect(rect);
+	QFontMetricsF fm(painter->font());
+	QString m_text=scriptEngine()->evaluate(m_script).toString();
+	if (m_sizePolicy==AutoSize)
+	{
+		qreal wd=fm.width(m_text);
+		if (wd>width())
+			setWidth(wd);
+	}
+	else
+	{
+		QRectF rc=fm.boundingRect(rect, textFlags(), m_text);
+		if (rc.height()>rect.height())
+			setStretch(rc.height()-rect.height());
+	}
 }
 
 void Script::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)

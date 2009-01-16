@@ -22,18 +22,31 @@ class HtmlScript : public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
+	Q_FLAGS(SizeFlags);
 
+	Q_PROPERTY(SizeFlags sizeFlags READ sizeFlags WRITE setSizeFlags)
 	Q_PROPERTY(QString script READ script WRITE setHtmlScript)
+public:
+	enum SizeFlag
+	{
+		AutoSizeHorizontally = 1,
+		AutoSizeVertically = 2
+	};
+	Q_DECLARE_FLAGS(SizeFlags, SizeFlag);
 
 public:
 	HtmlScript(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
+	void prepare(QPainter * painter);
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();
 	QString toolBoxGroup();
+
+	SizeFlags sizeFlags();
+	void setSizeFlags(SizeFlags sizeFlags);
 
 	QString script();
 	void setHtmlScript(const QString &text);
@@ -42,6 +55,7 @@ public:
 
 private:
 	QString m_script;
+	SizeFlags m_sizeFlags;
 };
 
 #endif

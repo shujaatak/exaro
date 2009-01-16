@@ -334,7 +334,7 @@ void ReportInterface::paintBand(BandInterface * band)
 		return;
 
 	m_painter.save();
-
+	band->prepare(&m_painter);
 	if (band->bandType() == BandInterface::PageFooter)
 		m_painter.translate(m_currentPage->geometry().x(), m_currentBottom - band->geometry().height());
 	else
@@ -350,7 +350,7 @@ void ReportInterface::paintBand(BandInterface * band)
 		m_currentBottom -= band->geometry().height() + m_currentHeight;
 	else
 		m_currentTop += band->geometry().height() + m_currentHeight;
-
+	band->unstretch();
 	m_painter.restore();
 }
 
@@ -362,8 +362,10 @@ void ReportInterface::paintOverlays()
 	foreach(BandInterface * band, m_pageOverlayBands)
 	{
 		m_painter.save();
+		band->prepare(&m_painter);
 		m_painter.translate(band->geometry().x(), band->geometry().y());
 		paintObjects(band, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+		band->unstretch();
 		m_painter.restore();
 	}
 }
