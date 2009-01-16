@@ -33,6 +33,14 @@
 #include "paintdevice.h"
 #include "globals.h"
 
+static QScriptValue getSetDateFormat(QScriptContext *context, QScriptEngine *engine)
+{
+	if (context->argumentCount() != 2)
+		return engine->undefinedValue();
+
+	return QScriptValue(engine, context->argument(0).toDateTime().toString(context->argument(1).toString()));
+}
+
 namespace Report
 {
 
@@ -380,6 +388,9 @@ void ReportInterface::setScriptEngineGlobalVariables()
 
 	foreach(QObject * obj, m_objectList)
 		m_scriptEngine->globalObject().setProperty(obj->objectName(), m_scriptEngine->newQObject(obj), QScriptValue::ReadOnly);
+
+	foreach(EngineProperty p, m_engineProperties)
+		m_scriptEngine->globalObject().setProperty(p.name, p.value, p.flags);
 }
 
 void ReportInterface::scriptException(const QScriptValue & exception )
@@ -394,6 +405,7 @@ bool ReportInterface::exec()
 	m_splashScreen.show();
 	qApp->processEvents();
 	m_scriptEngine = new QScriptEngine(this);
+	addEngineProperty("dateFormat", m_scriptEngine->newFunction(::getSetDateFormat,2));
 	foreach(QString extention, m_scriptEngine->availableExtensions())
 		if (!m_scriptEngine->importedExtensions().contains(extention))
 		{
@@ -567,6 +579,25 @@ const QObjectList & ReportInterface::globalObjects()
 void ReportInterface::setGlobalObjects(const QObjectList & objectList)
 {
 	m_objectList=objectList;
+}
+
+void ReportInterface::addEngineProperty( const QString & name, const QScriptValue & value, const QScriptValue::PropertyFlags & flags )
+{
+	EngineProperty p;
+	p.name=name;
+	p.value=value;
+	p.flags=flags;
+	m_engineProperties.push_back(p);
+}
+
+ReportInterface::EngineProperties ReportInterface::engineProperties()
+{
+	return m_engineProperties;
+}
+
+void ReportInterface::setEngineProperties( ReportInterface::EngineProperties engProp )
+{
+	m_engineProperties=engProp;
 }
 
 void ReportInterface::setDatabase(const QSqlDatabase & db)
