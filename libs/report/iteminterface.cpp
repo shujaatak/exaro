@@ -28,7 +28,7 @@ using namespace Report;
 
 ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QObject(parentObject), QGraphicsItem(parent)
 		, m_resizeHandle(2/UNIT) //2mm
-		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1)
+		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1),m_stretch(0)
 {
 	m_resizeEvent = Fixed;
 	m_resizeFlags = ResizeTop | ResizeBottom | ResizeLeft | ResizeRight;
@@ -114,6 +114,8 @@ void ItemInterface::setFont(const QFont & font)
 
 void ItemInterface::setupPainter(QPainter * painter)
 {
+	if (!painter)
+		return;
 	painter->setBrush(brush());
 	painter->setPen(pen());
 	painter->setBackgroundMode((Qt::BGMode)m_BGMode);
@@ -207,6 +209,15 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 	return flags;
 }
 
+void ItemInterface::prepare(QPainter * painter)
+{
+	unstretch();
+	setupPainter(painter);
+	foreach(QObject * obj, QObject::children())
+		if (dynamic_cast<Report::ItemInterface*>(obj))
+			dynamic_cast<Report::ItemInterface*>(obj)->prepare(painter);
+}
+
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	Q_UNUSED(painter);
@@ -282,6 +293,30 @@ void ItemInterface::setHeight(qreal height)
 	emit geometryChanged(geometry());
 }
 
+double ItemInterface::stretch()
+{
+	return m_stretch;
+}
+
+void ItemInterface::setStretch(double val)
+{
+	if (val>m_stretch)
+	{
+		m_stretch=val;
+		if (dynamic_cast<Report::ItemInterface*>(parentItem()))
+			dynamic_cast<Report::ItemInterface*>(parentItem())->setStretch(val);
+	}
+}
+
+void ItemInterface::unstretch()
+{
+	m_stretch=0;
+	foreach(QObject * obj, QObject::children())
+		if (dynamic_cast<Report::ItemInterface*>(obj))
+			dynamic_cast<Report::ItemInterface*>(obj)->unstretch();
+}
+
+
 qreal ItemInterface::width() const
 {
 	return m_width;
@@ -289,7 +324,7 @@ qreal ItemInterface::width() const
 
 qreal ItemInterface::height() const
 {
-	return m_height;
+	return m_height+m_stretch;
 }
 
 QRectF ItemInterface::geometry()

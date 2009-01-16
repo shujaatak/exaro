@@ -26,11 +26,20 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(text);
 }
 
-Text::Text(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_text(tr("text item"))
+Text::Text(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_text(tr("text item")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(25/UNIT);
 	setHeight(5/UNIT);
+}
+
+Text::SizePolicy Text::sizePolicy()
+{
+	return m_sizePolicy;
+}
+void Text::setSizePolicy(SizePolicy sizePolicy)
+{
+	m_sizePolicy=sizePolicy;
 }
 
 Text::TextFlags Text::textFlags()
@@ -60,6 +69,29 @@ QRectF Text::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
+void Text::prepare(QPainter * painter)
+{
+	ItemInterface::prepare(painter);
+	if (m_sizePolicy==None)
+		return;
+
+	QRectF rect = boundingRect();
+	adjustRect(rect);
+	QFontMetricsF fm(painter->font());
+	if (m_sizePolicy==AutoSize)
+	{
+		qreal wd=fm.width(m_text);
+		if (wd>width())
+			setWidth(wd);
+	}
+	else
+	{
+		QRectF rc=fm.boundingRect(rect, textFlags(), m_text);
+		if (rc.height()>rect.height())
+			setStretch(rc.height()-rect.height());
+	}
+}
+
 void Text::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
 	if (option->type != QStyleOption::SO_GraphicsItem)
@@ -77,7 +109,6 @@ void Text::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 	painter->setRenderHint(QPainter::TextAntialiasing);
 	painter->drawText(rect, textFlags(), m_text);
 	painter->restore();
-
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
 }

@@ -24,7 +24,9 @@ class Field : public Report::ItemInterface
 	Q_INTERFACES(Report::ItemInterface);
 
 	Q_FLAGS(TextFlags);
+	Q_ENUMS(SizePolicy);
 	Q_PROPERTY(TextFlags textFlags READ textFlags WRITE setTextFlags)
+	Q_PROPERTY(SizePolicy sizePolicy READ sizePolicy WRITE setSizePolicy)
 	Q_PROPERTY(QString queryName READ queryName WRITE setQueryName)
 	Q_PROPERTY(QString fieldName READ fieldName WRITE setFieldName)
 
@@ -43,17 +45,30 @@ public:
 	               TextShowMnemonic = Qt::TextShowMnemonic,
 	               TextWordWrap = Qt::TextWordWrap
 	              };
+
+	enum SizePolicy
+	{
+		None = 0,
+		AutoSize = 1,
+		AutoStretch = 2
+	};
+
 	Q_DECLARE_FLAGS(TextFlags, TextFlag);
 
 public:
 	Field(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
+
+	void prepare(QPainter * painter);
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();
 	QString toolBoxGroup();
+
+	SizePolicy sizePolicy();
+	void setSizePolicy(SizePolicy sizePolicy);
 
 	TextFlags textFlags();
 	void setTextFlags(TextFlags textFlags);
@@ -69,6 +84,7 @@ public:
 private:
 	TextFlags m_textFlags;
 	QString m_fieldName,m_queryName;
+	SizePolicy m_sizePolicy;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Field::TextFlags);

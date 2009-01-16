@@ -26,36 +26,54 @@ class Text : public Report::ItemInterface
 	Q_INTERFACES(Report::ItemInterface);
 
 	Q_FLAGS(TextFlags);
+	Q_ENUMS(SizePolicy);
 	Q_PROPERTY(TextFlags textFlags READ textFlags WRITE setTextFlags)
+	Q_PROPERTY(SizePolicy sizePolicy READ sizePolicy WRITE setSizePolicy)
 	Q_PROPERTY(QString text READ text WRITE setText)
 
 public:
 
-	enum TextFlag {AlignLeft = Qt::AlignLeft,
-	               AlignRight = Qt::AlignRight,
-	               AlignHCenter = Qt::AlignHCenter,
-	               AlignJustify = Qt::AlignJustify,
-	               AlignTop = Qt::AlignTop,
-	               AlignBottom = Qt::AlignBottom,
-	               AlignVCenter = Qt::AlignVCenter,
-	               AlignCenter = Qt::AlignCenter,
-	               TextDontClip = Qt::TextDontClip,
-	               TextSingleLine = Qt::TextSingleLine,
-	               TextExpandTabs = Qt::TextExpandTabs,
-	               TextShowMnemonic = Qt::TextShowMnemonic,
-	               TextWordWrap = Qt::TextWordWrap
-	              };
+	enum TextFlag 
+	{
+		AlignLeft = Qt::AlignLeft,
+		AlignRight = Qt::AlignRight,
+		AlignHCenter = Qt::AlignHCenter,
+		AlignJustify = Qt::AlignJustify,
+		AlignTop = Qt::AlignTop,
+		AlignBottom = Qt::AlignBottom,
+		AlignVCenter = Qt::AlignVCenter,
+		AlignCenter = Qt::AlignCenter,
+		TextDontClip = Qt::TextDontClip,
+		TextSingleLine = Qt::TextSingleLine,
+		TextExpandTabs = Qt::TextExpandTabs,
+		TextShowMnemonic = Qt::TextShowMnemonic,
+		TextWordWrap = Qt::TextWordWrap
+	};
+
+	enum SizePolicy
+	{
+		None = 0,
+		AutoSize = 1,
+		AutoStretch = 2
+	};
+
 	Q_DECLARE_FLAGS(TextFlags, TextFlag);
 
 public:
 	Text(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
+
+	void prepare(QPainter * painter);
+
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();
 	QString toolBoxGroup();
+
+	SizePolicy sizePolicy();
+	void setSizePolicy(SizePolicy sizePolicy);
 
 	TextFlags textFlags();
 	void setTextFlags(TextFlags textFlags);
@@ -68,6 +86,7 @@ public:
 private:
 	TextFlags m_textFlags;
 	QString m_text;
+	SizePolicy m_sizePolicy;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Text::TextFlags);

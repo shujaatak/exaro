@@ -288,6 +288,21 @@ public:
 	 */
 	virtual void setHeight(qreal height);
 	/**
+	* Returns the band stretch.
+	* @return int
+	*/
+	qreal stretch();
+	/**
+	* Set the band stretch.
+	* @param val stretch value
+	*/
+	void setStretch(qreal val);
+	/**
+	* Set the band stretch to 0.
+	*/
+	void unstretch();
+
+	/**
 	 * Return the item minimal width
 	 * @return item min width
 	 * @see setMinWidth()
@@ -380,6 +395,11 @@ public:
 		return QRectF();
 	};
 
+	/**
+	 * This function prepare the item. This function is called before paint function
+	 * @param painter the painter used to paint in
+	 */
+	virtual void prepare(QPainter * painter);
 	/**
 	 * This function paints the contents of an item
 	 * @param painter the painter used to paint in
@@ -532,6 +552,7 @@ private:
 	QPen m_pen;
 	QFont m_font;
 	int m_opacity;
+	qreal m_stretch;
 };
 }
 
