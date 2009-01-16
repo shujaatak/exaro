@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QFile>
 #include <QScriptEngine>
+#include <QScriptValue>
 #include <QUiLoader>
 #include <QSqlRecord>
 #include <QSplashScreen>
@@ -56,7 +57,14 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QString script READ script WRITE setScript DESIGNABLE false)
 	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
-
+public:
+	struct EngineProperty
+	{
+		QString name;
+		QScriptValue value;
+		QScriptValue::PropertyFlags flags;
+	};
+	typedef QList<EngineProperty> EngineProperties;
 public:
 	/**
 	 * ReportInterface constructor
@@ -164,6 +172,28 @@ public:
 	 */
 	void setGlobalObjects(const QObjectList & objectList);
 
+
+	/**
+	 * Adds a property to the engine.
+	 * @param name property name
+	 * @param value property value
+	 * @param flags property flags
+	 */
+	void addEngineProperty( const QString & name, const QScriptValue & value, const QScriptValue::PropertyFlags & flags = QScriptValue::KeepExistingFlags );
+
+	/**
+	 * Returns a list with engine properties
+	 * @return EngineProperties
+	 */
+	EngineProperties engineProperties();
+
+	/**
+	 * Sets the engine properties.
+	 * @param EngineProperties a list with properties
+	 */
+	void setEngineProperties( EngineProperties );
+
+
 	/**
 	 * Sets the report database
 	 * @param db
@@ -236,6 +266,7 @@ private:
 	QList<BandInterface *> m_pageFooterBands;
 	QList<BandInterface *> m_pageOverlayBands;
 	QObjectList m_objectList;
+	EngineProperties m_engineProperties;
 	qreal m_currentHeight, m_currentTop, m_currentBottom;
 	PageInterface * m_currentPage;
 	QSplashScreen m_splashScreen;
