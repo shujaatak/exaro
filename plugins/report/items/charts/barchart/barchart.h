@@ -23,6 +23,7 @@ class BarChart : public Report::ChartInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ChartInterface);
 
+//	Q_PROPERTY(bool show3d READ show3d WRITE setShow3d)
 	Q_PROPERTY(bool showLabels READ showLabels WRITE setShowLabels)
 	Q_PROPERTY(bool showGrid READ showGrid WRITE setShowGrid)
 	Q_PROPERTY(bool drawBorder READ drawBorder WRITE setDrawBorder)
@@ -44,6 +45,9 @@ public:
 	int barsIdentation();
 	void setBarsIdentation(int barsIdentation);
 
+//	bool show3d();
+//	void setShow3d(bool show3d);
+
 	bool drawBorder();
 	void setDrawBorder(bool drawBorder);
 
@@ -58,6 +62,7 @@ public:
 
 private:
 	int m_barsIdentation;
+//	bool m_show3d;
 	bool m_showLabels;
 	qreal m_toColorFactor;
 	bool m_drawBorder;

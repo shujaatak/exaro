@@ -60,13 +60,14 @@ void Legend::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	painter->fillRect(rect,brush());
 	painter->drawRect(rect);
 	painter->translate(rect.topLeft());
-	painter->scale(rect.height()/((painter->fontMetrics().height()+2)*val.size()), rect.height()/((painter->fontMetrics().height()+2)*val.size()));
-	int y=1;
+	qreal y=1/UNIT;
+	qreal vstep=(rect.height()-y-1/UNIT*val.size())/val.size();
 	foreach (ChartInterface::_chartValue cv, val)
 	{
-		painter->fillRect(QRectF(2,y+1,m_legendColorRectWidth,painter->fontMetrics().height()),QBrush(cv.color));
-		painter->drawText(QRectF(4+m_legendColorRectWidth,y+1,(rect.width()/(rect.height()/((painter->fontMetrics().height()+2)*val.size()))-(4+m_legendColorRectWidth)),painter->fontMetrics().height()+2),Qt::AlignVCenter|Qt::AlignLeft,cv.key);
-		y+=painter->fontMetrics().height()+2;
+		painter->fillRect(QRectF(1/UNIT/2,y,m_legendColorRectWidth,vstep),QBrush(cv.color));
+		painter->drawText(
+		QRectF(1/UNIT+m_legendColorRectWidth,y,rect.width()-(1/UNIT+m_legendColorRectWidth),vstep),Qt::AlignVCenter|Qt::AlignLeft,cv.key);
+		y+=vstep+1/UNIT;
 	}
 	painter->restore();
 	if (option->type != QStyleOption::SO_GraphicsItem)
