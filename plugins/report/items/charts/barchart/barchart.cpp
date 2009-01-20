@@ -18,6 +18,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QLinearGradient>
+//#include <QGLPixelBuffer>
 
 #include "barchart.h"
 
@@ -26,7 +27,12 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(barchart);
 }
 
-BarChart::BarChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), m_barsIdentation(1/UNIT), m_showLabels(false),m_toColorFactor(1),m_drawBorder(false)
+BarChart::BarChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), 
+	m_barsIdentation(1/UNIT), 
+	m_showLabels(false),
+	m_toColorFactor(1),
+	m_drawBorder(false)/*,
+	m_show3d(false)*/
 {
 	initMyResource();
 }
@@ -42,7 +48,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		emit beforePrint(this);
 
 	painter->save();
-	QTransform transform;
+
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
@@ -100,10 +106,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	minnv=minnv-(((-(quint64)minnv%(quint64)chartStep)?((quint64)chartStep-(-(quint64)minnv%(quint64)chartStep)):0))/powVal;
 	quint64 maxVal=maxpv-minnv;
 
-	if (m_showLabels)
-		rc=rc.adjusted(0,(double)painter->fontMetrics().height()/2,0,-(double)painter->fontMetrics().height()/2);
-
-	qreal maxHeight=rc.height();
+	qreal maxHeight=rc.height()-painter->fontMetrics().height();
 	qreal valstep=maxHeight/(maxVal/chartStep);
 
 	if (valstep<painter->fontMetrics().height())
@@ -122,16 +125,17 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		int y=0;
 		for(int i=0;i<maxVal/chartStep+1+((quint64)maxVal%(quint64)chartStep?1:0);i++)
 		{
-			painter->drawText(QRectF(0,y,maxLabelWidth,painter->fontMetrics().height()),Qt::AlignRight|Qt::AlignVCenter,QString::number((maxpv-chartStep*i)/powVal));
+			painter->drawText(QRectF(rc.x(),rc.y()+y,maxLabelWidth,painter->fontMetrics().height()),Qt::AlignRight|Qt::AlignVCenter,QString::number((maxpv-chartStep*i)/powVal));
 			y+=valstep;
 		}
 
-		painter->drawLine(rc.x()+maxLabelWidth+1,0,rc.x()+maxLabelWidth+1,rect.height());
-		rc=rc.adjusted(maxLabelWidth+1,0,0,0);
+		painter->drawLine(rc.x()+maxLabelWidth+1/UNIT/4,rc.y(),rc.x()+maxLabelWidth+1/UNIT/4,rc.y()+rect.height());
+		rc=rc.adjusted(maxLabelWidth+1/UNIT/4,0,0,0);
 	}
+
 	if (m_showGrid)
 	{
-		int y=0;
+		int y=(double)painter->fontMetrics().height()/2;
 		for(int i=0;i<maxVal/chartStep+1+((quint64)maxVal%(quint64)chartStep?1:0);i++)
 		{
 			painter->drawLine(rc.x(),rc.y()+y,rc.x()+rc.width(),rc.y()+y);
@@ -139,21 +143,73 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		}
 	}
 
+	rc=rc.adjusted(0,(double)painter->fontMetrics().height()/2,0,0);
 	int x=m_barsIdentation;
 	qreal barWidth=(rc.width()-m_barsIdentation*(val.size()+1))/val.size();
 	qreal py=maxHeight/maxVal;
-	foreach(ChartInterface::_chartValue cv, val)
+//	if(!m_show3d)
 	{
-		QLinearGradient lg(QPointF(x+barWidth/2,0), QPointF(x+barWidth,0));
-		lg.setSpread(QGradient::ReflectSpread);
-		lg.setColorAt(0, cv.color);
-		lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));
-		painter->fillRect(QRectF(rc.x()+x,rc.y()+py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),QBrush(lg));
-		if (m_showLabels)
-			painter->drawText(QRectF(rc.x()+x-m_barsIdentation/2, rc.y()+py*maxpv-((cv.value>=0)?painter->fontMetrics().height():0), barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
-		x+=barWidth+m_barsIdentation;
+		foreach(ChartInterface::_chartValue cv, val)
+		{
+			QLinearGradient lg(QPointF(x+barWidth/2,0), QPointF(x+barWidth,0));
+			lg.setSpread(QGradient::ReflectSpread);
+			lg.setColorAt(0, cv.color);
+			lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));
+			painter->fillRect(QRectF(rc.x()+x,rc.y()+py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),QBrush(lg));
+			if (m_showLabels)
+				painter->drawText(QRectF(rc.x()+x-m_barsIdentation/2, rc.y()+py*maxpv-((cv.value>=0)?painter->fontMetrics().height():0), barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
+			x+=barWidth+m_barsIdentation;
+		}
 	}
-
+/*
+	else
+	{
+		QGLPixelBuffer pb(rc.size().toSize());
+		if (!pb.makeCurrent())
+			qDebug()<<"can't quary context";
+		glFlush();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glLoadIdentity();
+		glTranslatef(0.0f, 0.0f,-7.0f);       // Translate Into The Screen 7.0 Units
+		glRotatef(5,0.0f,1.0f,0.0f);    // Rotate The cube around the Y axis
+		glRotatef(5,1.0f,1.0f,1.0f);
+		glBegin(GL_QUADS);            // Draw The Cube Using quads
+		glColor3f(0.0f,1.0f,0.0f);  // Color Blue
+		glVertex3f( 1.0f, 1.0f,-1.0f);      // Top Right Of The Quad (Top)
+		glVertex3f(-1.0f, 1.0f,-1.0f);      // Top Left Of The Quad (Top)
+		glVertex3f(-1.0f, 1.0f, 1.0f);      // Bottom Left Of The Quad (Top)
+		glVertex3f( 1.0f, 1.0f, 1.0f);      // Bottom Right Of The Quad (Top)
+		glColor3f(1.0f,0.5f,0.0f);  // Color Orange
+		glVertex3f( 1.0f,-1.0f, 1.0f);      // Top Right Of The Quad (Bottom)
+		glVertex3f(-1.0f,-1.0f, 1.0f);      // Top Left Of The Quad (Bottom)
+		glVertex3f(-1.0f,-1.0f,-1.0f);      // Bottom Left Of The Quad (Bottom)
+		glVertex3f( 1.0f,-1.0f,-1.0f);      // Bottom Right Of The Quad (Bottom)
+		glColor3f(1.0f,0.0f,0.0f);  // Color Red    
+		glVertex3f( 1.0f, 1.0f, 1.0f);      // Top Right Of The Quad (Front)
+		glVertex3f(-1.0f, 1.0f, 1.0f);      // Top Left Of The Quad (Front)
+		glVertex3f(-1.0f,-1.0f, 1.0f);      // Bottom Left Of The Quad (Front)
+		glVertex3f( 1.0f,-1.0f, 1.0f);      // Bottom Right Of The Quad (Front)
+		glColor3f(1.0f,1.0f,0.0f);  // Color Yellow
+		glVertex3f( 1.0f,-1.0f,-1.0f);      // Top Right Of The Quad (Back)
+		glVertex3f(-1.0f,-1.0f,-1.0f);      // Top Left Of The Quad (Back)
+		glVertex3f(-1.0f, 1.0f,-1.0f);      // Bottom Left Of The Quad (Back)
+		glVertex3f( 1.0f, 1.0f,-1.0f);      // Bottom Right Of The Quad (Back)
+		glColor3f(0.0f,0.0f,1.0f);  // Color Blue
+		glVertex3f(-1.0f, 1.0f, 1.0f);      // Top Right Of The Quad (Left)
+		glVertex3f(-1.0f, 1.0f,-1.0f);      // Top Left Of The Quad (Left)
+		glVertex3f(-1.0f,-1.0f,-1.0f);      // Bottom Left Of The Quad (Left)
+		glVertex3f(-1.0f,-1.0f, 1.0f);      // Bottom Right Of The Quad (Left)
+		glColor3f(1.0f,0.0f,1.0f);  // Color Violet
+		glVertex3f( 1.0f, 1.0f,-1.0f);      // Top Right Of The Quad (Right)
+		glVertex3f( 1.0f, 1.0f, 1.0f);      // Top Left Of The Quad (Right)
+		glVertex3f( 1.0f,-1.0f, 1.0f);      // Bottom Left Of The Quad (Right)
+		glVertex3f( 1.0f,-1.0f,-1.0f);      // Bottom Right Of The Quad (Right)
+		glEnd();
+		pb.doneCurrent();
+		QImage img=pb.toImage();
+		painter->drawImage(rc.topLeft(),img);
+	}
+*/
 	painter->restore();
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
@@ -191,6 +247,18 @@ void BarChart::setBarsIdentation(int barsIdentation)
 	m_barsIdentation=barsIdentation;
 	update();
 }
+
+/*
+bool BarChart::show3d()
+{
+	return m_show3d;
+}
+void BarChart::setShow3d(bool show3d)
+{
+	m_show3d=show3d;
+	update();
+}
+*/
 
 bool BarChart::showLabels()
 {
