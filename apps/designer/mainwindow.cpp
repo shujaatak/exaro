@@ -38,6 +38,7 @@
 #include "sqldatabasedialog.h"
 #include "iteminterface.h"
 #include "aboutdialog.h"
+#include "optionsdialog.h"
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
@@ -102,6 +103,15 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	restoreState(s.value("State", saveState()).toByteArray());
 	s.endGroup();
 
+        QString iSize = s.value("Options/iconSize").toString();
+        int h,w;
+        h = iSize.section("x",0,0).toInt();
+        w = iSize.section("x",1,1).toInt();
+        if (h == 0 or w == 0)
+            toolBar->setIconSize(QSize(16,16));
+        else
+            toolBar->setIconSize(QSize(w,h));
+
 	actionRemove_page->setEnabled(false);
 
 	connect(actionNew_report, SIGNAL(triggered(bool)), SLOT(newReport()));
@@ -110,6 +120,9 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	connect(actionSave_report_as, SIGNAL(triggered(bool)), SLOT(saveReportAs()));
 
 	connect(actionOpen_report, SIGNAL(triggered(bool)), SLOT(openReport()));
+
+        connect(actionOpen_template, SIGNAL (triggered(bool)), SLOT (openTemplate()));
+        connect(menuOpen_last_temlate, SIGNAL (aboutToShow ()), SLOT (prepareLastTemplateMenu()));
 
 	connect(actionNew_page, SIGNAL(triggered(bool)), SLOT(newPage()));
 	connect(actionRemove_page, SIGNAL(triggered(bool)), SLOT(removePage()));
@@ -129,14 +142,12 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 
 	connect(actionSetup_a_database, SIGNAL(triggered(bool)), SLOT(setupDatabase()));
 
-	connect(actionDesignerPath, SIGNAL(triggered(bool)), SLOT(setDesignerPath()));
-
 	connect(actionCopy, SIGNAL(triggered(bool)), SLOT(copy()));
 	connect(actionCut, SIGNAL(triggered(bool)), SLOT(cut()));
 	connect(actionPaste, SIGNAL(triggered(bool)), SLOT(paste()));
 	connect(actionDelete, SIGNAL(triggered(bool)), SLOT(del()));
 	connect(action_About_eXaro, SIGNAL(triggered(bool)), SLOT(about()));
-
+        connect(actionOptions, SIGNAL(triggered(bool)), SLOT(options()));
 
 	connect(m_tw, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
 
@@ -175,13 +186,26 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	if (2==qApp->arguments().size())
 		openReport(qApp->arguments()[1]);
 
+        m_dwToolBox->toggleViewAction()->setIcon(QIcon(":/images/button_tool.png"));
+        m_dwPropertyEditor->toggleViewAction()->setIcon(QIcon(":/images/button_property.png"));
+        m_dwQueryEditor->toggleViewAction()->setIcon(QIcon(":/images/button_sql.png"));
+        m_dwUiEditor->toggleViewAction()->setIcon(QIcon(":/images/button_uieditor.png"));
+        m_dwObjectInspector->toggleViewAction()->setIcon(QIcon(":/images/button_objects.png"));
+
 	menuTools->addSeparator();
 	menuTools->addAction(m_dwToolBox->toggleViewAction());
 	menuTools->addAction(m_dwPropertyEditor->toggleViewAction());
 	menuTools->addAction(m_dwQueryEditor->toggleViewAction());
 	menuTools->addAction(m_dwUiEditor->toggleViewAction());
 	menuTools->addAction(m_dwObjectInspector->toggleViewAction());
+        toolBarTools->addAction(m_dwToolBox->toggleViewAction());
+        toolBarTools->addAction(m_dwPropertyEditor->toggleViewAction());
+        toolBarTools->addAction(m_dwQueryEditor->toggleViewAction());
+        toolBarTools->addAction(m_dwUiEditor->toggleViewAction());
+        toolBarTools->addAction(m_dwObjectInspector->toggleViewAction());
 	m_objectModel.setRootObject(m_report);
+
+        m_smTemplate = 0;
 }
 
 void mainWindow::about()
@@ -216,18 +240,6 @@ bool mainWindow::selectObject(QObject * object, QModelIndex index)
 	return false;
 }
 
-void mainWindow::setDesignerPath()
-{
-#if defined(Q_OS_WIN)
-	QString fileName=QFileDialog::getOpenFileName(this,"designer.exe",".","designer.exe");
-#else
-	QString fileName=QFileDialog::getOpenFileName(this,"designer","/usr/bin","designer");
-#endif
-	if (!fileName.length())
-		return;
-	QSettings s;
-	s.setValue("Tools/designer",fileName);
-}
 
 void mainWindow::setMagnetActions(Report::PageInterface* page)
 {
@@ -458,11 +470,71 @@ void mainWindow::openReport()
 	openReport(report);
 }
 
+void mainWindow::openTemplate()
+{
+        QSettings s;
+        QString templateDir = s.value("Designer/templeteDir").toString();
+        if (templateDir.isEmpty()) templateDir = QDir::homePath();
+
+        QString report = QFileDialog::getOpenFileName(this, tr("Open template"),
+                         templateDir , tr("Exaro Template (*.extt)"));
+
+        if (report.isEmpty())
+            return;
+
+        openTemplate(report);
+}
+
+void mainWindow::prepareLastTemplateMenu()
+{
+    menuOpen_last_temlate->clear();
+    if (m_smTemplate) delete m_smTemplate;
+    m_smTemplate = new QSignalMapper(this);
+
+    QSettings s;
+    QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
+
+    for (int i = 0; i < list.count(); ++i) {
+        QAction *action = new QAction(list.at(i), this);
+        action->setData(list.at(i));
+        menuOpen_last_temlate->addAction(action);
+        connect(action, SIGNAL(triggered()), m_smTemplate, SLOT(map()));
+        m_smTemplate->setMapping(action, list.at(i));
+    }
+
+    connect(m_smTemplate, SIGNAL(mapped(const QString &)),
+            this, SLOT(openTemplate(const QString &)));
+
+}
+
+void mainWindow::openTemplate(const QString & fileName)
+{
+    QSettings s;
+    QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
+    list.append(fileName);
+    list.removeDuplicates();
+    if (list.count() > 10) list.removeFirst();
+
+    QFileInfo f(fileName);
+    s.setValue("Designer/templeteDir", f.absolutePath());
+    s.setValue("Designer/lastTemplates", list.join(";;"));
+
+    openReport(fileName);
+    m_saveFile = "";
+}
+
+void mainWindow::options()
+{
+    OptionsDialog d(this);
+    d.exec();
+}
+
+
 void mainWindow::saveReport()
 {
 	if (!m_saveFile.length())
 		m_saveFile = QFileDialog::getSaveFileName(this, tr("Save report"),
-		             QDir::homePath() + "/newReport.bdrt", tr("Report (*.bdrt)"));
+                             QDir::homePath() + "/newReport.bdrt", tr("Report (*.bdrt);;Template (*.extt)"));
 
 	if (!m_saveFile.length())
 		return;
