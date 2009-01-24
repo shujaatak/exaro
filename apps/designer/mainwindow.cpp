@@ -625,6 +625,7 @@ void mainWindow::newPage()
 	dynamic_cast<Report::PageInterface*>(gw->scene())->setContextMenu(&m_contextMenu);
 
 	m_tw->addTab((QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
+        m_tw->setCurrentWidget((QWidget*) gw);
 
 	actionRemove_page->setEnabled(m_tw->count());
 
@@ -637,7 +638,7 @@ void mainWindow::newPage()
 
 	m_objectModel.setRootObject(m_report);
 
-	zoomWYSIWYG();
+        zoomWYSIWYG();
 }
 
 void mainWindow::itemSelected(QObject *object, QPointF pos)
