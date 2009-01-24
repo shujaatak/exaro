@@ -97,7 +97,7 @@ void QueryEditDialog::showResults()
 		delete model;
 		return;
 	}
-	QTableView *view = new QTableView;
+	QTableView *view = new QTableView(this);
 	view->setWindowFlags(Qt::Window|Qt::WindowStaysOnTopHint);
 	view->setModel(model);
 	view->show();
