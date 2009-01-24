@@ -19,6 +19,7 @@
 
 #include <QList>
 #include <QDomDocument>
+#include <QSignalMapper>
 
 #include "reportengine.h"
 
@@ -73,6 +74,7 @@ private:
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
 	QDockWidget * m_dwObjectInspector;
+        QSignalMapper * m_smTemplate;
 
 protected slots:
 	void newPage();
@@ -88,15 +90,18 @@ protected slots:
 	void saveReportAs();
 	void openReport();
 	void newReport();
+        void openTemplate();
+        void openTemplate(const QString &);
+        void prepareLastTemplateMenu();
 	void executeReport();
 	void setupDatabase();
 	void copy();
 	void paste();
 	void del();
 	void cut();
-	void setDesignerPath();
 	void objectChanged(const QModelIndex & current, const QModelIndex & previous);
 	void about();
+        void options();
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
