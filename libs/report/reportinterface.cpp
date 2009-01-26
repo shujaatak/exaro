@@ -269,8 +269,10 @@ void ReportInterface::paintPage(PageInterface * page)
 
 void ReportInterface::newPage()
 {
+	int pageNo=m_scriptEngine->globalObject().property("_pageNumber_").toInteger() +1;
+	m_splashScreen.showMessage(tr("Prepare page: %1").arg(pageNo));
 	paintOverlays();
-	m_scriptEngine->globalObject().setProperty("_pageNumber_", QScriptValue(m_scriptEngine, m_scriptEngine->globalObject().property("_pageNumber_").toInteger() + 1), QScriptValue::ReadOnly);
+	m_scriptEngine->globalObject().setProperty("_pageNumber_", QScriptValue(m_scriptEngine, pageNo), QScriptValue::ReadOnly);
 	m_scriptEngine->globalObject().setProperty("_reportPageNumber_", QScriptValue(m_scriptEngine, m_scriptEngine->globalObject().property("_reportPageNumber_").toInteger() + 1), QScriptValue::ReadOnly);
 	m_printer->newPage();
 	prepareCurrentPage();
