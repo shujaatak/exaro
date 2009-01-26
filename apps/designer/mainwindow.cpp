@@ -467,6 +467,7 @@ void mainWindow::openReport()
 	                 QDir::homePath() + "", tr("Report (*.bdrt)"));
 	if (!report.size())
 		return;
+	m_saveFile=report;
 	openReport(report);
 }
 
