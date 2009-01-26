@@ -472,61 +472,63 @@ void mainWindow::openReport()
 
 void mainWindow::openTemplate()
 {
-        QSettings s;
-        QString templateDir = s.value("Designer/templeteDir").toString();
-        if (templateDir.isEmpty()) templateDir = QDir::homePath();
+	QSettings s;
+	QString templateDir = s.value("Designer/templeteDir").toString();
+	if (templateDir.isEmpty()) 
+		templateDir = QDir::homePath();
 
-        QString report = QFileDialog::getOpenFileName(this, tr("Open template"),
-                         templateDir , tr("Exaro Template (*.extt)"));
+	QString report = QFileDialog::getOpenFileName(this, tr("Open template"),
+				templateDir , tr("Exaro Template (*.extt)"));
 
-        if (report.isEmpty())
-            return;
+	if (report.isEmpty())
+		return;
 
-        openTemplate(report);
+	openTemplate(report);
 }
 
 void mainWindow::prepareLastTemplateMenu()
 {
-    menuOpen_last_temlate->clear();
-    if (m_smTemplate) delete m_smTemplate;
-    m_smTemplate = new QSignalMapper(this);
+	menuOpen_last_temlate->clear();
+	if (m_smTemplate) 
+		delete m_smTemplate;
+	m_smTemplate = new QSignalMapper(this);
 
-    QSettings s;
-    QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
+	QSettings s;
+	QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
 
-    for (int i = 0; i < list.count(); ++i) {
-        QAction *action = new QAction(list.at(i), this);
-        action->setData(list.at(i));
-        menuOpen_last_temlate->addAction(action);
-        connect(action, SIGNAL(triggered()), m_smTemplate, SLOT(map()));
-        m_smTemplate->setMapping(action, list.at(i));
-    }
+	for (int i = 0; i < list.count(); ++i) 
+	{
+		QAction *action = new QAction(list.at(i), this);
+		action->setData(list.at(i));
+		menuOpen_last_temlate->addAction(action);
+		connect(action, SIGNAL(triggered()), m_smTemplate, SLOT(map()));
+		m_smTemplate->setMapping(action, list.at(i));
+	}
 
-    connect(m_smTemplate, SIGNAL(mapped(const QString &)),
-            this, SLOT(openTemplate(const QString &)));
+	connect(m_smTemplate, SIGNAL(mapped(const QString &)),SLOT(openTemplate(const QString &)));
 
 }
 
 void mainWindow::openTemplate(const QString & fileName)
 {
-    QSettings s;
-    QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
-    list.append(fileName);
-    list.removeDuplicates();
-    if (list.count() > 10) list.removeFirst();
+	QSettings s;
+	QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
+	if (!list.contains(fileName))
+		list.append(fileName);
+	if (list.count() > 10) list.removeFirst();
 
-    QFileInfo f(fileName);
-    s.setValue("Designer/templeteDir", f.absolutePath());
-    s.setValue("Designer/lastTemplates", list.join(";;"));
+	QFileInfo f(fileName);
+	s.setValue("Designer/templeteDir", f.absolutePath());
+	s.setValue("Designer/lastTemplates", list.join(";;"));
 
-    openReport(fileName);
-    m_saveFile = "";
+	openReport(fileName);
+	m_saveFile = "";
 }
 
 void mainWindow::options()
 {
-    OptionsDialog d(this);
-    d.exec();
+	OptionsDialog d(this);
+	d.exec();
 }
 
 
