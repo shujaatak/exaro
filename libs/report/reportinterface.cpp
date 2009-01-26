@@ -391,8 +391,11 @@ void ReportInterface::setScriptEngineGlobalVariables()
 	foreach(QObject * obj, m_objectList)
 		m_scriptEngine->globalObject().setProperty(obj->objectName(), m_scriptEngine->newQObject(obj), QScriptValue::ReadOnly);
 
-	foreach(EngineProperty p, m_engineProperties)
-		m_scriptEngine->globalObject().setProperty(p.name, p.value, p.flags);
+	foreach(QString key, m_functionValues.keys())
+		m_scriptEngine->globalObject().setProperty(key, m_scriptEngine->newFunction(m_functionValues[key].function, m_functionValues[key].args), m_functionValues[key].flags);
+
+	foreach(QString key, m_values.keys())
+		m_scriptEngine->globalObject().setProperty(key, m_scriptEngine->newVariant(m_values[key].value), m_values[key].flags);
 }
 
 void ReportInterface::scriptException(const QScriptValue & exception )
@@ -407,7 +410,7 @@ bool ReportInterface::exec()
 	m_splashScreen.show();
 	qApp->processEvents();
 	m_scriptEngine = new QScriptEngine(this);
-	addEngineProperty("dateFormat", m_scriptEngine->newFunction(::getSetDateFormat,2));
+	setReportFunction("dateFormat", ::getSetDateFormat,2);
 	foreach(QString extention, m_scriptEngine->availableExtensions())
 		if (!m_scriptEngine->importedExtensions().contains(extention))
 		{
@@ -583,25 +586,6 @@ void ReportInterface::setGlobalObjects(const QObjectList & objectList)
 	m_objectList=objectList;
 }
 
-void ReportInterface::addEngineProperty( const QString & name, const QScriptValue & value, const QScriptValue::PropertyFlags & flags )
-{
-	EngineProperty p;
-	p.name=name;
-	p.value=value;
-	p.flags=flags;
-	m_engineProperties.push_back(p);
-}
-
-ReportInterface::EngineProperties ReportInterface::engineProperties()
-{
-	return m_engineProperties;
-}
-
-void ReportInterface::setEngineProperties( ReportInterface::EngineProperties engProp )
-{
-	m_engineProperties=engProp;
-}
-
 void ReportInterface::setDatabase(const QSqlDatabase & db)
 {
 	m_sqlDatabase=db;
@@ -610,6 +594,23 @@ void ReportInterface::setDatabase(const QSqlDatabase & db)
 void ReportInterface::setUiPluginsPaths(const QStringList & uiPluginsPaths)
 {
 	m_uiPluginsPaths=uiPluginsPaths;
+}
+
+void ReportInterface::setReportGlobalValue(QString name, QVariant value, const QScriptValue::PropertyFlags & flags) 
+{
+	ReportValue rv;
+	rv.value=value;
+	rv.flags=flags;
+	m_values[name]=rv;
+}
+
+void ReportInterface::setReportFunction(const QString & name, const QScriptEngine::FunctionSignature & function, int args, const QScriptValue::PropertyFlags & flags) 
+{
+	FunctionValue fv;
+	fv.function=function;
+	fv.args=args;
+	fv.flags=flags;
+	m_functionValues[name]=fv;
 }
 
 }

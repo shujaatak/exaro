@@ -58,13 +58,20 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
 public:
-	struct EngineProperty
+	struct FunctionValue
 	{
-		QString name;
-		QScriptValue value;
+		QScriptEngine::FunctionSignature function;
+		int args;
 		QScriptValue::PropertyFlags flags;
 	};
-	typedef QList<EngineProperty> EngineProperties;
+	typedef QMap<QString, FunctionValue> FunctionValues;
+
+	struct ReportValue
+	{
+		QVariant value;
+		QScriptValue::PropertyFlags flags;
+	};
+	typedef QMap<QString, ReportValue> ReportValues;
 public:
 	/**
 	 * ReportInterface constructor
@@ -172,27 +179,21 @@ public:
 	 */
 	void setGlobalObjects(const QObjectList & objectList);
 
+	/**
+	 * Adds a value to the engine.
+	 * @param name value name
+	 * @param value value value
+	 * @param flags value flags
+	 */
+	void setReportGlobalValue(QString name, QVariant value, const QScriptValue::PropertyFlags & flags = QScriptValue::KeepExistingFlags );
 
 	/**
-	 * Adds a property to the engine.
-	 * @param name property name
-	 * @param value property value
-	 * @param flags property flags
+	 * Adds a funtion to the engine.
+	 * @param name function name
+	 * @param function function signature
+	 * @param flags function flags
 	 */
-	void addEngineProperty( const QString & name, const QScriptValue & value, const QScriptValue::PropertyFlags & flags = QScriptValue::KeepExistingFlags );
-
-	/**
-	 * Returns a list with engine properties
-	 * @return EngineProperties
-	 */
-	EngineProperties engineProperties();
-
-	/**
-	 * Sets the engine properties.
-	 * @param EngineProperties a list with properties
-	 */
-	void setEngineProperties( EngineProperties );
-
+	void setReportFunction( const QString & name, const QScriptEngine::FunctionSignature & function, int args=0, const QScriptValue::PropertyFlags & flags = QScriptValue::KeepExistingFlags );
 
 	/**
 	 * Sets the report database
@@ -266,7 +267,8 @@ private:
 	QList<BandInterface *> m_pageFooterBands;
 	QList<BandInterface *> m_pageOverlayBands;
 	QObjectList m_objectList;
-	EngineProperties m_engineProperties;
+	FunctionValues m_functionValues;
+	ReportValues m_values;
 	qreal m_currentHeight, m_currentTop, m_currentBottom;
 	PageInterface * m_currentPage;
 	QSplashScreen m_splashScreen;
