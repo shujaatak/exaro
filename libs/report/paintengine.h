@@ -18,6 +18,7 @@
 
 #include <QPaintEngine>
 #include <QDomNode>
+#include <QPainterPath>
 
 namespace Report
 {
@@ -27,9 +28,7 @@ class PaintDevice;;
 class PaintEngine : public QPaintEngine
 {
 private:
-	void setDomDocument(QDomDocument* document);
-	void setPageNode(QDomNode & pageNode);
-	PaintEngine(PaintEngineFeatures caps = 0);
+	PaintEngine(QIODevice * doc);
 	friend class PaintDevice;
 
 public:
@@ -38,37 +37,50 @@ public:
 	bool begin(QPaintDevice *pdev);
 	bool end();
 
-	void updateState(const QPaintEngineState &state);
+	inline void updateState(const QPaintEngineState &state);
 
-	void drawRects(const QRect *rects, int rectCount);
-	void drawRects(const QRectF *rects, int rectCount);
+	inline void drawRects(const QRect *rects, int rectCount);
+	inline void drawRects(const QRectF *rects, int rectCount);
 
-	void drawLines(const QLine *lines, int lineCount);
-	void drawLines(const QLineF *lines, int lineCount);
+	inline void drawLines(const QLine *lines, int lineCount);
+	inline void drawLines(const QLineF *lines, int lineCount);
 
-	void drawEllipse(const QRectF &r);
-	void drawEllipse(const QRect &r);
+	inline void drawEllipse(const QRectF &r);
+	inline void drawEllipse(const QRect &r);
 
-	void drawPath(const QPainterPath &path);
+	inline void drawPath(const QPainterPath &path);
 
-	void drawPoints(const QPointF *points, int pointCount);
-	void drawPoints(const QPoint *points, int pointCount);
+	inline void drawPoints(const QPointF *points, int pointCount);
+	inline void drawPoints(const QPoint *points, int pointCount);
 
-	void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode);
-	void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode);
+	inline void drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode);
+	inline void drawPolygon(const QPoint *points, int pointCount, PolygonDrawMode mode);
 
-	void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr);
+	inline void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr);
 
-	void drawTextItem(const QPointF &p, const QTextItem &textItem);
+	inline void drawTextItem(const QPointF &p, const QTextItem &textItem);
 
-	void drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, const QPointF &s);
+	inline void drawTiledPixmap(const QRectF &r, const QPixmap &pixmap, const QPointF &s);
 
-	void drawImage(const QRectF &r, const QImage &pm, const QRectF &sr, Qt::ImageConversionFlags flags = Qt::AutoColor);
+	inline void drawImage(const QRectF &r, const QImage &pm, const QRectF &sr, Qt::ImageConversionFlags flags = Qt::AutoColor);
 
-	QPaintEngine::Type type() const;
-
+	inline QPaintEngine::Type type() const;
+	inline void writeRect(const QRectF& rect);
+	inline void writePoint(const QPointF& point);
+	inline void writeLine(const QLineF& line);
+	inline void writeBrush(const QBrush& brush);
+	inline void writeImage(const QImage& img);
+	inline void writeColor(const QColor& color);
+	inline void writeFont(const QFont& font);
+	inline void writeString(const QString & string);
+	inline void writePen(const QPen& pen);
+	inline void writeRegion(const QRegion& reg);
+	inline void writePath(const QPainterPath& path);
+	inline void writeInt(const int & val );
+	inline void writeDouble(const qreal & val );
+	inline void writeChar(const char & val );
 private:
-	QDomDocument * m_document;
+	QIODevice * m_document;
 	QDomNode m_pageNode;
 	PaintDevice * m_paintDevice;
 };

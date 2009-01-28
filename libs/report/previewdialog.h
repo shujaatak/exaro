@@ -17,11 +17,12 @@
 #define REPORTPREVIEWDIALOG_H
 
 #include <QDialog>
-#include <QDomNode>
+#include <QIODevice>
 #include <QGraphicsPixmapItem>
 #include <QSpinBox>
 
 #include "exportinterface.h"
+
 class QSplashScreen;
 
 namespace Report
@@ -41,7 +42,8 @@ class PreviewDialog : public QDialog
 public:
 	PreviewDialog(QWidget *parent = 0);
 	~PreviewDialog();
-	void setDocumentNode(QDomNode docNode);
+	void setExportDocument(QDomNode m_exportNode);
+	void setDocument(QIODevice * docNode);
 	void setVisible(bool visible);
 	void setSpaceBetweenPages(int spaceBetweenPages=50);
 
@@ -49,11 +51,13 @@ protected:
 	void accept();
 	void reject();
 	void drawSelection(QGraphicsItem * parent, QRectF & rect);
+#if 0
+	void switchPaintingSystem();
+#endif
 
 public slots:
 	void clearSelection();
 	void print();
-	void switchPaintingSystem();
 	void firstPage();
 	void lastPage();
 	void readPrevious();
@@ -67,10 +71,11 @@ signals:
 
 private:
 	QSpinBox * m_zoomSpinBox;
-	QDomNode m_docNode;
 	QDomNode m_exportNode;
+	QIODevice * m_docDevice;
 	PreviewWidget * m_previewWidget;
 	SearchWidget * m_searchWidget;
+
 	Document * m_doc;
 	Page * m_searchPage;
 	struct pageStruct
@@ -81,7 +86,6 @@ private:
 	QList <pageStruct> m_pages;
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
-
 };
 
 }

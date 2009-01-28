@@ -16,9 +16,16 @@
 #ifndef REPORTPAGE_H
 #define REPORTPAGE_H
 #include <QPaintDevice>
-#include <QDomNode>
 #include <QPrinter>
 #include <QTransform>
+#include <QIODevice>
+#include <QBrush>
+#include <QImage>
+#include <QColor>
+#include <QFont>
+#include <QPen>
+
+#include "paintdevice.h"
 
 namespace Report
 {
@@ -27,13 +34,17 @@ class Document;
 
 class Page
 {
+	struct stringStruct
+	{
+		QRectF textRect;
+		qint64 pos;
+	};
 public:
 	enum SearchDirection {NextResult, PreviousResult };
 public:
 	~Page();
-	void render(QPaintDevice * device);
-	void render(QPainter * painter);
-	QPrinter::PaperSize paperSize() const;
+	void render(QPaintDevice * device, const QRectF & exposeRect);
+	void render(QPainter * painter, const QRectF & exposeRect);
 	QPrinter::Orientation paperOrientation() const;
 	QSize pageSize() const;
 	bool search(const QString &text, QRectF &rect, SearchDirection direction = NextResult, bool caseSensitive = false, int rectMargin = 5);
@@ -41,27 +52,43 @@ public:
 private:
 	QTransform m_worldTransform;
 
-	Page(QDomNode pageNode);
+	Page(QIODevice *doc, qint64 pos);
 	friend class Document;
 
-	inline void drawState(QPainter & p, QDomElement element);
-	inline void drawRect(QPainter & p, QDomElement element);
-	inline void drawLine(QPainter & p, QDomElement element);
-	inline void drawEllipse(QPainter & p, QDomElement element);
-	inline void drawPath(QPainter & p, QDomElement element);
-	inline void drawPoint(QPainter & p, QDomElement element);
-	inline void drawPolygon(QPainter & p, QDomElement element);
-	inline void drawPixmap(QPainter & p, QDomElement element);
-	inline void drawTextItem(QPainter & p, QDomElement element);
-	inline void drawTiledPixmap(QPainter & p, QDomElement element);
-	inline void drawImage(QPainter & p, QDomElement element);
+	inline void drawState(QPainter * p);
+	inline void drawRect(QPainter * p);
+	inline void drawLine(QPainter * p);
+	inline void drawEllipse(QPainter * p);
+	inline void drawPath(QPainter * p);
+	inline void drawPoint(QPainter * p);
+	inline void drawPixmap(QPainter * p);
+	inline void drawTextItem(QPainter * p);
+	inline void drawTiledPixmap(QPainter * p);
+	inline void drawImage(QPainter * p);
+	inline qreal readDouble();
+	inline int readInt();
+	inline QBrush readBrush();
+	inline QPointF readPoint();
+	inline QImage readImage();
+	inline QColor readColor();
+	inline QString readString();
+	inline QFont readFont();
+	inline QPen readPen();
+	inline QRegion readRegion();
+	inline QRectF readRect();
+	inline QPainterPath readPath();
 
 private:
-	QDomNode m_pageNode;
+	PaintDevice::PageStruct m_pageStruct;
+	QIODevice *m_doc;
+	qint64 m_pos;
+	qint64 m_toPos;
 	QPrinter::PaperSize m_paperSize;
 	QPrinter::Orientation m_paperOrientation;
-	QDomElement m_searchNode;
+	qint64  m_searchPos;
 	QString m_searchText;
+	QRectF m_exposeRect;
+	bool	m_search;
 };
 
 }

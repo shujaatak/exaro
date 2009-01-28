@@ -17,7 +17,7 @@
 #include <QVariant>
 #include <QPixmap>
 #include <QImage>
-#include <QDomNodeList>
+#include <QPaintEngine>
 #include <QDebug>
 
 #include "page.h"
@@ -26,336 +26,539 @@
 namespace Report
 {
 
-Page::Page(QDomNode pageNode)
+Page::Page(QIODevice *doc, qint64 pos)
 {
-	m_pageNode = pageNode;
-	m_paperSize = (QPrinter::PaperSize)domToVariant(m_pageNode.firstChildElement("pageSize")).toInt();
-	m_paperOrientation = (QPrinter::Orientation)domToVariant(m_pageNode.firstChildElement("pageOrientation")).toInt();;
+	m_doc=doc;
+	doc->seek(pos);
+	doc->read((char*)&m_pageStruct, sizeof(m_pageStruct));
+	m_pos=pos+sizeof(m_pageStruct);
+	m_toPos=pos+m_pageStruct.size;
+	m_searchPos=m_pos;
 }
 
 Page::~Page()
 {
 }
 
-void Page::drawState(QPainter & p, QDomElement element)
+void Page::drawState(QPainter * p)
 {
-	Qt::ClipOperation m_clipOperation = Qt::NoClip;
+	int state=readInt();
+	if (state & QPaintEngine::DirtyHints)
+		p->setRenderHints((QPainter::RenderHints)readInt());
 
-	QDomNodeList elements = element.childNodes();
-	for (int i = 0;i < elements.size();i++)
+	if (state & QPaintEngine::DirtyTransform)
 	{
-		if (elements.at(i).toElement().tagName() == "transform")
-		{
-			p.setWorldTransform(m_worldTransform, false);
-			p.setWorldTransform(domToVariant(elements.at(i).toElement()).value<QTransform>(), true);
-			continue;
-		}
+		qreal h11=readDouble();
+		qreal h12=readDouble();
+		qreal h13=readDouble();
+		qreal h21=readDouble();
+		qreal h22=readDouble();
+		qreal h23=readDouble();
+		qreal h31=readDouble();
+		qreal h32=readDouble();
+		qreal h33=readDouble();
+		p->setWorldTransform(m_worldTransform, false);
+		p->setWorldTransform(QTransform(h11, h12, h13, h21, h22, h23, h31, h32, h33),true);
+	}
 
-		if (elements.at(i).toElement().tagName() == "backgroundBrush")
-		{
-			p.setBackground(domToVariant(elements.at(i).toElement()).value<QBrush>());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyBackground)
+		p->setBackground(readBrush());
 
-		if (elements.at(i).toElement().tagName() == "backgroundMode")
-		{
-			p.setBackgroundMode((Qt::BGMode)domToVariant(elements.at(i).toElement()).toInt());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyBackgroundMode)
+		p->setBackgroundMode((Qt::BGMode)readInt());
 
-		if (elements.at(i).toElement().tagName() == "brush")
-		{
-			p.setBrush(domToVariant(elements.at(i).toElement()).value<QBrush>());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyBrush)
+		p->setBrush(readBrush());
 
-		if (elements.at(i).toElement().tagName() == "brushOrigin")
-		{
-			p.setBrushOrigin(domToVariant(elements.at(i).toElement()).toPointF());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyBrushOrigin)
+		p->setBrushOrigin(readPoint());
 
-		if (elements.at(i).toElement().tagName() == "compositionMode")
-		{
-			p.setCompositionMode((QPainter::CompositionMode)domToVariant(elements.at(i).toElement()).toInt());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyCompositionMode)
+		p->setCompositionMode((QPainter::CompositionMode)readInt());
 
-		if (elements.at(i).toElement().tagName() == "font")
-		{
-			p.setFont(domToVariant(elements.at(i).toElement()).value<QFont>());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyFont)
+		p->setFont(readFont());
 
-		if (elements.at(i).toElement().tagName() == "opacity")
-		{
-			p.setOpacity(domToVariant(elements.at(i).toElement()).toDouble());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyOpacity)
+		p->setOpacity(readDouble());
 
-		if (elements.at(i).toElement().tagName() == "pen")
-		{
-			p.setPen(domToVariant(elements.at(i).toElement()).value<QPen>());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyPen)
+		p->setPen(readPen());
 
-		if (elements.at(i).toElement().tagName() == "renderHints")
-		{
-			p.setRenderHints((QPainter::RenderHints)domToVariant(elements.at(i).toElement()).toInt());
-			continue;
-		}
+	if (state & QPaintEngine::DirtyClipRegion)
+	{
+		QRegion r=readRegion();
+		int co=readInt();
+		p->setClipRegion(r,(Qt::ClipOperation)co);
+	}
+	if (state & QPaintEngine::DirtyClipPath)
+	{
+		QPainterPath pp=readPath();
+		int co=readInt();
+		p->setClipPath(pp,(Qt::ClipOperation)co);
+	}
+	if (state & QPaintEngine::DirtyClipEnabled)
+		p->setClipping(readInt());
+}
 
-		if (elements.at(i).toElement().tagName() == "isClipEnabled")
-		{
-			p.setClipping(domToVariant(elements.at(i).toElement()).toBool());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "clipOperation")
-		{
-			m_clipOperation = (Qt::ClipOperation)domToVariant(elements.at(i).toElement()).toInt();
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "clipRegion")
-		{
-			p.setClipRegion(domToVariant(elements.at(i).toElement()).value<QRegion>(), m_clipOperation);
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "clipPath")
-		{
-			p.setClipPath(domToVariant(elements.at(i).toElement()).value<QPainterPath>(), m_clipOperation);
-			continue;
-		}
-
-
+void Page::drawRect(QPainter * p)
+{
+	int rects=readInt();
+	while(rects)
+	{
+		QRectF rc=readRect();
+#warning I dont know way but this is not working 
+//		if (!m_exposeRect.intersects(rc))
+		if(!m_search)
+			p->drawRect(rc);
+		rects--;
 	}
 }
 
-void Page::drawRect(QPainter & p, QDomElement element)
+void Page::drawLine(QPainter * p)
 {
-	p.drawRect(domToVariant(element).toRectF());
+	int lines=readInt();
+	while(lines)
+	{
+		QPointF p1=readPoint();
+		QPointF p2=readPoint();
+#warning I dont know way but this is not working 
+//		if (!m_exposeRect.intersects(QRectF(p1,p2)))
+		if(!m_search)
+			p->drawLine(p1,p2);
+		lines--;
+	}
 }
 
-void Page::drawLine(QPainter & p, QDomElement element)
+void Page::drawEllipse(QPainter * p)
 {
-	p.drawLine(domToVariant(element).toLineF());
+	QRectF rc=readRect();
+#warning I dont know way but this is not working 
+//	if (m_exposeRect.intersects(rc))
+		if(!m_search)
+			p->drawEllipse(rc);
 }
 
-void Page::drawEllipse(QPainter & p, QDomElement element)
+void Page::drawPath(QPainter * p)
 {
-	p.drawEllipse(domToVariant(element).toRectF());
+	QPainterPath pt=readPath();
+#warning I dont know way but this is not working 
+//	if(pt.intersects(m_exposeRect))
+		if(!m_search)
+			p->drawPath(pt);
 }
 
-void Page::drawPath(QPainter & p, QDomElement element)
+void Page::drawPoint(QPainter * p)
 {
-	p.drawPath(domToVariant(element).value<QPainterPath>());
+	if(!m_search)
+		p->drawPoint(readPoint());
 }
 
-void Page::drawPoint(QPainter & p, QDomElement element)
+void Page::drawPixmap(QPainter * p)
 {
-	p.drawPoint(domToVariant(element).toPointF());
+	QRectF r,sr;
+	r=readRect();
+	sr=readRect();
+	QPixmap px=QPixmap::fromImage(readImage());
+#warning I dont know way but this is not working 
+//	if (m_exposeRect.intersects(r))
+	if(!m_search)
+		p->drawPixmap(r, px, sr);
 }
 
-void Page::drawPolygon(QPainter & p, QDomElement element)
+void Page::drawTextItem(QPainter * p)
 {
-	Q_UNUSED(p);
-	Q_UNUSED(element);
-	qWarning() << "drawPolygon is not finished";
+	QPointF pt=readPoint();
+	p->setFont(readFont());
+	int renderFlags;
+	double width, ascent,descent;
+	renderFlags=readInt();
+	width=readDouble();
+	ascent=readDouble();
+	descent=readDouble();
+	QString st=readString();
+#warning I dont know way but this is not working 
+//	if (QRectF(pt.x(), pt.y(), width, ascent+descent).intersects(m_exposeRect)) 
+	p->drawText(pt, st);
 }
 
-void Page::drawPixmap(QPainter & p, QDomElement element)
+void Page::drawTiledPixmap(QPainter * p)
 {
-	p.drawPixmap(domToVariant(element.firstChildElement("toRect")).toRectF(), domToVariant(element.firstChildElement("img")).value<QPixmap>(), domToVariant(element.firstChildElement("sourceRect")).toRectF());
+	QRectF rt=readRect();
+	QPointF pt=readPoint();
+	QPixmap px=QPixmap::fromImage(readImage());
+#warning I dont know way but this is not working 
+//	if (m_exposeRect.intersects(rt))
+	if(!m_search)
+		p->drawTiledPixmap(rt, px, pt);
 }
 
-void Page::drawTextItem(QPainter & p, QDomElement element)
+void Page::drawImage(QPainter * p)
 {
-	p.setFont(domToVariant(element.firstChildElement("font")).value<QFont>());
-#ifndef WIN32
-#warning "FIXME: I don't have any idea how to use this propieties"
-#endif
-	/*
-		// I don't have any idea how to use this propieties
-
-		domToVariant(element.firstChildElement("renderFlags"));
-		domToVariant(element.firstChildElement("width"));
-		domToVariant(element.firstChildElement("ascent"));
-		domToVariant(element.firstChildElement("descent"));
-	*/
-	p.drawText(domToVariant(element.firstChildElement("toPoint")).toPointF(), domToVariant(element.firstChildElement("string")).toString());
-}
-
-void Page::drawTiledPixmap(QPainter & p, QDomElement element)
-{
-	p.drawTiledPixmap(domToVariant(element.firstChildElement("toRect")).toRectF(), domToVariant(element.firstChildElement("img")).value<QPixmap>(), domToVariant(element.firstChildElement("toPoint")).toPointF());
-}
-
-void Page::drawImage(QPainter & p, QDomElement element)
-{
-	p.drawImage(domToVariant(element.firstChildElement("toRect")).toRectF(), (domToVariant(element.firstChildElement("img")).value<QPixmap>()).toImage(), domToVariant(element.firstChildElement("sourceRect")).toRectF(), (Qt::ImageConversionFlags) domToVariant(element.firstChildElement("flags")).toInt());
+	QRectF r=readRect();
+	QRectF sr=readRect();
+	int flags=readInt();
+	QImage img=readImage();
+#warning I dont know way but this is not working 
+//	if (m_exposeRect.intersects(r))
+	if(!m_search)
+		p->drawImage(r, img, sr, (Qt::ImageConversionFlags)flags);
 }
 
 
-void Page::render(QPaintDevice * device)
+void Page::render(QPaintDevice * device, const QRectF & rect)
 {
 	QPainter * p=new QPainter(device);
-	render(p);
+	render(p, rect);
 	p->end();
 	delete p;
 }
 
-void Page::render(QPainter * p)
+void Page::render(QPainter * p, const QRectF & exposeRect)
 {
+	m_search=false;
+	m_exposeRect=exposeRect;
+	m_doc->seek(m_pos);
 	m_worldTransform=p->worldTransform();
-	QDomNodeList elements = m_pageNode.childNodes();
-	for (int i = 0;i < elements.size();i++)
+	while(m_doc->pos()<m_toPos)
 	{
-
-		if (elements.at(i).toElement().tagName() == "stateChanged")
+		char job;
+		m_doc->read(&job,1);
+		switch(job)
 		{
-			drawState(*p, elements.at(i).toElement());
-			continue;
+			case 's' :
+				drawState(p);
+				break;
+			case 'i' :
+				drawImage(p);
+				break;
+			case 'd' :
+				drawTiledPixmap(p);
+				break;
+			case 't' :
+				drawTextItem(p);
+				break;
+			case 'x' :
+				drawPixmap(p);
+				break;
+
+			case 'p' :
+				drawPoint(p);
+				break;
+
+			case 'h' :
+				drawPath(p);
+				break;
+
+			case 'e' :
+				drawEllipse(p);
+				break;
+
+			case 'l' :
+				drawLine(p);
+				break;
+
+			case 'r' :
+				drawRect(p);
+				break;
+			default:
+				qDebug()<<"Huston we have a problem";
+				break;
+
 		}
-
-		if (elements.at(i).toElement().tagName() == "image")
-		{
-			drawImage(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "tiledPixmap")
-		{
-			drawTiledPixmap(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "text")
-		{
-			drawTextItem(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "pixmap")
-		{
-			drawPixmap(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "polygon")
-		{
-			drawPolygon(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "point")
-		{
-			drawPoint(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "path")
-		{
-			drawPath(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "ellipse")
-		{
-			drawEllipse(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "line")
-		{
-			drawLine(*p, elements.at(i).toElement());
-			continue;
-		}
-
-		if (elements.at(i).toElement().tagName() == "rect")
-			drawRect(*p, elements.at(i).toElement());
-
 	}
-}
-
-QPrinter::PaperSize Page::paperSize() const
-{
-	return m_paperSize;
+	m_worldTransform=p->worldTransform();
 }
 
 QSize Page::pageSize() const
 {
-	QPrinter p;
-	p.setPaperSize(m_paperSize);
-	p.setOrientation(m_paperOrientation);
-	QSizeF sz=p.paperSize(QPrinter::Millimeter);
-	sz/=UNIT;
-	return sz.toSize();
+	return QSize(m_pageStruct.width, m_pageStruct.height);
 }
 
 bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, bool caseSensitive, int rectMargin)
 {
 	if (!text.length())
-	{
-		m_searchText = "";
 		return false;
-	}
+
 	if ((caseSensitive && m_searchText != text) || (!caseSensitive && m_searchText.toLower() != text.toLower()))
 	{
-		if (m_searchNode.isNull() && m_searchText.length())
-		{
-			m_searchText = "";
-			return false;
-		}
+		qDebug()<<"ici?!?!";
 		if (direction == NextResult)
-			m_searchNode = m_pageNode.firstChildElement("text");
+			m_searchPos=m_pos;
 		else
-			m_searchNode = m_pageNode.lastChildElement("text");
+			m_searchPos=m_toPos;
 	}
+
+	qDebug()<<m_searchPos;
+
+	QList<stringStruct> strings;
 
 	m_searchText = text;
 
-	while (!m_searchNode.isNull())
+	QPixmap px(m_pageStruct.width, m_pageStruct.height);
+	QPainter * p = new QPainter(&px);
+	m_search=true;
+	m_exposeRect=QRectF();
+	m_doc->seek(m_pos);
+	QPointF pt;
+	double width, ascent,descent;
+	QString st;
+	QFont font;
+	m_worldTransform=p->worldTransform();
+
+	while(m_doc->pos()<m_toPos)
 	{
-		QString nodeString = m_searchNode.firstChildElement("string").text();
-		if (nodeString.contains(m_searchText, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
+		char job;
+		m_doc->read(&job,1);
+		switch(job)
 		{
-			QPointF pos = domToVariant(m_searchNode.firstChildElement("toPoint")).toPointF();
-			QFontMetrics f(domToVariant(m_searchNode.firstChildElement("font")).value<QFont>());
+			case 't' :
+					pt=readPoint();
+					font=readFont();
+					readInt();
+					width=readDouble();
+					ascent=readDouble();
+					descent=readDouble();
+					st=readString();
+					if (st.contains(text, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
+					{
+						stringStruct st;
+						st.pos=m_doc->pos();
+						QRectF textRect=QFontMetrics(font).boundingRect(text);
+						textRect.translate(pt);
+						textRect=p->clipPath().boundingRect().intersect(textRect);
+						st.textRect=p->transform().mapRect(textRect);
+						st.textRect.adjust(-descent,-descent,descent,descent);
+						if (direction == NextResult)
+							strings.push_back(st);
+						else
+							strings.push_front(st);
 
-			pos.setX(pos.x() + f.width(nodeString.left(nodeString.indexOf(m_searchText, 0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))) - rectMargin);
-			pos.setY(pos.y() - rectMargin);
-			rect = f.boundingRect(nodeString.mid(nodeString.indexOf(m_searchText, 0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive), m_searchText.length()));
-			rect.translate(pos);
+					}
+				break;
+			case 's' :
+				drawState(p);
+				break;
+			case 'i' :
+				drawImage(p);
+				break;
+			case 'd' :
+				drawTiledPixmap(p);
+				break;
+			case 'x' :
+				drawPixmap(p);
+				break;
 
-			QDomElement transformElement = m_searchNode.previousSiblingElement("stateChanged");
-			while (!transformElement.isNull())
-			{
-				if (!transformElement.firstChildElement("transform").isNull())
-				{
-					QTransform tr = domToVariant(transformElement.firstChildElement("transform")).value<QTransform>();
-					rect.translate(tr.dx(), tr.dy());
-					break;
-				}
-				transformElement = transformElement.previousSiblingElement("stateChanged");
-			}
-			rect.setWidth(rect.width() + rectMargin*2);
-			rect.setHeight(rect.height() + rectMargin*2);
+			case 'p' :
+				drawPoint(p);
+				break;
 
-			if (direction == NextResult)
-				m_searchNode = m_searchNode.nextSiblingElement("text");
-			else
-				m_searchNode = m_searchNode.previousSiblingElement("text");
+			case 'h' :
+				drawPath(p);
+				break;
+
+			case 'e' :
+				drawEllipse(p);
+				break;
+
+			case 'l' :
+				drawLine(p);
+				break;
+
+			case 'r' :
+				drawRect(p);
+				break;
+			default:
+				qDebug()<<"Huston we have a problem";
+				break;
+		}
+	}
+	delete p;
+	foreach (stringStruct st, strings)
+		if (direction == NextResult && st.pos>m_searchPos || direction == PreviousResult && st.pos<m_searchPos)
+		{
+			rect=st.textRect;
+			m_searchPos=st.pos;
 			return true;
 		}
-
-		if (direction == NextResult)
-			m_searchNode = m_searchNode.nextSiblingElement("text");
-		else
-			m_searchNode = m_searchNode.previousSiblingElement("text");
-	};
 	m_searchText = "";
 	return false;
 }
+
+QBrush Page::readBrush()
+{
+	QBrush br;
+	br.setColor(readColor());
+	br.setTextureImage(readImage());
+	br.setStyle((Qt::BrushStyle)readInt());
+	int gradient=readInt();
+	if (!gradient)
+		return br;
+	int spread=readInt();
+	int coordinateMode=readInt();
+	int type=readInt();
+	QGradient *gr=0;
+	QPointF p1, p2;
+	qreal vd;
+	switch(type)
+	{
+		case QGradient::LinearGradient:
+			p1=readPoint();
+			p2=readPoint();
+			gr = new QLinearGradient(p1, p2);
+			break;
+		case QGradient::RadialGradient:
+			p1=readPoint();
+			vd=readDouble();
+			p2=readPoint();
+			gr = new QRadialGradient(p1, vd, p2);
+			break;
+		case QGradient::ConicalGradient:
+			p1=readPoint();
+			vd=readDouble();
+			gr = new QConicalGradient(p1, vd);
+			break;
+	}
+	gr->setSpread((QGradient::Spread)spread);
+	gr->setCoordinateMode((QGradient::CoordinateMode)coordinateMode);
+	QGradientStops gsps;
+	QGradientStop gsp;
+	int stops=readInt();
+	for (int i=0;i<stops; i++)
+	{
+		gsp.first=readDouble();
+		gsp.second=readColor();
+		gsps.push_back(gsp);
+	}
+	gr->setStops(gsps);
+	return QBrush(*gr);
+}
+
+QPointF Page::readPoint()
+{
+	qreal v1=readDouble();
+	qreal v2=readDouble();
+	return QPointF(v1, v2);
+
+}
+QImage Page::readImage()
+{
+	QByteArray imd=m_doc->read(readInt());
+	QBuffer buffer(&imd);
+	buffer.open(QBuffer::ReadWrite);
+	QImage img;
+	img.load(&buffer, "PNG");
+	return img;
+}
+
+qreal Page::readDouble()
+{
+	qreal val;
+	m_doc->read((char*)&val, sizeof(qreal));
+	return val;
+}
+
+int Page::readInt()
+{
+	int val;
+	m_doc->read((char*)&val, sizeof(int));
+	return val;
+}
+
+QColor Page::readColor()
+{
+	int r=readInt();
+	int g=readInt();
+	int b=readInt();
+	int a=readInt();
+	return QColor(r, g, b, a);
+}
+
+QString Page::readString()
+{
+	return QString::fromUtf8(m_doc->read(readInt()));
+}
+
+QFont Page::readFont()
+{
+	QFont ft;
+	ft.fromString(readString());
+	return ft;
+}
+
+QPen Page::readPen()
+{
+	QPen pen;
+	pen.setBrush(readBrush());
+	pen.setColor(readColor());
+	pen.setCapStyle((Qt::PenCapStyle)readInt());
+	pen.setCosmetic(readInt());
+	pen.setJoinStyle((Qt::PenJoinStyle)readInt());
+	pen.setMiterLimit(readDouble());
+	pen.setWidth(readInt());
+	pen.setStyle((Qt::PenStyle)readInt());
+	return pen;
+}
+
+QRegion Page::readRegion()
+{
+	QRegion reg;
+	int len=readInt();
+	while(len)
+	{
+		reg+=readRect().toRect();
+		len--;
+	}
+	return reg;
+}
+
+QRectF Page::readRect()
+{
+	qreal x=readDouble();
+	qreal y=readDouble();
+	qreal w=readDouble();
+	qreal h=readDouble();
+	return QRectF(x, y, w, h);
+}
+
+QPainterPath Page::readPath()
+{
+	int len=readInt();
+	int cstate=0;
+	QPainterPath p;
+	QPointF c1,c2;
+	for (int i=0;i<len;i++)
+	{
+		int type=readInt();
+		double x=readDouble();
+		double y=readDouble();
+		if (type==QPainterPath::MoveToElement)
+			p.moveTo(x,y);
+		if (type==QPainterPath::LineToElement)
+			p.lineTo(x,y);
+		if (type==QPainterPath::CurveToElement)
+		{
+			c1.setX(x);
+			c1.setY(y);
+			cstate=1;
+		}
+
+		if (type==QPainterPath::CurveToDataElement)
+		{
+			if (cstate==1)
+			{
+				c2.setX(x);
+				c2.setY(y);
+				cstate=2;
+			}
+			else
+			{
+				p.cubicTo(c1,c2,QPointF(x,y));
+				cstate=0;
+			}
+		}
+	}
+	return p;
+}
+
 }
