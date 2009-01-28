@@ -22,21 +22,29 @@
 namespace Report
 {
 
-PaintDevice::PaintDevice()
-		: QPaintDevice(), m_domDocument(0), m_docEnded(false), m_pageNumber(0)
+PaintDevice::PaintDevice(QIODevice * doc)
+		: QPaintDevice(), m_doc(doc),m_allowEmptyPages(false),m_pagePos(0)
 {
-	m_paintEngine = new PaintEngine();
+	m_printer.setOrientation(QPrinter::Portrait);
+	m_printer.setPaperSize(QPrinter::A4);
+
+	m_paintEngine = new PaintEngine(m_doc);
 	m_paintEngine->begin(this);
-	m_paperSize = QPrinter::A4;
-	m_paperOrientation = QPrinter::Portrait;
+	m_currentPageStruct.size=0;
+	m_currentPageStruct.height=m_printer.heightMM()*10;
+	m_currentPageStruct.width=m_printer.widthMM()*10;
+	m_currentPageStruct.orientation=QPrinter::Portrait;
+	m_doc->write((char*)&m_currentPageStruct, sizeof(m_currentPageStruct));
 }
 
 
 PaintDevice::~PaintDevice()
 {
+	qint64 pos=m_doc->pos();
+	m_currentPageStruct.size=pos-m_pagePos;
+	m_doc->seek(m_pagePos);
+	m_doc->write((char*)&m_currentPageStruct, sizeof(m_currentPageStruct));
 	delete m_paintEngine;
-	if (!m_docEnded)
-		endDoc();
 }
 
 QPaintEngine * PaintDevice::paintEngine() const
@@ -44,71 +52,35 @@ QPaintEngine * PaintDevice::paintEngine() const
 	return m_paintEngine;
 }
 
-void PaintDevice::setOutputDocument(QDomDocument * outputDocument)
-{
-	m_domDocument = outputDocument;
-	m_reportRoot = m_domDocument->createElement("report");
-	m_paintEngine->setDomDocument(m_domDocument);
-	m_currentPage = m_domDocument->createElement("Page");
-	m_paintEngine->setPageNode(m_currentPage);
-}
 
-void PaintDevice::setReportRoot(QDomNode & reportRoot)
+void PaintDevice::setPaperSize(const QSizeF & pageSize)
 {
-	m_reportRoot = reportRoot;
-	m_currentPage = m_domDocument->createElement("Page");
-	m_paintEngine->setPageNode(m_currentPage);
-}
-
-
-QDomNode & PaintDevice::pageNode()
-{
-	return m_currentPage;
-}
-
-QDomDocument * PaintDevice::domDocument()
-{
-	return m_domDocument;
-}
-
-void PaintDevice::setPaperSize(QPrinter::PaperSize size)
-{
-	m_paperSize = size;
+	m_currentPageStruct.height=pageSize.height();
+	m_currentPageStruct.width=pageSize.width();
 }
 
 void PaintDevice::setPaperOrientation(QPrinter::Orientation orientation)
 {
-	m_paperOrientation = orientation;
+	m_currentPageStruct.orientation=orientation;
 }
 
 void PaintDevice::newPage()
 {
-	if (m_currentPage.isNull() || m_currentPage.toElement().isNull() || !m_currentPage.toElement().text().length())
-		return; // the page is empty ?!?!?
-
-	m_currentPage.appendChild(variatToDom(m_domDocument, "pageSize", m_paperSize));
-	m_currentPage.appendChild(variatToDom(m_domDocument, "pageOrientation", m_paperOrientation));
-	m_reportRoot.appendChild(m_currentPage);
-	m_currentPage = m_domDocument->createElement("Page");
-	m_paintEngine->setPageNode(m_currentPage);
-}
-
-void PaintDevice::endDoc()
-{
-	if (m_domDocument && !m_currentPage.isNull() && !m_currentPage.toElement().isNull() && m_currentPage.toElement().text().length())
-	{
-		m_currentPage.appendChild(variatToDom(m_domDocument, "pageSize", m_paperSize));
-		m_currentPage.appendChild(variatToDom(m_domDocument, "pageOrientation", m_paperOrientation));
-		m_reportRoot.appendChild(m_currentPage);
-	}
-	if (m_domDocument)
-		m_domDocument->appendChild(m_reportRoot);
+	qint64 pos=m_doc->pos();
+	m_currentPageStruct.size=pos-m_pagePos;
+	if (!m_allowEmptyPages && m_currentPageStruct.size<=sizeof(m_currentPageStruct))
+		return; // the page is empty 
+	m_doc->seek(m_pagePos);
+	m_doc->write((char*)&m_currentPageStruct, sizeof(m_currentPageStruct));
+	m_doc->seek(pos);
+	m_pagePos=pos;
+	m_currentPageStruct.size=0;
+	m_doc->write((char*)&m_currentPageStruct, sizeof(m_currentPageStruct));
 }
 
 int PaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
 {
-	QPrinter p;
-	return p.printEngine()->metric(metric);
+	return m_printer.printEngine()->metric(metric);
 }
 
 }

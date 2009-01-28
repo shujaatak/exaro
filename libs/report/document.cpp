@@ -19,45 +19,31 @@
 namespace Report
 {
 
-
-Document::Document(QDomDocument * doc): m_numPages(0)
+Document::Document(QIODevice * doc)
 {
-	if (doc)
-		setReportDocument(doc);
-}
-
-Document::Document(QDomNode & node): m_numPages(0)
-{
-	setReportNode(node);
-}
-
-void Document::calcPages()
-{
-	m_numPages = m_docNode.childNodes().size();
-}
-
-void Document::setReportDocument(QDomDocument * doc)
-{
-	m_docNode = doc->documentElement();
-	calcPages();
-}
-
-void Document::setReportNode(QDomNode & node)
-{
-	m_docNode = node;
-	calcPages();
+	m_doc=doc;
+	PaintDevice::PageStruct ps;
+	qint64 pos=0;
+	doc->seek(0);
+	while(!doc->atEnd())
+	{
+		doc->read((char*)&ps, sizeof(ps));
+		m_pages.push_back(pos);
+		pos+=ps.size;
+		doc->seek(pos);
+	}
 }
 
 int Document::numPages()
 {
-	return m_numPages;
+	return m_pages.size();
 }
 
 Page * Document::page(int pageNumber)
 {
-	if (pageNumber >= m_numPages)
+	if (pageNumber >= m_pages.size())
 		return 0;
-	return new Page(m_docNode.childNodes().at(pageNumber));
+	return new Page(m_doc, m_pages[pageNumber]);
 }
 
 }

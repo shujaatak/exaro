@@ -18,7 +18,6 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QPluginLoader>
-#include <QDebug>
 #include <QDate>
 #include <QDateTime>
 #include <QTime>
@@ -33,140 +32,144 @@
 namespace Report
 {
 
-PaintEngine::PaintEngine(PaintEngineFeatures /*caps*/)
-		: QPaintEngine(QPaintEngine::AllFeatures), m_document(0)
+PaintEngine::PaintEngine(QIODevice * doc)
+		: QPaintEngine(QPaintEngine::AllFeatures), m_document(doc)
 {
 }
-
-
 bool PaintEngine::begin(QPaintDevice *pdev)
 {
-	m_paintDevice = dynamic_cast<PaintDevice *>(pdev);
-	return m_paintDevice;
-}
-
-void PaintEngine::setPageNode(QDomNode & pageNode)
-{
-	m_pageNode = pageNode;
-}
-
-void PaintEngine::setDomDocument(QDomDocument* document)
-{
-	m_document = document;
+	return true;
 }
 
 bool PaintEngine::end()
 {
-	if (!m_paintDevice)
-		return false;
-	m_paintDevice->endDoc();
 	return true;
 }
 
 void PaintEngine::updateState(const QPaintEngineState &state)
 {
-	QDomElement el = m_document->createElement("stateChanged");
+	writeChar('s');
+	writeInt(state.state());
 
 	if (state.state() & QPaintEngine::DirtyHints)
-		el.appendChild(variatToDom(m_document, "renderHints", (int)state.renderHints()));
+		writeInt(state.renderHints());
 
 	if (state.state() & QPaintEngine::DirtyTransform)
-		el.appendChild(variatToDom(m_document, "transform", state.transform()));
+	{
+		writeDouble(state.transform().m11());
+		writeDouble(state.transform().m12());
+		writeDouble(state.transform().m13());
+		writeDouble(state.transform().m21());
+		writeDouble(state.transform().m22());
+		writeDouble(state.transform().m23());
+		writeDouble(state.transform().m31());
+		writeDouble(state.transform().m32());
+		writeDouble(state.transform().m33());
+	}
 
 	if (state.state() & QPaintEngine::DirtyBackground)
-		el.appendChild(variatToDom(m_document, "backgroundBrush", state.backgroundBrush()));
+		writeBrush(state.backgroundBrush());
 
 	if (state.state() & QPaintEngine::DirtyBackgroundMode)
-		el.appendChild(variatToDom(m_document, "backgroundMode", state.backgroundMode()));
+		writeInt(state.backgroundMode());
 
 	if (state.state() & QPaintEngine::DirtyBrush)
-		el.appendChild(variatToDom(m_document, "brush", state.brush()));
+		writeBrush(state.brush());
 
 	if (state.state() & QPaintEngine::DirtyBrushOrigin)
-		el.appendChild(variatToDom(m_document, "brushOrigin", state.brushOrigin()));
+		writePoint(state.brushOrigin());
 
 	if (state.state() & QPaintEngine::DirtyCompositionMode)
-		el.appendChild(variatToDom(m_document, "compositionMode", state.compositionMode()));
+		writeInt(state.compositionMode());
 
 	if (state.state() & QPaintEngine::DirtyFont)
-		el.appendChild(variatToDom(m_document, "font", state.font()));
+		writeFont(state.font());
 
 	if (state.state() & QPaintEngine::DirtyOpacity)
-		el.appendChild(variatToDom(m_document, "opacity", state.opacity()));
+		writeDouble(state.opacity());
 
 	if (state.state() & QPaintEngine::DirtyPen)
-		el.appendChild(variatToDom(m_document, "pen", state.pen()));
+		writePen(state.pen());
 
 	if (state.state() & QPaintEngine::DirtyClipRegion)
 	{
-		el.appendChild(variatToDom(m_document, "clipOperation", state.clipOperation()));
-		el.appendChild(variatToDom(m_document, "clipRegion", state.clipRegion()));
+		writeRegion(state.clipRegion());
+		writeInt(state.clipOperation());
 	}
 
 	if (state.state() & QPaintEngine::DirtyClipPath)
 	{
-		el.appendChild(variatToDom(m_document, "clipOperation", state.clipOperation()));
-		QVariant v;
-		v.setValue(state.clipPath());
-		el.appendChild(variatToDom(m_document, "clipPath", v));
+		writePath(state.clipPath());
+		writeInt(state.clipOperation());
 	}
 
 	if (state.state() & QPaintEngine::DirtyClipEnabled)
-		el.appendChild(variatToDom(m_document, "isClipEnabled", state.isClipEnabled()));
-
-	m_pageNode.appendChild(el);
+		writeInt(state.isClipEnabled());
 }
 
 void PaintEngine::drawRects(const QRect *rects, int rectCount)
 {
+	writeChar('r');
+	writeInt(rectCount);
 	for (int i = 0;i < rectCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "rect", QRectF(rects[i].x() , rects[i].y(), rects[i].width(), rects[i].height())));
+		writeRect(rects[i]);
 }
 
 void PaintEngine::drawRects(const QRectF *rects, int rectCount)
 {
+	writeChar('r');
+	writeInt(rectCount);
 	for (int i = 0;i < rectCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "rect", QRectF(rects[i].x(), rects[i].y(), rects[i].width(), rects[i].height())));
+		writeRect(rects[i]);
 }
 
 void PaintEngine::drawLines(const QLine *lines, int lineCount)
 {
+	writeChar('l');
+	writeInt(lineCount);
 	for (int i = 0;i < lineCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "line", QLineF(lines[i].x1(), lines[i].y1(), lines[i].x2(), lines[i].y2())));
+		writeLine(lines[i]);
 }
 
 void PaintEngine::drawLines(const QLineF *lines, int lineCount)
 {
+	writeChar('l');
+	writeInt(lineCount);
 	for (int i = 0;i < lineCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "line", QLineF(lines[i].x1(), lines[i].y1(), lines[i].x2(), lines[i].y2())));
+		writeLine(lines[i]);
 }
 
 void PaintEngine::drawEllipse(const QRectF &r)
 {
-	m_pageNode.appendChild(variatToDom(m_document, "ellipse", r));
+	writeChar('e');
+ 	writeRect(r);
 }
 void PaintEngine::drawEllipse(const QRect &r)
 {
-	m_pageNode.appendChild(variatToDom(m_document, "ellipse", QRectF(r)));
+	writeChar('e');
+	writeRect(r);
 }
 
 void PaintEngine::drawPath(const QPainterPath &path)
 {
-	QVariant var;
-	var.setValue(path);
-	m_pageNode.appendChild(variatToDom(m_document, "path",var));
+	writeChar('h');
+	writePath(path);
 }
 
 void PaintEngine::drawPoints(const QPointF *points, int pointCount)
 {
+	writeChar('p');
+	writeInt(pointCount);
 	for (int i = 0;i < pointCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "point", points[i]));
+		writePoint(points[i]);
 }
 
 void PaintEngine::drawPoints(const QPoint *points, int pointCount)
 {
+	writeChar('p');
+	writeInt(pointCount);
 	for (int i = 0;i < pointCount;i++)
-		m_pageNode.appendChild(variatToDom(m_document, "point", points[i]));
+		writePoint(points[i]);
 }
 
 void PaintEngine::drawPolygon(const QPointF *points, int pointCount, PolygonDrawMode mode)
@@ -223,44 +226,40 @@ void PaintEngine::drawPolygon(const QPoint *points, int pointCount, PolygonDrawM
 
 void PaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
 {
-	QDomElement el = m_document->createElement("pixmap");
-	el.appendChild(variatToDom(m_document, "toRect", r));
-	el.appendChild(variatToDom(m_document, "sourceRect", sr));
-	el.appendChild(variatToDom(m_document, "img", pm));
-	m_pageNode.appendChild(el);
+	writeChar('x');
+	writeRect(r);
+	writeRect(sr);
+	writeImage(pm.toImage());
 }
 
 void PaintEngine::drawTextItem(const QPointF &p, const QTextItem &textItem)
 {
-	QDomElement el = m_document->createElement("text");
-	el.appendChild(variatToDom(m_document, "toPoint", p));
-	el.appendChild(variatToDom(m_document, "font", textItem.font()));
-	el.appendChild(variatToDom(m_document, "renderFlags", (int)textItem.renderFlags()));
-	el.appendChild(variatToDom(m_document, "width", textItem.width()));
-	el.appendChild(variatToDom(m_document, "ascent", textItem.ascent()));
-	el.appendChild(variatToDom(m_document, "descent", textItem.descent()));
-	el.appendChild(variatToDom(m_document, "string", textItem.text()));
-	m_pageNode.appendChild(el);
+	writeChar('t');
+	writePoint(p);
+	writeFont(textItem.font());
+	writeInt(textItem.renderFlags());
+	writeDouble(textItem.width());
+	writeDouble(textItem.ascent());
+	writeDouble(textItem.descent());
+	writeString(textItem.text());
 }
 
 void PaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap &pm, const QPointF &s)
 {
-	QDomElement el = m_document->createElement("tiledPixmap");
-	el.appendChild(variatToDom(m_document, "toRect", r));
-	el.appendChild(variatToDom(m_document, "toPoint", s));
-	el.appendChild(variatToDom(m_document, "img", pm));
-	m_pageNode.appendChild(el);
+	writeChar('d');
+	writeRect(r);
+	writePoint(s);
+	writeImage(pm.toImage());
 }
 
 void PaintEngine::drawImage(const QRectF &r, const QImage &pm, const QRectF &sr,
                             Qt::ImageConversionFlags flags)
 {
-	QDomElement el = m_document->createElement("image");
-	el.appendChild(variatToDom(m_document, "toRect", r));
-	el.appendChild(variatToDom(m_document, "sourceRect", sr));
-	el.appendChild(variatToDom(m_document, "flags", (int)flags));
-	el.appendChild(variatToDom(m_document, "img", pm));
-	m_pageNode.appendChild(el);
+	writeChar('i');
+	writeRect(r);
+	writeRect(sr);
+	writeInt(flags);
+	writeImage(pm);
 }
 
 QPaintEngine::Type PaintEngine::type() const
@@ -270,6 +269,141 @@ QPaintEngine::Type PaintEngine::type() const
 
 PaintEngine::~PaintEngine()
 {
+}
+
+void PaintEngine::writeImage(const QImage& img)
+{
+	QByteArray data;
+	QBuffer buffer(&data);
+	buffer.open(QBuffer::ReadWrite);
+	img.save(&buffer, "PNG");
+	writeInt(data.size());
+	m_document->write(data);
+	buffer.close();
+}
+
+void PaintEngine::writeColor(const QColor& color)
+{
+	writeInt(color.red());
+	writeInt(color.green());
+	writeInt(color.blue());
+	writeInt(color.alpha());
+}
+
+void PaintEngine::writeString(const QString & string)
+{
+	writeInt(string.toUtf8().size());
+	m_document->write(string.toUtf8());
+}
+
+void PaintEngine::writeFont(const QFont& font)
+{
+	writeString(font.toString());
+}
+
+void PaintEngine::writeBrush(const QBrush& brush)
+{
+	writeColor(brush.color());
+	writeImage(brush.textureImage());
+	writeInt(brush.style());
+	writeInt(brush.gradient() && brush.gradient()->type()!=QGradient::NoGradient);
+	if (brush.gradient() && brush.gradient()->type()!=QGradient::NoGradient)
+	{
+		writeInt(brush.gradient()->spread());
+		writeInt(brush.gradient()->coordinateMode());
+		writeInt(brush.gradient()->type());
+		switch(brush.gradient()->type())
+		{
+			case QGradient::LinearGradient:
+				writePoint(reinterpret_cast<const QLinearGradient*>(brush.gradient())->start());
+				writePoint(reinterpret_cast<const QLinearGradient*>(brush.gradient())->finalStop());
+				break;
+			case QGradient::RadialGradient:
+				writePoint(reinterpret_cast<const QRadialGradient*>(brush.gradient())->center());
+				writeDouble(reinterpret_cast<const QRadialGradient*>(brush.gradient())->radius());
+				writePoint(reinterpret_cast<const QRadialGradient*>(brush.gradient())->focalPoint());
+				break;
+			case QGradient::ConicalGradient:
+				writePoint(reinterpret_cast<const QConicalGradient*>(brush.gradient())->center());
+				writeDouble(reinterpret_cast<const QConicalGradient*>(brush.gradient())->angle());
+				break;
+			default:
+				break;
+		}
+		writeInt(brush.gradient()->stops().size());
+		foreach(QGradientStop stop, brush.gradient()->stops())
+		{
+			writeDouble(stop.first);
+			writeColor(stop.second);
+		}
+	}
+}
+
+void PaintEngine::writePen(const QPen& pen)
+{
+	writeBrush(pen.brush());
+	writeColor(pen.color());
+	writeInt(pen.capStyle());
+	writeInt(pen.isCosmetic());
+	writeInt(pen.joinStyle());
+	writeDouble(pen.miterLimit());
+	writeInt(pen.width());
+	writeInt(pen.style());
+}
+
+void PaintEngine::writeRect(const QRectF& rect)
+{
+	writeDouble(rect.x());
+	writeDouble(rect.y());
+	writeDouble(rect.width());
+	writeDouble(rect.height());
+}
+
+void PaintEngine::writePoint(const QPointF& point)
+{
+	writeDouble(point.x());
+	writeDouble(point.y());
+}
+
+void PaintEngine::writeLine(const QLineF& line)
+{
+	writeDouble(line.x1());
+	writeDouble(line.y1());
+	writeDouble(line.x2());
+	writeDouble(line.y2());
+}
+
+void PaintEngine::writeRegion(const QRegion& reg)
+{
+	writeInt(reg.rects().size());
+	foreach(QRect r, reg.rects())
+		writeRect(r);
+}
+
+void PaintEngine::writeInt(const int & val )
+{
+	m_document->write((char*)&val, sizeof(int));
+}
+
+void PaintEngine::writeDouble(const qreal & val )
+{
+	m_document->write((char*)&val, sizeof(qreal));
+}
+
+void PaintEngine::writeChar(const char & val )
+{
+	m_document->write((char*)&val, sizeof(char));
+}
+
+void PaintEngine::writePath(const QPainterPath& path)
+{
+	writeInt(path.elementCount());
+	for (int i=0;i<path.elementCount();i++)
+	{
+		writeInt(path.elementAt(i).type);
+		writeDouble(path.elementAt(i).x);
+		writeDouble(path.elementAt(i).y);
+	}
 }
 
 }

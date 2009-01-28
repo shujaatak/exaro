@@ -24,15 +24,12 @@ namespace Report
 PageGraphicsItem::PageGraphicsItem(Page * page)
 		: QGraphicsItem(0)
 {
-	setFlags(QGraphicsItem::ItemIsMovable);
 	m_page=page;
 }
 
 QRectF PageGraphicsItem::boundingRect() const
 {
 	QRectF rf=QRectF(QPointF(0,0),m_page->pageSize());
-	rf.setWidth(rf.width()*(double)QDesktopWidget().screen()->width()/(screen_widthMM*10));
-	rf.setHeight(rf.height()*(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
 	return rf;
 }
 
@@ -40,8 +37,7 @@ void PageGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem 
 {
 	painter->save();
 	painter->fillRect(option->exposedRect,QBrush(QColor(Qt::white)));
-	painter->scale(((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)),((double)QDesktopWidget().screen()->height()/(screen_heightMM*10)));
-	m_page->render(painter);
+	m_page->render(painter, option->exposedRect);
 	painter->restore();
 }
 

@@ -17,6 +17,7 @@
 #define REPORTPAINTDEVICE_H
 
 #include <QPaintDevice>
+#include <QBuffer>
 #include <QDomDocument>
 #include <QPrinter>
 
@@ -27,35 +28,35 @@ class PaintEngine;
 
 class PaintDevice : public QPaintDevice
 {
-private:
-	QDomNode & pageNode();
-	QDomDocument * domDocument();
+public:
+	struct PageStruct
+	{
+		int size;
+		qreal width,height;
+		QPrinter::Orientation orientation;
+	};
 
-	void endDoc();
+private:
 	friend class PaintEngine;
 
 public:
-	PaintDevice();
+	PaintDevice(QIODevice * doc);
 
 	~PaintDevice();
-	void setOutputDocument(QDomDocument * outputDocument);
-	void setReportRoot(QDomNode & reportRoot);
-	void setPaperSize(QPrinter::PaperSize size);
+	void setPaperSize(const QSizeF & pageSize);
 	void setPaperOrientation(QPrinter::Orientation orientation);
 	void newPage();
+	void allowEmptyPages(bool allow);
 	QPaintEngine * paintEngine() const;
-
 	int metric(QPaintDevice::PaintDeviceMetric metric) const;
 
 private:
+	bool m_allowEmptyPages;
 	PaintEngine * m_paintEngine;
-	QDomDocument * m_domDocument;
-	QDomNode m_reportRoot;
-	QDomNode m_currentPage;
-	QPrinter::PaperSize m_paperSize;
-	QPrinter::Orientation m_paperOrientation;
-	bool m_docEnded;
-	int m_pageNumber;
+	QIODevice * m_doc;
+	qint64 m_pagePos;
+	PageStruct m_currentPageStruct;
+	QPrinter m_printer;
 };
 
 }
