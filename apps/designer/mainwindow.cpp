@@ -573,7 +573,7 @@ void mainWindow::zoomWYSIWYG()
 	if (dynamic_cast<QGraphicsView*>(m_tw->currentWidget()))
 	{
 		dynamic_cast<QGraphicsView*>(m_tw->currentWidget())->resetMatrix();
-		dynamic_cast<QGraphicsView*>(m_tw->currentWidget())->scale((double)QDesktopWidget().screen()->width()/(screen_widthMM*10),(double)(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
+		dynamic_cast<QGraphicsView*>(m_tw->currentWidget())->scale((double)QDesktopWidget().screen()->width()/(screen_widthMM*10),(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
 		dynamic_cast<QGraphicsView*>(m_tw->currentWidget())->centerOn(0,0);
 	}
 }
