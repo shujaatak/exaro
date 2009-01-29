@@ -157,9 +157,8 @@ int ItemInterface::resizeHandle()
 void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	foreach(QGraphicsItem *item, scene()->items())
-
-	if (item->zValue() == 1)
-		item->setZValue(0);
+		if (item->zValue() == 1)
+			item->setZValue(0);
 
 	setZValue(1);
 
