@@ -68,6 +68,7 @@ private:
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;
 	QObject * m_lastSelectedObject;
+	QPointF m_lastSelectedObjectPos;
 	QMenu	m_contextMenu;
 	QDockWidget * m_dwToolBox;
 	QDockWidget * m_dwPropertyEditor;
@@ -90,9 +91,9 @@ protected slots:
 	void saveReportAs();
 	void openReport();
 	void newReport();
-        void openTemplate();
-        void openTemplate(const QString &);
-        void prepareLastTemplateMenu();
+	void openTemplate();
+	void openTemplate(const QString &);
+	void prepareLastTemplateMenu();
 	void executeReport();
 	void setupDatabase();
 	void copy();
@@ -101,7 +102,9 @@ protected slots:
 	void cut();
 	void objectChanged(const QModelIndex & current, const QModelIndex & previous);
 	void about();
-        void options();
+	void options();
+	void saveItem();
+	void openItem();
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
