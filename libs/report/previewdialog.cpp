@@ -55,7 +55,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 {
 	initMyResource();
 
-
+	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
 
 #if defined(Q_OS_WIN)
