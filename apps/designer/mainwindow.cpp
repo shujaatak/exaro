@@ -40,6 +40,8 @@
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 
+#include <QDebug>
+
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
 
@@ -146,6 +148,9 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	connect(actionCut, SIGNAL(triggered(bool)), SLOT(cut()));
 	connect(actionPaste, SIGNAL(triggered(bool)), SLOT(paste()));
 	connect(actionDelete, SIGNAL(triggered(bool)), SLOT(del()));
+	connect(actionSave_item_as,SIGNAL(triggered(bool)), SLOT(saveItem()));
+	connect(actionOpen_item_from,SIGNAL(triggered(bool)), SLOT(openItem()));
+
 	connect(action_About_eXaro, SIGNAL(triggered(bool)), SLOT(about()));
         connect(actionOptions, SIGNAL(triggered(bool)), SLOT(options()));
 
@@ -162,6 +167,9 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	m_contextMenu.addAction(actionZoom_in);
 	m_contextMenu.addAction(actionZoom_out);
 	m_contextMenu.addAction(actionZoom_original);
+	m_contextMenu.addSeparator();
+	m_contextMenu.addAction(actionSave_item_as);
+	m_contextMenu.addAction(actionOpen_item_from);
 
 	m_report = m_reportEngine.reports()[0]->createInstance(0);
 	m_report->setObjectName("report");
@@ -206,6 +214,82 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	m_objectModel.setRootObject(m_report);
 
         m_smTemplate = 0;
+}
+
+void mainWindow::saveItem()
+{
+	if (!m_lastSelectedObject)
+		return;
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save item"),
+			QDir::homePath() + "/item.bdrti", tr("Item (*.bdrti)"));
+	if (!fileName.length())
+		return;
+
+	QFile file(fileName);
+
+	if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QDomDocument doc("report");
+		doc.appendChild(Report::ReportEngine::objectProperties(m_lastSelectedObject, &doc));
+		file.write(doc.toByteArray(4));
+		file.close();
+	}
+}
+
+void mainWindow::openItem()
+{
+	if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
+		return;
+
+	QString reportName = QFileDialog::getOpenFileName(this, tr("Open report"),
+	                 QDir::homePath() + "", tr("Item (*.bdrti)"));
+
+	if (!reportName.size())
+		return;
+
+	QFile file(reportName);
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QDomDocument doc("report");
+		if (!doc.setContent(file.readAll()))
+			return;
+		QObject * obj=m_reportEngine.objectFromDom(m_lastSelectedObject, doc.firstChildElement());
+		Report::ItemInterface * item=dynamic_cast<Report::ItemInterface*>(obj);
+		if (!item)
+		{
+			delete obj;
+			return;
+		}
+		if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->canContain(item))
+		{
+			delete item;
+			return;
+		}
+		item->setPos(m_lastSelectedObjectPos);
+		if (dynamic_cast<Report::PageInterface*>(m_lastSelectedObject))
+		{
+			if (dynamic_cast<Report::PageInterface*>(m_lastSelectedObject)->canContain(item))
+				dynamic_cast<Report::PageInterface*>(m_lastSelectedObject)->addItem(item);
+			else
+			{
+				delete item;
+				item = 0;
+			}
+		}
+		else
+		
+		if (item)
+		{
+			pasteItem(item);
+			if (dynamic_cast<Report::BandInterface*>(item))
+				dynamic_cast<Report::BandInterface*>(item)->setOrder(INT_MAX);
+			m_pe->setObject(item);
+			m_objectModel.setRootObject(m_report);
+			selectObject(item, m_objectModel.index(0,0));
+		}
+
+	}
+
 }
 
 void mainWindow::about()
@@ -647,6 +731,7 @@ void mainWindow::newPage()
 void mainWindow::itemSelected(QObject *object, QPointF pos)
 {
 	m_lastSelectedObject = object;
+	m_lastSelectedObjectPos=pos;
 	QListWidget* lw = dynamic_cast<QListWidget*>(m_tb->currentWidget());
 
 	if (lw && lw->currentRow() > -1)
@@ -677,6 +762,7 @@ void mainWindow::itemSelected(QObject *object, QPointF pos)
 			m_pe->setObject(item);
 			m_objectModel.setRootObject(m_report);
 			selectObject(item, m_objectModel.index(0,0));
+			m_lastSelectedObject=item;
 		}
 		else
 		{

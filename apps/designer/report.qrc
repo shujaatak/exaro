@@ -41,5 +41,7 @@
         <file>images/button_objects.png</file>
         <file>images/button_property.png</file>
         <file>images/button_uieditor.png</file>
+        <file>images/save-item-template.png</file>
+        <file>images/open-item-template.png</file>
     </qresource>
 </RCC>
