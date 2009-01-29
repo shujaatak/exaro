@@ -20,9 +20,15 @@
 namespace Report
 {
 
+#define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
+
 PreviewWidget::PreviewWidget(QWidget *parent)
-		: QGraphicsView(parent), m_zoomStep(0.25), m_zoomMax(4), m_zoomMin(0.25), m_currentZoom(1)
+		: QGraphicsView(parent)
 {
+	m_currentZoom=(double)QDesktopWidget().screen()->width()/(screen_widthMM*10);
+	m_zoomMin=m_currentZoom/4;
+	m_zoomMax=m_currentZoom*4;
+	m_zoomStep=m_currentZoom/4;
 }
 
 
@@ -32,29 +38,32 @@ PreviewWidget::~PreviewWidget()
 
 void PreviewWidget::zoomIn()
 {
-	if (m_currentZoom + m_zoomStep > m_zoomMax)
-		m_currentZoom = m_zoomMax - m_zoomStep;
-	emit(zoomChanged((int)((m_currentZoom + m_zoomStep)*100 + 0.5)));
+	m_currentZoom += m_zoomStep;
+	if (m_currentZoom > m_zoomMax)
+		m_currentZoom = m_zoomMax;
+	emit(zoomChanged((int)((m_currentZoom/((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)))*100 + 0.5)));
 }
 
 void PreviewWidget::zoomOut()
 {
-	if (m_currentZoom - m_zoomStep < m_zoomMin)
-		m_currentZoom = m_zoomMin + m_zoomStep;
-	emit(zoomChanged((int)((m_currentZoom - m_zoomStep)*100 + 0.5)));
+	m_currentZoom -= m_zoomStep;
+	if (m_currentZoom < m_zoomMin)
+		m_currentZoom = m_zoomMin;
+	emit(zoomChanged((int)((m_currentZoom/((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)))*100 + 0.5)));
 }
 
 void PreviewWidget::zoomTo(int zoom)
 {
-	if (zoom > m_zoomMax*100)
-		zoom = m_zoomMax * 100;
+	qreal z=((double)zoom/100)*((double)QDesktopWidget().screen()->width()/(screen_widthMM*10));
+	if (z > m_zoomMax)
+		z = m_zoomMax;
 
-	if (zoom < m_zoomMin*100)
-		zoom = m_zoomMin * 100;
+	if (z < m_zoomMin)
+		z = m_zoomMin;
 
 	resetTransform();
-	scale(((qreal)zoom / 100), ((qreal)zoom / 100));
-	m_currentZoom = (qreal)zoom / 100;
+	scale(z, z);
+	m_currentZoom = z;
 }
 
 void PreviewWidget::setZoomStep(qreal step)

@@ -13,36 +13,26 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-#include <QPainter>
-#include <QDesktopWidget>
-#include <QStyleOptionGraphicsItem>
-#include "pagegraphicsitem.h"
-
+#include "fakepaintdevice.h"
+#include <QPrintEngine>
 namespace Report
 {
 
-PageGraphicsItem::PageGraphicsItem(Page * page)
-		: QGraphicsItem(0)
+FakePaintDevice::FakePaintDevice()
+		: QPaintDevice()
 {
-	m_page=page;
+	m_paintEngine = new FakePaintEngine;
 }
 
-QRectF PageGraphicsItem::boundingRect() const
+QPaintEngine * FakePaintDevice::paintEngine() const
 {
-	QRectF rf=QRectF(QPointF(0,0),m_page->pageSize());
-	return rf;
+	return m_paintEngine;
 }
 
-void PageGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+int FakePaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
 {
-	painter->save();
-	painter->fillRect(option->exposedRect,QBrush(QColor(Qt::white)));
-	m_page->render(painter, option->exposedRect);
-	painter->restore();
+	return m_printer.printEngine()->metric(metric);
 }
 
-PageGraphicsItem::~PageGraphicsItem()
-{
-}
 
 }

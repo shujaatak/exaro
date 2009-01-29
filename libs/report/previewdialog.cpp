@@ -32,15 +32,16 @@
 #include <QSettings>
 #include <QDesktopWidget>
 #include <QScrollBar>
-
 #include <QDebug>
 
-#include "previewdialog.h"
 #include "document.h"
 #include "page.h"
+#include "pagegraphicsitem.h"
+
+#include "previewdialog.h"
 #include "previewwidget.h"
 #include "searchwidget.h"
-#include "pagegraphicsitem.h"
+
 
 inline void initMyResource()
 {
@@ -164,6 +165,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	act->setShortcut(QKeySequence(QKeySequence::Print));
 	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
 
+#if 0 
 	toolbar->addSeparator();
 
 	act = toolbar->addAction(QIcon(":/images/switch-painting-system.png"), tr("Switch painting system"));
@@ -171,6 +173,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	QSettings s;
 	act->setChecked(s.value("eXaro/previewImage",true).toBool());
 	connect(act, SIGNAL(triggered(bool)), SLOT(switchPaintingSystem()));
+#endif
 
 	toolbar->addSeparator();
 	act = toolbar->addAction(QIcon(":/images/quit.png"), tr("Quit"));
@@ -247,12 +250,15 @@ void PreviewDialog::print()
 			printer.newPage();
 		else
 		{
-			printer.setPaperSize(p->paperSize());
+			printer.setPaperSize(p->pageSize()*UNIT,QPrinter::Millimeter);
 			printer.setFullPage(true);
 		}
 		painter.resetTransform();
 		painter.scale((double)printer.paperSize(QPrinter::DevicePixel).width()/p->pageSize().width(),(double)printer.paperSize(QPrinter::DevicePixel).height()/p->pageSize().height());
-		p->render(&painter);
+		p->render(&painter, QRectF(printer.pageRect(QPrinter::Millimeter).x()/UNIT,
+					printer.pageRect(QPrinter::Millimeter).y()/UNIT,
+					printer.pageRect(QPrinter::Millimeter).width()/UNIT,
+					printer.pageRect(QPrinter::Millimeter).height()/UNIT));
 	}
 	painter.end();
 }
@@ -266,18 +272,15 @@ void PreviewDialog::clearSelection()
 
 void PreviewDialog::drawSelection(QGraphicsItem *  parent, QRectF & rect)
 {
-	QPointF p=rect.topLeft();
-	QSizeF s=rect.size();
-	p.setX(p.x()*(double)QDesktopWidget().screen()->width()/(screen_widthMM*10));
-	p.setY(p.y()*(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
-	s.setWidth(s.width()*(double)QDesktopWidget().screen()->width()/(screen_widthMM*10));
-	s.setHeight(s.height()*(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
-	rect=QRectF(p,s);
 	QGraphicsRectItem * r = new QGraphicsRectItem(rect, parent);
 	QBrush b;
 	b.setColor(QColor(25, 25, 25, 100));
 	b.setStyle(Qt::SolidPattern);
 	r->setBrush(b);
+	QPen p;
+	p.setWidth(0);
+	p.setBrush(b);
+	r->setPen(p);
 	m_previewWidget->ensureVisible(r);
 }
 
@@ -398,35 +401,42 @@ void PreviewDialog::setSpaceBetweenPages(int spaceBetweenPages)
 	m_spaceBetweenPages=spaceBetweenPages;
 }
 
-void PreviewDialog::setDocumentNode(QDomNode docNode)
+void PreviewDialog::setExportDocument(QDomNode exportNode)
 {
-	m_docNode = docNode;
-	m_exportNode = docNode.nextSibling();
+	m_exportNode=exportNode;
+}
+
+void PreviewDialog::setDocument(QIODevice * doc)
+{
+	m_docDevice=doc;
 	int y = m_spaceBetweenPages;
 	int w = 0;
 	bool useImage;
+#if 0
 	QSettings s;
 	useImage=s.value("eXaro/previewImage",true).toBool();
-
+#endif
 	foreach(pageStruct pag, m_pages)
 		delete pag.page;
 
 	m_pages.clear();
 
-	delete m_doc;
 	delete m_previewWidget->scene();
 
-	m_doc = new Document(docNode);
+	delete m_doc;
+	m_doc = new Document(doc);
+
 	QGraphicsScene * previewScene = new QGraphicsScene(this);
 
 	previewScene->setBackgroundBrush(QBrush(Qt::gray));
 	m_previewWidget->setScene(previewScene);
 	m_previewWidget->resetTransform();
+	m_previewWidget->scale((double)QDesktopWidget().screen()->width()/(screen_widthMM*10),(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
 	for (int i = 0;i < m_doc->numPages();i++)
 	{
 		pageStruct pag;
 		pag.page = m_doc->page(i);
-
+#if 0
 		if (useImage)
 		{
 			QSizeF sz=pag.page->pageSize();
@@ -437,12 +447,13 @@ void PreviewDialog::setDocumentNode(QDomNode docNode)
 			pt.begin(&pm);
 			pt.fillRect(0, 0, pag.page->pageSize().width(), pag.page->pageSize().height(), QBrush(Qt::white));
 			pt.scale(((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)),((double)QDesktopWidget().screen()->height()/(screen_heightMM*10)));
-			pag.page->render(&pt);
+			pag.page->render(&pt, QRectF(0,0,sz.toSize().width(), sz.toSize().height()));
 			pt.end();
 			pag.previewItem = previewScene->addPixmap(pm);
 			pag.previewItem->setFlag(QGraphicsItem::ItemIsMovable);
 		}
 		else
+#endif
 			pag.previewItem= new PageGraphicsItem(pag.page);
 
 		previewScene->addItem(pag.previewItem);
@@ -457,7 +468,7 @@ void PreviewDialog::setDocumentNode(QDomNode docNode)
 	}
 	previewScene->setSceneRect(0,0,w,y);
 }
-
+#if 0
 void PreviewDialog::switchPaintingSystem()
 {
 	QSettings s;
@@ -470,7 +481,7 @@ void PreviewDialog::switchPaintingSystem()
 	if (m_previewWidget->horizontalScrollBar())
 		hscrollTo=m_previewWidget->horizontalScrollBar()->value();
 
-	setDocumentNode(m_docNode);
+	setDocument(m_docDevice);
 	m_previewWidget->zoomTo(m_zoomSpinBox->value());
 
 	if (m_previewWidget->verticalScrollBar())
@@ -479,6 +490,7 @@ void PreviewDialog::switchPaintingSystem()
 	if (m_previewWidget->horizontalScrollBar())
 		m_previewWidget->horizontalScrollBar()->setValue(hscrollTo);
 }
+#endif
 
 void PreviewDialog::accept()
 {

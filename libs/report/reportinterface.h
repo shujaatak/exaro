@@ -22,7 +22,6 @@
 #include <QList>
 #include <QVariant>
 #include <QDomDocument>
-#include <QPrinter>
 #include <QPainter>
 #include <QFile>
 #include <QScriptEngine>
@@ -31,7 +30,9 @@
 #include <QSplashScreen>
 #include <QSqlDatabase>
 
+
 #include "pageinterface.h"
+
 #include "bandinterface.h"
 #include "globals.h"
 
@@ -196,6 +197,7 @@ protected:
 
 protected:
 	PaintDevice * m_printer;
+
 	QPainter m_painter;
 	QDomDocument m_doc;
 	QDomNode m_exportNode;

@@ -26,10 +26,13 @@
 #include <QSqlError>
 #include <QCoreApplication>
 #include <QPrintPreviewWidget>
-#include <QSqlField>     
+#include <QSqlField>
+
+#include <QTemporaryFile>
+#include <QDir>
+#include "paintdevice.h"
 
 #include "previewdialog.h"
-#include "paintdevice.h"
 #include "globals.h"
 
 namespace Report
@@ -422,22 +425,23 @@ bool ReportInterface::exec()
 
 	m_doc.appendChild(m_doc.createComment("Author '" + author() + "'"));
 
+	QTemporaryFile pdf_file(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf");
+	if (!pdf_file.open())
+		throw QString(tr("Can't create temporary files"));
 	if (!m_reportCanceled)
 	{
-		m_printer = new PaintDevice;
-		m_printer->setOutputDocument(&m_doc);
-		QDomNode report = m_doc.createElement("report");
-		m_printer->setReportRoot(report);
+		m_printer = new PaintDevice(&pdf_file);
 		m_exportNode = m_doc.createElement("export");
-
 		m_painter.begin(m_printer);
 		m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+		bool first=true;
 		foreach(QObject * obj, children())
 		{
-			m_printer->newPage();
+			if (!first)
+				m_printer->newPage();
 			if (dynamic_cast<PageInterface*>(obj))
 			{
-				m_printer->setPaperSize((QPrinter::PaperSize)dynamic_cast<PageInterface*>(obj)->pageSize());
+				m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
 				m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
 				paintPage(dynamic_cast<PageInterface*>(obj));
 			}
@@ -445,8 +449,6 @@ bool ReportInterface::exec()
 		m_painter.end();
 		delete m_printer;
 		m_printer = 0;
-		m_doc.appendChild(report);
-		m_doc.appendChild(m_exportNode);
 	}
 	emit afterExec();
 
@@ -454,7 +456,8 @@ bool ReportInterface::exec()
 	if (!m_reportCanceled)
 	{
 		PreviewDialog d;
-		d.setDocumentNode(m_doc.documentElement());
+		d.setDocument(&pdf_file);
+		d.setExportDocument(m_exportNode);
 		m_splashScreen.finish(&d);
 		d.exec();
 	}

@@ -21,6 +21,8 @@ SOURCES +=   iteminterface.cpp \
    globals.cpp \
    paintdevice.cpp \
    paintengine.cpp \
+   fakepaintdevice.cpp \
+   fakepaintengine.cpp \
    document.cpp \
    page.cpp \
    previewdialog.cpp \

@@ -13,36 +13,42 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-#include <QPainter>
-#include <QDesktopWidget>
-#include <QStyleOptionGraphicsItem>
-#include "pagegraphicsitem.h"
+
+#include "fakepaintengine.h"
 
 namespace Report
 {
 
-PageGraphicsItem::PageGraphicsItem(Page * page)
-		: QGraphicsItem(0)
+FakePaintEngine::FakePaintEngine()
+		: QPaintEngine(QPaintEngine::AllFeatures)
 {
-	m_page=page;
 }
 
-QRectF PageGraphicsItem::boundingRect() const
+bool FakePaintEngine::begin(QPaintDevice *pdev)
 {
-	QRectF rf=QRectF(QPointF(0,0),m_page->pageSize());
-	return rf;
+	return true;
 }
 
-void PageGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+bool FakePaintEngine::end()
 {
-	painter->save();
-	painter->fillRect(option->exposedRect,QBrush(QColor(Qt::white)));
-	m_page->render(painter, option->exposedRect);
-	painter->restore();
+	return true;
 }
 
-PageGraphicsItem::~PageGraphicsItem()
+void FakePaintEngine::updateState(const QPaintEngineState &state)
 {
+	Q_UNUSED(state)
+}
+
+void FakePaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr)
+{
+	Q_UNUSED(r)
+	Q_UNUSED(pm)
+	Q_UNUSED(sr)
+}
+
+QPaintEngine::Type FakePaintEngine::type() const 
+{
+	return QPaintEngine::User;
 }
 
 }

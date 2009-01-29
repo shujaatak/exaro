@@ -15,8 +15,8 @@
  ***************************************************************************/
 #ifndef REPORTDOCUMENT_H
 #define REPORTDOCUMENT_H
-#include <QDomDocument>
-
+#include <QIODevice>
+#include <QPair>
 namespace Report
 {
 
@@ -24,20 +24,15 @@ class Page;
 
 class Document
 {
+
 public:
-	Document(QDomDocument * doc = 0);
-	Document(QDomNode & node);
-	void setReportDocument(QDomDocument * doc);
-	void setReportNode(QDomNode & node);
+	Document(QIODevice * doc);
 	int numPages();
 	Page * page(int pageNumber);
 
 private:
-	void calcPages();
-
-private:
-	QDomNode m_docNode;
-	int m_numPages;
+	QIODevice * m_doc;
+	QList< qint64 > m_pages;
 };
 
 }

@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
  *                                                                         *
@@ -13,36 +13,30 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-#include <QPainter>
-#include <QDesktopWidget>
-#include <QStyleOptionGraphicsItem>
-#include "pagegraphicsitem.h"
+#ifndef FAKEREPORTPAINTENGINE_H
+#define FAKEREPORTPAINTENGINE_H
+
+#include <QPaintEngine>
 
 namespace Report
 {
 
-PageGraphicsItem::PageGraphicsItem(Page * page)
-		: QGraphicsItem(0)
-{
-	m_page=page;
-}
+class FakePaintDevice;;
 
-QRectF PageGraphicsItem::boundingRect() const
+class FakePaintEngine : public QPaintEngine
 {
-	QRectF rf=QRectF(QPointF(0,0),m_page->pageSize());
-	return rf;
-}
+private:
+	FakePaintEngine();
+	friend class FakePaintDevice;
+public:
 
-void PageGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
-{
-	painter->save();
-	painter->fillRect(option->exposedRect,QBrush(QColor(Qt::white)));
-	m_page->render(painter, option->exposedRect);
-	painter->restore();
-}
-
-PageGraphicsItem::~PageGraphicsItem()
-{
-}
+	bool begin(QPaintDevice *pdev);
+	bool end();
+	void updateState(const QPaintEngineState &state);
+	void drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF &sr);
+	QPaintEngine::Type type() const;
+};
 
 }
+
+#endif
