@@ -21,6 +21,7 @@
 #include <QDebug>
 
 #include "page.h"
+#include "fakepaintdevice.h"
 #include "globals.h"
 
 namespace Report
@@ -282,20 +283,17 @@ bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, 
 
 	if ((caseSensitive && m_searchText != text) || (!caseSensitive && m_searchText.toLower() != text.toLower()))
 	{
-		qDebug()<<"ici?!?!";
 		if (direction == NextResult)
 			m_searchPos=m_pos;
 		else
 			m_searchPos=m_toPos;
 	}
 
-	qDebug()<<m_searchPos;
-
 	QList<stringStruct> strings;
 
 	m_searchText = text;
 
-	QPixmap px(m_pageStruct.width, m_pageStruct.height);
+	FakePaintDevice px;//(m_pageStruct.width, m_pageStruct.height,QImage::Format_Mono);
 	QPainter * p = new QPainter(&px);
 	m_search=true;
 	m_exposeRect=QRectF();
