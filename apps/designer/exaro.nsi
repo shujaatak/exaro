@@ -44,7 +44,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "eXaro_setup_1.0.0.exe"
+OutFile "eXaro_setup_1.0.1.exe"
 InstallDir "$PROGRAMFILES\eXaro"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -73,12 +73,12 @@ Section "MainSection" SEC01
   File "QtCore4.dll"
   File "PropertyEditor.dll"
   File "libpq.dll"
-  File "ssleay32.dll"
-  File "libeay32.dll"
-  File "krb5_32.dll"
-  File "comerr32.dll"
-  File "libiconv-2.dll"
-  File "libintl-2.dll"
+;  File "ssleay32.dll"
+;  File "libeay32.dll"
+;  File "krb5_32.dll"
+;  File "comerr32.dll"
+;  File "libiconv-2.dll"
+;  File "libintl-2.dll"
   File "quazip.dll"
   File "mingwm10.dll"
   SetOutPath "$INSTDIR\popertyEditor"
