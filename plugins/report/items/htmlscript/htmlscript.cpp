@@ -66,28 +66,6 @@ void HtmlScript::setSizeFlags(SizeFlags sizeFlags)
 	m_sizeFlags=sizeFlags;
 }
 
-void HtmlScript::prepare(QPainter * painter)
-{
-	ItemInterface::prepare(painter);
-	if (!m_sizeFlags)
-		return;
-
-#if QT_VERSION >= 0x040402
-	QRectF rect = boundingRect();
-	adjustRect(rect);
-	QWebPage wp;
-	wp.setViewportSize(QSize(rect.width()/2.54, rect.height()/2.54));
-	wp.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-	wp.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-	wp.mainFrame()->setHtml(scriptEngine()->evaluate(m_script).toString());
-	QSize pageSize=wp.mainFrame()->contentsSize();
-	if (m_sizeFlags&AutoSizeHorizontally && pageSize.width()*2.54>rect.width())
-		setWidth(pageSize.width()*2.54);
-	if (m_sizeFlags&AutoSizeVertically && pageSize.height()*2.54>rect.height())
-		setStretch(pageSize.height()*2.54-rect.height());
-#endif
-}
-
 void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
 	if (option->type != QStyleOption::SO_GraphicsItem)
@@ -115,7 +93,6 @@ void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 			painter->setClipRect( rect );
 			painter->translate( rect.topLeft() );
 			painter->scale( 2.54 ,  2.54 );
-			//QRect r (0,0,rect.width()*2.54, rect.height()*2.54);
 			wp.mainFrame()->render(painter);
 #else
 			QTextDocument td; // until QWebPage will work I think QTextDocument is the best choise
