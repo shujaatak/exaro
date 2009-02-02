@@ -40,8 +40,6 @@
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 
-#include <QDebug>
-
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
 
@@ -49,6 +47,7 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 		: QMainWindow(parent, fl), m_report(0)
 {
 	setupUi(this);
+	setWindowTitle(tr("eXaro v%1").arg(EXARO_VERSION));
 
 #ifdef Q_OS_MAC
 	toolBar->setFloatable(false);
