@@ -8,10 +8,16 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 #comment or remove the above line before release
 
+# please choose between GPL or LGPL license
+set (EXARO_LICENSE "GPL")
+
+message("*** eXaro use ${EXARO_LICENSE} license ***")
+
 set (EXARO_VERSION_MAJOR 1)
 set (EXARO_VERSION_MINOR 80)
 set (EXARO_VERSION_RELEASE 0)
 set (EXARO_VERSION "${EXARO_VERSION_MAJOR}.${EXARO_VERSION_MINOR}.${EXARO_VERSION_RELEASE}" )
+
 
 add_definitions (-DEXARO_VERSION=\"${EXARO_VERSION}\")
 
@@ -30,6 +36,7 @@ set( QT_USE_QTXML TRUE )
 set( QT_USE_QTSQL TRUE )
 set( QT_USE_QTSCRIPT TRUE )
 set( QT_USE_QTWEBKIT TRUE )
+set( QT_USE_QTOPENGL TRUE )
 
 include( ${QT_USE_FILE} )
 include_directories(
