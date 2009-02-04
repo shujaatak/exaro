@@ -108,6 +108,7 @@ public:
 	QObject* paste(QObject* parent);
 	void copy(QObject* object);
 
+	ItemInterface * findItemByClassName(const char * name);
 private:
 	static bool cmpBands(BandInterface * b1, BandInterface * b2);
 

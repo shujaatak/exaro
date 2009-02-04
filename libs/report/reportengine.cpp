@@ -159,6 +159,17 @@ const QMap<QString, ItemInterface*> & ReportEngine::items() const
 	return m_items;
 }
 
+/*const*/ ItemInterface * ReportEngine::findItemByClassName(const char * name)
+{
+    foreach (ItemInterface * item, m_items)
+    {
+	if (item->metaObject()->className() == name)
+	    return item;
+    }
+    return 0;
+}
+
+
 const QList<PageInterface*>  & ReportEngine::pages() const
 {
 	return m_pages;

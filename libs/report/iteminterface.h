@@ -553,6 +553,8 @@ signals:
 	 * @param sender object how emitt the signal
 	 */
 	void afterPrint(QObject * sender);
+	
+	void geometryChanged(QObject * object, QRectF newGeometry, QRectF oldGeometry);
 
 private:
 	int m_resizeHandle;
@@ -566,6 +568,7 @@ private:
 	QFont m_font;
 	int m_opacity;
 	qreal m_stretch;
+	QRectF oldGeometry;
 };
 }
 

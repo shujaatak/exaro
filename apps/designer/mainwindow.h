@@ -29,13 +29,18 @@
 #include "designerquerywidget.h"
 #include "designeruiwidget.h"
 #include "objectmodel.h"
+#include "command.h"
 
 class QTabWidget;
 
 class QTreeView;
 
-class QToolBox;
+//class QToolBox;
 class NameValidator;
+
+class QUndoStack;
+
+class QUndoView;
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
 {
@@ -56,6 +61,8 @@ protected:
 private:
 	void openReport(const QString & report);
 	bool selectObject(QObject * object, QModelIndex index);
+        int _createNewPage_(int afterIndex = -1, QString pageName = QString());
+        void _deletePage_(int index);
 
 private:
 	ObjectModel m_objectModel;
@@ -76,8 +83,12 @@ private:
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
 	QDockWidget * m_dwObjectInspector;
+        QDockWidget * m_dwUndoView;
         QSignalMapper * m_smTemplate;
 	NameValidator * m_nameValidator;
+        QSignalMapper * m_smReport;
+        QUndoStack *undoStack;
+        QUndoView *undoView;
 
 protected slots:
 	void newPage();
@@ -96,6 +107,7 @@ protected slots:
 	void openTemplate();
 	void openTemplate(const QString &);
 	void prepareLastTemplateMenu();
+        void prepareLastReportMenu();
 	void executeReport();
 	void setupDatabase();
 	void copy();
@@ -107,9 +119,24 @@ protected slots:
 	void options();
 	void saveItem();
 	void openItem();
+        void undo();
+        void redo();
+        void itemMoved(QObject* movedItem, QPointF movedFromPosition);
+        void propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value);
+        void itemGeometryChanged(QObject* object, QRectF newGeometry, QRectF oldGeometry);
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
+
+friend class AddCommand;
+friend class MoveCommand;
+friend class DelCommand;
+friend class PropertyChangeCommand;
+friend class GeometryChangeCommand;
+friend class NewPageCommand;
+friend class RemovePageCommand;
+//friend class ChangePageCommand;
+
 };
 
 #endif
