@@ -35,6 +35,7 @@ class QTabWidget;
 class QTreeView;
 
 class QToolBox;
+class NameValidator;
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
 {
@@ -76,6 +77,7 @@ private:
 	QDockWidget * m_dwUiEditor;
 	QDockWidget * m_dwObjectInspector;
         QSignalMapper * m_smTemplate;
+	NameValidator * m_nameValidator;
 
 protected slots:
 	void newPage();

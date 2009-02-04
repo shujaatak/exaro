@@ -39,6 +39,7 @@
 #include "iteminterface.h"
 #include "aboutdialog.h"
 #include "optionsdialog.h"
+#include "namevalidator.h"
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
@@ -67,6 +68,8 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	m_dwPropertyEditor->setWidget(m_pe);
 	m_dwPropertyEditor->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::RightDockWidgetArea, m_dwPropertyEditor);
+	m_nameValidator = new NameValidator(this);
+	m_pe->setValidator(QVariant::String, m_nameValidator);
 
 	m_dwQueryEditor = new QDockWidget(tr("Query Editor"),this);
 	m_dquery = new Report::DesignerQueryWidget(m_dwQueryEditor);
@@ -175,6 +178,7 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	m_report->setName(tr("report name"));
 	m_report->setAuthor("(c) 2008 BogDan");
 	m_pe->setObject(m_report);
+	m_nameValidator->setRootObject(m_report);
 	m_saveFile = "";
 
 	for (int i = 0;i < m_reportEngine.items().uniqueKeys().size();i++)
@@ -480,6 +484,7 @@ void mainWindow::newReport()
 	m_dquery->setQueries(m_report->queries());
 	m_dui->setUis(m_report->uis());
 	m_objectModel.setRootObject(m_report);
+	m_nameValidator->setRootObject(m_report);
 }
 
 void mainWindow::editScript()
