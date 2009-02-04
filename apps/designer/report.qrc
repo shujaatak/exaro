@@ -43,5 +43,6 @@
         <file>images/button_uieditor.png</file>
         <file>images/save-item-template.png</file>
         <file>images/open-item-template.png</file>
+        <file>images/button_commands.png</file>
     </qresource>
 </RCC>

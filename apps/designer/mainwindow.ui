@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>902</width>
-    <height>484</height>
+    <width>896</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -28,8 +28,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>902</width>
-     <height>34</height>
+     <width>896</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File" >
@@ -49,6 +49,20 @@
     <addaction name="menuOpen_last_temlate" />
     <addaction name="separator" />
     <addaction name="actionExit" />
+    <widget class="QMenu" name="menuOpen_last_report">
+     <property name="title">
+      <string>Open last report</string>
+     </property>
+    </widget>
+    <addaction name="actionNew_report"/>
+    <addaction name="actionOpen_report"/>
+    <addaction name="menuOpen_last_report"/>
+    <addaction name="actionSave_report"/>
+    <addaction name="actionSave_report_as"/>
+    <addaction name="actionOpen_template"/>
+    <addaction name="menuOpen_last_temlate"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuReport" >
     <property name="title" >
@@ -86,6 +100,24 @@
     <addaction name="separator" />
     <addaction name="actionSave_item_as" />
     <addaction name="actionOpen_item_from" />
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionZoom_in"/>
+    <addaction name="actionZoom_out"/>
+    <addaction name="actionZoom_original"/>
+    <addaction name="separator"/>
+    <addaction name="actionLeft_magnet"/>
+    <addaction name="actionRight_magnet"/>
+    <addaction name="actionTop_magnet"/>
+    <addaction name="actionBottom_magnet"/>
+    <addaction name="actionVertical_magnet"/>
+    <addaction name="actionHorizontal_magnet"/>
    </widget>
    <widget class="QMenu" name="menuTools" >
     <property name="title" >
@@ -468,6 +500,22 @@
    </property>
    <property name="text" >
     <string>Open item from ...</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

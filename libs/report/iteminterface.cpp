@@ -169,6 +169,7 @@ int ItemInterface::resizeHandle()
 
 void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	oldGeometry = geometry();
 	foreach(QGraphicsItem *item, scene()->items())
 		if (item->zValue() == 1)
 			item->setZValue(0);
@@ -193,6 +194,10 @@ void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_resizeEvent = Fixed;
+	
+	QRectF newGeometry = geometry();
+	if (newGeometry != oldGeometry)
+	    emit geometryChanged(this, newGeometry, oldGeometry);
 }
 
 int ItemInterface::posibleResizeCurrsor(QPointF cursor)

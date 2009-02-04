@@ -26,6 +26,7 @@
 #include <QTreeView>
 #include <QItemSelectionModel>
 #include <QMetaClassInfo>
+#include <QUndoView>
 
 #include <QPluginLoader>
 #include <QFileDialog>
@@ -40,6 +41,8 @@
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 #include "namevalidator.h"
+
+#define ROWS_IN_MENU  10
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
@@ -98,6 +101,17 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	m_dwObjectInspector->setAllowedAreas(Qt::AllDockWidgetAreas);
 	addDockWidget(Qt::BottomDockWidgetArea, m_dwObjectInspector);
 
+        undoStack = new QUndoStack(this);
+        undoView = new QUndoView(undoStack);
+        undoView->setWindowTitle(tr("Command List"));
+        //undoView->show();
+        //undoView->setAttribute(Qt::WA_QuitOnClose, false);
+        m_dwUndoView = new QDockWidget(tr("Command List"), this);
+        m_dwUndoView->setObjectName("Command List");
+        m_dwUndoView->setWidget(undoView);
+        m_dwUndoView->setAllowedAreas(Qt::AllDockWidgetAreas);
+        addDockWidget(Qt::BottomDockWidgetArea, m_dwUndoView);
+
 	m_tw = new QTabWidget(this);
 	setCentralWidget(m_tw);
 
@@ -124,6 +138,7 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	connect(actionSave_report_as, SIGNAL(triggered(bool)), SLOT(saveReportAs()));
 
 	connect(actionOpen_report, SIGNAL(triggered(bool)), SLOT(openReport()));
+        connect(menuOpen_last_report, SIGNAL (aboutToShow ()), SLOT (prepareLastReportMenu()));
 
         connect(actionOpen_template, SIGNAL (triggered(bool)), SLOT (openTemplate()));
         connect(menuOpen_last_temlate, SIGNAL (aboutToShow ()), SLOT (prepareLastTemplateMenu()));
@@ -156,10 +171,16 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	connect(action_About_eXaro, SIGNAL(triggered(bool)), SLOT(about()));
         connect(actionOptions, SIGNAL(triggered(bool)), SLOT(options()));
 
+        connect(actionUndo, SIGNAL(triggered(bool)), SLOT(undo()));
+        connect(actionRedo, SIGNAL(triggered(bool)), SLOT(redo()));
+
 	connect(m_tw, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
 
 	connect(selectionModel, SIGNAL( currentChanged ( const QModelIndex & , const QModelIndex & )), SLOT(objectChanged( const QModelIndex & , const QModelIndex & )));
 	connect(this, SIGNAL(setCurrentIndex(const QModelIndex&, QItemSelectionModel::SelectionFlags)), selectionModel,SLOT(setCurrentIndex( const QModelIndex&, QItemSelectionModel::SelectionFlags )));
+
+        connect(m_pe, SIGNAL(propertyChanged(QObject *, const QString & , const QVariant & , const QVariant & )),
+                             this, SLOT (propertyChanged(QObject *, const QString & , const QVariant & , const QVariant & )));
 
 	m_contextMenu.addAction(actionCopy);
 	m_contextMenu.addAction(actionCut);
@@ -202,6 +223,7 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
         m_dwQueryEditor->toggleViewAction()->setIcon(QIcon(":/images/button_sql.png"));
         m_dwUiEditor->toggleViewAction()->setIcon(QIcon(":/images/button_uieditor.png"));
         m_dwObjectInspector->toggleViewAction()->setIcon(QIcon(":/images/button_objects.png"));
+        m_dwUndoView->toggleViewAction()->setIcon(QIcon(":/images/button_commands.png"));
 
 	menuTools->addSeparator();
 	menuTools->addAction(m_dwToolBox->toggleViewAction());
@@ -209,14 +231,19 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 	menuTools->addAction(m_dwQueryEditor->toggleViewAction());
 	menuTools->addAction(m_dwUiEditor->toggleViewAction());
 	menuTools->addAction(m_dwObjectInspector->toggleViewAction());
+        menuTools->addAction(m_dwUndoView->toggleViewAction());
+
         toolBarTools->addAction(m_dwToolBox->toggleViewAction());
         toolBarTools->addAction(m_dwPropertyEditor->toggleViewAction());
         toolBarTools->addAction(m_dwQueryEditor->toggleViewAction());
         toolBarTools->addAction(m_dwUiEditor->toggleViewAction());
         toolBarTools->addAction(m_dwObjectInspector->toggleViewAction());
+        toolBarTools->addAction(m_dwUndoView->toggleViewAction());
+
 	m_objectModel.setRootObject(m_report);
 
         m_smTemplate = 0;
+        m_smReport = 0;
 }
 
 void mainWindow::saveItem()
@@ -241,6 +268,7 @@ void mainWindow::saveItem()
 
 void mainWindow::openItem()
 {
+	m_lastSelectedObject=m_pe->object();
 	if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
 		return;
 
@@ -357,7 +385,7 @@ void mainWindow::copy()
 void mainWindow::pasteItem(QObject * item)
 {
 	connect(item, SIGNAL(itemSelected(QObject *, QPointF)), this, SLOT(itemSelected(QObject *, QPointF)));
-	item->setObjectName(Report::ReportEngine::uniqueName(item->metaObject()->className(), m_report));
+        item->setObjectName(Report::ReportEngine::uniqueName(item->metaObject()->className(), m_report));
 	foreach(QObject * obj, item->children())
 		pasteItem(obj);
 }
@@ -400,23 +428,14 @@ void mainWindow::paste()
 
 void mainWindow::del()
 {
-	QGraphicsItem* item;
-	if (!(item=dynamic_cast<QGraphicsItem*>(m_lastSelectedObject)) || !dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
-		return;
+    qDebug("mainWindow::del()");
+    QGraphicsItem* item;
 
-	QObject * parent=dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->parent()?dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->parent():m_report;
-
-	QGraphicsScene * scene= dynamic_cast<QGraphicsItem*>(m_lastSelectedObject)->scene();
-	if (scene)
-		scene->removeItem(item);
-
-	item->setParentItem(0);
-	dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->removeItem();
-	delete dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject);
-	m_lastSelectedObject = parent;
-	m_pe->setObject(parent);
-	m_objectModel.setRootObject(m_report);
-	selectObject(parent, m_objectModel.index(0,0));
+    if (!(item=dynamic_cast<QGraphicsItem*>(m_lastSelectedObject)) || !dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
+        return;
+    qDebug("1");
+    QUndoCommand *delCommand = new DelCommand(dynamic_cast<Report::ItemInterface*>(item), this);
+    undoStack->push(delCommand);
 }
 
 void mainWindow::cut()
@@ -485,6 +504,7 @@ void mainWindow::newReport()
 	m_dui->setUis(m_report->uis());
 	m_objectModel.setRootObject(m_report);
 	m_nameValidator->setRootObject(m_report);
+        undoStack->clear();
 }
 
 void mainWindow::editScript()
@@ -537,6 +557,8 @@ void mainWindow::openReport(const QString & report)
 		connectItem(m_report->children()[p]);
 		setMagnetActions(dynamic_cast<Report::PageInterface*>(gw->scene()));
 		gw->centerOn(0,0);
+                //QUndoCommand *newPage = new NewPageCommand(m_tw->tabText(m_tw->currentIndex()));
+                //undoStack->push(NewPageCommand);
 	}
 
 	actionRemove_page->setEnabled(m_tw->count());
@@ -551,12 +573,26 @@ void mainWindow::openReport(const QString & report)
 
 void mainWindow::openReport()
 {
-	QString report = QFileDialog::getOpenFileName(this, tr("Open report"),
-	                 QDir::homePath() + "", tr("Report (*.bdrt)"));
-	if (!report.size())
+        QSettings s;
+        QString reportDir = s.value("Designer/reportDir").toString();
+        if (reportDir.isEmpty()) reportDir = QDir::homePath();
+
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Open report"),
+                         reportDir , tr("Report (*.bdrt)"));
+        if (!fileName.size())
 		return;
-	m_saveFile=report;
-	openReport(report);
+
+        QStringList list = s.value("Designer/lastReports").toString().split(";;", QString::SkipEmptyParts);
+	if (!list.contains(fileName))
+	  list.append(fileName);
+        if (list.count() > ROWS_IN_MENU) 
+		list.removeFirst();
+
+        QFileInfo f(fileName);
+        s.setValue("Designer/reportDir", f.absolutePath());
+        s.setValue("Designer/lastReports", list.join(";;"));
+
+        openReport(fileName);
 }
 
 void mainWindow::openTemplate()
@@ -573,6 +609,28 @@ void mainWindow::openTemplate()
 		return;
 
 	openTemplate(report);
+}
+
+void mainWindow::prepareLastReportMenu()
+{
+    menuOpen_last_report->clear();
+    if (m_smReport) delete m_smReport;
+    m_smReport = new QSignalMapper(this);
+
+    QSettings s;
+    QStringList list = s.value("Designer/lastReports").toString().split(";;", QString::SkipEmptyParts);
+
+    for (int i = 0; i < list.count(); ++i) {
+        QAction *action = new QAction(list.at(i), this);
+        action->setData(list.at(i));
+        menuOpen_last_report->addAction(action);
+        connect(action, SIGNAL(triggered()), m_smReport , SLOT(map()));
+        m_smReport ->setMapping(action, list.at(i));
+    }
+
+    connect(m_smReport, SIGNAL(mapped(const QString &)),
+            this, SLOT(openReport(const QString &)));
+
 }
 
 void mainWindow::prepareLastTemplateMenu()
@@ -604,12 +662,11 @@ void mainWindow::openTemplate(const QString & fileName)
 	QStringList list = s.value("Designer/lastTemplates").toString().split(";;", QString::SkipEmptyParts);
 	if (!list.contains(fileName))
 		list.append(fileName);
-	if (list.count() > 10) list.removeFirst();
-
+	if (list.count() > ROWS_IN_MENU) 
+		list.removeFirst();
 	QFileInfo f(fileName);
 	s.setValue("Designer/templeteDir", f.absolutePath());
 	s.setValue("Designer/lastTemplates", list.join(";;"));
-
 	openReport(fileName);
 	m_saveFile = "";
 }
@@ -689,11 +746,11 @@ void mainWindow::newPage()
 {
 	if (!m_reportEngine.pages().count())
 		return;
-
-	QGraphicsView * gw = 0;
+/*
+        QGraphicsView * gw = 0;
 
 	if (1 == m_reportEngine.pages().count())
-		gw = new QGraphicsView(static_cast<QGraphicsScene*>(m_reportEngine.pages()[0]->createInstance(m_report)));
+                gw = new QGraphicsView(static_cast<QGraphicsScene*>(m_reportEngine.pages()[0]->createInstance(m_report)));
 	else
 	{
 #ifndef WIN32
@@ -702,25 +759,26 @@ void mainWindow::newPage()
 		//ehe tata ici e de lucru
 	}
 
-	/*
-		gw->setAutoFillBackground(true);
-		gw->setBackgroundRole(QPalette::Base);
-		QPalette pal = gw->palette();
-		pal.setBrush(QPalette::Base, Qt::blue);
-		pal.setColor(QPalette::HighlightedText, Qt::red);
-		gw->setPalette(pal);
-		gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
-	*/
+
+//		gw->setAutoFillBackground(true);
+//		gw->setBackgroundRole(QPalette::Base);
+//		QPalette pal = gw->palette();
+//		pal.setBrush(QPalette::Base, Qt::blue);
+//		pal.setColor(QPalette::HighlightedText, Qt::red);
+//		gw->setPalette(pal);
+//		gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
+//
 
 	dynamic_cast<Report::PageInterface*>(gw->scene())->setObjectName(Report::ReportEngine::uniqueName(dynamic_cast<Report::PageInterface*>(gw->scene())->metaObject()->className(), m_report));
 	dynamic_cast<Report::PageInterface*>(gw->scene())->setContextMenu(&m_contextMenu);
 
-	m_tw->addTab((QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
+        int index = m_tw->addTab((QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
         m_tw->setCurrentWidget((QWidget*) gw);
 
 	actionRemove_page->setEnabled(m_tw->count());
 
 	connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemSelected(QObject *, QPointF)), this, SLOT(itemSelected(QObject *, QPointF)));
+        connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
 
 	setMagnetActions(dynamic_cast<Report::PageInterface*>(gw->scene()));
 
@@ -730,6 +788,9 @@ void mainWindow::newPage()
 	m_objectModel.setRootObject(m_report);
 
         zoomWYSIWYG();
+*/
+        QUndoCommand *newPageCommand = new NewPageCommand(this);
+        undoStack->push(newPageCommand);
 }
 
 void mainWindow::itemSelected(QObject *object, QPointF pos)
@@ -739,41 +800,18 @@ void mainWindow::itemSelected(QObject *object, QPointF pos)
 	QListWidget* lw = dynamic_cast<QListWidget*>(m_tb->currentWidget());
 
 	if (lw && lw->currentRow() > -1)
-	{
-		Report::ItemInterface* item = 0;
+        {
+            const char* needClassName = (m_reportEngine.items().values(m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()])[lw->currentRow()])->metaObject()->className();
 
-		if (dynamic_cast<Report::ItemInterface*>(object))
-		{
-			if (dynamic_cast<Report::ItemInterface*>(object)->canContain(m_reportEngine.items().values(m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()])[lw->currentRow()]))
-				item = dynamic_cast<Report::ItemInterface*>(m_reportEngine.items().values(m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()])[lw->currentRow()]->createInstance(dynamic_cast<QGraphicsItem*>(object), object));
-		}
-		else
-			if (dynamic_cast<Report::PageInterface*>(object)->canContain(m_reportEngine.items().values(m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()])[lw->currentRow()]))
-				dynamic_cast<Report::PageInterface*>(object)->addItem(item = dynamic_cast<Report::ItemInterface*>(m_reportEngine.items().values(m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()])[lw->currentRow()]->createInstance(0, object)));
+            QPointF absPos = dynamic_cast<Report::PageInterface*> (object) ? pos : dynamic_cast<Report::ItemInterface*> (object)->mapToScene(pos);
+            qDebug("new pos (%f,%f)",  absPos.x(), absPos.y());
+            Report::PageInterface* page = dynamic_cast<Report::PageInterface*>(object) ? dynamic_cast<Report::PageInterface*>(object)
+                                      :dynamic_cast<Report::PageInterface*>(dynamic_cast<Report::ItemInterface*>(object)->scene());
 
-		lw->setCurrentRow(-1);
-
-		if (item)
-		{
-			item->setObjectName(Report::ReportEngine::uniqueName(item->metaObject()->className(), m_report));
-
-			connect(item, SIGNAL(itemSelected(QObject*, QPointF)), this, SLOT(itemSelected(QObject*, QPointF)));
-
-			if (dynamic_cast<Report::BandInterface*>(item))
-				dynamic_cast<Report::BandInterface*>(item)->setOrder(INT_MAX);
-
-			item->setGeometry(QRectF(pos.x(), pos.y(), item->geometry().width(), item->geometry().height()));
-			m_pe->setObject(item);
-			m_objectModel.setRootObject(m_report);
-			selectObject(item, m_objectModel.index(0,0));
-			m_lastSelectedObject=item;
-		}
-		else
-		{
-			m_pe->setObject(object);
-			selectObject(object, m_objectModel.index(0,0));
-		}
-	}
+            QUndoCommand *addCommand = new AddCommand(page, needClassName, absPos, this);
+            undoStack->push(addCommand);
+            lw->setCurrentRow(-1);
+        }
 	else
 	{
 		m_pe->setObject(object);
@@ -784,15 +822,8 @@ void mainWindow::itemSelected(QObject *object, QPointF pos)
 
 void mainWindow::removePage()
 {
-	if (dynamic_cast<QGraphicsView*>(m_tw->widget(m_tw->currentIndex())))
-		delete dynamic_cast<QGraphicsView*>(m_tw->widget(m_tw->currentIndex()))->scene();
-
-	m_tw->removeTab(m_tw->currentIndex());
-	actionRemove_page->setEnabled(m_tw->count());
-
-	if (!m_tw->count())
-		m_pe->setObject(m_report);
-	m_objectModel.setRootObject(m_report);
+    QUndoCommand *removePageCommand = new RemovePageCommand(this, m_tw->currentIndex());
+    undoStack->push(removePageCommand);
 }
 
 void mainWindow::currentChanged(int index)
@@ -803,4 +834,103 @@ void mainWindow::currentChanged(int index)
 		return;
 	}
 	m_pe->setObject(dynamic_cast<Report::PageInterface*>(dynamic_cast<QGraphicsView*>(m_tw->widget(index))->scene()));
+}
+
+void mainWindow::undo()
+{
+    qDebug("mainWindow::undo()");
+    undoStack->undo();
+}
+
+
+void mainWindow::redo()
+{
+    qDebug("mainWindow::redo()");
+    undoStack->redo();
+}
+
+void mainWindow::itemMoved(QObject *movedItem, QPointF movedFromPosition)
+{
+    qDebug("mainWindow::itemMoved");
+    QUndoCommand *moveCommand = new MoveCommand(dynamic_cast<Report::ItemInterface*>(movedItem), movedFromPosition, this);
+    undoStack->push(moveCommand);
+}
+
+void mainWindow::propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value)
+{
+    qDebug("mainWindow::propertyChanged()");
+
+    QUndoCommand *propertyChangeCommand = new PropertyChangeCommand(obj, propertyName, old_value, new_value, this );
+    undoStack->push(propertyChangeCommand);
+}
+
+void mainWindow::itemGeometryChanged(QObject* object, QRectF newGeometry, QRectF oldGeometry)
+{
+    qDebug("mainWindow::itemGeometryChanged()");
+    QUndoCommand *geometryChangeCommand = new GeometryChangeCommand(object, newGeometry, oldGeometry, this);
+    undoStack->push(geometryChangeCommand);
+}
+
+
+int mainWindow::_createNewPage_(int afterIndex, QString pageName)
+{
+       QGraphicsView * gw = 0;
+
+    if (1 == m_reportEngine.pages().count())
+        gw = new QGraphicsView(static_cast<QGraphicsScene*>(m_reportEngine.pages()[0]->createInstance(m_report)));
+    else
+    {
+#ifndef WIN32
+#warning implement me !!!!
+#endif
+        //ehe tata ici e de lucru
+    }
+
+    /*
+                gw->setAutoFillBackground(true);
+                gw->setBackgroundRole(QPalette::Base);
+                QPalette pal = gw->palette();
+                pal.setBrush(QPalette::Base, Qt::blue);
+                pal.setColor(QPalette::HighlightedText, Qt::red);
+                gw->setPalette(pal);
+                gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
+        */
+    QString nameOfPage = pageName.isNull() ? Report::ReportEngine::uniqueName(dynamic_cast<Report::PageInterface*>(gw->scene())->metaObject()->className() , m_report): pageName;
+
+    dynamic_cast<Report::PageInterface*>(gw->scene())->setObjectName(nameOfPage);
+    dynamic_cast<Report::PageInterface*>(gw->scene())->setContextMenu(&m_contextMenu);
+
+
+    int m_index = m_tw->insertTab(afterIndex,(QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
+    m_tw->setCurrentWidget((QWidget*) gw);
+
+    actionRemove_page->setEnabled(m_tw->count());
+
+    connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemSelected(QObject *, QPointF)), this, SLOT(itemSelected(QObject *, QPointF)));
+    connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
+
+    setMagnetActions(dynamic_cast<Report::PageInterface*>(gw->scene()));
+
+    if (1 == m_tw->count())
+        m_pe->setObject(dynamic_cast<Report::PageInterface*>(gw->scene()));
+
+    m_objectModel.setRootObject(m_report);
+
+    zoomWYSIWYG();
+
+    return m_index;
+}
+
+
+void mainWindow::_deletePage_(int index)
+{
+    if (dynamic_cast<QGraphicsView*>(m_tw->widget(index)))
+        delete dynamic_cast<QGraphicsView*>(m_tw->widget(index))->scene();
+
+    m_tw->removeTab(index);
+    actionRemove_page->setEnabled(m_tw->count());
+
+    if (!m_tw->count())
+        m_pe->setObject(m_report);
+    m_objectModel.setRootObject(m_report);
 }
