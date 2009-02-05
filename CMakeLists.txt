@@ -50,6 +50,8 @@ add_subdirectory(plugins)
 find_package(PropertyEditor)
 if (PROPERTYEDITOR_FOUND)
     add_subdirectory(apps)
+else(PROPERTYEDITOR_FOUND)
+    message("** propertyEditor was not found in your system, if you want to use eXaro designer, consider to download and install propertyEditor from \"http://code.google.com/p/propertyeditor\"")
 endif(PROPERTYEDITOR_FOUND)
 
 CONFIGURE_FILE(
