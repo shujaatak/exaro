@@ -20,11 +20,12 @@ public:
 	void redo();
 
 private:
-	QString pageName;
+	QString m_pageName;
 	const char* m_itemClassName;
 	QPointF m_pos;
-	mainWindow * mw;
-	QString itemName;
+	mainWindow * m_mainWindow;
+	QString m_itemName;
+	bool m_canUndo;
 };
 
 class AddDomObject: public QUndoCommand
@@ -40,7 +41,7 @@ private:
 	QString m_parentName;
 	QString m_pageName;
 	QPointF m_pos;
-	mainWindow * mw;
+	mainWindow * m_mainWindow;
 	QString m_domObject;
 	bool m_canUndo;
 };
@@ -56,9 +57,9 @@ public:
 	void undo();
 
 private:
-	mainWindow * mw;
-	QString pageName;
-	QString itemName;
+	mainWindow * m_mainWindow;
+	QString m_pageName;
+	QString m_itemName;
 	QPointF m_newPos;
 	QPointF m_oldPos;
 };
@@ -73,11 +74,11 @@ public:
 	void redo();
 
 private:
-	mainWindow* mw;
-	QString pageName;
-	QString parentName;
-	QString itemName;
-	QString domObject;
+	mainWindow* m_mainWindow;
+	QString m_pageName;
+	QString m_parentName;
+	QString m_itemName;
+	QString m_domObject;
 };
 
 class PropertyChangeCommand: public QUndoCommand
@@ -96,12 +97,12 @@ public:
 	}
 
 private:
-	mainWindow* mw;
-	QString itemName;
-	QString pageName;
-	QString propertyName;
-	QVariant old_value;
-	QVariant new_value;
+	mainWindow* m_mainWindow;
+	QString m_itemName;
+	QString m_pageName;
+	QString m_propertyName;
+	QVariant m_oldValue;
+	QVariant m_newValue;
 };
 
 
@@ -121,11 +122,11 @@ public:
 	}
 
 private:
-	mainWindow* mw;
-	QString itemName;
-	QString pageName;
-	QRectF oldGeometry;
-	QRectF newGeometry;
+	mainWindow* m_mainWindow;
+	QString m_itemName;
+	QString m_pageName;
+	QRectF m_oldGeometry;
+	QRectF m_newGeometry;
 };
 
 
@@ -139,7 +140,7 @@ public:
 	void redo();
 
 private:
-	mainWindow* mw;
+	mainWindow* m_mainWindow;
 	int m_index;
 };
 
@@ -154,10 +155,8 @@ public:
 	void redo();
 
 private:
-	mainWindow* mw;
-//    int m_index;
-	QString pageName;
-//    Report::PageInterface* m_page;
+	mainWindow* m_mainWindow;
+	QString m_pageName;
 };
 
 /*
