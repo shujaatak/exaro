@@ -291,7 +291,7 @@ void mainWindow::saveItem()
 void mainWindow::openItem()
 {
 	m_lastSelectedObject=m_pe->object();
-	if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
+	if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject) && !dynamic_cast<Report::PageInterface *>(m_lastSelectedObject))
 		return;
 
 	QString reportName = QFileDialog::getOpenFileName(this, tr("Open report"),
@@ -302,7 +302,12 @@ void mainWindow::openItem()
 
 	QFile file(reportName);
 	if (file.open(QIODevice::ReadOnly))
-		undoStack->push(new AddDomObject(dynamic_cast<Report::PageInterface *>(dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->scene()), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this));
+	{
+		if (dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject))
+			undoStack->push(new AddDomObject(dynamic_cast<Report::PageInterface *>(dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->scene()), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this));
+		else
+			undoStack->push(new AddDomObject(dynamic_cast<Report::PageInterface *>(m_lastSelectedObject), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this));
+	}
 }
 
 void mainWindow::about()

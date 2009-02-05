@@ -114,29 +114,33 @@ AddDomObject::AddDomObject(Report::PageInterface* page, const QString& parent, c
 	this->m_pageName = mw->m_tw->tabText( mw->m_tw->currentIndex() );
 	this->m_parentName=parent;
 	setText(QObject::tr( "Open item" ));
+	m_canUndo=true;
 }
 
 void AddDomObject::undo() 
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( mw->m_tw, m_pageName ) )->scene();
-	Q_ASSERT( m_page );
+	if (!m_canUndo)
+		return;
+
+	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( mw->m_tw, m_pageName ) )->scene();
+	Q_ASSERT( page );
 
 	QObject *m_parent;
 
-	if ( m_parentName.isNull() )
-		m_parent = dynamic_cast<QObject*>( m_page );
+	if ( m_parentName.isNull() || m_parentName==page->objectName())
+		m_parent = dynamic_cast<QObject*>( page );
 	else
-		m_parent = findObject( m_page, m_parentName );
+		m_parent = findObject( page, m_parentName );
 
-	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
+	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( page, m_itemName ) );
 
 
 
 	if ( !m_item || !m_parent )
 		return;
 
-	if ( m_page )
-		m_page->removeItem( m_item );
+	if ( page )
+		page->removeItem( m_item );
 
 	m_item->setParentItem( 0 );
 	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
@@ -153,17 +157,17 @@ void AddDomObject::redo()
 	Q_ASSERT( page );
 
 	QObject *m_parent;
-	qDebug()<<m_parentName;
-	if ( m_parentName.isNull() )
+	if ( m_parentName.isNull() || m_parentName==page->objectName())
 		m_parent = page;
 	else
 		m_parent = findObject( page, m_parentName );
 
 	Report::ItemInterface *m_item;
-
 	if ( !m_parent )
+	{
+		m_canUndo=false;
 		return;
-
+	}
 	QDomDocument doc;
 	doc.setContent( m_domObject );
 	QObject * obj = mw->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
@@ -206,12 +210,14 @@ void AddDomObject::redo()
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 		else
 			m_item->setPos(m_pos);
-		qDebug()<<"ici";
 		m_itemName=m_item->objectName();
 		mw->m_pe->setObject( m_item );
 		mw->m_objectModel.setRootObject( mw->m_report );
 		mw->selectObject( m_item, mw->m_objectModel.index( 0, 0 ) );
 	}
+	else
+		m_canUndo=false;
+
 }
 
 
