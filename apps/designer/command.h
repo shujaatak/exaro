@@ -44,6 +44,7 @@ private:
 	QPointF m_pos;
 	mainWindow * mw;
 	QString m_domObject;
+	bool m_canUndo;
 };
 
 
