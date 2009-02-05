@@ -302,47 +302,7 @@ void mainWindow::openItem()
 
 	QFile file(reportName);
 	if (file.open(QIODevice::ReadOnly))
-	{
-		QDomDocument doc("report");
-		if (!doc.setContent(file.readAll()))
-			return;
-		QObject * obj=m_reportEngine.objectFromDom(m_lastSelectedObject, doc.firstChildElement());
-		Report::ItemInterface * item=dynamic_cast<Report::ItemInterface*>(obj);
-		if (!item)
-		{
-			delete obj;
-			return;
-		}
-		if (!dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->canContain(item))
-		{
-			delete item;
-			return;
-		}
-		item->setPos(m_lastSelectedObjectPos);
-		if (dynamic_cast<Report::PageInterface*>(m_lastSelectedObject))
-		{
-			if (dynamic_cast<Report::PageInterface*>(m_lastSelectedObject)->canContain(item))
-				dynamic_cast<Report::PageInterface*>(m_lastSelectedObject)->addItem(item);
-			else
-			{
-				delete item;
-				item = 0;
-			}
-		}
-		else
-		
-		if (item)
-		{
-			pasteItem(item);
-			if (dynamic_cast<Report::BandInterface*>(item))
-				dynamic_cast<Report::BandInterface*>(item)->setOrder(INT_MAX);
-			m_pe->setObject(item);
-			m_objectModel.setRootObject(m_report);
-			selectObject(item, m_objectModel.index(0,0));
-		}
-
-	}
-
+		undoStack->push(new AddDomObject(dynamic_cast<Report::PageInterface *>(dynamic_cast<Report::ItemInterface*>(m_lastSelectedObject)->scene()), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this));
 }
 
 void mainWindow::about()

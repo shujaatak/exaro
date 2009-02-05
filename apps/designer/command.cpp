@@ -17,6 +17,7 @@
 #include "command.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QDebug>
 
 
 AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
@@ -103,6 +104,114 @@ void AddCommand::undo()
 	mw->m_objectModel.setRootObject( mw->m_report );
 	mw->selectObject( parent, mw->m_objectModel.index( 0, 0 ) );
 	m_item = 0;
+}
+
+AddDomObject::AddDomObject(Report::PageInterface* page, const QString& parent, const QString& item, QPointF pos, mainWindow* mw) 
+{
+	this->mw = mw;
+	this->m_pos = pos;
+	this->m_domObject = item;
+	this->m_pageName = mw->m_tw->tabText( mw->m_tw->currentIndex() );
+	this->m_parentName=parent;
+	setText(QObject::tr( "Open item" ));
+}
+
+void AddDomObject::undo() 
+{
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( mw->m_tw, m_pageName ) )->scene();
+	Q_ASSERT( m_page );
+
+	QObject *m_parent;
+
+	if ( m_parentName.isNull() )
+		m_parent = dynamic_cast<QObject*>( m_page );
+	else
+		m_parent = findObject( m_page, m_parentName );
+
+	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
+
+
+
+	if ( !m_item || !m_parent )
+		return;
+
+	if ( m_page )
+		m_page->removeItem( m_item );
+
+	m_item->setParentItem( 0 );
+	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
+	delete dynamic_cast<Report::ItemInterface*>( m_item );
+	mw->m_lastSelectedObject = m_parent;
+	mw->m_pe->setObject( m_parent );
+	mw->m_objectModel.setRootObject( mw->m_report );
+	mw->selectObject( m_parent, mw->m_objectModel.index( 0, 0 ) );
+}
+
+void AddDomObject::redo() 
+{
+	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( mw->m_tw, m_pageName ) )->scene();
+	Q_ASSERT( page );
+
+	QObject *m_parent;
+	qDebug()<<m_parentName;
+	if ( m_parentName.isNull() )
+		m_parent = page;
+	else
+		m_parent = findObject( page, m_parentName );
+
+	Report::ItemInterface *m_item;
+
+	if ( !m_parent )
+		return;
+
+	QDomDocument doc;
+	doc.setContent( m_domObject );
+	QObject * obj = mw->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
+
+	if ( dynamic_cast<Report::BandInterface*>( obj ) )
+	{
+		dynamic_cast<Report::BandInterface*>( obj )->setOrder( INT_MAX );
+		dynamic_cast<Report::BandInterface*>( obj )->setGeometry( QRectF( 0, 0, dynamic_cast<Report::BandInterface*>( obj )->geometry().width(), dynamic_cast<Report::BandInterface*>( obj )->geometry().height() ) );
+	}
+
+	m_item = dynamic_cast<Report::ItemInterface*>( obj );
+
+	if ( dynamic_cast<Report::ItemInterface*>( m_parent ) )
+	{
+		if ( !dynamic_cast<Report::ItemInterface*>( m_parent )->canContain( m_item ) )
+		{
+			delete m_item;
+			m_item = 0;
+		}
+	}
+	else
+		if ( dynamic_cast<Report::PageInterface*>( m_parent )->canContain( m_item ) )
+			dynamic_cast<Report::PageInterface*>( m_parent )->addItem( m_item );
+		else
+		{
+			delete m_item;
+			m_item = 0;
+		}
+
+	if ( m_item )
+	{
+		connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+		connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+		foreach( QObject * obj, ( dynamic_cast<QObject *>( m_item ) )->children() )
+		{
+			connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+			connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+		}
+		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
+			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
+		else
+			m_item->setPos(m_pos);
+		qDebug()<<"ici";
+		m_itemName=m_item->objectName();
+		mw->m_pe->setObject( m_item );
+		mw->m_objectModel.setRootObject( mw->m_report );
+		mw->selectObject( m_item, mw->m_objectModel.index( 0, 0 ) );
+	}
 }
 
 
