@@ -53,7 +53,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 		: QMainWindow( parent, fl ), m_report( 0 )
 {
 	setupUi( this );
-	setWindowTitle( tr( "eXaro v%1" ).arg( EXARO_VERSION ) );
+	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 
 #ifdef Q_OS_MAC
 	toolBar->setFloatable( false );
@@ -498,6 +498,7 @@ void mainWindow::newReport()
 	m_objectModel.setRootObject( m_report );
 	m_nameValidator->setRootObject( m_report );
 	undoStack->clear();
+	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 }
 
 void mainWindow::editScript()
@@ -579,6 +580,7 @@ void mainWindow::openReport( const QString & report )
 	m_objectModel.setRootObject( m_report );
 	zoomWYSIWYG();
 	undoStack->clear();
+	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
 }
 
 void mainWindow::openReport()
@@ -696,6 +698,7 @@ void mainWindow::saveReport()
 
 	if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
 		throw( QString( "Can't save the report" ) );
+	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(m_saveFile) );
 }
 
 void mainWindow::saveReportAs()
@@ -703,7 +706,6 @@ void mainWindow::saveReportAs()
 	m_saveFile = "";
 	saveReport();
 }
-
 
 void mainWindow::zoomIn()
 {
