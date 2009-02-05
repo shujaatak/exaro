@@ -84,12 +84,12 @@ private:
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
 	QDockWidget * m_dwObjectInspector;
-        QDockWidget * m_dwUndoView;
-        QSignalMapper * m_smTemplate;
+	QDockWidget * m_dwUndoView;
+	QSignalMapper * m_smTemplate;
 	NameValidator * m_nameValidator;
-        QSignalMapper * m_smReport;
-        QUndoStack *undoStack;
-        QUndoView *undoView;
+	QSignalMapper * m_smReport;
+	QUndoStack *undoStack;
+	QUndoView *undoView;
 
 protected slots:
 	void newPage();
@@ -108,7 +108,7 @@ protected slots:
 	void openTemplate();
 	void openTemplate(const QString &);
 	void prepareLastTemplateMenu();
-        void prepareLastReportMenu();
+	void prepareLastReportMenu();
 	void executeReport();
 	void setupDatabase();
 	void copy();
@@ -120,11 +120,11 @@ protected slots:
 	void options();
 	void saveItem();
 	void openItem();
-        void undo();
-        void redo();
-        void itemMoved(QObject* movedItem, QPointF movedFromPosition);
-        void propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value);
-        void itemGeometryChanged(QObject* object, QRectF newGeometry, QRectF oldGeometry);
+	void undo();
+	void redo();
+	void itemMoved(QObject* movedItem, QPointF movedFromPosition);
+	void propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value);
+	void itemGeometryChanged(QObject* object, QRectF newGeometry, QRectF oldGeometry);
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
@@ -136,8 +136,8 @@ friend class PropertyChangeCommand;
 friend class GeometryChangeCommand;
 friend class NewPageCommand;
 friend class RemovePageCommand;
+friend class AddDomObject;
 //friend class ChangePageCommand;
-
 };
 
 #endif

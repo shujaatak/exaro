@@ -28,6 +28,25 @@ private:
 	QString itemName;
 };
 
+class AddDomObject: public QObject, public QUndoCommand
+{
+	Q_OBJECT
+public:
+	AddDomObject( Report::PageInterface* page, const QString & parent, const QString & domObject, QPointF pos, mainWindow* mw );
+
+	void undo();
+	void redo();
+
+private:
+	QString m_itemName;
+	QString m_parentName;
+	QString m_pageName;
+	QPointF m_pos;
+	mainWindow * mw;
+	QString m_domObject;
+};
+
+
 
 class MoveCommand: public QObject, public QUndoCommand
 {
