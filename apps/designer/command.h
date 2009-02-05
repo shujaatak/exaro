@@ -11,9 +11,8 @@ class QUndoCommand;
 class mainWindow;
 
 
-class AddCommand: public QObject, public QUndoCommand
+class AddCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw );
 
@@ -28,9 +27,8 @@ private:
 	QString itemName;
 };
 
-class AddDomObject: public QObject, public QUndoCommand
+class AddDomObject: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	AddDomObject( Report::PageInterface* page, const QString & parent, const QString & domObject, QPointF pos, mainWindow* mw );
 
@@ -49,9 +47,8 @@ private:
 
 
 
-class MoveCommand: public QObject, public QUndoCommand
+class MoveCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	MoveCommand( Report::ItemInterface *item, const QPointF &oldPos, mainWindow* mw );
 
@@ -67,9 +64,8 @@ private:
 };
 
 
-class DelCommand: public QObject, public QUndoCommand
+class DelCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	DelCommand( Report::ItemInterface* item, mainWindow* mw );
 
@@ -84,9 +80,8 @@ private:
 	QString domObject;
 };
 
-class PropertyChangeCommand: public QObject, public QUndoCommand
+class PropertyChangeCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	enum { Id = 1234 };
 
@@ -110,9 +105,8 @@ private:
 };
 
 
-class GeometryChangeCommand: public QObject, public QUndoCommand
+class GeometryChangeCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 	enum { Id = 2345 };
 
@@ -135,9 +129,8 @@ private:
 };
 
 
-class NewPageCommand: public QObject, public QUndoCommand
+class NewPageCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 
 	NewPageCommand( mainWindow * mw );
@@ -151,9 +144,8 @@ private:
 };
 
 
-class RemovePageCommand: public QObject, public QUndoCommand
+class RemovePageCommand: public QUndoCommand
 {
-	Q_OBJECT
 public:
 
 	RemovePageCommand( mainWindow * mw, int index );
