@@ -334,18 +334,19 @@ bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, 
 					st=readString();
 					if (st.contains(text, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
 					{
-						stringStruct st;
-						st.pos=m_doc->pos();
-						QRectF textRect=QFontMetrics(font).boundingRect(text);
+						stringStruct ss;
+						ss.pos=m_doc->pos();
+						QRectF textRect=QFontMetricsF(font).boundingRect(text);
+						if (st.indexOf(text,0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
+							textRect.translate(QFontMetricsF(font).width(st.left(st.indexOf(text,0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))),0);
 						textRect.translate(pt);
 						textRect=p->clipPath().boundingRect().intersect(textRect);
-						st.textRect=p->transform().mapRect(textRect);
-						st.textRect.adjust(-descent,-descent,descent,descent);
+						ss.textRect=p->transform().mapRect(textRect);
+						ss.textRect.adjust(-descent,-descent,descent,descent);
 						if (direction == NextResult)
-							strings.push_back(st);
+							strings.push_back(ss);
 						else
-							strings.push_front(st);
-
+							strings.push_front(ss);
 					}
 				break;
 			case 's' :
