@@ -13,132 +13,138 @@ class mainWindow;
 
 class AddCommand: public QObject, public QUndoCommand
 {
-      Q_OBJECT
+	Q_OBJECT
 public:
-    AddCommand(Report::PageInterface* page,const char* itemClassName, QPointF pos, mainWindow* mw);
+	AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw );
 
-    void undo();
-    void redo();
+	void undo();
+	void redo();
 
 private:
-    QString pageName;
-    const char* m_itemClassName;
-    QPointF m_pos;
-    mainWindow * mw;
-    QString itemName;
+	QString pageName;
+	const char* m_itemClassName;
+	QPointF m_pos;
+	mainWindow * mw;
+	QString itemName;
 };
 
 
 class MoveCommand: public QObject, public QUndoCommand
 {
-      Q_OBJECT
+	Q_OBJECT
 public:
-    MoveCommand(Report::ItemInterface *item, const QPointF &oldPos, mainWindow* mw);
+	MoveCommand( Report::ItemInterface *item, const QPointF &oldPos, mainWindow* mw );
 
-    void redo();
-    void undo();
+	void redo();
+	void undo();
 
 private:
-    mainWindow * mw;
-    QString pageName;
-    QString itemName;
-    QPointF m_newPos;
-    QPointF m_oldPos;
+	mainWindow * mw;
+	QString pageName;
+	QString itemName;
+	QPointF m_newPos;
+	QPointF m_oldPos;
 };
 
 
 class DelCommand: public QObject, public QUndoCommand
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    DelCommand(Report::ItemInterface* item, mainWindow* mw);
+	DelCommand( Report::ItemInterface* item, mainWindow* mw );
 
-    void undo();
-    void redo();
+	void undo();
+	void redo();
 
 private:
-    mainWindow* mw;
-    QString pageName;
-    QString parentName;
-    QString itemName;
-    QString domObject;
+	mainWindow* mw;
+	QString pageName;
+	QString parentName;
+	QString itemName;
+	QString domObject;
 };
 
 class PropertyChangeCommand: public QObject, public QUndoCommand
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    enum { Id = 1234 };
+	enum { Id = 1234 };
 
-    PropertyChangeCommand(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value, mainWindow* mw);
+	PropertyChangeCommand( QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value, mainWindow* mw );
 
-    void undo();
-    void redo();
-    bool mergeWith(const QUndoCommand *command);
-    int id() const { return Id; }
+	void undo();
+	void redo();
+	bool mergeWith( const QUndoCommand *command );
+	int id() const
+	{
+		return Id;
+	}
 
 private:
-    mainWindow* mw;
-    QString itemName;
-    QString pageName;
-    QString propertyName;
-    QVariant old_value;
-    QVariant new_value;
+	mainWindow* mw;
+	QString itemName;
+	QString pageName;
+	QString propertyName;
+	QVariant old_value;
+	QVariant new_value;
 };
 
 
 class GeometryChangeCommand: public QObject, public QUndoCommand
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    enum { Id = 2345 };
+	enum { Id = 2345 };
 
-    GeometryChangeCommand(QObject* obj, QRectF newGeometry, QRectF oldGeometry, mainWindow* mw);
+	GeometryChangeCommand( QObject* obj, QRectF newGeometry, QRectF oldGeometry, mainWindow* mw );
 
-    void undo();
-    void redo();
-    bool mergeWith(const QUndoCommand *command);
-    int id() const { return Id; }
+	void undo();
+	void redo();
+	bool mergeWith( const QUndoCommand *command );
+	int id() const
+	{
+		return Id;
+	}
 
 private:
-    mainWindow* mw;
-    QString itemName;
-    QString pageName;
-    QRectF oldGeometry;
-    QRectF newGeometry;
+	mainWindow* mw;
+	QString itemName;
+	QString pageName;
+	QRectF oldGeometry;
+	QRectF newGeometry;
 };
 
 
 class NewPageCommand: public QObject, public QUndoCommand
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    NewPageCommand(mainWindow * mw);
+	NewPageCommand( mainWindow * mw );
 
-    void undo();
-    void redo();
+	void undo();
+	void redo();
 
 private:
-    mainWindow* mw;
-    int m_index;
+	mainWindow* mw;
+	int m_index;
 };
 
 
 class RemovePageCommand: public QObject, public QUndoCommand
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 
-    RemovePageCommand(mainWindow * mw, int index);
+	RemovePageCommand( mainWindow * mw, int index );
 
-    void undo();
-    void redo();
+	void undo();
+	void redo();
 
 private:
-    mainWindow* mw;
+	mainWindow* mw;
 //    int m_index;
-    QString pageName;
+	QString pageName;
 //    Report::PageInterface* m_page;
 };
 
@@ -164,11 +170,11 @@ private:
 };
 */
 
-QString createCommandString( Report::ItemInterface *item, const QPointF &pos);
-QString createCommandString(const char* name, const QPointF &pos);
+QString createCommandString( Report::ItemInterface *item, const QPointF &pos );
+QString createCommandString( const char* name, const QPointF &pos );
 
-QObject* findObject(Report::PageInterface * page, QString name);
-QWidget * findObjectByTabName(QTabWidget * tw, QString tabName);
-int findIndexByTabName(QTabWidget * tw, QString tabName);
+QObject* findObject( Report::PageInterface * page, QString name );
+QWidget * findObjectByTabName( QTabWidget * tw, QString tabName );
+int findIndexByTabName( QTabWidget * tw, QString tabName );
 
 #endif // COMMAND_H
