@@ -59,8 +59,8 @@ void AddCommand::redo()
 		itemName = Report::ReportEngine::uniqueName( m_item->metaObject()->className(), mw->m_report );
 		m_item->setObjectName( itemName );
 
-		connect( m_item, SIGNAL( itemSelected( QObject*, QPointF ) ), mw, SLOT( itemSelected( QObject*, QPointF ) ) );
-		connect( m_item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+		QObject::connect( m_item, SIGNAL( itemSelected( QObject*, QPointF ) ), mw, SLOT( itemSelected( QObject*, QPointF ) ) );
+		QObject::connect( m_item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 
 
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
@@ -199,12 +199,12 @@ void AddDomObject::redo()
 
 	if ( m_item )
 	{
-		connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
-		connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+		QObject::connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+		QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 		foreach( QObject * obj, ( dynamic_cast<QObject *>( m_item ) )->children() )
 		{
-			connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
-			connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+			QObject::connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+			QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 		}
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
@@ -357,12 +357,12 @@ void DelCommand::undo()
 
 	if ( m_item )
 	{
-		connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
-		connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+		QObject::connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+		QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 		foreach( QObject * obj, ( dynamic_cast<QObject *>( m_item ) )->children() )
 		{
-			connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
-			connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+			QObject::connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+			QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 		}
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
