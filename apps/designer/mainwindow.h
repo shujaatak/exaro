@@ -61,8 +61,9 @@ protected:
 private:
 	void openReport(const QString & report);
 	bool selectObject(QObject * object, QModelIndex index);
-        int _createNewPage_(int afterIndex = -1, QString pageName = QString());
-        void _deletePage_(int index);
+	int _createNewPage_(int afterIndex = -1, QString pageName = QString());
+	void _deletePage_(int index);
+	void setupActions();
 
 private:
 	ObjectModel m_objectModel;

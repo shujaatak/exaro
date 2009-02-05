@@ -244,6 +244,28 @@ mainWindow::mainWindow(QWidget* parent, Qt::WFlags fl)
 
         m_smTemplate = 0;
         m_smReport = 0;
+	setupActions();
+}
+
+void mainWindow::setupActions()
+{
+	actionOpen_report->setShortcuts(QKeySequence::Open);
+	actionSave_report->setShortcuts(QKeySequence::Save);
+	actionNew_page->setShortcuts(QKeySequence::New);
+	actionRemove_page->setShortcuts(QKeySequence::Close);
+	actionDelete->setShortcuts(QKeySequence::Delete);
+	
+	actionCut->setShortcuts(QKeySequence::Cut);
+	actionCopy->setShortcuts(QKeySequence::Copy);
+	actionPaste->setShortcuts(QKeySequence::Paste);
+	actionUndo->setShortcuts(QKeySequence::Undo);
+	actionRedo->setShortcuts(QKeySequence::Redo);
+	actionZoom_in->setShortcuts(QKeySequence::ZoomIn);
+	actionZoom_out->setShortcuts(QKeySequence::ZoomOut);
+	connect(undoStack, SIGNAL(canUndoChanged(bool)), actionUndo, SLOT(setEnabled(bool)));
+	connect(undoStack, SIGNAL(canRedoChanged(bool)), actionRedo, SLOT(setEnabled(bool)));
+	actionUndo->setEnabled(undoStack->canUndo());
+	actionRedo->setEnabled(undoStack->canRedo());
 }
 
 void mainWindow::saveItem()
@@ -838,14 +860,12 @@ void mainWindow::currentChanged(int index)
 
 void mainWindow::undo()
 {
-    qDebug("mainWindow::undo()");
     undoStack->undo();
 }
 
 
 void mainWindow::redo()
 {
-    qDebug("mainWindow::redo()");
     undoStack->redo();
 }
 
