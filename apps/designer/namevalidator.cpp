@@ -68,10 +68,11 @@ void NameValidator::makeUnique(QString & name) const
 		name += "_";
 	forever
 	{
-
-		if (isUnique(m_rootObj, name))
+		if (isUnique(m_rootObj, name+QString::number(number, 10)))
+		{
+			name += QString::number(number, 10);
 			break;
-		name += QString::number(number, 10);
+		}
 		number++;
 	}
 }
