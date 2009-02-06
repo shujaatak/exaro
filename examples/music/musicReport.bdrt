@@ -645,7 +645,7 @@
                         <ChartContainer>
                             <properties>
                                 <objectName type="QString" >chartcontainer</objectName>
-                                <geometry type="QRectF" >77.2901,27.5,1664.67,442</geometry>
+                                <geometry type="QRectF" >77.2901,27.5,1664.67,453</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -692,7 +692,7 @@
                                 <Legend>
                                     <properties>
                                         <objectName type="QString" >legend</objectName>
-                                        <geometry type="QRectF" >1262.37,15.5606,373.992,400</geometry>
+                                        <geometry type="QRectF" >1262.37,15.5606,366,411</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -719,7 +719,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
-                                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <font type="QFont" >Serif,3,-1,5,50,0,0,0,0,0</font>
                                         <legendColorRectWidth type="int" >50</legendColorRectWidth>
                                     </properties>
                                 </Legend>
