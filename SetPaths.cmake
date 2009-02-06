@@ -136,7 +136,7 @@ else (WIN32)
    endmacro(_SET_FANCY)
 
    if(APPLE)
-      set(BUNDLE_INSTALL_DIR "/Applications/KDE4" CACHE PATH "Directory where application bundles will be installed to on OSX" )
+      set(BUNDLE_INSTALL_DIR "/Applications" CACHE PATH "Directory where application bundles will be installed to on OSX" )
    endif(APPLE)
 
    _set_fancy(EXEC_INSTALL_PREFIX  "${CMAKE_INSTALL_PREFIX}"                 "Base directory for executables and libraries")
