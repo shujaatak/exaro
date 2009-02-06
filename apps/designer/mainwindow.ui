@@ -46,12 +46,12 @@
       <string>Open last report</string>
      </property>
     </widget>
-    <addaction name="separator" />
     <addaction name="actionNew_report" />
     <addaction name="actionOpen_report" />
     <addaction name="menuOpen_last_report" />
     <addaction name="actionSave_report" />
     <addaction name="actionSave_report_as" />
+    <addaction name="separator" />
     <addaction name="actionOpen_template" />
     <addaction name="menuOpen_last_temlate" />
     <addaction name="separator" />
