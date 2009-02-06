@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>332</height>
+    <width>594</width>
+    <height>406</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -50,7 +50,7 @@
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:10pt; font-weight:600;">&lt;span style=" font-size:large; font-weight:400;">(c) 2008,&lt;/span>&lt;span style=" font-size:large;"> BogDan Vatra&lt;/span>&lt;span style=" font-size:large; font-weight:400;">  &amp;lt;&amp;lt; bog_dan_ro@yahoo.com &amp;gt;&amp;gt;&lt;/span>&lt;/p>
+&lt;p style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:10pt; font-weight:600;">&lt;span style=" font-size:large; font-weight:400;">(c) 2008-2009&lt;/span>&lt;span style=" font-size:large;"> eXaro &lt;/span>&lt;span style=" font-size:large; font-weight:400;">team http://exaro.sourceforge.net/&lt;/span>&lt;/p>
 &lt;p align="center" style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:10pt; font-weight:600;">&lt;span style=" font-size:large;">GNU GENERAL PUBLIC LICENSE&lt;/span>&lt;/p>
 &lt;p align="justify" style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:10pt;">Version 3, 29 June 2007 &lt;/p>
 &lt;p align="justify" style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:10pt;">Copyright © 2007 Free Software Foundation, Inc. &amp;lt;http://fsf.org/&amp;gt;&lt;/p>
