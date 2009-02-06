@@ -69,10 +69,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 {
 	initMyResource();
 
-#ifdef Q_OS_MAC
-	toolBar->setFloatable( false );
-	setUnifiedTitleAndToolBarOnMac( true );
-#endif
 
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -119,6 +115,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	toolbar->setIconSize(QSize(32, 32));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
+	toolbar->setFloatable( false );
 
 	m_previewWidget = new PreviewWidget(this);
 
