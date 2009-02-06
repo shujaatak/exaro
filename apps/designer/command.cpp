@@ -211,17 +211,59 @@ void AddDomObject::redo()
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 		else
 			m_item->setPos(m_pos);
+		makeUnique( static_cast<QObject*>(m_item));
 		m_itemName=m_item->objectName();
 		m_mainWindow->m_pe->setObject( m_item );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 		m_mainWindow->selectObject( m_item, m_mainWindow->m_objectModel.index( 0, 0 ) );
-		setText(QObject::tr("Open item %1(%2)").arg(m_item->objectName()).arg(m_item->metaObject()->className()));
+		setText(QObject::tr("Open item %1(%2)").arg(m_itemName).arg(m_item->metaObject()->className()));
 	}
 	else
 		m_canUndo=false;
 
 }
 
+void AddDomObject::makeUnique(QObject * object) const
+{
+	QString name=object->objectName();
+	for (int i = 0;i < name.size();i++)
+		if (name[i] < 'a' && name[i] > 'z' && name[i] < '0' && name[i] > '9')
+			name[i] = '_';
+
+	if (isUnique(m_mainWindow->m_report, object,  name))
+		return;
+
+	int number = 1;
+	if (!name.endsWith("_"))
+		name += "_";
+	forever
+	{
+
+		if (isUnique(m_mainWindow->m_report, object, name+QString::number(number, 10)))
+		{
+			name += QString::number(number, 10);
+			break;
+		}
+		number++;
+	}
+	object->setObjectName(name);
+	foreach(QObject * obj, object->children())
+		makeUnique(obj);
+}
+
+bool  AddDomObject::isUnique(QObject * object, QObject * ownerObject, const QString & name ) const
+{
+	if (!object)
+		return true;
+
+	if (object->objectName() == name && ownerObject!=object)
+		return false;
+
+	for (int i = 0;i < object->children().size();i++)
+		if (!isUnique(object->children()[i], ownerObject, name))
+			return false;
+	return true;
+}
 
 
 MoveCommand::MoveCommand( Report::ItemInterface *item, const QPointF &oldPos, mainWindow* mw )

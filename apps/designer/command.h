@@ -35,6 +35,8 @@ public:
 
 	void undo();
 	void redo();
+	void makeUnique(QObject * object) const;
+	bool isUnique(QObject * object, QObject * ownerObject, const QString & name ) const;
 
 private:
 	QString m_itemName;
