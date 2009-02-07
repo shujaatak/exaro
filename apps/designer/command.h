@@ -1,3 +1,19 @@
+/***************************************************************************
+ *   Copyright (C) 2009 by Alexander Mikhalov                              *
+ *   alexmi3@rambler.ru                                                    *
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ ***************************************************************************/
+
 #ifndef COMMAND_H
 #define COMMAND_H
 
@@ -159,29 +175,8 @@ public:
 private:
 	mainWindow* m_mainWindow;
 	QString m_pageName;
+	QString m_domObject;
 };
-
-/*
-class ChangePageCommand: public QObject, public QUndoCommand
-{
-    Q_OBJECT
-public:
-
-    ChangePageCommand(mainWindow * mw, int newIndex, int oldIndex);
-
-    void undo();
-    void redo();
-
-private:
-    mainWindow* mw;
-    int m_index;
-    QString pageName;
-    Report::PageInterface* m_page;
-    QString newName;
-    QString oldName;
-    bool fromStack;
-};
-*/
 
 QString createCommandString( Report::ItemInterface *item, const QPointF &pos );
 QString createCommandString( const char* name, const QPointF &pos );

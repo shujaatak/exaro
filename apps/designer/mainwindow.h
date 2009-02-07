@@ -56,7 +56,7 @@ protected:
 
 private:
 	bool selectObject(QObject * object, QModelIndex index);
-	int _createNewPage_(int afterIndex = -1, QString pageName = QString());
+	int _createNewPage_(Report::PageInterface* page = 0, int afterIndex = -1, QString pageName = QString());
 	void _deletePage_(int index);
 	void setupActions();
 
