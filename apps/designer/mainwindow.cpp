@@ -859,12 +859,16 @@ void mainWindow::itemGeometryChanged( QObject* object, QRectF newGeometry, QRect
 }
 
 
-int mainWindow::_createNewPage_( int afterIndex, QString pageName )
+int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QString pageName )
 {
 	QGraphicsView * gw = 0;
 
-	if ( 1 == m_reportEngine.pages().count() )
+	if ( 1 == m_reportEngine.pages().count() ) {
+	    if (!page)
 		gw = new QGraphicsView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) );
+	    else
+		gw = new QGraphicsView( static_cast<QGraphicsScene*>(page) );
+	    }
 	else
 	{
 #ifndef WIN32

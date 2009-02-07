@@ -583,50 +583,30 @@ RemovePageCommand::RemovePageCommand( mainWindow * mw, int index )
 
 void RemovePageCommand::redo()
 {
+        Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+        Q_ASSERT( m_page );
+
+        QDomDocument doc;
+        doc.appendChild( m_mainWindow->m_reportEngine.objectProperties(( QObject * )m_page, &doc ) );
+        m_domObject = doc.toString( 0 );
+
 	int index = findIndexByTabName( m_mainWindow->m_tw, m_pageName );
 	m_mainWindow->_deletePage_( index );
-
-// FIXME: need Store page elements
 
 	setText( QObject::tr( "Remove Page \'%1\'" ).arg( m_pageName ) );
 }
 
 void RemovePageCommand::undo()
 {
-	int index = m_mainWindow->_createNewPage_();
+    	QDomDocument doc;
+	doc.setContent( m_domObject );
+	Report::PageInterface* page = dynamic_cast<Report::PageInterface*> (m_mainWindow->m_reportEngine.objectFromDom( m_mainWindow->m_report, doc.firstChildElement() ) );
+	Q_ASSERT( page );
+
+	int index = m_mainWindow->_createNewPage_(page);
 	m_mainWindow->m_tw->setTabText( index, m_pageName );
 }
 
-/*
-ChangePageCommand::ChangePageCommand(mainWindow * mw, int newIndex, int oldIndex)
-{
-    this->mw = mw;
-    this->newName = mw->m_tw->tabText(newIndex);
-    this->oldName = mw->m_tw->tabText(oldIndex);
-    this->fromStack = false;
-    setText(QObject::tr("change page \'%1\'-> \'%2\'").arg(oldName).arg(newName));
-}
-
-void ChangePageCommand::redo()
-{
-    if (fromStack)
-    {
-        int index = findIndexByTabName(m_tw, newName);
-        if (index >= 0)
-            mw->m_tw->setCurrentIndex(index);
-    }
-    else
-        fromStack = true;
-}
-
-void ChangePageCommand::undo()
-{
-    int index = findIndexByTabName(m_tw, oldName);
-    if (index >= 0)
-        mw->m_tw->setCurrentIndex(index);
-}
-
-*/
 
 QString createCommandString( Report::ItemInterface  *item, const QPointF &pos )
 {
@@ -660,20 +640,6 @@ QWidget * findObjectByTabName( QTabWidget * tw, QString tabName )
 			return tw->widget( i );
 	}
 	return 0;
-
-	/*
-	QList<QObject*> list = tw->findChildren<QObject *>(tabName);
-	if (list.isEmpty())
-	    return 0;
-
-	foreach (QObject* obj, list)
-	{
-	    if (!dynamic_cast<QGraphicsView *>(obj))
-	        continue;
-	    return dynamic_cast<QGraphicsView *>(obj);
-	}
-	return 0;
-	*/
 }
 
 int findIndexByTabName( QTabWidget * tw, QString tabName )
