@@ -529,6 +529,9 @@ void PageInterface::drawBorder()
 	delete m_pageBorder;
 
 	m_paperBorder = addRect(m_paperRect);
+	p.setStyle(Qt::SolidLine);
+	p.setColor(QColor(225,224,224));
+	p.setWidth(2);
 	m_pageBorder = addRect(geometry());
 
 	m_pageBorder->setPen(p);
