@@ -14,7 +14,7 @@ QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  queryeditdial
 			designerpage.h         exaroapplication.h  scripteditdialog.h
 			designerquerywidget.h  mainwindow.h        scriptsyntaxhighlighter.h
 			designeruitype.h       objectmodel.h       sqldatabasedialog.h	optionsdialog.h
-			namevalidator.h command.h)
+			namevalidator.h)
 QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.ui
 			designerquerywidget.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui)
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
