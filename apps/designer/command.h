@@ -184,5 +184,6 @@ QString createCommandString( const char* name, const QPointF &pos );
 QObject* findObject( Report::PageInterface * page, QString name );
 QWidget * findObjectByTabName( QTabWidget * tw, QString tabName );
 int findIndexByTabName( QTabWidget * tw, QString tabName );
+void connectItems(QObject * object, QObject * mw);
 
 #endif // COMMAND_H
