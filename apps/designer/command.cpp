@@ -18,7 +18,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 
-
 AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
 {
 	m_mainWindow = mw;
@@ -200,13 +199,7 @@ void AddDomObject::redo()
 
 	if ( m_item )
 	{
-		QObject::connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), m_mainWindow, SLOT( itemSelected( QObject *, QPointF ) ) );
-		QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
-		foreach( QObject * obj, ( dynamic_cast<QObject *>( m_item ) )->children() )
-		{
-			QObject::connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), m_mainWindow, SLOT( itemSelected( QObject *, QPointF ) ) );
-			QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
-		}
+		connectItems(m_item, m_mainWindow);
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 		else
@@ -373,6 +366,7 @@ void DelCommand::undo()
 	QDomDocument doc;
 	doc.setContent( m_domObject );
 	QObject * obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
+	connectItems(obj, m_mainWindow);
 
 	if ( dynamic_cast<Report::BandInterface*>( obj ) )
 	{
@@ -401,13 +395,6 @@ void DelCommand::undo()
 
 	if ( m_item )
 	{
-		QObject::connect( m_item, SIGNAL( itemSelected( QObject *, QPointF ) ), m_mainWindow, SLOT( itemSelected( QObject *, QPointF ) ) );
-		QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
-		foreach( QObject * obj, ( dynamic_cast<QObject *>( m_item ) )->children() )
-		{
-			QObject::connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), m_mainWindow, SLOT( itemSelected( QObject *, QPointF ) ) );
-			QObject::connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
-		}
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 
@@ -605,6 +592,7 @@ void RemovePageCommand::undo()
 
 	int index = m_mainWindow->_createNewPage_(page);
 	m_mainWindow->m_tw->setTabText( index, m_pageName );
+	connectItems(page , m_mainWindow);
 }
 
 
@@ -650,4 +638,11 @@ int findIndexByTabName( QTabWidget * tw, QString tabName )
 			return i;
 	}
 	return -1;
+}
+void connectItems(QObject * object, QObject * mw)
+{
+	QObject::connect( object, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+	QObject::connect( object, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+	foreach( QObject * obj, object->children())
+		connectItems(obj,mw);
 }
