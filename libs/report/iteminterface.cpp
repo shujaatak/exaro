@@ -66,16 +66,30 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 	painter->save();
 	QBrush a;
 
-	if (isSelected())
-	{
-		a.setColor(QColor(100, 100, 100, 100));
-		a.setStyle(Qt::SolidPattern);
-	}
-
 	painter->setBrush(a);
 
-	painter->setPen(Qt::DashDotDotLine);
-	painter->drawRect(rect);
+	if (isSelected())
+	{
+	    a.setColor(QColor(0,0,0));
+	    a.setStyle(Qt::SolidPattern);
+	    painter->fillRect(0, 0, 20, 20, a);
+	    painter->fillRect(rect.width()-20, 0, 20, 20, a);
+	    painter->fillRect(0, rect.height()-20, 20, 20, a);
+	    painter->fillRect(rect.width()-20, rect.height()-20, 20, 20, a);
+	}
+	else
+	{
+	    painter->setPen(QColor(0,0,0));
+	    painter->drawLine(0,0,0,20);
+	    painter->drawLine(0,0,20,0);
+	    painter->drawLine(rect.width(),0,rect.width()-20,0);
+	    painter->drawLine(rect.width(),0,rect.width(),20);
+	    painter->drawLine(rect.width(),rect.height(),rect.width()-20, rect.height());
+	    painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-20);
+	    painter->drawLine(0,rect.height(), 20, rect.height());
+	    painter->drawLine(0,rect.height(), 0, rect.height()-20);
+	}
+
 	painter->restore();
 }
 
