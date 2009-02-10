@@ -65,10 +65,8 @@ void AddCommand::redo()
 
 		QPointF localPos = m_item->mapFromScene( m_pos );
 		m_item->setGeometry( QRectF( localPos.x(), localPos.y(), m_item->geometry().width(), m_item->geometry().height() ) );
-		m_mainWindow->m_pe->setObject( m_item );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 		m_mainWindow->selectObject( m_item, m_mainWindow->m_objectModel.index( 0, 0 ) );
-
 		m_itemName = m_item->objectName();
 		m_canUndo=true;
 	}
@@ -210,9 +208,15 @@ void AddDomObject::redo()
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 		m_mainWindow->selectObject( m_item, m_mainWindow->m_objectModel.index( 0, 0 ) );
 		setText(QObject::tr("Open item %1(%2)").arg(m_itemName).arg(m_item->metaObject()->className()));
+		m_mainWindow->m_pe->setObject( m_item );
+		m_mainWindow->selectObject( m_item, m_mainWindow->m_objectModel.index( 0, 0 ) );
 	}
 	else
+	{
 		m_canUndo=false;
+		m_mainWindow->m_pe->setObject( m_parent );
+		m_mainWindow->selectObject( m_parent, m_mainWindow->m_objectModel.index( 0, 0 ) );
+	}
 
 }
 
