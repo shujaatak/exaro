@@ -77,7 +77,7 @@ void Title::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, Q
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		drawName(painter, rect, tr("Title"));
+		drawTitle(tr("Title"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

@@ -75,7 +75,7 @@ void PageFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, tr("Page footer"));
+		drawTitle(tr("Page footer"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

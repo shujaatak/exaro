@@ -528,8 +528,6 @@ protected:
 	 */
 	void setupPainter(QPainter * painter);
 
-	void drawName(QPainter * painter, QRectF rect, QString name);
-
 signals:
 	/**
 	 * This signal is emitted when the item is selected
@@ -571,6 +569,7 @@ private:
 	int m_opacity;
 	qreal m_stretch;
 	QRectF oldGeometry;
+	bool m_drawSelectionBorder;
 };
 }
 

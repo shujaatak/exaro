@@ -69,7 +69,7 @@ void DetailContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem *
 		QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 		setupPainter(painter);
 		drawSelection(painter, rect);
-		painter->drawText(boundingRect(), tr("DetailContainer"));
+		drawTitle(tr("DetailContainer"), TitleRight, Qt::AlignCenter);
 	}
 
 	if (option->type != QStyleOption::SO_GraphicsItem)

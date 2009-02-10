@@ -32,6 +32,8 @@
 #include <QCursor>
 #include <QPainter>
 #include <QSqlField>
+#include <QPainterPath>
+#include <QSettings>
 
 #include "iteminterface.h"
 #include "reportinterface.h"
@@ -54,47 +56,77 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_font.setPointSizeF(3.5);
 	m_font.setStyleStrategy(QFont::PreferMatch);
 	m_font.setStyleStrategy(QFont::ForceOutline);
+	QSettings s;
+	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
 }
 
 ItemInterface::~ItemInterface()
 {
 }
 
-
-void ItemInterface::drawName(QPainter * painter, QRectF rect, QString name)
-{
-    painter->setPen(QColor(225,224,224));
-   // painter->drawText(rect.x()+20, rect.y()+20, name);
-    painter->drawText(rect,Qt::AlignTop|Qt::AlignLeft, name);
-}
-
 void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 {
 	painter->save();
-	QBrush a;
 
-	painter->setBrush(a);
 
 	if (isSelected())
 	{
-	    a.setColor(QColor(100,100,100));
-	    a.setStyle(Qt::SolidPattern);
-	    painter->fillRect(0, 0, 20, 20, a);
-	    painter->fillRect(rect.width()-20, 0, 20, 20, a);
-	    painter->fillRect(0, rect.height()-20, 20, 20, a);
-	    painter->fillRect(rect.width()-20, rect.height()-20, 20, 20, a);
+		QBrush a;
+		a.setColor(QColor(200,0,0,150));
+		a.setStyle(Qt::SolidPattern);
+		if (m_drawSelectionBorder)
+		{
+			QPen p(Qt::DashDotDotLine);
+			p.setBrush(a);
+			painter->setPen(p);
+			painter->drawRect(rect);
+		}
+		QPainterPath lt;
+		lt.moveTo(0,0);
+		lt.lineTo(0,m_resizeHandle);
+		lt.lineTo(m_resizeHandle,0);
+		painter->fillPath(lt,a);
+
+		QPainterPath rt;
+		rt.moveTo(rect.width(),0);
+		rt.lineTo(rect.width(),m_resizeHandle);
+		rt.lineTo(rect.width()-m_resizeHandle,0);
+		painter->fillPath(rt,a);
+
+		QPainterPath lb;
+		lb.moveTo(0,rect.height());
+		lb.lineTo(0,rect.height()-m_resizeHandle);
+		lb.lineTo(m_resizeHandle,rect.height());
+		painter->fillPath(lb,a);
+
+		QPainterPath rb;
+		rb.moveTo(rect.width(),rect.height());
+		rb.lineTo(rect.width(),rect.height()-m_resizeHandle);
+		rb.lineTo(rect.width()-m_resizeHandle,rect.height());
+		painter->fillPath(rb,a);
 	}
 	else
 	{
-	    painter->setPen(QColor(100,100,100));
-	    painter->drawLine(0,0,0,20);
-	    painter->drawLine(0,0,20,0);
-	    painter->drawLine(rect.width(),0,rect.width()-20,0);
-	    painter->drawLine(rect.width(),0,rect.width(),20);
-	    painter->drawLine(rect.width(),rect.height(),rect.width()-20, rect.height());
-	    painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-20);
-	    painter->drawLine(0,rect.height(), 20, rect.height());
-	    painter->drawLine(0,rect.height(), 0, rect.height()-20);
+		if (m_drawSelectionBorder)
+		{
+			QBrush a;
+			a.setColor(QColor(100,100,100,200));
+			a.setStyle(Qt::SolidPattern);
+
+			QPen p(Qt::DashDotDotLine);
+			p.setBrush(a);
+			painter->setPen(p);
+			painter->drawRect(rect);
+		}
+		painter->setPen(QColor(0,0,0,100));
+		painter->drawLine(0,0,0,2*m_resizeHandle);
+		painter->drawLine(0,0,2*m_resizeHandle,0);
+		painter->drawLine(rect.width(),0,rect.width()-2*m_resizeHandle,0);
+		painter->drawLine(rect.width(),0,rect.width(),2*m_resizeHandle);
+		painter->drawLine(rect.width(),rect.height(),rect.width()-2*m_resizeHandle, rect.height());
+		painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-2*m_resizeHandle);
+		painter->drawLine(0,rect.height(), 2*m_resizeHandle, rect.height());
+		painter->drawLine(0,rect.height(), 0, rect.height()-2*m_resizeHandle);
 	}
 
 	painter->restore();

@@ -77,6 +77,7 @@ void Overlay::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
+		painter->setPen(QColor(225,224,224));
 		painter->drawText(rect, tr("Overlay"));
 	}
 

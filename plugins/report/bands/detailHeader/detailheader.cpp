@@ -75,7 +75,7 @@ void DetailHeader::paint(QPainter * painter, const QStyleOptionGraphicsItem * op
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, Qt::AlignRight|Qt::AlignTop, tr("Detail header"));
+		drawTitle(tr("Detail header"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

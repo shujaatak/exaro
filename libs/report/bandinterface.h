@@ -39,6 +39,8 @@
 namespace Report
 {
 
+class TitleItem;
+
 /** \class BandInterface
 * \brief Interface for bands
 *
@@ -102,6 +104,14 @@ public:
 	            DrawBottom = 8 /**< Draw bottom frame*/
 	           };
 
+	/**
+	* TitlePosition enum
+	*
+	* @see drawTitle()
+	*/
+	enum TitlePosition {TitleLeft, /**< Draw the title on left side*/
+			    TitleRight /**< Draw the title on right side*/
+			    };
 	Q_DECLARE_FLAGS(Frames, Frame);
 
 public:
@@ -209,6 +219,8 @@ public:
 	bool forceNewPage();
 	void setForceNewPage(bool forceNewPage);
 
+	void selectBand();
+
 signals:
 	void bandDelete(int, int);
 
@@ -221,6 +233,14 @@ protected:
 	*/
 	void setBandType(BandType bandType);
 
+	/**
+	* Draw the title 
+	* @param title title text
+	* @param position title position
+	* @param position text flags
+	* @see TitlePosition
+	*/
+	virtual void drawTitle(const QString & title, TitlePosition position, int textFlags);
 
 protected slots:
 	/**
@@ -241,6 +261,7 @@ private:
 	bool m_reprintOnNewPage, m_deleting, m_resetDetailNumber;
 	QVariant m_groupFieldValue;
 	bool m_forceNewPage;
+	TitleItem * m_titleItem;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BandInterface::Frames);
 }
