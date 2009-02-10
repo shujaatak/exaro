@@ -61,6 +61,13 @@ ItemInterface::~ItemInterface()
 }
 
 
+void ItemInterface::drawName(QPainter * painter, QRectF rect, QString name)
+{
+    painter->setPen(QColor(225,224,224));
+   // painter->drawText(rect.x()+20, rect.y()+20, name);
+    painter->drawText(rect,Qt::AlignTop|Qt::AlignLeft, name);
+}
+
 void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 {
 	painter->save();
@@ -70,7 +77,7 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 
 	if (isSelected())
 	{
-	    a.setColor(QColor(0,0,0));
+	    a.setColor(QColor(100,100,100));
 	    a.setStyle(Qt::SolidPattern);
 	    painter->fillRect(0, 0, 20, 20, a);
 	    painter->fillRect(rect.width()-20, 0, 20, 20, a);
@@ -79,7 +86,7 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 	}
 	else
 	{
-	    painter->setPen(QColor(0,0,0));
+	    painter->setPen(QColor(100,100,100));
 	    painter->drawLine(0,0,0,20);
 	    painter->drawLine(0,0,20,0);
 	    painter->drawLine(rect.width(),0,rect.width()-20,0);
