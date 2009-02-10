@@ -86,6 +86,9 @@ private:
 	QUndoStack *undoStack;
 	QUndoView *undoView;
 
+public slots:
+	void selectLastObject();
+
 protected slots:
 	void newPage();
 	void removePage();
