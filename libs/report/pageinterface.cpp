@@ -307,8 +307,7 @@ void PageInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 			emit itemMoved(dynamic_cast<QObject *>(movingItem), mouseOldPos);
 		movingItem = 0;
 	}
-	else
-		QGraphicsScene::mouseReleaseEvent(event);
+	QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void PageInterface::keyReleaseEvent(QKeyEvent * keyEvent)

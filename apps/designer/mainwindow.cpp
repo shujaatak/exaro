@@ -32,6 +32,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "designerpage.h"
@@ -386,10 +387,11 @@ void mainWindow::copy()
 
 void mainWindow::pasteItem( QObject * item )
 {
-	connect( item, SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( item, SIGNAL( itemSelected( QObject *, QPointF ) ), SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	item->setObjectName( Report::ReportEngine::uniqueName( item->metaObject()->className(), m_report ) );
 	foreach( QObject * obj, item->children() )
-	pasteItem( obj );
+		pasteItem( obj );
 }
 
 void mainWindow::paste()
@@ -509,10 +511,10 @@ void mainWindow::editScript()
 
 void mainWindow::connectItem( QObject * obj )
 {
-	connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), SLOT( itemSelected( QObject *, QPointF ) ) );
-	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+	connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), this, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * child, obj->children() )
-	connectItem( child );
+		connectItem( child );
 }
 
 void mainWindow::openReport( const QString & report )
@@ -562,11 +564,12 @@ void mainWindow::openReport( const QString & report )
 		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
 		m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
-		connectItem( m_report->children()[p] );
+		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
+		foreach (QObject * obj, m_report->children()[p]->children())
+			connectItem( obj );
 		setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 		gw->centerOn( 0, 0 );
-		//QUndoCommand *newPage = new NewPageCommand(m_tw->tabText(m_tw->currentIndex()));
-		//undoStack->push(NewPageCommand);
 	}
 
 	actionRemove_page->setEnabled( m_tw->count() );
@@ -797,6 +800,11 @@ void mainWindow::newPage()
 	undoStack->push( newPageCommand );
 }
 
+void mainWindow::selectLastObject()
+{
+	itemSelected(m_lastSelectedObject ,QPointF(0,0));
+}
+
 void mainWindow::itemSelected( QObject *object, QPointF pos )
 {
 	m_lastSelectedObject = object;
@@ -851,6 +859,7 @@ void mainWindow::propertyChanged( QObject * obj, const QString & propertyName, c
 
 void mainWindow::itemGeometryChanged( QObject* object, QRectF newGeometry, QRectF oldGeometry )
 {
+	qDebug()<<"itemGeometryChanged"<<object;
 	QUndoCommand *geometryChangeCommand = new GeometryChangeCommand( object, newGeometry, oldGeometry, this );
 	undoStack->push( geometryChangeCommand );
 }

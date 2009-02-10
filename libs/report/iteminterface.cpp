@@ -240,7 +240,7 @@ void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mousePressEvent(event);
 
 	if (event->buttons() == Qt::LeftButton)
-		emit itemSelected(this, event->pos());
+		emit(itemSelected(this, event->pos()));
 }
 
 void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -250,7 +250,7 @@ void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	
 	QRectF newGeometry = geometry();
 	if (newGeometry != oldGeometry)
-	    emit geometryChanged(this, newGeometry, oldGeometry);
+	    emit(geometryChanged(this, newGeometry, oldGeometry));
 }
 
 int ItemInterface::posibleResizeCurrsor(QPointF cursor)
@@ -353,14 +353,14 @@ void ItemInterface::setWidth(qreal width)
 {
 	prepareGeometryChange();
 	m_width = width;
-	emit geometryChanged(geometry());
+	emit(geometryChanged(geometry()));
 }
 
 void ItemInterface::setHeight(qreal height)
 {
 	prepareGeometryChange();
 	m_height = height;
-	emit geometryChanged(geometry());
+	emit(geometryChanged(geometry()));
 }
 
 double ItemInterface::stretch()
