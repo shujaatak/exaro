@@ -76,7 +76,7 @@ void PageHeader::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, tr("Page header"));
+		drawTitle(tr("Page header"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

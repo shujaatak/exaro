@@ -69,6 +69,7 @@ void ChartContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem * 
 		drawSelection(painter, boundingRect());
 		setupPainter(painter);
 		adjustRect(rect);
+		painter->setPen(QColor(225,224,224));
 		painter->drawText(rect,Qt::AlignBottom|Qt::AlignRight,tr("Chart container"));
 	}
 	if (option->type != QStyleOption::SO_GraphicsItem)

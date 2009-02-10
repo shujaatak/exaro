@@ -73,7 +73,7 @@ void Summary::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, tr("Summary"));
+		drawTitle(tr("Summary"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

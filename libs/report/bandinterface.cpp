@@ -28,6 +28,7 @@
  ****************************************************************************/
 
 #include <QGraphicsScene>
+#include <QPainter>
 
 #include "bandinterface.h"
 #include "pageinterface.h"
@@ -37,8 +38,86 @@
 namespace Report
 {
 
+class TitleItem : public QGraphicsItem
+{
+	public:
+		TitleItem( BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position,  QGraphicsItem * parent=0 );
+		void setSize(QSizeF size);
+		QRectF boundingRect() const;
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+	protected:
+		void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+	private:
+		QSizeF m_size;
+		QString m_text;
+		int m_textFlags;
+		BandInterface::TitlePosition m_position;
+		BandInterface * m_parentBand;
+};
+
+TitleItem::TitleItem(BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position, QGraphicsItem * parent):
+		QGraphicsItem(parent),m_parentBand(parentBand),m_size(size), m_text(text), m_textFlags(textFlags), m_position(position)
+{
+}
+
+void TitleItem::setSize(QSizeF size)
+{
+	if (m_size==size)
+		return;
+	m_size=size;
+	update();
+}
+
+QRectF TitleItem::boundingRect() const
+{
+	return QRectF(0,0,m_size.width(), m_size.height());
+}
+
+void TitleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	QRectF rect=boundingRect();
+	qreal penwidth = painter->pen().widthF();
+	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
+	painter->save();
+	QFont f=painter->font();
+	f.setPointSizeF(16);
+	painter->setFont(f);
+	QPainterPath p;
+	if (m_position==BandInterface::TitleLeft)
+	{
+		p.moveTo(40,0);
+		p.lineTo(0,40);
+		p.lineTo(0,rect.height()-40);
+		p.lineTo(40,rect.height());
+		painter->drawPath(p);
+		painter->rotate(270);
+		painter->drawText(-rect.height(), 0, rect.height(), 40, m_textFlags, m_text);
+	}
+	else
+	{
+		p.moveTo(0,0);
+		p.lineTo(40,40);
+		p.lineTo(40,rect.height()-40);
+		p.lineTo(0,rect.height());
+		painter->drawPath(p);
+		painter->rotate(90);
+		painter->drawText(0, -40, rect.height(), 40, m_textFlags, m_text);
+	}
+	painter->restore();
+}
+
+void TitleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	m_parentBand->selectBand();
+}
+
+
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
-		: ItemInterface(parent, parentObject), m_reprintOnNewPage(false), m_deleting(false), m_resetDetailNumber(false),m_forceNewPage(false)
+		: ItemInterface(parent, parentObject), 
+		m_reprintOnNewPage(false), m_deleting(false), 
+		m_resetDetailNumber(false),m_forceNewPage(false),
+		m_titleItem(0)
 {
 	setResizeFlags(FixedPos | ResizeTop | ResizeBottom);
 
@@ -61,6 +140,11 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	setHeight(50/UNIT);
 }
 
+void BandInterface::selectBand()
+{
+	emit(itemSelected(this, QPointF(0,0)));
+}
+
 bool BandInterface::deleting()
 {
 	return m_deleting;
@@ -75,6 +159,7 @@ void BandInterface::removeItem()
 
 BandInterface::~BandInterface()
 {
+	delete m_titleItem;
 }
 
 BandInterface::Frames BandInterface::frame()
@@ -205,6 +290,48 @@ void BandInterface::updateGeometry(QRectF rect)
 	setGeometry(QRectF(parentGeometry().x(), geometry().y(), rect.width(), height()));
 }
 
+void BandInterface::drawTitle(const QString & title, TitlePosition position, int textFlags)
+{
+	QPointF pos;
+	if(position==TitleLeft)
+	{
+		if (parentItem())
+		{
+			pos.setX(parentItem()->pos().x()+geometry().left()-40);
+			pos.setY(parentItem()->pos().y()+geometry().top());
+		}
+		else
+		{
+			pos.setX(geometry().left()-40);
+			pos.setY(geometry().top());
+		}
+	}
+	else
+	{
+		if (parentItem())
+		{
+			pos.setX(parentItem()->pos().x()+geometry().right());
+			pos.setY(parentItem()->pos().y()+geometry().top());
+		}
+		else
+		{
+			pos.setX(geometry().right());
+			pos.setY(geometry().top());
+		}
+	}
+	if (!m_titleItem)
+	{
+		m_titleItem=new TitleItem(this, QSizeF(40,geometry().height()), title, textFlags, position);
+		scene()->addItem(m_titleItem);
+		m_titleItem->setPos(pos);
+	}
+	else
+	{
+		m_titleItem->setSize(QSizeF(40,geometry().height()));
+		if (m_titleItem->pos()!=pos)
+			m_titleItem->setPos(pos);
+	}
+}
 
 void BandInterface::setGeometry(QRectF rect)
 {

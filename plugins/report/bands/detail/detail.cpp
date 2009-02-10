@@ -73,7 +73,7 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, Qt::AlignRight | Qt::AlignTop, tr("Detail"));
+		drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);

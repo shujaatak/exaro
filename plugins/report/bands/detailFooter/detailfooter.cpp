@@ -74,7 +74,7 @@ void DetailFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * op
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, Qt::AlignRight|Qt::AlignTop, tr("Detail footer"));
+		drawTitle(tr("Detail footer"), TitleLeft, Qt::AlignCenter);
 	}
 
 	adjustRect(rect);
