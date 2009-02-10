@@ -32,7 +32,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
-#include <QDebug>
 
 #include "mainwindow.h"
 #include "designerpage.h"
@@ -859,7 +858,6 @@ void mainWindow::propertyChanged( QObject * obj, const QString & propertyName, c
 
 void mainWindow::itemGeometryChanged( QObject* object, QRectF newGeometry, QRectF oldGeometry )
 {
-	qDebug()<<"itemGeometryChanged"<<object;
 	QUndoCommand *geometryChangeCommand = new GeometryChangeCommand( object, newGeometry, oldGeometry, this );
 	undoStack->push( geometryChangeCommand );
 }
