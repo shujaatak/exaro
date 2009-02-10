@@ -42,8 +42,6 @@
 #include "optionsdialog.h"
 #include "namevalidator.h"
 
-#include <QDebug>
-
 #define ROWS_IN_MENU  10
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
@@ -178,8 +176,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	connect( m_tw, SIGNAL( currentChanged( int ) ), SLOT( currentChanged( int ) ) );
 
-	connect( selectionModel, SIGNAL( currentChanged( const QModelIndex & , const QModelIndex & ) ), SLOT( objectChanged( const QModelIndex & , const QModelIndex & ) ) );
 	connect( this, SIGNAL( setCurrentIndex( const QModelIndex&, QItemSelectionModel::SelectionFlags ) ), selectionModel, SLOT( setCurrentIndex( const QModelIndex&, QItemSelectionModel::SelectionFlags ) ) );
+	connect( selectionModel, SIGNAL( currentChanged( const QModelIndex & , const QModelIndex & ) ), SLOT( objectChanged( const QModelIndex & , const QModelIndex & ) ) );
 
 	connect( m_pe, SIGNAL( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ),
 	                this, SLOT( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ) );
@@ -322,8 +320,8 @@ void mainWindow::objectChanged( const QModelIndex & current, const QModelIndex &
 {
 	m_pe->setObject( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object );
 	foreach( QObject * obj, m_report->children() )
-	if ( dynamic_cast<Report::PageInterface *>( obj ) )
-		dynamic_cast<Report::PageInterface *>( obj )->clearSelection();
+		if ( dynamic_cast<Report::PageInterface *>( obj ) )
+			dynamic_cast<Report::PageInterface *>( obj )->clearSelection();
 
 	if ( dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object ) )
 		dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object )->setSelected( true );
@@ -821,7 +819,6 @@ void mainWindow::itemSelected( QObject *object, QPointF pos )
 		m_pe->setObject( object );
 		selectObject( object, m_objectModel.index( 0, 0 ) );
 	}
-
 }
 
 void mainWindow::removePage()

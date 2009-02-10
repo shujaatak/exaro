@@ -276,15 +276,13 @@ void PageInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent)
 
 void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
-                    event->buttonDownScenePos(Qt::LeftButton).y());
-    movingItem = itemAt(mousePos.x(), mousePos.y());
-                             
-    if (movingItem != 0 && event->button() == Qt::LeftButton) 
-    {
-	mouseOldPos = movingItem->pos();
-    }
-    
+	QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
+			event->buttonDownScenePos(Qt::LeftButton).y());
+	movingItem = itemAt(mousePos.x(), mousePos.y());
+
+	if (movingItem != 0 && event->button() == Qt::LeftButton) 
+		mouseOldPos = movingItem->pos();
+  
 	QGraphicsScene::mousePressEvent(event);
 	if (event->buttons() == Qt::LeftButton)
 	{
@@ -300,16 +298,17 @@ void PageInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	foreach(QGraphicsItem * item, m_gideLines)
 		removeItem(item);
+
 	m_gideLines.clear();
-	
-    if (movingItem != 0 && event->button() == Qt::LeftButton) {
-            if (mouseOldPos != movingItem->pos())
-            emit itemMoved(dynamic_cast<QObject *>(movingItem), mouseOldPos);
-            movingItem = 0;
-    }
-	                                                               
-	
-	QGraphicsScene::mouseReleaseEvent(event);
+
+	if (movingItem != 0 && event->button() == Qt::LeftButton) 
+	{
+		if (mouseOldPos != movingItem->pos())
+			emit itemMoved(dynamic_cast<QObject *>(movingItem), mouseOldPos);
+		movingItem = 0;
+	}
+	else
+		QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void PageInterface::keyReleaseEvent(QKeyEvent * keyEvent)
