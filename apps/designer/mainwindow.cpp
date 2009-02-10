@@ -431,12 +431,9 @@ void mainWindow::paste()
 
 void mainWindow::del()
 {
-	qDebug( "mainWindow::del()" );
 	QGraphicsItem* item;
-
 	if ( !( item = dynamic_cast<QGraphicsItem*>( m_lastSelectedObject ) ) || !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
 		return;
-	qDebug( "1" );
 	QUndoCommand *delCommand = new DelCommand( dynamic_cast<Report::ItemInterface*>( item ), this );
 	undoStack->push( delCommand );
 }
