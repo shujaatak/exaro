@@ -528,6 +528,8 @@ protected:
 	 */
 	void setupPainter(QPainter * painter);
 
+	void drawName(QPainter * painter, QRectF rect, QString name);
+
 signals:
 	/**
 	 * This signal is emitted when the item is selected

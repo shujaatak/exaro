@@ -77,7 +77,7 @@ void Title::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, Q
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
-		painter->drawText(rect, tr("Title"));
+		drawName(painter, rect, tr("Title"));
 	}
 
 	adjustRect(rect);
