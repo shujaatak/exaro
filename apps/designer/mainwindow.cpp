@@ -574,6 +574,7 @@ void mainWindow::openReport( const QString & report )
 	m_dui->setUis( m_report->uis() );
 	m_saveFile = report;
 	m_pe->setObject( m_report );
+	m_nameValidator->setRootObject( m_report );
 	m_objectModel.setRootObject( m_report );
 	zoomWYSIWYG();
 	undoStack->clear();
