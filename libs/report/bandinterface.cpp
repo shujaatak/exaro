@@ -83,6 +83,10 @@ void TitleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 	QFont f=painter->font();
 	f.setPointSizeF(16);
 	painter->setFont(f);
+	painter->setPen(QColor(224,224,224));
+	QBrush a;
+	a.setColor(QColor(194,255,240,50));
+	a.setStyle(Qt::SolidPattern);
 	QPainterPath p;
 	if (m_position==BandInterface::TitleLeft)
 	{
@@ -91,7 +95,9 @@ void TitleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 		p.lineTo(0,rect.height()-40);
 		p.lineTo(40,rect.height());
 		painter->drawPath(p);
+		painter->fillPath(p,a);
 		painter->rotate(270);
+		painter->setPen(QColor(50,50,50));
 		painter->drawText(-rect.height(), 0, rect.height(), 40, m_textFlags, m_text);
 	}
 	else
@@ -101,6 +107,7 @@ void TitleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 		p.lineTo(40,rect.height()-40);
 		p.lineTo(0,rect.height());
 		painter->drawPath(p);
+		painter->fillPath(p,a);
 		painter->rotate(90);
 		painter->drawText(0, -40, rect.height(), 40, m_textFlags, m_text);
 	}
@@ -327,9 +334,11 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 	}
 	else
 	{
+		m_titleItem->setVisible(false);
 		m_titleItem->setSize(QSizeF(40,geometry().height()));
 		if (m_titleItem->pos()!=pos)
 			m_titleItem->setPos(pos);
+		m_titleItem->setVisible(true);
 	}
 }
 
