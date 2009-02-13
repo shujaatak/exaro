@@ -887,7 +887,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 			pal.setColor(QPalette::HighlightedText, Qt::red);
 			gw->setPalette(pal);
 			gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
-		*/
+	*/
 	QString nameOfPage = pageName.isNull() ? Report::ReportEngine::uniqueName( dynamic_cast<Report::PageInterface*>( gw->scene() )->metaObject()->className() , m_report ) : pageName;
 
 	dynamic_cast<Report::PageInterface*>( gw->scene() )->setObjectName( nameOfPage );
