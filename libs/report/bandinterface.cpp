@@ -43,6 +43,7 @@ class TitleItem : public QGraphicsItem
 	public:
 		TitleItem( BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position,  QGraphicsItem * parent=0 );
 		void setSize(QSizeF size);
+		inline const QSizeF & size(){return m_size;};
 		QRectF boundingRect() const;
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 	protected:
@@ -334,11 +335,13 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 	}
 	else
 	{
-		m_titleItem->setVisible(false);
-		m_titleItem->setSize(QSizeF(40,geometry().height()));
-		if (m_titleItem->pos()!=pos)
+		if (m_titleItem->size().height()!=geometry().height() || m_titleItem->pos()!=pos)
+		{
+			m_titleItem->setVisible(false);
+			m_titleItem->setSize(QSizeF(40,geometry().height()));
 			m_titleItem->setPos(pos);
-		m_titleItem->setVisible(true);
+			m_titleItem->setVisible(true);
+		}
 	}
 }
 
