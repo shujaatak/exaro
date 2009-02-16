@@ -30,9 +30,9 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Field : public Report::ItemInterface
+class Field : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

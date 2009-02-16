@@ -39,7 +39,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(text);
 }
 
-Text::Text(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_text(tr("text item")),m_sizePolicy(None)
+Text::Text(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_textFlags(0), m_text(tr("text item")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(25/UNIT);

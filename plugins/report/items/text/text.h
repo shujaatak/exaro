@@ -30,10 +30,10 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
 
-class Text : public Report::ItemInterface
+class Text : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

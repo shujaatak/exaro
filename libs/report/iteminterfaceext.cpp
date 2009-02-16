@@ -27,38 +27,110 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#ifndef CHORD_H
-#define CHORD_H
+#include <QGraphicsScene>
+#include <QPainter>
 
-#include <iteminterfaceext.h>
+#include "iteminterfaceext.h"
+#include "pageinterface.h"
 
-class Chord : public Report::ItemInterfaceExt
+#include <limits.h>
+
+namespace Report
 {
-	Q_OBJECT
-	Q_INTERFACES(Report::ItemInterface);
-	Q_PROPERTY(int startAngle READ startAngle WRITE setStartAngle)
-	Q_PROPERTY(int spanAngle READ spanAngle WRITE setSpanAngle)
 
-public:
-	Chord(QGraphicsItem* parent = 0, QObject* parentObject = 0);
+ItemInterfaceExt::ItemInterfaceExt(QGraphicsItem* parent, QObject * parentObject)
+		: ItemInterface(parent, parentObject)
+{
+    m_BGMode = TransparentMode;
+    m_font=QFont("Serif");
+    m_font.setPointSizeF(3.5);
+    m_font.setStyleStrategy(QFont::PreferMatch);
+    m_font.setStyleStrategy(QFont::ForceOutline);
+}
 
-	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+ItemInterfaceExt::~ItemInterfaceExt()
+{
 
-	QIcon toolBoxIcon();
-	QString toolBoxText();
-	QString toolBoxGroup();
+}
 
-	int startAngle();
-	void setStartAngle(int startAngle);
+QRectF ItemInterfaceExt::adjustRect(QRectF & rect)
+{
+	qreal penwidth = pen().widthF();
+	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
+	return rect;
+}
 
-	int spanAngle();
-	void setSpanAngle(int spanAngle);
 
-	bool canContain(QObject * object);
-	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
-private:
-	int m_startAngle, m_spanAngle;
-};
+QBrush ItemInterfaceExt::brush()
+{
+	return m_brush;
+}
 
-#endif
+void ItemInterfaceExt::setBrush(const QBrush & brush)
+{
+	m_brush = brush;
+	update();
+}
+
+QBrush ItemInterfaceExt::backgroundBrush()
+{
+	return m_backgroundBrush;
+}
+
+void ItemInterfaceExt::setBackgroundBrush(const QBrush & brush)
+{
+	m_backgroundBrush = brush;
+	update();
+}
+
+
+QPen ItemInterfaceExt::pen()
+{
+	return m_pen;
+}
+
+void ItemInterfaceExt::setPen(const QPen & pen)
+{
+	m_pen = pen;
+	update();
+}
+
+QFont ItemInterfaceExt::font()
+{
+	return m_font;
+}
+
+void ItemInterfaceExt::setFont(const QFont & font)
+{
+	m_font = font;
+	update();
+}
+
+void ItemInterfaceExt::setupPainter(QPainter * painter)
+{
+    if (!painter)
+	return;
+    painter->setBrush(brush());
+    painter->setPen(pen());
+    painter->setBackgroundMode((Qt::BGMode)m_BGMode);
+    painter->setBackground(backgroundBrush());
+    QFont f=font();
+    f.setPixelSize(font().pointSizeF()/UNIT);
+    painter->setFont(f);
+    painter->setOpacity((qreal)opacity()/100.);
+}
+
+ItemInterfaceExt::BGMode ItemInterfaceExt::backgroundMode()
+{
+	return m_BGMode;
+}
+
+void ItemInterfaceExt::setBackgroundMode(BGMode bgMode)
+{
+	m_BGMode = bgMode;
+	update(boundingRect());
+}
+
+
+
+}

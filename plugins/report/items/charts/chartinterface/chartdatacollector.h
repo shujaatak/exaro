@@ -40,7 +40,7 @@ namespace Report
 	@author BogDan Vatra <taipan@omnidatagrup.ro>
 */
 
-class ChartDataCollector: public Report::ItemInterface
+class ChartDataCollector: public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

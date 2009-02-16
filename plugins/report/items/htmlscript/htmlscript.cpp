@@ -47,7 +47,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(htmlscript);
 }
 
-HtmlScript::HtmlScript(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_script(tr("1+1")),m_sizeFlags(0)
+HtmlScript::HtmlScript(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_script(tr("1+1")),m_sizeFlags(0)
 {
 	initMyResource();
 	setWidth(25/UNIT);

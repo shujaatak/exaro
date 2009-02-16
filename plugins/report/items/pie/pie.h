@@ -30,9 +30,9 @@
 #ifndef PIE_H
 #define PIE_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Pie : public Report::ItemInterface
+class Pie : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

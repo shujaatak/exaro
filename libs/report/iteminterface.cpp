@@ -47,15 +47,11 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 {
 	m_resizeEvent = Fixed;
 	m_resizeFlags = ResizeTop | ResizeBottom | ResizeLeft | ResizeRight;
-	m_BGMode = TransparentMode;
 	m_width = 20/UNIT; // 20 mm
 	m_height = 20/UNIT; // 20 mm
 	m_opacity = 100;
+	m_enabled = true;
 	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
-	m_font=QFont("Serif");
-	m_font.setPointSizeF(3.5);
-	m_font.setStyleStrategy(QFont::PreferMatch);
-	m_font.setStyleStrategy(QFont::ForceOutline);
 	QSettings s;
 	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
 }
@@ -132,64 +128,11 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 	painter->restore();
 }
 
-QBrush ItemInterface::brush()
-{
-	return m_brush;
-}
-
-void ItemInterface::setBrush(const QBrush & brush)
-{
-	m_brush = brush;
-	update();
-}
-
-QBrush ItemInterface::backgroundBrush()
-{
-	return m_backgroundBrush;
-}
-
-void ItemInterface::setBackgroundBrush(const QBrush & brush)
-{
-	m_backgroundBrush = brush;
-	update();
-}
-
-
-QPen ItemInterface::pen()
-{
-	return m_pen;
-}
-
-void ItemInterface::setPen(const QPen & pen)
-{
-	m_pen = pen;
-	update();
-}
-
-QFont ItemInterface::font()
-{
-	return m_font;
-}
-
-void ItemInterface::setFont(const QFont & font)
-{
-	m_font = font;
-	update();
-}
-
-
 void ItemInterface::setupPainter(QPainter * painter)
 {
-	if (!painter)
-		return;
-	painter->setBrush(brush());
-	painter->setPen(pen());
-	painter->setBackgroundMode((Qt::BGMode)m_BGMode);
-	painter->setBackground(backgroundBrush());
-	QFont f=font();
-	f.setPixelSize(font().pointSizeF()/UNIT);
-	painter->setFont(f);
-	painter->setOpacity((qreal)m_opacity/100.);
+    if (!painter)
+	return;
+    painter->setOpacity((qreal)m_opacity/100.);
 }
 
 int ItemInterface::resizeFlags()
@@ -338,17 +281,6 @@ void ItemInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	QGraphicsItem::mouseMoveEvent(event);
 }
 
-ItemInterface::BGMode ItemInterface::backgroundMode()
-{
-	return m_BGMode;
-}
-
-void ItemInterface::setBackgroundMode(BGMode bgMode)
-{
-	m_BGMode = bgMode;
-	update(boundingRect());
-}
-
 void ItemInterface::setWidth(qreal width)
 {
 	prepareGeometryChange();
@@ -435,13 +367,6 @@ qreal ItemInterface::minWidth() const
     return m_minWidth;
 }
 
-QRectF ItemInterface::adjustRect(QRectF & rect)
-{
-	qreal penwidth = pen().widthF();
-	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
-	return rect;
-}
-
 SqlQuery * ItemInterface::findQuery(const QString & query)
 {
 	QObject * p = parent();
@@ -488,6 +413,17 @@ void ItemInterface::setOpacity(const int opacity)
 	update();
 }
 
+bool ItemInterface::isEnabled()
+{
+    return m_enabled;
+}
+
+void ItemInterface::setEnabled(bool e)
+{
+    m_enabled = e;
+}
+
+
 QRectF ItemInterface::parentGeometry()
 {
 	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
@@ -522,3 +458,30 @@ ReportInterface	* ItemInterface::reportObject()
 		return (dynamic_cast<ReportInterface*>(p));
 	return 0;
 }
+
+
+QFont ItemInterface::fontConvert(QFont & font)
+{
+    QFont f(font);
+    f.setPixelSize(f.pointSizeF()/UNIT);
+    return f;
+}
+
+const QRectF ItemInterface::adjustRect(QRectF & rect, const QPen & pen)
+{
+	qreal penwidth = pen.widthF();
+	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
+	return rect;
+}
+
+/*
+void ItemInterface::paintBefore(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0)
+{
+
+}
+
+void ItemInterface::paintAfter(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0)
+{
+
+}
+*/

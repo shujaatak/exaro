@@ -30,9 +30,9 @@
 #ifndef ELLIPSE_H
 #define ELLIPSE_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Ellipse : public Report::ItemInterface
+class Ellipse : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

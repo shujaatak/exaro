@@ -32,12 +32,12 @@
 
 #include <QObject>
 #include <QColor>
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
 namespace Report
 {
 
-class ChartInterface : public Report::ItemInterface
+class ChartInterface : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

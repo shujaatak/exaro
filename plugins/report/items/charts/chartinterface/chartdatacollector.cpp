@@ -37,7 +37,7 @@
 namespace Report {
 
 ChartDataCollector::ChartDataCollector(QGraphicsItem* parentItem, QObject* parentObject)
- : Report::ItemInterface(parentItem, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted),m_colorOpacity(100)
+ : Report::ItemInterfaceExt(parentItem, parentObject),m_chartDataSource(FromDatabase),m_showOnlyFirstValues(-1), m_sortDirection(Unsorted),m_colorOpacity(100)
 {
 	m_otherValue.value=0;
 	m_otherValue.key=tr("Other");

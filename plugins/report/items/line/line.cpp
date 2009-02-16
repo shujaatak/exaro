@@ -42,7 +42,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(line);
 }
 
-LineItem::LineItem(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_lineStyle(BackwardDiagonal)
+LineItem::LineItem(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_lineStyle(BackwardDiagonal)
 {
 	initMyResource();
 }
