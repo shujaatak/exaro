@@ -225,11 +225,12 @@ void ReportInterface::paintPage(PageInterface * page)
 				{
 					if (!canPaint(band))
 						newPage();
+					detailQuery->previous();
 					paintBand(band);
+					detailQuery->next();
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
 				}
 			}
-
 			foreach(BandInterface * band, detailHeaders)
 				if (band->groupFieldValue() != detailContainerBand->queryField(detailContainerBand->query(), band->groupField()))
 				{
@@ -261,6 +262,7 @@ void ReportInterface::paintPage(PageInterface * page)
 
 		m_exportNode.appendChild(qryElement);
 
+		detailQuery->last();
 		foreach(BandInterface * band, detailFooters)
 		{
 			if (!canPaint(band))
