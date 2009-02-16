@@ -43,6 +43,7 @@ class Picture : public Report::ItemInterface
 	Q_PROPERTY(DrawTextTypes drawTextType READ drawTextType WRITE setDrawTextType)
 	Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
 	Q_PROPERTY(QString text READ comment WRITE setComment)
+	Q_PROPERTY(QFont font READ font WRITE setFont)
 	Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
 	Q_PROPERTY(int borderWidth READ borderWidth WRITE setBorderWidth)
 	Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor)
@@ -109,6 +110,9 @@ public:
 
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
+	QFont font();
+	void setFont(const QFont & font);
+
 private:
 	PaintTypes m_paintType;
 	FrameTypes m_frameType;
@@ -120,6 +124,8 @@ private:
 	QColor m_textColor;
 	QColor m_borderColor;
 	int m_borderWidth;
+	QBrush m_emptyBrush;
+	QFont m_font;
 };
 
 

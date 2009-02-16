@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(arc);
 }
 
-Arc::Arc(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_startAngle(30), m_spanAngle(120)
+Arc::Arc(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_startAngle(30), m_spanAngle(120)
 {
 	initMyResource();
 

@@ -17,10 +17,10 @@
 #ifndef BARCODE_H
 #define BARCODE_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
 
-class Barcode : public Report::ItemInterface
+class Barcode : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

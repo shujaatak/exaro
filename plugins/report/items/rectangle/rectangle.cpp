@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(rectangle);
 }
 
-Rectangle::Rectangle(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_xRadius(0), m_yRadius(0)
+Rectangle::Rectangle(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_xRadius(0), m_yRadius(0)
 {
 	initMyResource();
 }

@@ -52,7 +52,11 @@ Picture::Picture(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	initMyResource();
 	setWidth(20/UNIT); //20 mm
 	setHeight(20/UNIT); // 20 mm
-	setBrush(QBrush(QPixmap(":/empty.png")));
+	m_emptyBrush = QBrush(QPixmap(":/empty.png"));
+	m_font=QFont("Serif");
+	m_font.setPointSizeF(3.5);
+	m_font.setStyleStrategy(QFont::PreferMatch);
+	m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
 
@@ -110,26 +114,20 @@ QRectF Picture::boundingRect() const
 
 void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	QString m_text;
-
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit beforePrint(this);
 
-	m_text=m_comment;
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, rect);
+	QString m_text;
+	m_text=m_comment;
 
 	setupPainter(painter);
-
-	adjustRect(rect);
+	painter->setFont(fontConvert(m_font));
+	adjustRect(rect, painter->pen());
 
 	qreal textH  = 0;
-
 	qreal sw=0;
-
 	qreal sh=0;
 
 	if (m_drawTextType == DRAW_ABOVE || m_drawTextType == DRAW_BELOW)
@@ -137,6 +135,7 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 
 	if (m_image.isNull())
 	{
+		painter->setBrush(m_emptyBrush);
 		(option->type == QStyleOption::SO_GraphicsItem)  ?
 		painter->drawRect(rect) : 	painter->drawText(rect, Qt::AlignCenter, "No Picture");
 	}
@@ -236,6 +235,10 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		                  rect.width() - m_borderWidth, rect.height() - m_borderWidth);
 	}
 
+
+	if (option->type == QStyleOption::SO_GraphicsItem)
+	    drawSelection(painter, rect);
+
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
 }
@@ -314,5 +317,17 @@ void Picture::setBorderColor(const QColor & color)
 	m_borderColor = color;
 	update();
 }
+
+QFont Picture::font()
+{
+	return m_font;
+}
+
+void Picture::setFont(const QFont & font)
+{
+	m_font = font;
+	update();
+}
+
 
 Q_EXPORT_PLUGIN2(picture, Picture)

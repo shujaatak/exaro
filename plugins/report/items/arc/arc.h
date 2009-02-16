@@ -30,9 +30,9 @@
 #ifndef ARC_H
 #define ARC_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Arc : public Report::ItemInterface
+class Arc : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

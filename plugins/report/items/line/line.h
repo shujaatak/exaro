@@ -30,9 +30,9 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class LineItem : public Report::ItemInterface
+class LineItem : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

@@ -41,7 +41,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(ellipse);
 }
 
-Ellipse::Ellipse(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
+Ellipse::Ellipse(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject)
 {
 	initMyResource();
 

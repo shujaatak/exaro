@@ -139,53 +139,23 @@ class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 
-	Q_ENUMS(BGMode)
-
+	/**
+	 * @see isEnabled()
+	 * @see setEnabled()
+	*/
+	Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled)
 	/**
 	 * @see geometry()
 	 * @see setGeometry()
 	*/
 	Q_PROPERTY(QRectF geometry READ geometry WRITE setGeometry)
 	/**
-	 * @see pen()
-	 * @see setPen()
-	*/
-	Q_PROPERTY(QPen pen READ pen WRITE setPen)
-	/**
-	 * @see brush()
-	 * @see setBrush()
-	*/
-	Q_PROPERTY(QBrush brush READ brush WRITE setBrush)
-	/**
-	 * @see backgroundBrush()
-	 * @see setBackgroundBrush()
-	*/
-	Q_PROPERTY(QBrush backgroundBrush READ backgroundBrush WRITE setBackgroundBrush)
-	/**
-	 * @see backgroundMode()
-	 * @see setBackgroundMode()
-	 * @see BGMode
-	*/
-	Q_PROPERTY(BGMode backgroundMode READ backgroundMode WRITE setBackgroundMode)
-	/**
 	 * @see opacity()
 	 * @see setOpacity()
 	*/
 	Q_PROPERTY(int opacity READ opacity WRITE setOpacity)
-	/**
-	 * @see font()
-	 * @see setFont()
-	*/
-	Q_PROPERTY(QFont font READ font WRITE setFont)
 
 public:
-	/** @enum BGMode
-	* @see backgroundMode()
-	* @see setBackgroundMode()
-	*/
-	enum BGMode { TransparentMode, /**< Background is transparent*/
-	              OpaqueMode /**< Background is opaque*/
-	            };
 
 	/** @enum ResizeFlags
 	* @see resizeFlags()
@@ -220,60 +190,6 @@ public:
 	 * @see resizeHandle()
 	 */
 	void setResizeHandle(int resizeHandle);
-
-	/**
-	 * Return the brush used to paint background
-	 * @return backgroundBrush
-	 * @see setBackgroundBrush()
-	 */
-	virtual QBrush backgroundBrush();
-	/**
-	 * Set the brush used to paint background
-	 * @param brush brush used to paint background
-	 * @see backgroundBrush()
-	 */
-	virtual void setBackgroundBrush(const QBrush & brush);
-
-	/**
-	 * Return the brush used to paint the item
-	 * @return  the brush used to paint the item
-	 * @see setBrush()
-	 */
-	virtual QBrush brush();
-	/**
-	 * Set the brush used to paint the item
-	 * @param brush brush used to paint the item
-	 * @see brush()
-	 */
-	virtual void setBrush(const QBrush & brush);
-
-
-	/**
-	 * Return the pen used to paint the item
-	 * @return pen used to paint the item
-	 * @see setPen()
-	 */
-	virtual QPen pen();
-	/**
-	 * Set the pen used to paint the item
-	 * @param pen
-	 * @see pen()
-	 */
-	virtual void setPen(const QPen & pen);
-
-
-	/**
-	 * Return the item font
-	 * @return item font
-	 * @see setFont()
-	 */
-	virtual QFont font();
-	/**
-	 * Set the item font
-	 * @param font item font
-	 * @see font()
-	 */
-	virtual void setFont(const QFont & font);
 
 	/**
 	 * Return the item width
@@ -339,20 +255,6 @@ public:
 	 * @see minWidth()
 	 */
 	virtual void setMinWidth(qreal width);
-	/**
-	 * Return background mode
-	 * @return background mode
-	 * @see BGMode
-	 * @see setBackgroundMode()
-	 */
-	virtual BGMode backgroundMode();
-	/**
-	 * Set background mode
-	 * @param bgMode background mode
-	 * @see BGMode
-	 * @see backgroundMode()
-	 */
-	virtual void setBackgroundMode(BGMode bgMode);
 
 	/**
 	 * Return resize flags
@@ -420,7 +322,6 @@ public:
 	 * @param widget the widget argument is optional. If provided, it points to the widget that is being painted on; otherwise, it is 0. For cached painting, widget is always 0.
 	 */
 	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
-
 	/**
 	 * This pure virtual function is used to create the item object
 	 * @param parent parent item
@@ -435,13 +336,6 @@ public:
 	 * @return true if the report can contain the object
 	 */
 	virtual bool canContain(QObject * object);
-
-	/**
-	 * Adjust the rect with pen width
-	 * @param rect rect to adjust
-	 * @return adjusted rect
-	 */
-	QRectF adjustRect(QRectF & rect);
 
 	/**
 	 * Try to find the report query query
@@ -489,6 +383,9 @@ public:
 	 */
 	QRectF parentGeometry();
 
+	virtual bool isEnabled();
+	virtual void setEnabled(bool b);
+
 	virtual void removeItem(){/*deleteLater();*/};
 
 protected:
@@ -526,7 +423,12 @@ protected:
 	 * This function set the background brush, the brush, the pen and the font to painter
 	 * @param painter
 	 */
-	void setupPainter(QPainter * painter);
+	virtual void setupPainter(QPainter * painter);
+
+	static QFont fontConvert(QFont & font);
+	static const QRectF adjustRect(QRectF & rect, const QPen & pen);
+//	void paintBefore(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+//	void paintAfter(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 signals:
 	/**
@@ -559,17 +461,14 @@ signals:
 private:
 	int m_resizeHandle;
 	int m_resizeEvent;
-	BGMode m_BGMode;
 	int m_resizeFlags;
 	qreal m_width, m_height;
  	qreal m_minWidth, m_minHeight;
-	QBrush m_brush, m_backgroundBrush;
-	QPen m_pen;
-	QFont m_font;
 	int m_opacity;
 	qreal m_stretch;
 	QRectF oldGeometry;
 	bool m_drawSelectionBorder;
+	bool m_enabled;
 };
 }
 

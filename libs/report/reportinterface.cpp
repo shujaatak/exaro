@@ -218,6 +218,8 @@ void ReportInterface::paintPage(PageInterface * page)
 		{
 			foreach(BandInterface * band, detailFooters)
 			{
+				if (!band->isEnabled())
+				    continue;
 				if (!band->groupFieldValue().isValid())
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
 
@@ -233,6 +235,8 @@ void ReportInterface::paintPage(PageInterface * page)
 			foreach(BandInterface * band, detailHeaders)
 				if (band->groupFieldValue() != detailContainerBand->queryField(detailContainerBand->query(), band->groupField()))
 				{
+					if (!band->isEnabled())
+					    continue;
 					if (!canPaint(band) || (!first && band->forceNewPage()))
 						newPage();
 					paintBand(band);
@@ -245,6 +249,8 @@ void ReportInterface::paintPage(PageInterface * page)
 
 			foreach(BandInterface * band, details)
 			{
+				if (!band->isEnabled())
+				    continue;
 				if (!canPaint(band))
 				{
 					newPage();
@@ -263,6 +269,8 @@ void ReportInterface::paintPage(PageInterface * page)
 
 		foreach(BandInterface * band, detailFooters)
 		{
+			if (!band->isEnabled())
+			    continue;
 			if (!canPaint(band))
 				newPage();
 			paintBand(band);
@@ -276,6 +284,8 @@ void ReportInterface::paintPage(PageInterface * page)
 	}
 	foreach(BandInterface * band, m_summaryBands)
 	{
+		if (!band->isEnabled())
+		    continue;
 		if (!canPaint(band))
 			newPage();
 		paintBand(band);
@@ -331,7 +341,7 @@ void ReportInterface::exportRecord(const QSqlRecord & record, QDomElement & el)
 
 void ReportInterface::paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect)
 {
-	if (!item)
+	if (!item || !item->isEnabled())
 		return;
 
 	QStyleOptionGraphicsItem option;
@@ -351,6 +361,8 @@ void ReportInterface::paintBand(BandInterface * band)
 {
 	if (!band || m_reportCanceled)
 		return;
+	if (!band->isEnabled())
+	    return;
 
 	m_painter.save();
 	band->prepare(&m_painter);
@@ -380,6 +392,8 @@ void ReportInterface::paintOverlays()
 
 	foreach(BandInterface * band, m_pageOverlayBands)
 	{
+		if (!band->isEnabled())
+		    continue;
 		m_painter.save();
 		band->prepare(&m_painter);
 		m_painter.translate(band->geometry().x(), band->geometry().y());

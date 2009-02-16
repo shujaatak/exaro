@@ -30,7 +30,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(barcode);
 }
 
-Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
+Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject)
 {
 	m_barcodeType = (BarcodeTypes)BARCODE_CODE128;
 	m_paintType = IgnoreAspectRatio;

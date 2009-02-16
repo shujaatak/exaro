@@ -30,9 +30,9 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Script : public Report::ItemInterface
+class Script : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

@@ -30,9 +30,9 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include <iteminterface.h>
+#include <iteminterfaceext.h>
 
-class Rectangle : public Report::ItemInterface
+class Rectangle : public Report::ItemInterfaceExt
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);

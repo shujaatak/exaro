@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(chord);
 }
 
-Chord::Chord(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_startAngle(30), m_spanAngle(120)
+Chord::Chord(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_startAngle(30), m_spanAngle(120)
 {
 	initMyResource();
 

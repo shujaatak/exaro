@@ -39,7 +39,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(field);
 }
 
-Field::Field(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0),m_fieldName(tr("field")),m_queryName(tr("query")),m_sizePolicy(None)
+Field::Field(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_textFlags(0),m_fieldName(tr("field")),m_queryName(tr("query")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(30/UNIT);

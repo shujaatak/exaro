@@ -36,7 +36,7 @@
 
 namespace Report {
 
-ChartInterface::ChartInterface(QGraphicsItem* parent, QObject* parentObject): ItemInterface(parent, parentObject)
+ChartInterface::ChartInterface(QGraphicsItem* parent, QObject* parentObject): ItemInterfaceExt(parent, parentObject)
 {
 }
 
