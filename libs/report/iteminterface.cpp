@@ -67,8 +67,6 @@ ItemInterface::~ItemInterface()
 void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 {
 	painter->save();
-
-
 	if (isSelected())
 	{
 		QBrush a;
@@ -118,15 +116,18 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 			painter->setPen(p);
 			painter->drawRect(rect);
 		}
-		painter->setPen(QColor(0,0,0,100));
-		painter->drawLine(0,0,0,2*m_resizeHandle);
-		painter->drawLine(0,0,2*m_resizeHandle,0);
-		painter->drawLine(rect.width(),0,rect.width()-2*m_resizeHandle,0);
-		painter->drawLine(rect.width(),0,rect.width(),2*m_resizeHandle);
-		painter->drawLine(rect.width(),rect.height(),rect.width()-2*m_resizeHandle, rect.height());
-		painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-2*m_resizeHandle);
-		painter->drawLine(0,rect.height(), 2*m_resizeHandle, rect.height());
-		painter->drawLine(0,rect.height(), 0, rect.height()-2*m_resizeHandle);
+		else
+		{
+			painter->setPen(QColor(0,0,0,100));
+			painter->drawLine(0,0,0,2*m_resizeHandle);
+			painter->drawLine(0,0,2*m_resizeHandle,0);
+			painter->drawLine(rect.width(),0,rect.width()-2*m_resizeHandle,0);
+			painter->drawLine(rect.width(),0,rect.width(),2*m_resizeHandle);
+			painter->drawLine(rect.width(),rect.height(),rect.width()-2*m_resizeHandle, rect.height());
+			painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-2*m_resizeHandle);
+			painter->drawLine(0,rect.height(), 2*m_resizeHandle, rect.height());
+			painter->drawLine(0,rect.height(), 0, rect.height()-2*m_resizeHandle);
+		}
 	}
 
 	painter->restore();
