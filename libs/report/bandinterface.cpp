@@ -181,6 +181,18 @@ void BandInterface::setFrame(Frames frame)
 	update();
 }
 
+int BandInterface::freeSpace()
+{
+//    qDebug("BandInterface::freeSpace()");
+    QList<QGraphicsItem *> lc = childItems();
+    int mSize = 0;
+
+    foreach (QGraphicsItem * item, lc)
+	if (dynamic_cast<Report::BandInterface*>(item))
+	    mSize += dynamic_cast<Report::BandInterface*>(item)->height();
+    return height() - mSize;
+}
+
 void BandInterface::setIndentation(int indentation)
 {
 	if (indentation < 0)
@@ -263,7 +275,9 @@ void BandInterface::setHeight(qreal height)
 	QList<QGraphicsItem *> lc;
 
 	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
+	{
 		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
+	}
 	else
 		if (scene())
 			lc = scene()->items();
@@ -290,6 +304,13 @@ void BandInterface::setHeight(qreal height)
 				default:
 					break;
 			}
+
+	if (dynamic_cast<Report::BandInterface*>(parentItem()))
+	{
+	    int freeSpace = dynamic_cast<Report::BandInterface*>(parentItem())->freeSpace();
+	    if (freeSpace < 0)
+		setHeight(geometry().height() + freeSpace);
+	}
 }
 
 void BandInterface::updateGeometry(QRectF rect)
