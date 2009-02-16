@@ -221,6 +221,8 @@ public:
 
 	void selectBand();
 
+	int freeSpace();
+
 signals:
 	void bandDelete(int, int);
 
