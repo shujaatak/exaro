@@ -64,6 +64,7 @@ TitleItem::TitleItem(BandInterface * parentBand, const QSizeF & size, const QStr
 
 void TitleItem::setSize(QSizeF size)
 {
+	prepareGeometryChange ();
 	if (m_size==size)
 		return;
 	m_size=size;
@@ -151,6 +152,7 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 void BandInterface::selectBand()
 {
 	emit(itemSelected(this, QPointF(0,0)));
+	raise();
 }
 
 bool BandInterface::deleting()
@@ -183,7 +185,6 @@ void BandInterface::setFrame(Frames frame)
 
 int BandInterface::freeSpace()
 {
-//    qDebug("BandInterface::freeSpace()");
     QList<QGraphicsItem *> lc = childItems();
     int mSize = 0;
 
@@ -358,10 +359,8 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 	{
 		if (m_titleItem->size().height()!=geometry().height() || m_titleItem->pos()!=pos)
 		{
-			m_titleItem->setVisible(false);
 			m_titleItem->setSize(QSizeF(40,geometry().height()));
 			m_titleItem->setPos(pos);
-			m_titleItem->setVisible(true);
 		}
 	}
 }
