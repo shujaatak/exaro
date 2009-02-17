@@ -165,6 +165,8 @@ int ItemInterface::resizeHandle()
 
 void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug("ItemInterface::mousePressEvent");
+	qDebug("Name = %s, Z=%f", metaObject()->className(), zValue());
 	oldGeometry = geometry();
 	foreach(QGraphicsItem *item, scene()->items())
 		if (item->zValue() == 1)
@@ -472,6 +474,15 @@ const QRectF ItemInterface::adjustRect(QRectF & rect, const QPen & pen)
 	qreal penwidth = pen.widthF();
 	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
 	return rect;
+}
+
+void ItemInterface::raise()
+{
+    	foreach(QGraphicsItem *item, scene()->items())
+		if (item->zValue() == 1)
+			item->setZValue(0);
+
+	setZValue(1);
 }
 
 /*

@@ -388,6 +388,8 @@ public:
 
 	virtual void removeItem(){/*deleteLater();*/};
 
+	void raise();
+
 protected:
 	/**
 	 * This event handler, for event event, can be reimplemented to receive mouse press events for this item. Mouse press events are only delivered to items that accept the mouse button that is pressed. By default, an item accepts all mouse buttons, but you can change this by calling setAcceptedMouseButtons().
