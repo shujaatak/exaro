@@ -342,11 +342,13 @@ void ReportInterface::paintObjects(ItemInterface * item, QPointF translate, cons
 	m_painter.save();
 	option.exposedRect.translate(translate);
 	m_painter.setClipRect(clipRect);
+	item->beginPaint(&m_painter);
 	item->paint(&m_painter, &option);
 	m_painter.restore();
 	translate += option.exposedRect.topLeft();
 	foreach(QObject * obj, ((QObject*)item)->children())
 		paintObjects(dynamic_cast<ItemInterface *>(obj), translate, option.exposedRect);
+	item->endPaint(&m_painter);
 }
 
 void ReportInterface::paintBand(BandInterface * band)

@@ -59,9 +59,6 @@ QRectF ChartContainer::boundingRect() const
 
 void ChartContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -72,8 +69,6 @@ void ChartContainer::paint(QPainter * painter, const QStyleOptionGraphicsItem * 
 		painter->setPen(QColor(225,224,224));
 		painter->drawText(rect,Qt::AlignBottom|Qt::AlignRight,tr("Chart container"));
 	}
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon ChartContainer::toolBoxIcon()

@@ -103,9 +103,6 @@ void HtmlScript::prepare(QPainter * painter)
 
 void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -113,7 +110,6 @@ void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 
 	setupPainter(painter);
 	adjustRect(rect);
-	painter->save();
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		painter->drawText(rect, m_script);
 	else
@@ -139,11 +135,6 @@ void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 			td.drawContents(painter,QRectF(QPointF(0,0),rect.size()));
 #endif
 		}
-
-	painter->restore();
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon HtmlScript::toolBoxIcon()

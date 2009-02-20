@@ -120,21 +120,14 @@ void Field::prepare(QPainter * painter)
 
 void Field::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
+
 	setupPainter(painter);
-
 	adjustRect(rect);
-
 	painter->drawText(rect, textFlags(), option->type == QStyleOption::SO_GraphicsItem?(m_queryName+'.'+m_fieldName):queryField(m_queryName,m_fieldName).toString());
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Field::toolBoxIcon()

@@ -80,22 +80,15 @@ QRectF Arc::boundingRect() const
 
 void Arc::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
 
 	setupPainter(painter);
-
 	adjustRect(rect);
-
 	painter->drawArc(rect, m_startAngle*16, m_spanAngle*16);
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Arc::toolBoxIcon()

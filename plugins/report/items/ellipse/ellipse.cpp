@@ -59,23 +59,14 @@ QRectF Ellipse::boundingRect() const
 
 void Ellipse::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
 
 	setupPainter(painter);
-
 	adjustRect(rect);
-
 	painter->drawEllipse(rect);
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-
 }
 
 QIcon Ellipse::toolBoxIcon()

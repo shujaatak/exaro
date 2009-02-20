@@ -107,23 +107,16 @@ void Text::prepare(QPainter * painter)
 
 void Text::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, boundingRect());
-	setupPainter(painter);
 
+	setupPainter(painter);
 	adjustRect(rect);
 
-	painter->save();
 	painter->setRenderHint(QPainter::TextAntialiasing);
 	painter->drawText(rect, textFlags(), m_text);
-	painter->restore();
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Text::toolBoxIcon()

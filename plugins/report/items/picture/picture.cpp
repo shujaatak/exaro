@@ -112,9 +112,6 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 {
 	QString m_text;
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	m_text=m_comment;
 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
@@ -123,7 +120,6 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		drawSelection(painter, rect);
 
 	setupPainter(painter);
-
 	adjustRect(rect);
 
 	qreal textH  = 0;
@@ -235,9 +231,6 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		painter->drawRect(rect.x() + m_borderWidth/2, rect.y() + m_borderWidth/2,
 		                  rect.width() - m_borderWidth, rect.height() - m_borderWidth);
 	}
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 
