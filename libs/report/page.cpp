@@ -336,7 +336,7 @@ bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, 
 					{
 						stringStruct ss;
 						ss.pos=m_doc->pos();
-						QRectF textRect=QFontMetricsF(font).boundingRect(text);
+						QRectF textRect=QFontMetricsF(font).boundingRect(st.mid(st.indexOf(text,0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive), text.length()));
 						if (st.indexOf(text,0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
 							textRect.translate(QFontMetricsF(font).width(st.left(st.indexOf(text,0, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))),0);
 						textRect.translate(pt);
