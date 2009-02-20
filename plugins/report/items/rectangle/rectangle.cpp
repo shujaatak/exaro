@@ -80,22 +80,14 @@ void Rectangle::setYRadius(qreal radius)
 
 void Rectangle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		drawSelection(painter, rect);
 
 	setupPainter(painter);
-
 	adjustRect(rect);
-
 	painter->drawRoundRect(rect, xRadius(), yRadius());
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Rectangle::toolBoxIcon()

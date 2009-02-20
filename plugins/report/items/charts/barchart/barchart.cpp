@@ -58,10 +58,6 @@ QRectF BarChart::boundingRect() const
 
 void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	painter->save();
 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -72,12 +68,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
 	QList<ChartInterface::_chartValue> val=values();
 	if (!val.size())
-	{
-		if (option->type != QStyleOption::SO_GraphicsItem)
-			emit afterPrint(this);
-		painter->restore();
 		return;
-	}
 
 	qreal maxpv=0;
 	qreal minnv=0;
@@ -224,9 +215,6 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		painter->drawImage(rc.topLeft(),img);
 	}
 */
-	painter->restore();
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon BarChart::toolBoxIcon()

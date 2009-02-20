@@ -51,9 +51,6 @@ QRectF Legend::boundingRect() const
 
 void Legend::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-	painter->save();
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -65,12 +62,8 @@ void Legend::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	QList<ChartInterface::_chartValue> val=values();
 
 	if (!val.size())
-	{
-		if (option->type != QStyleOption::SO_GraphicsItem)
-			emit afterPrint(this);
-		painter->restore();
 		return;
-	}
+
 	painter->fillRect(rect,brush());
 	painter->drawRect(rect);
 	painter->translate(rect.topLeft());
@@ -83,9 +76,6 @@ void Legend::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 		QRectF(1/UNIT+m_legendColorRectWidth,y,rect.width()-(1/UNIT+m_legendColorRectWidth),vstep),Qt::AlignVCenter|Qt::AlignLeft,cv.key);
 		y+=vstep+1/UNIT;
 	}
-	painter->restore();
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Legend::toolBoxIcon()

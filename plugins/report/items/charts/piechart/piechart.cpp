@@ -265,7 +265,6 @@ void PieChart::calculateTotalValue()
 
 void PieChart::drawChart(QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
-	painter->save();
 
 	//painter->fillRect(chartRect , QColor(220,220,220));
    painter->drawEllipse(chartRect);
@@ -292,7 +291,6 @@ void PieChart::drawChart(QPainter * painter, const QStyleOptionGraphicsItem * op
            startAngle += angle;
        }
    }
-	painter->restore();
 }
 
 void PieChart::drawLegend( QPainter * painter, const QStyleOptionGraphicsItem * option)
@@ -338,9 +336,6 @@ void PieChart::drawLegend( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -385,12 +380,6 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 */
 //	painter->drawRoundRect(rect/*, xRadius(), yRadius()*/);
 
-
-
-
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon PieChart::toolBoxIcon()

@@ -247,9 +247,6 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		m_text=scriptEngine()->evaluate(m_script).toString();
 
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -304,10 +301,6 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		default:
 			break;
 	}
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-
 }
 
 QIcon Barcode::toolBoxIcon()

@@ -289,11 +289,23 @@ void ItemInterface::prepare(QPainter * painter)
 			dynamic_cast<Report::ItemInterface*>(obj)->prepare(painter);
 }
 
+void ItemInterface::beginPaint(QPainter * painter)
+{
+	Q_UNUSED(painter);
+	emit beforePrint(this);
+}
+
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	Q_UNUSED(painter);
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
+}
+
+void ItemInterface::endPaint(QPainter * painter)
+{
+	Q_UNUSED(painter);
+	emit afterPrint(this);
 }
 
 bool ItemInterface::canContain(QObject * object)

@@ -62,9 +62,6 @@ QRectF Detail::boundingRect() const
 
 void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	setupPainter(painter);
@@ -89,10 +86,6 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 
 	if (frame()&DrawBottom)
 		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
-
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Detail::toolBoxIcon()

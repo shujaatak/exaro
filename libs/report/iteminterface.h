@@ -95,9 +95,6 @@ QRectF Rectangle::boundingRect() const
 
 void Rectangle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	Q_UNUSED(widget);
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
@@ -108,10 +105,6 @@ void Rectangle::paint(QPainter * painter, const QStyleOptionGraphicsItem * optio
 	adjustRect(rect);
 
 	painter->drawRect(rect); // draw the rectangle !!
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-
 }
 
 QString Rectangle::toolBoxText()
@@ -409,10 +402,18 @@ public:
 	};
 
 	/**
-	 * This function prepare the item. This function is called before paint function
+	 * This function prepare the item. Only in this function you can resize or stretch your item
 	 * @param painter the painter used to paint in
 	 */
 	virtual void prepare(QPainter * painter);
+
+	/**
+	 * This function. This function is called before paint function. The default implementation will emmit beforePrint signal. 
+	 * if you reimplement this method don't forget to emmit beforePrint signal or to call parents method
+	 * @param painter the painter used to paint in
+	 */
+	virtual void beginPaint(QPainter * painter);
+
 	/**
 	 * This function paints the contents of an item
 	 * @param painter the painter used to paint in
@@ -420,6 +421,13 @@ public:
 	 * @param widget the widget argument is optional. If provided, it points to the widget that is being painted on; otherwise, it is 0. For cached painting, widget is always 0.
 	 */
 	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+
+	/**
+	 * This function. This function is called after paint function. The default implementation will emmit afterPrint signal.
+	 * if you reimplement this method don't forget to emmit this afterPrint or to call parents method
+	 * @param painter the painter used to paint in
+	 */
+	virtual void endPaint(QPainter * painter);
 
 	/**
 	 * This pure virtual function is used to create the item object
