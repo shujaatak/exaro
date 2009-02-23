@@ -33,6 +33,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "title.h"
+#include "bandinterface.h"
 
 inline void initMyResource()
 {
@@ -62,6 +63,7 @@ QRectF Title::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
 }
+
 
 void Title::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {

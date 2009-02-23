@@ -41,6 +41,8 @@ class DetailContainer : public Report::BandInterface
 public:
 	DetailContainer(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
+	int layoutPriority(){ return 70;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

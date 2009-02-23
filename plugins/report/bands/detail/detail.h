@@ -42,6 +42,8 @@ public:
 
 	~Detail();
 
+	int layoutPriority(){ return 40;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

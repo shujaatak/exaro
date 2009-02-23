@@ -43,6 +43,8 @@ public:
 
 	~DetailFooter();
 
+	int layoutPriority() {return 30;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

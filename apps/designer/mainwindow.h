@@ -30,6 +30,7 @@
 #include "designeruiwidget.h"
 #include "objectmodel.h"
 #include "command.h"
+#include "layoutmanager.h"
 
 class QTabWidget;
 class QTreeView;
@@ -85,6 +86,7 @@ private:
 	QSignalMapper * m_smReport;
 	QUndoStack *undoStack;
 	QUndoView *undoView;
+	Report::LayoutManager  * m_ltManager;
 
 public slots:
 	void selectLastObject();

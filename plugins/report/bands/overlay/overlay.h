@@ -43,6 +43,9 @@ public:
 
 	~Overlay();
 
+	Report::BandInterface::LayoutType layoutType(){return LayoutFree;}
+	int layoutPriority(){ return 100;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

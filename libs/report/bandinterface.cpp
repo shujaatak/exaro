@@ -210,6 +210,7 @@ int BandInterface::indentation()
 
 void BandInterface::setOrder(int order, bool refreshOthers)
 {
+
 	if (order < 0)
 		order = 0;
 
@@ -219,6 +220,9 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 		return;
 	}
 
+
+	m_order = order;
+	/*
 	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
 		return;
 
@@ -259,6 +263,7 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 			dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
 
 	updateGeometry(geometry());
+	*/
 }
 
 int BandInterface::order()
@@ -270,6 +275,7 @@ void BandInterface::setHeight(qreal height)
 {
 	ItemInterface::setHeight(height);
 
+	/*
 	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
 		return;
 
@@ -312,6 +318,7 @@ void BandInterface::setHeight(qreal height)
 	    if (freeSpace < 0)
 		setHeight(geometry().height() + freeSpace);
 	}
+	*/
 }
 
 void BandInterface::updateGeometry(QRectF rect)
@@ -367,9 +374,10 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 
 void BandInterface::setGeometry(QRectF rect)
 {
+    /*
 	if (bandType() == Overlay)
 	{
-		ItemInterface::setGeometry(rect/*&parentGeometry()*/);
+		ItemInterface::setGeometry(rect/\*&parentGeometry()*\/);
 		return;
 	}
 
@@ -426,6 +434,7 @@ void BandInterface::setGeometry(QRectF rect)
 
 	rect.setHeight(h);
 	rect.setWidth(parentGeometry().width());
+	*/
 	ItemInterface::setGeometry(rect);
 }
 
@@ -438,6 +447,16 @@ BandInterface::BandType BandInterface::bandType()
 void BandInterface::setBandType(BandType bandType)
 {
 	m_bandType = bandType;
+}
+
+BandInterface::LayoutType BandInterface::layoutType()
+{
+	return LayoutTop;
+}
+
+int BandInterface::layoutPriority()
+{
+    return 0;
 }
 
 QString BandInterface::query()
