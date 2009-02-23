@@ -183,7 +183,6 @@ void ItemInterface::setupPainter(QPainter * painter)
 {
 	if (!painter)
 		return;
-	painter->setBrush(brush());
 	painter->setPen(pen());
 	painter->setBackgroundMode((Qt::BGMode)m_BGMode);
 	painter->setBackground(backgroundBrush());
@@ -191,6 +190,7 @@ void ItemInterface::setupPainter(QPainter * painter)
 	f.setPixelSize(font().pointSizeF()/UNIT);
 	painter->setFont(f);
 	painter->setOpacity((qreal)m_opacity/100.);
+	painter->setBrush(brush());
 }
 
 int ItemInterface::resizeFlags()
