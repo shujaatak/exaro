@@ -18,6 +18,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QTimer>
+#include "layoutmanager.h"
 
 AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
 {
@@ -65,10 +66,12 @@ void AddCommand::redo()
 			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 
 		QPointF localPos = m_item->mapFromScene( m_pos );
-		m_item->setGeometry( QRectF( localPos.x(), localPos.y(), m_item->geometry().width(), m_item->geometry().height() ) );
+		m_item->setPos( localPos.x(), localPos.y());
+		Report::LayoutManager::itemAdded(m_item);
+//		m_item->setGeometry( QRectF( localPos.x(), localPos.y(), m_item->geometry().width(), m_item->geometry().height() ) );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 		m_mainWindow->m_lastSelectedObject=m_item;
-		QTimer::singleShot(250, m_mainWindow, SLOT(selectLastObject()));
+		QTimer::singleShot(0, m_mainWindow, SLOT(selectLastObject()));
 		m_itemName = m_item->objectName();
 		m_canUndo=true;
 	}
@@ -510,6 +513,8 @@ void GeometryChangeCommand::redo()
 		dynamic_cast<Report::ItemInterface*>( item )->setGeometry( m_newGeometry );
 	else
 		dynamic_cast<Report::PageInterface*>( item )->setGeometry( m_newGeometry );
+
+	Report::LayoutManager::itemGeometryChanged(item);
 }
 
 

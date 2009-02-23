@@ -42,6 +42,9 @@ public:
 	Title(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 	~Title();
 
+	Report::BandInterface::LayoutType layoutType(){ return LayoutTop;}
+	int layoutPriority(){ return 75;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

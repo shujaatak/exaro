@@ -43,6 +43,9 @@ public:
 
 	~PageFooter();
 
+	Report::BandInterface::LayoutType layoutType() {return LayoutBottom;}
+	int layoutPriority() {return 100;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

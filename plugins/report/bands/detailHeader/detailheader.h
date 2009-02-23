@@ -44,6 +44,8 @@ public:
 	DetailHeader(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 	~DetailHeader();
 
+	int layoutPriority() {return 50;}
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

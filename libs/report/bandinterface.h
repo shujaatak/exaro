@@ -112,6 +112,8 @@ public:
 	enum TitlePosition {TitleLeft, /**< Draw the title on left side*/
 			    TitleRight /**< Draw the title on right side*/
 			    };
+	enum LayoutType { LayoutTop, LayoutBottom, LayoutFree };
+
 	Q_DECLARE_FLAGS(Frames, Frame);
 
 public:
@@ -132,6 +134,10 @@ public:
 	* @see setBandType()
 	*/
 	virtual BandType bandType();
+
+	virtual LayoutType layoutType();
+
+	virtual int layoutPriority();
 
 	/**
 	 * Set the band geometry.

@@ -245,6 +245,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_smTemplate = 0;
 	m_smReport = 0;
 	setupActions();
+
+	m_ltManager = new Report::LayoutManager(this);
 }
 
 void mainWindow::setupActions()
