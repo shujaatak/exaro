@@ -246,7 +246,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_smReport = 0;
 	setupActions();
 
-	m_ltManager = new Report::LayoutManager(this);
 }
 
 void mainWindow::setupActions()
@@ -752,49 +751,7 @@ void mainWindow::newPage()
 {
 	if ( !m_reportEngine.pages().count() )
 		return;
-	/*
-	        QGraphicsView * gw = 0;
 
-		if (1 == m_reportEngine.pages().count())
-			gw = new QGraphicsView(static_cast<QGraphicsScene*>(m_reportEngine.pages()[0]->createInstance(m_report)));
-		else
-		{
-	#ifndef WIN32
-	#warning implement me !!!!
-	#endif
-			//ehe tata ici e de lucru
-		}
-
-
-	//		gw->setAutoFillBackground(true);
-	//		gw->setBackgroundRole(QPalette::Base);
-	//		QPalette pal = gw->palette();
-	//		pal.setBrush(QPalette::Base, Qt::blue);
-	//		pal.setColor(QPalette::HighlightedText, Qt::red);
-	//		gw->setPalette(pal);
-	//		gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
-	//
-
-		dynamic_cast<Report::PageInterface*>(gw->scene())->setObjectName(Report::ReportEngine::uniqueName(dynamic_cast<Report::PageInterface*>(gw->scene())->metaObject()->className(), m_report));
-		dynamic_cast<Report::PageInterface*>(gw->scene())->setContextMenu(&m_contextMenu);
-
-	        int index = m_tw->addTab((QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
-	        m_tw->setCurrentWidget((QWidget*) gw);
-
-		actionRemove_page->setEnabled(m_tw->count());
-
-		connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemSelected(QObject *, QPointF)), this, SLOT(itemSelected(QObject *, QPointF)));
-	        connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
-
-		setMagnetActions(dynamic_cast<Report::PageInterface*>(gw->scene()));
-
-		if (1 == m_tw->count())
-			m_pe->setObject(dynamic_cast<Report::PageInterface*>(gw->scene()));
-
-		m_objectModel.setRootObject(m_report);
-
-	        zoomWYSIWYG();
-	*/
 	QUndoCommand *newPageCommand = new NewPageCommand( this );
 	undoStack->push( newPageCommand );
 }
@@ -928,4 +885,16 @@ void mainWindow::_deletePage_( int index )
 	if ( !m_tw->count() )
 		m_pe->setObject( m_report );
 	m_objectModel.setRootObject( m_report );
+}
+
+void mainWindow::on_actionBandUp_triggered()
+{
+    if (dynamic_cast<Report::BandInterface*>(m_lastSelectedObject))
+	dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->setOrder(dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->order() - 1);
+}
+
+void mainWindow::on_actionBandDown_triggered()
+{
+   if (dynamic_cast<Report::BandInterface*>(m_lastSelectedObject))
+	dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->setOrder(dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->order() + 1);
 }
