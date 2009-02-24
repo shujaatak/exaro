@@ -62,8 +62,8 @@ void AddCommand::redo()
 		QObject::connect( m_item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 
 
-		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
-			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
+//		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
+//		    dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 
 		QPointF localPos = m_item->mapFromScene( m_pos );
 		m_item->setPos( localPos.x(), localPos.y());

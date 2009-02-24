@@ -1,3 +1,4 @@
+#include "QtCore"
 #include "layoutmanager.h"
 
 using namespace Report;
@@ -9,7 +10,6 @@ LayoutManager::LayoutManager(QObject * parent)
 
 void LayoutManager::itemAdded(ItemInterface * item)
 {
-    qDebug("LayoutManager::itemAdded");
     Q_ASSERT(item);
 
     if (!dynamic_cast<Report::BandInterface*>(item))
@@ -28,6 +28,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
 	    lc = band->scene()->items();
 
     qreal by;
+    int maxOrder = -1;
 
     for (int i = 0;i < lc.size();i++)
     {
@@ -41,24 +42,34 @@ void LayoutManager::itemAdded(ItemInterface * item)
 	    switch (band->layoutType())
 	    {
 		case BandInterface::LayoutTop:
-		    if (iBand->layoutPriority() > band->layoutPriority() || (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order()))
+		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order())*/)
 			by += iBand->indentation() + iBand->height();
 		    else
 			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->indentation());
+		    if (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > maxOrder)
+			maxOrder = iBand->order();
 		    break;
 		case BandInterface::LayoutBottom:
-		    if (iBand->layoutPriority() > band->layoutPriority() || (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order()))
+		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order())*/)
 			by += iBand->indentation() + iBand->height();
 		    else
 			iBand->setPos(iBand->x(), iBand->y() - band->height() - band->indentation());
+		    if (iBand->layoutPriority() == band->layoutPriority())
+			iBand->setOrder(iBand->order() + 1, false);
 		    break;
 	    }
     }
 
     if (band->layoutType() == BandInterface::LayoutTop)
+    {
 	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by);
+	band->setOrder(maxOrder + 1, false);
+    }
     if (band->layoutType() == BandInterface::LayoutBottom)
+    {
 	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + band->parentGeometry().height() - band->height()-  by);
+	band->setOrder(0, false);
+    }
 
     if (band->resizeFlags()|BandInterface::ResizeRight)
 	band->setWidth(band->parentGeometry().width());
@@ -68,7 +79,6 @@ void LayoutManager::itemAdded(ItemInterface * item)
 
 void LayoutManager::itemGeometryChanged(QObject * item)
 {
-    qDebug("LayoutManager::itemGeometryChanged");
     Q_ASSERT(item);
 
     if (!dynamic_cast<Report::BandInterface*>(item))
@@ -86,8 +96,8 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	if (band->scene())
 	    lc = band->scene()->items();
 
-    QMap<qreal, Report::BandInterface* > listTop;
-    QMap<qreal, Report::BandInterface* > listBottom;
+    QMap<qreal, Report::BandInterface*> listTop;
+    QMap<qreal, Report::BandInterface*> listBottom;
 
     for (int i = 0;i < lc.size();i++)
     {
@@ -97,18 +107,16 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	else
 	    continue;
 
-
-
 	if (band != iBand && band->parent() == iBand->parent() && band->layoutType() == iBand->layoutType())
 	    switch (band->layoutType())
 	    {
 		case BandInterface::LayoutTop:
 		    if (iBand->layoutPriority() < band->layoutPriority() || (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order()))
-			listTop.insert((qreal)iBand->layoutPriority() + (qreal)iBand->order()/1000, iBand);
+			listTop.insert((qreal)iBand->layoutPriority() + (qreal)(INT_MAX - iBand->order())/INT_MAX , iBand);
 		    break;
 		case BandInterface::LayoutBottom:
-		    if (iBand->layoutPriority() > band->layoutPriority() || (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order()))
-			listBottom.insert((qreal)iBand->layoutPriority() + (qreal)iBand->order()/1000, iBand);
+		    if (iBand->layoutPriority() < band->layoutPriority() || (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order()))
+			listBottom.insert((qreal)iBand->layoutPriority() + (qreal)iBand->order()/INT_MAX, iBand);
 		    break;
 	    }
     }
@@ -119,7 +127,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
     {
 	list = listTop.values();
 	int by =  band->geometry().bottom();
-	for (int i = 0; i< list.count(); i++)
+	for (int i = list.count()-1; i>=0 ;i--)
 	{
 	    list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->indentation());
 	    by += list.at(i)->height();
@@ -130,7 +138,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
     {
 	list = listBottom.values();
 	int by =  band->geometry().top() + band->indentation();
-	for (int i = 0; i< list.count(); i++)
+	for (int i = list.count()-1; i>=0 ;i--)
 	{
 	    list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
 	    by += list.at(i)->height() + list.at(i)->indentation();
@@ -139,189 +147,190 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 }
 
 
-
-
-
-/*
-  ====================
-
-  //    QMap<QReal, Report::BandInterface* > listTop;
-//    QMap<QReal, Report::BandInterface* > listBottom;
-//    QMap<QReal, Report::BandInterface* > listFree;
-  //	map.insert(iBand->layoutPriority());
-//	list = map.values();
-
-*/
-
-/*
-  void BandInterface::setGeometry(QRectF rect)
+void LayoutManager::itemChangeOrder(QObject * item, int order)
 {
-	if (bandType() == Overlay)
+    qDebug("LayoutManager::itemChangeOrder");
+    BandInterface * band = dynamic_cast<Report::BandInterface*>(item);
+    Q_ASSERT(band);
+
+    if (!band->parentItem() && !band->scene())
+	return;
+    if (band->layoutType() == BandInterface::LayoutFree)
+    {
+	band->setOrder(order, false);
+	return;
+    }
+
+
+    QList<QGraphicsItem *> lc;
+
+    if (dynamic_cast<Report::ItemInterface*>(band->parentItem()))
+	lc = dynamic_cast<Report::ItemInterface*>(band->parentItem())->childItems();
+    else
+	if (band->scene())
+	    lc = band->scene()->items();
+
+    int max_order = 0;
+//    QMap<int, Report::BandInterface* > list;
+
+    for (int i = 0;i < lc.size();i++)
+    {
+	Report::BandInterface* iBand = dynamic_cast<Report::BandInterface*>(lc[i]);
+	if (iBand && !iBand->deleting() && iBand->layoutType() == band->layoutType() && iBand->layoutPriority() == band->layoutPriority() && band != iBand)
 	{
-		ItemInterface::setGeometry(rect /+ &parentGeometry() +/);
-		return;
-	}
-
-	qreal h = rect.height();
-	qreal by = parentGeometry().y();
-
-	if (bandType() == PageFooter)
-		by = parentGeometry().bottom() - height();
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	else
-		if (scene())
-			lc = scene()->items();
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && this != dynamic_cast<Report::BandInterface*>(lc[i]) && parent() == dynamic_cast<Report::BandInterface*>(lc[i])->parent())
-			switch (bandType())
-			{
-
-				case PageHeader:
-				case Title:
-				case DetailContainer:
-				case DetailHeader:
-				case Detail:
-				case DetailFooter:
-				case Summary:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageHeader && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= Summary && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() < bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() < order())))
-						by += dynamic_cast<Report::BandInterface*>(lc[i])->indentation() + dynamic_cast<Report::BandInterface*>(lc[i])->height();
-					break;
-
-				case PageFooter:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageFooter && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= PageFooter && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() > bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() < order())))
-						by -= dynamic_cast<Report::BandInterface*>(lc[i])->indentation() + dynamic_cast<Report::BandInterface*>(lc[i])->height();
-					break;
-				default:
-					break;
-			}
-
-	rect.setX(parentGeometry().x());
-
-	if (by < 0)
-		by = 0;
-
-	if ((bandType() == PageFooter) && by > parentGeometry().bottom() - height())
-		by = parentGeometry().bottom() - height();
-
-	rect.setY(by);
-
-	if (rect.y() + height() > parentGeometry().bottom())
-		rect.setY(parentGeometry().bottom() - height());
-
-	rect.setHeight(h);
-	rect.setWidth(parentGeometry().width());
-	ItemInterface::setGeometry(rect);
-}
-*/
-//=================
-/*
-void BandInterface::setHeight(qreal height)
-{
-	ItemInterface::setHeight(height);
-
-	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
-		return;
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-	{
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	}
-	else
-		if (scene())
-			lc = scene()->items();
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && this != dynamic_cast<Report::BandInterface*>(lc[i]) && parent() == dynamic_cast<Report::BandInterface*>(lc[i])->parent())
-			switch (bandType())
-			{
-				case PageHeader:
-				case Title:
-				case DetailContainer:
-				case DetailHeader:
-				case Detail:
-				case DetailFooter:
-				case Summary:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageHeader && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= Summary && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() > bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() > order())))
-						dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-					break;
-
-				case PageFooter:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageFooter && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= PageFooter && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() < bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() > order())))
-						dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-					break;
-				default:
-					break;
-			}
-
-	if (dynamic_cast<Report::BandInterface*>(parentItem()))
-	{
-	    int freeSpace = dynamic_cast<Report::BandInterface*>(parentItem())->freeSpace();
-	    if (freeSpace < 0)
-		setHeight(geometry().height() + freeSpace);
-	}
-}
-*/
-//=================
-
-/*
-void BandInterface::setOrder(int order, bool refreshOthers)
-{
-	if (order < 0)
-		order = 0;
-
-	if (!refreshOthers)
-	{
-		m_order = order;
-		return;
-	}
-
-	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
-		return;
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	else
-		if (scene())
-			lc = scene()->items();
-
-	int max_order = 0;
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && this != dynamic_cast<Report::BandInterface*>(lc[i]))
+	    max_order++;
+	    if (order != INT_MAX)
+	    {
+		if (order < band->order())
 		{
-			max_order++;
-			if (order != INT_MAX)
-			{
-				if (order < m_order)
-				{
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->order() >= order && dynamic_cast<Report::BandInterface*>(lc[i])->order() < m_order)
-						dynamic_cast<Report::BandInterface*>(lc[i])->setOrder(dynamic_cast<Report::BandInterface*>(lc[i])->order() + 1, false);
-				}
-				else
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->order() <= order && dynamic_cast<Report::BandInterface*>(lc[i])->order() > m_order)
-						dynamic_cast<Report::BandInterface*>(lc[i])->setOrder(dynamic_cast<Report::BandInterface*>(lc[i])->order() - 1, false);
-			}
+		    if (iBand->order() >= order && iBand->order() < band->order())
+//			list.insert(iBand->order() + 1, iBand);
+			iBand->setOrder(iBand->order() + 1, false);
 		}
+		else
+		    if (iBand->order() <= order && iBand->order() > band->order())
+//			list.insert(iBand->order() - 1, iBand);
+			iBand->setOrder(iBand->order() - 1, false);
+	    }
+	}
+    }
+    if (order > max_order)
+	order = max_order;
 
-	if (order > max_order)
-		order = max_order;
+    band->setOrder(order, false);
 
-	m_order = order;
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && this != dynamic_cast<Report::BandInterface*>(lc[i]) && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() != BandInterface::Overlay )
-			dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-
-	updateGeometry(geometry());
+    if (dynamic_cast<Report::ItemInterface*>(band->parentItem()))
+	updatePositions(dynamic_cast<Report::ItemInterface*>(band->parentItem()));
+    else
+	updatePositions(band->scene());
 }
 
-*/
+void LayoutManager::updatePositions(QObject * item)
+{
+    qDebug("LayoutManager::updatePositions");
+    Q_ASSERT(item);
+
+    BandMap listTop;
+    BandMap listBottom;
+
+    if (!splitOnLayoutTypes(item, &listTop, &listBottom))
+	return;
+
+    QRectF rect;
+    if (dynamic_cast<Report::ItemInterface*>(item))
+	rect = dynamic_cast<Report::ItemInterface*>(item)->geometry();
+    else
+	if (dynamic_cast<Report::PageInterface*>(item))
+	    rect = dynamic_cast<Report::PageInterface*>(item)->geometry();
+
+    QList<int> pList;
+    int by;
+
+    by = rect.top();
+    pList = listTop.uniqueKeys();
+    for (int i = pList.count()-1; i>=0 ;i--)
+    {
+	qDebug("i=%i",i);
+	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
+	for (int j = 0; j<orderList.count() ;j++)
+	{
+	    qDebug("j=%i, item=%s",j, qPrintable(orderList.at(j)->objectName()));
+	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->indentation());
+	    by += orderList.at(j)->height();
+	}
+    }
+
+    /*
+    list = listTop.values();
+    qDebug("top count = %i", list.count());
+    //by = dynamic_cast<Report::BandInterface*> (item)->geometry().bottom();
+    by = rect.top();
+    for (int i = list.count()-1; i>=0 ;i--)
+    {
+	qDebug("i=%i, item=%s",i, qPrintable(list.at(i)->objectName()));
+	list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->indentation());
+	by += list.at(i)->height();
+    }
+    */
+    ///set Bottom items
+    /*
+    list = listBottom.values();
+    qDebug("bottom count = %i", list.count());
+    //by = dynamic_cast<Report::BandInterface*> (item)->geometry().top() + dynamic_cast<Report::BandInterface*> (item)->indentation();
+    by = rect.bottom();
+    for (int i = list.count()-1; i>=0 ;i--)
+    {
+	qDebug("i=%i, item=%s",i, qPrintable(list.at(i)->objectName()));
+	list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
+	by += list.at(i)->height() + list.at(i)->indentation();
+    }
+    */
+}
+
+
+bool LayoutManager::splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMap * listBottom )
+{
+    QList<QGraphicsItem *> lc;
+    if (dynamic_cast<Report::ItemInterface*>(item))
+	lc = dynamic_cast<Report::ItemInterface*>(item)->childItems();
+    else
+	if (dynamic_cast<Report::PageInterface*>(item))
+	    lc = dynamic_cast<Report::PageInterface*>(item)->items();
+
+    if (lc.isEmpty())
+	return false;
+
+    for (int i = 0;i < lc.size();i++)
+    {
+	Report::BandInterface * iBand;
+	if (dynamic_cast<Report::BandInterface*>(lc[i]))
+	    iBand = dynamic_cast<Report::BandInterface*>(lc[i]);
+	else
+	    continue;
+
+	if (item == iBand->parent())
+	    switch (iBand->layoutType())
+	    {
+		case BandInterface::LayoutTop:
+		    listTop->insertMulti(iBand->layoutPriority(), iBand);
+		    break;
+		case BandInterface::LayoutBottom:
+		    listBottom->insertMulti(iBand->layoutPriority(), iBand);
+		    break;
+	    }
+    }
+    return true;
+}
+
+
+BandMap LayoutManager::sortByPriority(ItemList lc)
+{
+    BandMap nList;
+    for (int i = 0;i < lc.size();i++)
+    {
+	Report::BandInterface * iBand;
+
+	if (dynamic_cast<Report::BandInterface*>(lc[i]))
+	    iBand = dynamic_cast<Report::BandInterface*>(lc[i]);
+	else
+	    continue;
+	nList.insert(iBand->layoutPriority(), iBand);
+    }
+    return nList;
+}
+
+BandMap LayoutManager::sortByPriority(BandList lc)
+{
+    BandMap nList;
+    for (int i = 0;i < lc.size();i++)
+	nList.insert(lc[i]->layoutPriority(), lc[i]);
+    return nList;
+}
+
+BandList LayoutManager::sortByOrder(BandList lc)
+{
+    BandMap nList;
+    for (int i = 0;i < lc.size();i++)
+	nList.insert(lc[i]->order(), lc[i]);
+    return nList.values();
+}
