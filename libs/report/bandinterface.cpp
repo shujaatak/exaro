@@ -32,6 +32,7 @@
 
 #include "bandinterface.h"
 #include "pageinterface.h"
+#include "layoutmanager.h"
 
 #include <limits.h>
 
@@ -220,9 +221,9 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 		return;
 	}
 
+	LayoutManager::itemChangeOrder(this, order);
 
-	m_order = order;
-	/*
+/*
 	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
 		return;
 
@@ -237,7 +238,9 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 	int max_order = 0;
 
 	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && this != dynamic_cast<Report::BandInterface*>(lc[i]))
+	{
+	    Report::BandInterface* iBand = dynamic_cast<Report::BandInterface*>(lc[i]);
+		if (iBand && !iBand->m_deleting && iBand->layoutType() == layoutType() && iBand->layoutPriority() == layoutPriority() && this != iBand)
 		{
 			max_order++;
 			if (order != INT_MAX)
@@ -252,7 +255,7 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 						dynamic_cast<Report::BandInterface*>(lc[i])->setOrder(dynamic_cast<Report::BandInterface*>(lc[i])->order() - 1, false);
 			}
 		}
-
+	}
 	if (order > max_order)
 		order = max_order;
 
@@ -263,7 +266,7 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 			dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
 
 	updateGeometry(geometry());
-	*/
+*/
 }
 
 int BandInterface::order()
@@ -271,54 +274,11 @@ int BandInterface::order()
 	return m_order;
 }
 
+
 void BandInterface::setHeight(qreal height)
 {
 	ItemInterface::setHeight(height);
-
-	/*
-	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
-		return;
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-	{
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	}
-	else
-		if (scene())
-			lc = scene()->items();
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && this != dynamic_cast<Report::BandInterface*>(lc[i]) && parent() == dynamic_cast<Report::BandInterface*>(lc[i])->parent())
-			switch (bandType())
-			{
-				case PageHeader:
-				case Title:
-				case DetailContainer:
-				case DetailHeader:
-				case Detail:
-				case DetailFooter:
-				case Summary:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageHeader && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= Summary && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() > bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() > order())))
-						dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-					break;
-
-				case PageFooter:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageFooter && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= PageFooter && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() < bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() > order())))
-						dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-					break;
-				default:
-					break;
-			}
-
-	if (dynamic_cast<Report::BandInterface*>(parentItem()))
-	{
-	    int freeSpace = dynamic_cast<Report::BandInterface*>(parentItem())->freeSpace();
-	    if (freeSpace < 0)
-		setHeight(geometry().height() + freeSpace);
-	}
-	*/
+	LayoutManager::itemGeometryChanged(this);
 }
 
 void BandInterface::updateGeometry(QRectF rect)
@@ -372,70 +332,11 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 	}
 }
 
+
 void BandInterface::setGeometry(QRectF rect)
 {
-    /*
-	if (bandType() == Overlay)
-	{
-		ItemInterface::setGeometry(rect/\*&parentGeometry()*\/);
-		return;
-	}
-
-	qreal h = rect.height();
-	qreal by = parentGeometry().y();
-
-	if (bandType() == PageFooter)
-		by = parentGeometry().bottom() - height();
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	else
-		if (scene())
-			lc = scene()->items();
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && this != dynamic_cast<Report::BandInterface*>(lc[i]) && parent() == dynamic_cast<Report::BandInterface*>(lc[i])->parent())
-			switch (bandType())
-			{
-
-				case PageHeader:
-				case Title:
-				case DetailContainer:
-				case DetailHeader:
-				case Detail:
-				case DetailFooter:
-				case Summary:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageHeader && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= Summary && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() < bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() < order())))
-						by += dynamic_cast<Report::BandInterface*>(lc[i])->indentation() + dynamic_cast<Report::BandInterface*>(lc[i])->height();
-					break;
-
-				case PageFooter:
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() >= PageFooter && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() <= PageFooter && (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() > bandType() || (dynamic_cast<Report::BandInterface*>(lc[i])->bandType() == bandType() && dynamic_cast<Report::BandInterface*>(lc[i])->order() < order())))
-						by -= dynamic_cast<Report::BandInterface*>(lc[i])->indentation() + dynamic_cast<Report::BandInterface*>(lc[i])->height();
-					break;
-				default:
-					break;
-			}
-
-	rect.setX(parentGeometry().x());
-
-	if (by < 0)
-		by = 0;
-
-	if ((bandType() == PageFooter) && by > parentGeometry().bottom() - height())
-		by = parentGeometry().bottom() - height();
-
-	rect.setY(by);
-
-	if (rect.y() + height() > parentGeometry().bottom())
-		rect.setY(parentGeometry().bottom() - height());
-
-	rect.setHeight(h);
-	rect.setWidth(parentGeometry().width());
-	*/
 	ItemInterface::setGeometry(rect);
+	Report::LayoutManager::itemGeometryChanged(this);
 }
 
 
