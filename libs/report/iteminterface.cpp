@@ -34,7 +34,7 @@
 #include <QSqlField>
 #include <QPainterPath>
 #include <QSettings>
-
+ 
 #include "iteminterface.h"
 #include "reportinterface.h"
 #include "sqlquery.h"
@@ -52,12 +52,22 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_height = 20/UNIT; // 20 mm
 	m_opacity = 100;
 	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
-	m_font=QFont("Serif");
-	m_font.setPointSizeF(3.5);
-	m_font.setStyleStrategy(QFont::PreferMatch);
-	m_font.setStyleStrategy(QFont::ForceOutline);
 	QSettings s;
 	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
+	if (dynamic_cast<ItemInterface*>(parent))
+	{
+		m_brush=dynamic_cast<ItemInterface*>(parent)->brush();
+		m_backgroundBrush=dynamic_cast<ItemInterface*>(parent)->backgroundBrush();
+		m_pen=dynamic_cast<ItemInterface*>(parent)->pen();
+		m_font=dynamic_cast<ItemInterface*>(parent)->font();
+	}
+	else
+		if(dynamic_cast<PageInterface*>(parentObject))
+		{
+			m_brush=dynamic_cast<PageInterface*>(parentObject)->foregroundBrush();
+			m_backgroundBrush=dynamic_cast<PageInterface*>(parentObject)->backgroundBrush();
+			m_font=dynamic_cast<PageInterface*>(parentObject)->font();
+		}
 }
 
 ItemInterface::~ItemInterface()

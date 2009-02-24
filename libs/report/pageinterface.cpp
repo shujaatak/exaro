@@ -49,7 +49,7 @@ PageInterface::PageInterface(QObject *parent)
 	setPageSize(A4);
 	setOrientation(Portrait);
 	QFont m_font=QFont("Serif");
-	m_font.setPointSizeF(5);
+	m_font.setPointSizeF(3.5);
 	m_font.setStyleStrategy(QFont::PreferMatch);
 	m_font.setStyleStrategy(QFont::ForceOutline);
 	setFont(m_font);
