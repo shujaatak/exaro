@@ -16,13 +16,10 @@
 
 #include "QtCore"
 #include "layoutmanager.h"
+#include "pageinterface.h"
 
 using namespace Report;
 
-LayoutManager::LayoutManager(QObject * parent)
-    :QObject(parent)
-{
-}
 
 void LayoutManager::itemAdded(ItemInterface * item)
 {

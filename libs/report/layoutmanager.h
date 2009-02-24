@@ -16,9 +16,8 @@
 #ifndef LAYOUTMANAGER_H
 #define LAYOUTMANAGER_H
 
-#include <QObject>
-#include "pageinterface.h"
-#include "iteminterface.h"
+#include <QtCore>
+#include <QtGui>
 #include "bandinterface.h"
 
 namespace Report	
@@ -27,10 +26,9 @@ typedef QMap<int, Report::BandInterface*> BandMap;
 typedef QList<QGraphicsItem *> ItemList;
 typedef QList<BandInterface *> BandList;
 
-class LayoutManager : public QObject
+class LayoutManager /*: public QObject*/
 {
 public:
-    LayoutManager(QObject * parent = 0);
 
     static void itemAdded(ItemInterface * item);
     static void itemGeometryChanged(QObject * item);

@@ -86,7 +86,8 @@ private:
 	QSignalMapper * m_smReport;
 	QUndoStack *undoStack;
 	QUndoView *undoView;
-	Report::LayoutManager  * m_ltManager;
+	QToolBar *itemLayoutToolbar;
+//	Report::LayoutManager  * m_ltManager;
 
 public slots:
 	void selectLastObject();
@@ -124,6 +125,8 @@ protected slots:
 	void itemMoved(QObject* movedItem, QPointF movedFromPosition);
 	void propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value);
 	void itemGeometryChanged(QObject* object, QRectF newGeometry, QRectF oldGeometry);
+	void on_actionBandUp_triggered();
+	void on_actionBandDown_triggered();
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
