@@ -1,3 +1,19 @@
+/***************************************************************************
+ *   Copyright (C) 2009 by Alexander Mikhalov                              *
+ *   alexmi3@rambler.ru                                                    *
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ ***************************************************************************/
+
 #include "QtCore"
 #include "layoutmanager.h"
 
@@ -149,7 +165,6 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 
 void LayoutManager::itemChangeOrder(QObject * item, int order)
 {
-    qDebug("LayoutManager::itemChangeOrder");
     BandInterface * band = dynamic_cast<Report::BandInterface*>(item);
     Q_ASSERT(band);
 
@@ -161,7 +176,6 @@ void LayoutManager::itemChangeOrder(QObject * item, int order)
 	return;
     }
 
-
     QList<QGraphicsItem *> lc;
 
     if (dynamic_cast<Report::ItemInterface*>(band->parentItem()))
@@ -171,7 +185,6 @@ void LayoutManager::itemChangeOrder(QObject * item, int order)
 	    lc = band->scene()->items();
 
     int max_order = 0;
-//    QMap<int, Report::BandInterface* > list;
 
     for (int i = 0;i < lc.size();i++)
     {
@@ -184,16 +197,17 @@ void LayoutManager::itemChangeOrder(QObject * item, int order)
 		if (order < band->order())
 		{
 		    if (iBand->order() >= order && iBand->order() < band->order())
-//			list.insert(iBand->order() + 1, iBand);
 			iBand->setOrder(iBand->order() + 1, false);
 		}
 		else
 		    if (iBand->order() <= order && iBand->order() > band->order())
-//			list.insert(iBand->order() - 1, iBand);
 			iBand->setOrder(iBand->order() - 1, false);
 	    }
 	}
     }
+
+    if (order < 0)
+	order = 0;
     if (order > max_order)
 	order = max_order;
 
@@ -207,7 +221,6 @@ void LayoutManager::itemChangeOrder(QObject * item, int order)
 
 void LayoutManager::updatePositions(QObject * item)
 {
-    qDebug("LayoutManager::updatePositions");
     Q_ASSERT(item);
 
     BandMap listTop;
@@ -230,41 +243,25 @@ void LayoutManager::updatePositions(QObject * item)
     pList = listTop.uniqueKeys();
     for (int i = pList.count()-1; i>=0 ;i--)
     {
-	qDebug("i=%i",i);
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
 	for (int j = 0; j<orderList.count() ;j++)
 	{
-	    qDebug("j=%i, item=%s",j, qPrintable(orderList.at(j)->objectName()));
 	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->indentation());
 	    by += orderList.at(j)->height();
 	}
     }
 
-    /*
-    list = listTop.values();
-    qDebug("top count = %i", list.count());
-    //by = dynamic_cast<Report::BandInterface*> (item)->geometry().bottom();
-    by = rect.top();
-    for (int i = list.count()-1; i>=0 ;i--)
-    {
-	qDebug("i=%i, item=%s",i, qPrintable(list.at(i)->objectName()));
-	list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->indentation());
-	by += list.at(i)->height();
-    }
-    */
-    ///set Bottom items
-    /*
-    list = listBottom.values();
-    qDebug("bottom count = %i", list.count());
-    //by = dynamic_cast<Report::BandInterface*> (item)->geometry().top() + dynamic_cast<Report::BandInterface*> (item)->indentation();
     by = rect.bottom();
-    for (int i = list.count()-1; i>=0 ;i--)
+    pList = listBottom.uniqueKeys();
+    for (int i = pList.count()-1; i>=0 ;i--)
     {
-	qDebug("i=%i, item=%s",i, qPrintable(list.at(i)->objectName()));
-	list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
-	by += list.at(i)->height() + list.at(i)->indentation();
+	BandList orderList = sortByOrder(listBottom.values(pList.at(i)));
+	for (int j = orderList.count() -1; j>=0 ;j--)
+	{
+	    orderList.at(j)->setPos(orderList.at(j)->x(), by - orderList.at(j)->height());
+	    by -= orderList.at(j)->height() - orderList.at(j)->indentation();
+	}
     }
-    */
 }
 
 
