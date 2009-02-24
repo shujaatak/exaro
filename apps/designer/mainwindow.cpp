@@ -115,21 +115,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_tw = new QTabWidget( this );
 	setCentralWidget( m_tw );
 
-	QSettings s;
-	s.beginGroup( "Main_window" );
-	restoreGeometry( s.value( "Geometry", saveGeometry() ).toByteArray() );
-	restoreState( s.value( "State", saveState() ).toByteArray() );
-	s.endGroup();
-
-	QString iSize = s.value( "Options/iconSize" ).toString();
-	int h, w;
-	h = iSize.section( "x", 0, 0 ).toInt();
-	w = iSize.section( "x", 1, 1 ).toInt();
-	if ( h == 0 or w == 0 )
-		toolBar->setIconSize( QSize( 16, 16 ) );
-	else
-		toolBar->setIconSize( QSize( w, h ) );
-
 	actionRemove_page->setEnabled( false );
 
 	connect( actionNew_report, SIGNAL( triggered( bool ) ), SLOT( newReport() ) );
@@ -246,6 +231,22 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_smReport = 0;
 	setupActions();
 
+
+	QSettings s;
+
+	QString iSize = s.value( "Options/iconSize" ).toString();
+	int h, w;
+	h = iSize.section( "x", 0, 0 ).toInt();
+	w = iSize.section( "x", 1, 1 ).toInt();
+	if ( h == 0 or w == 0 )
+		toolBar->setIconSize( QSize( 16, 16 ) );
+	else
+		toolBar->setIconSize( QSize( w, h ) );
+
+	s.beginGroup( "Main_window" );
+	restoreGeometry( s.value( "Geometry", saveGeometry() ).toByteArray() );
+	restoreState( s.value( "State", saveState() ).toByteArray() );
+	s.endGroup();
 }
 
 void mainWindow::setupActions()
