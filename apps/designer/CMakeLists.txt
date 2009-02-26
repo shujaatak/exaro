@@ -1,6 +1,7 @@
-# (c) 2008 by BogDan Vatra < bogdan@licentia.eu >
 
 project(exaro)
+
+add_subdirectory(plugins)
 
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_INCLUDE_DIR})
 
