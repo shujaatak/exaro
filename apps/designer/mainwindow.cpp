@@ -29,6 +29,7 @@
 #include <QUndoView>
 
 #include <QPluginLoader>
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
@@ -64,7 +65,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dwToolBox->setWidget( m_tb );
 	m_dwToolBox->setAllowedAreas( Qt::AllDockWidgetAreas );
 	addDockWidget( Qt::LeftDockWidgetArea, m_dwToolBox );
-
 	m_pe = new PropertyEditor::PropertyEditor( this );
 	m_dwPropertyEditor = new QDockWidget( tr( "Property Editor" ) , this );
 	m_dwPropertyEditor->setObjectName( "Property Editor" );
@@ -104,8 +104,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	undoStack = new QUndoStack( this );
 	undoView = new QUndoView( undoStack );
 	undoView->setWindowTitle( tr( "Command List" ) );
-	//undoView->show();
-	//undoView->setAttribute(Qt::WA_QuitOnClose, false);
+
 	m_dwUndoView = new QDockWidget( tr( "Command List" ), this );
 	m_dwUndoView->setObjectName( "Command List" );
 	m_dwUndoView->setWidget( undoView );
@@ -114,7 +113,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_tw = new QTabWidget( this );
 	setCentralWidget( m_tw );
-
+	loadToolBars();
+	
 	QSettings s;
 	s.beginGroup( "Main_window" );
 	restoreGeometry( s.value( "Geometry", saveGeometry() ).toByteArray() );
@@ -225,13 +225,12 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dwObjectInspector->toggleViewAction()->setIcon( QIcon( ":/images/button_objects.png" ) );
 	m_dwUndoView->toggleViewAction()->setIcon( QIcon( ":/images/button_commands.png" ) );
 
-	menuTools->addSeparator();
-	menuTools->addAction( m_dwToolBox->toggleViewAction() );
-	menuTools->addAction( m_dwPropertyEditor->toggleViewAction() );
-	menuTools->addAction( m_dwQueryEditor->toggleViewAction() );
-	menuTools->addAction( m_dwUiEditor->toggleViewAction() );
-	menuTools->addAction( m_dwObjectInspector->toggleViewAction() );
-	menuTools->addAction( m_dwUndoView->toggleViewAction() );
+	menuToolboxes->addAction( m_dwToolBox->toggleViewAction() );
+	menuToolboxes->addAction( m_dwPropertyEditor->toggleViewAction() );
+	menuToolboxes->addAction( m_dwQueryEditor->toggleViewAction() );
+	menuToolboxes->addAction( m_dwUiEditor->toggleViewAction() );
+	menuToolboxes->addAction( m_dwObjectInspector->toggleViewAction() );
+	menuToolboxes->addAction( m_dwUndoView->toggleViewAction() );
 
 	toolBarTools->addAction( m_dwToolBox->toggleViewAction() );
 	toolBarTools->addAction( m_dwPropertyEditor->toggleViewAction() );
@@ -239,6 +238,9 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	toolBarTools->addAction( m_dwUiEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	toolBarTools->addAction( m_dwUndoView->toggleViewAction() );
+
+	menuToolbars->addAction(toolBar->toggleViewAction());
+	menuToolbars->addAction(toolBarTools->toggleViewAction());
 
 	m_objectModel.setRootObject( m_report );
 
@@ -750,49 +752,6 @@ void mainWindow::newPage()
 {
 	if ( !m_reportEngine.pages().count() )
 		return;
-	/*
-	        QGraphicsView * gw = 0;
-
-		if (1 == m_reportEngine.pages().count())
-			gw = new QGraphicsView(static_cast<QGraphicsScene*>(m_reportEngine.pages()[0]->createInstance(m_report)));
-		else
-		{
-	#ifndef WIN32
-	#warning implement me !!!!
-	#endif
-			//ehe tata ici e de lucru
-		}
-
-
-	//		gw->setAutoFillBackground(true);
-	//		gw->setBackgroundRole(QPalette::Base);
-	//		QPalette pal = gw->palette();
-	//		pal.setBrush(QPalette::Base, Qt::blue);
-	//		pal.setColor(QPalette::HighlightedText, Qt::red);
-	//		gw->setPalette(pal);
-	//		gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
-	//
-
-		dynamic_cast<Report::PageInterface*>(gw->scene())->setObjectName(Report::ReportEngine::uniqueName(dynamic_cast<Report::PageInterface*>(gw->scene())->metaObject()->className(), m_report));
-		dynamic_cast<Report::PageInterface*>(gw->scene())->setContextMenu(&m_contextMenu);
-
-	        int index = m_tw->addTab((QWidget*) gw, dynamic_cast<Report::PageInterface*>(gw->scene())->objectName());
-	        m_tw->setCurrentWidget((QWidget*) gw);
-
-		actionRemove_page->setEnabled(m_tw->count());
-
-		connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemSelected(QObject *, QPointF)), this, SLOT(itemSelected(QObject *, QPointF)));
-	        connect(dynamic_cast<Report::PageInterface*>(gw->scene()), SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
-
-		setMagnetActions(dynamic_cast<Report::PageInterface*>(gw->scene()));
-
-		if (1 == m_tw->count())
-			m_pe->setObject(dynamic_cast<Report::PageInterface*>(gw->scene()));
-
-		m_objectModel.setRootObject(m_report);
-
-	        zoomWYSIWYG();
-	*/
 	QUndoCommand *newPageCommand = new NewPageCommand( this );
 	undoStack->push( newPageCommand );
 }
@@ -908,9 +867,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 		m_pe->setObject( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 
 	m_objectModel.setRootObject( m_report );
-
 	zoomWYSIWYG();
-
 	return m_index;
 }
 
@@ -927,3 +884,50 @@ void mainWindow::_deletePage_( int index )
 		m_pe->setObject( m_report );
 	m_objectModel.setRootObject( m_report );
 }
+
+void mainWindow::loadToolBars()
+{
+	QDir pluginsDir = QDir(qApp->applicationDirPath());
+
+#if defined(Q_OS_WIN)
+	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+		pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+	if (pluginsDir.dirName() == "MacOS")
+	{
+		pluginsDir.cdUp();
+		pluginsDir.cd("PlugIns");
+	}
+#else
+	pluginsDir.cd("../lib");
+#endif
+	pluginsDir.cd("exaro");
+	pluginsDir.cd("toolbars");
+	QStringList paths=qApp->libraryPaths();
+	paths<<pluginsDir.absolutePath();
+	qApp->setLibraryPaths(paths);
+	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+	{
+		QPluginLoader loader;
+		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+		loader.setFileName(pluginsDir.absoluteFilePath(fileName));
+		if (!loader.load())
+		{
+			qCritical() << loader.errorString();
+			continue;
+		}
+		QObject *plugin = loader.instance();
+		QToolBar* tbp=dynamic_cast<QToolBar*>(plugin);
+		if (tbp)
+		{
+			addToolBar(tbp);
+			connect(m_pe, SIGNAL(objectChanged(QObject*)), tbp, SLOT(setObject(QObject*)));
+			connect(m_pe, SIGNAL(propertyChanged(QObject*,QString,QVariant,QVariant)), tbp, SLOT(propertyChanged(QObject*,QString,QVariant,QVariant)));
+			connect(tbp, SIGNAL(propertyChanged()), m_pe, SLOT(resetProperties()));
+			menuToolbars->addAction(tbp->toggleViewAction());
+		}
+		else
+			delete plugin;
+	}
+}
+

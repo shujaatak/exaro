@@ -80,6 +80,7 @@ if (WIN32)
    set(INCLUDE_INSTALL_DIR  "include"                     ) # The subdirectory to the header prefix
 
    set(PLUGIN_INSTALL_DIR       "bin/report" ) # The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)
+   set(EXARO_PLUGIN_INSTALL_DIR "bin/exaro" ) # The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)
    set(CONFIG_INSTALL_DIR       "share/config"            ) # The config file install dir
    set(DATA_INSTALL_DIR         "share/apps"              ) # The parent directory where applications can install their data
    set(HTML_INSTALL_DIR         "share/doc/HTML"          ) # The HTML install dir for documentation
@@ -147,7 +148,8 @@ else (WIN32)
    _set_fancy(LIBEXEC_INSTALL_DIR  "${LIB_INSTALL_DIR}/kde4/libexec"         "The subdirectory relative to the install prefix where libraries will be installed (default is ${LIB_INSTALL_DIR}/kde4/libexec)")
    _set_fancy(INCLUDE_INSTALL_DIR  "${CMAKE_INSTALL_PREFIX}/include"         "The subdirectory to the header prefix")
 
-   _set_fancy(PLUGIN_INSTALL_DIR       "${LIB_INSTALL_DIR}/report"              "The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)")
+   _set_fancy(PLUGIN_INSTALL_DIR       "${LIB_INSTALL_DIR}/report"            "The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)")
+   _set_fancy(EXARO_PLUGIN_INSTALL_DIR "${LIB_INSTALL_DIR}/exaro"             "The subdirectory relative to the install prefix where plugins will be installed (default is ${LIB_INSTALL_DIR}/report)")
    _set_fancy(CONFIG_INSTALL_DIR       "${SHARE_INSTALL_PREFIX}/config"         "The config file install dir")
    _set_fancy(DATA_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/apps"           "The parent directory where applications can install their data")
    _set_fancy(HTML_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/doc/HTML"       "The HTML install dir for documentation")
@@ -204,6 +206,10 @@ set(INSTALL_TARGETS_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}"
 set(INSTALL_PLUGINS_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/report"
                                   LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report"
                                   ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/report" COMPONENT Devel )
+
+set(INSTALL_EXARO_TOOLBAR_PLUGINS_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/exaro/toolbars"
+                                  LIBRARY DESTINATION "${LIB_INSTALL_DIR}/exaro/toolbars"
+                                  ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/exaro/toolbars" COMPONENT Devel )
 
 set(INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/report/export"
                                   LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report/export"
