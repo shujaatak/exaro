@@ -309,4 +309,4 @@ void BarChart::setDrawBorder(bool drawBorder)
 	update();
 }
 
-Q_EXPORT_PLUGIN2(legend, BarChart)
+Q_EXPORT_PLUGIN2(barChart, BarChart)
