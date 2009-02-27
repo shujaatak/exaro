@@ -18,11 +18,16 @@
 
 #include <QtCore>
 #include <QtGui>
-#include "bandinterface.h"
+//#include "iteminterface.h"
+//#include "bandinterface.h"
 
 namespace Report	
 {
-typedef QMap<int, Report::BandInterface*> BandMap;
+
+class BandInterface;
+class ItemInterface;
+
+typedef QMap<int, BandInterface*> BandMap;
 typedef QList<QGraphicsItem *> ItemList;
 typedef QList<BandInterface *> BandList;
 
@@ -35,7 +40,8 @@ public:
     static void itemChangeOrder(QObject * item, int order);
     static void updatePositions(QObject * item);
 
-    static bool splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMap * listBottom);
+    static bool splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMap * listBottom, BandMap * listFree);
+    static bool splitOnLayoutTypesSorted(QObject * item, BandList * listTop, BandList * listBottom, BandList * listFree);
     static BandMap sortByPriority(BandList lc);
     static BandMap sortByPriority(ItemList lc);
     static BandList sortByOrder(BandList lc);

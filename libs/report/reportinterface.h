@@ -289,6 +289,8 @@ private:
 	QSplashScreen m_splashScreen;
 	QSqlDatabase m_sqlDatabase;
 	QStringList m_uiPluginsPaths;
+
+	friend class PaintInterface;
 };
 }
 Q_DECLARE_INTERFACE(Report::ReportInterface, "ro.bigendian.ReportDesigner.ReportInterface/1.0");

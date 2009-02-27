@@ -6,12 +6,13 @@ set(Report_SRCS bandinterface.cpp    iteminterface.cpp     paintdevice.cpp    re
 		document.cpp         page.cpp              paintengine.cpp    reportinterface.cpp
 		exportinterface.cpp  pagegraphicsitem.cpp  previewdialog.cpp  searchwidget.cpp
 		globals.cpp          pageinterface.cpp     previewwidget.cpp  sqlquery.cpp
-		fakepaintdevice.cpp  fakepaintengine.cpp   iteminterfaceext.cpp	layoutmanager.cpp)
+		fakepaintdevice.cpp  fakepaintengine.cpp   iteminterfaceext.cpp	layoutmanager.cpp
+		paintinterface.cpp)
 QT4_WRAP_CPP(Report_SRCS bandinterface.h    iteminterface.h    reportengine.h
 			reportinterface.h
 			exportinterface.h  previewdialog.h  searchwidget.h
 			pageinterface.h     previewwidget.h  sqlquery.h   iteminterfaceext.h
-			layoutmanager.h)
+			layoutmanager.h	paintinterface.h)
 QT4_ADD_RESOURCES(Report_SRCS preview.qrc)
 
 if (WIN32)
