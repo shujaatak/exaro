@@ -485,6 +485,31 @@ void ItemInterface::raise()
 	setZValue(1);
 }
 
+bool ItemInterface::printingPrepare(PaintInterface * paintInterface)
+{
+    m_paintInterface = paintInterface;
+    return true;
+}
+
+bool ItemInterface::prePaint()
+{
+    return true;
+}
+
+bool ItemInterface::postPaint()
+{
+    return true;
+}
+
+QString ItemInterface::lastError()
+{
+    return m_lastError;
+}
+
+
+
+
+
 /*
 void ItemInterface::paintBefore(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0)
 {

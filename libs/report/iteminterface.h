@@ -38,6 +38,7 @@
 #include <QScriptEngine>
 
 #include "globals.h"
+#include "paintinterface.h"
 
 /** @namespace Report */
 
@@ -390,6 +391,12 @@ public:
 
 	void raise();
 
+	virtual bool printingPrepare(PaintInterface * paintInterface);	    //default implementation do nothing
+	virtual bool prePaint();	    //default implementation do nothing
+	virtual bool postPaint();	    //default implementation do nothing
+
+	virtual QString lastError();
+
 protected:
 	/**
 	 * This event handler, for event event, can be reimplemented to receive mouse press events for this item. Mouse press events are only delivered to items that accept the mouse button that is pressed. By default, an item accepts all mouse buttons, but you can change this by calling setAcceptedMouseButtons().
@@ -471,6 +478,8 @@ private:
 	QRectF oldGeometry;
 	bool m_drawSelectionBorder;
 	bool m_enabled;
+	QString m_lastError;
+	PaintInterface * m_paintInterface;
 };
 }
 

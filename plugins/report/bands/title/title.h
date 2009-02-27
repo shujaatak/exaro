@@ -44,6 +44,7 @@ public:
 
 	Report::BandInterface::LayoutType layoutType(){ return LayoutTop;}
 	int layoutPriority(){ return 75;}
+	Report::BandInterface::AccomodationType accommodationType(){ return AccomodationFirstPage;}
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

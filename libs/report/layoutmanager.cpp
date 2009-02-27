@@ -17,6 +17,8 @@
 #include "QtCore"
 #include "layoutmanager.h"
 #include "pageinterface.h"
+#include "iteminterface.h"
+#include "bandinterface.h"
 
 using namespace Report;
 
@@ -222,8 +224,9 @@ void LayoutManager::updatePositions(QObject * item)
 
     BandMap listTop;
     BandMap listBottom;
+    BandMap listFree;
 
-    if (!splitOnLayoutTypes(item, &listTop, &listBottom))
+    if (!LayoutManager::splitOnLayoutTypes(item, &listTop, &listBottom, &listFree))
 	return;
 
     QRectF rect;
@@ -262,7 +265,7 @@ void LayoutManager::updatePositions(QObject * item)
 }
 
 
-bool LayoutManager::splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMap * listBottom )
+bool LayoutManager::splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMap * listBottom, BandMap * listFree)
 {
     QList<QGraphicsItem *> lc;
     if (dynamic_cast<Report::ItemInterface*>(item))
@@ -291,9 +294,40 @@ bool LayoutManager::splitOnLayoutTypes(QObject * item, BandMap * listTop, BandMa
 		case BandInterface::LayoutBottom:
 		    listBottom->insertMulti(iBand->layoutPriority(), iBand);
 		    break;
+		case BandInterface::LayoutFree:
+		    listFree->insertMulti(iBand->layoutPriority(), iBand);
+		    break;
 	    }
     }
     return true;
+}
+
+bool LayoutManager::splitOnLayoutTypesSorted(QObject * item, BandList * listTop, BandList * listBottom, BandList * listFree)
+{
+    BandMap m_listTop;
+    BandMap m_listBottom;
+    BandMap m_listFree;
+
+    splitOnLayoutTypes(item, &m_listTop, &m_listBottom, &m_listFree);
+
+    QList<int> pList;
+
+    pList = m_listTop.uniqueKeys();
+    for (int i = pList.count()-1; i>=0 ;i--)
+    {
+	BandList orderList = sortByOrder(m_listTop.values(pList.at(i)));
+	for (int j = 0; j<orderList.count() ;j++)
+	    listTop->append(orderList.at(j));
+    }
+
+    pList = m_listBottom.uniqueKeys();
+    for (int i = pList.count()-1; i>=0 ;i--)
+    {
+	BandList orderList = sortByOrder(m_listBottom.values(pList.at(i)));
+	for (int j = 0; j<orderList.count() ;j++)
+	    listBottom->append(orderList.at(j));
+    }
+
 }
 
 

@@ -114,6 +114,8 @@ public:
 			    };
 	enum LayoutType { LayoutTop, LayoutBottom, LayoutFree };
 
+	enum AccomodationType {AccomodationOnce, AccomodationFirstPage, AccomodationLastPage, AccomodationEveryPage};
+
 	Q_DECLARE_FLAGS(Frames, Frame);
 
 public:
@@ -138,6 +140,8 @@ public:
 	virtual LayoutType layoutType();
 
 	virtual int layoutPriority();
+
+	virtual AccomodationType accommodationType();
 
 	/**
 	 * Set the band geometry.

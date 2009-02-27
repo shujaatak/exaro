@@ -147,7 +147,7 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	m_query = "";
 	m_bandType=Overlay;
 
-	setHeight(50/UNIT);
+	setHeight(20/UNIT);
 }
 
 void BandInterface::selectBand()
@@ -223,50 +223,6 @@ void BandInterface::setOrder(int order, bool refreshOthers)
 
 	LayoutManager::itemChangeOrder(this, order);
 
-/*
-	if (!dynamic_cast<Report::ItemInterface*>(parentItem()) && !scene())
-		return;
-
-	QList<QGraphicsItem *> lc;
-
-	if (dynamic_cast<Report::ItemInterface*>(parentItem()))
-		lc = dynamic_cast<Report::ItemInterface*>(parentItem())->childItems();
-	else
-		if (scene())
-			lc = scene()->items();
-
-	int max_order = 0;
-
-	for (int i = 0;i < lc.size();i++)
-	{
-	    Report::BandInterface* iBand = dynamic_cast<Report::BandInterface*>(lc[i]);
-		if (iBand && !iBand->m_deleting && iBand->layoutType() == layoutType() && iBand->layoutPriority() == layoutPriority() && this != iBand)
-		{
-			max_order++;
-			if (order != INT_MAX)
-			{
-				if (order < m_order)
-				{
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->order() >= order && dynamic_cast<Report::BandInterface*>(lc[i])->order() < m_order)
-						dynamic_cast<Report::BandInterface*>(lc[i])->setOrder(dynamic_cast<Report::BandInterface*>(lc[i])->order() + 1, false);
-				}
-				else
-					if (dynamic_cast<Report::BandInterface*>(lc[i])->order() <= order && dynamic_cast<Report::BandInterface*>(lc[i])->order() > m_order)
-						dynamic_cast<Report::BandInterface*>(lc[i])->setOrder(dynamic_cast<Report::BandInterface*>(lc[i])->order() - 1, false);
-			}
-		}
-	}
-	if (order > max_order)
-		order = max_order;
-
-	m_order = order;
-
-	for (int i = 0;i < lc.size();i++)
-		if (dynamic_cast<Report::BandInterface*>(lc[i]) && !dynamic_cast<Report::BandInterface*>(lc[i])->m_deleting && this != dynamic_cast<Report::BandInterface*>(lc[i]) && dynamic_cast<Report::BandInterface*>(lc[i])->bandType() != BandInterface::Overlay )
-			dynamic_cast<Report::BandInterface*>(lc[i])->updateGeometry(dynamic_cast<Report::BandInterface*>(lc[i])->geometry());
-
-	updateGeometry(geometry());
-*/
 }
 
 int BandInterface::order()
@@ -358,6 +314,11 @@ BandInterface::LayoutType BandInterface::layoutType()
 int BandInterface::layoutPriority()
 {
     return 0;
+}
+
+BandInterface::AccomodationType BandInterface::accommodationType()
+{
+    return AccomodationOnce;
 }
 
 QString BandInterface::query()

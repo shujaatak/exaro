@@ -49,6 +49,8 @@
 #include "previewdialog.h"
 #include "globals.h"
 
+#include "paintinterface.h"
+
 
 static QScriptValue getSetDateFormat(QScriptContext *context, QScriptEngine *engine)
 {
@@ -94,6 +96,10 @@ void ReportInterface::paintPage(PageInterface * page)
 
 	m_currentPage = page;
 
+	PaintInterface paintInterface(this);
+	paintInterface.run();
+	///REMOVE IT
+	/*
 	m_pageHeaderBands.clear();
 	m_titleBands.clear();
 	m_detailContainerBands.clear();
@@ -101,7 +107,9 @@ void ReportInterface::paintPage(PageInterface * page)
 	m_pageFooterBands.clear();
 	m_pageOverlayBands.clear();
 
+
 	m_scriptEngine->globalObject().setProperty("_pageNumber_", QScriptValue(m_scriptEngine, 1), QScriptValue::ReadOnly);
+
 
 	foreach(QObject * obj, page->children())
 	{
@@ -291,6 +299,7 @@ void ReportInterface::paintPage(PageInterface * page)
 		paintBand(band);
 	}
 	paintOverlays();
+	*/
 }
 
 
