@@ -99,7 +99,7 @@ void ReportInterface::paintPage(PageInterface * page)
 	PaintInterface paintInterface(this);
 	paintInterface.run();
 	///REMOVE IT
-	/*
+/*
 	m_pageHeaderBands.clear();
 	m_titleBands.clear();
 	m_detailContainerBands.clear();
@@ -150,7 +150,7 @@ void ReportInterface::paintPage(PageInterface * page)
 		paintOverlays();
 		return;
 	}
-
+//==
 	foreach(BandInterface * detailContainerBand, m_detailContainerBands)
 	{
 		QList<BandInterface *> detailHeaders;
@@ -299,7 +299,7 @@ void ReportInterface::paintPage(PageInterface * page)
 		paintBand(band);
 	}
 	paintOverlays();
-	*/
+*/
 }
 
 

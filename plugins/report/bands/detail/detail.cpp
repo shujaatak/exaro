@@ -116,4 +116,3 @@ QObject * Detail::createInstance(QGraphicsItem* parent, QObject* parentObject)
 }
 
 Q_EXPORT_PLUGIN2(detail, Detail)
-

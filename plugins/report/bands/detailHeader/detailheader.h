@@ -40,6 +40,7 @@ class DetailHeader : public Report::BandInterface
 	Q_PROPERTY(bool reprintOnNewPage READ reprintOnNewPage WRITE setReprintOnNewPage)
 	Q_PROPERTY(bool resetDetailNumber READ resetDetailNumber WRITE setResetDetailNumber)
 	Q_PROPERTY(bool forceNewPage READ forceNewPage WRITE setForceNewPage)
+	Q_PROPERTY(QString query READ query WRITE setQuery);
 public:
 	DetailHeader(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 	~DetailHeader();

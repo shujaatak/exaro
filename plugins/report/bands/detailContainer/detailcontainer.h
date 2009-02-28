@@ -41,7 +41,7 @@ class DetailContainer : public Report::BandInterface
 public:
 	DetailContainer(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
-	int layoutPriority(){ return 70;}
+	int layoutPriority(){ return 50;}
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

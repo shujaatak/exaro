@@ -39,7 +39,7 @@ Page::Page(QObject *parent)
 
 bool Page::canContain(QObject * object)
 {
-	return (dynamic_cast<Report::BandInterface*>(object) && dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::DetailHeader && dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::Detail && dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::DetailFooter);
+	return (dynamic_cast<Report::BandInterface*>(object) /*&& dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::DetailHeader && dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::Detail && dynamic_cast<Report::BandInterface*>(object)->bandType() != Report::BandInterface::DetailFooter*/);
 }
 
 QObject * Page::createInstance(QObject * parent)

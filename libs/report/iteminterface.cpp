@@ -505,9 +505,12 @@ QString ItemInterface::lastError()
 {
     return m_lastError;
 }
-
-
-
+/*
+QStringList ItemInterface::dependsOn()
+{
+    return QStringList();
+}
+*/
 
 
 /*
