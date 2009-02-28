@@ -36,13 +36,14 @@ class Detail : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
+	Q_PROPERTY(QString query READ query WRITE setQuery);
 
 public:
 	Detail(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	~Detail();
 
-	int layoutPriority(){ return 40;}
+	int layoutPriority(){ return 50;}
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

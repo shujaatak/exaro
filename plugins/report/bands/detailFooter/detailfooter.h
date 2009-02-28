@@ -37,13 +37,14 @@ class DetailFooter : public Report::BandInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
 	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+	Q_PROPERTY(QString query READ query WRITE setQuery);
 
 public:
 	DetailFooter(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	~DetailFooter();
 
-	int layoutPriority() {return 30;}
+	int layoutPriority() {return 50;}
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
