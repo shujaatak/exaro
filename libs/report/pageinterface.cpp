@@ -495,8 +495,10 @@ void PageInterface::setVerticalMagnet(bool magneted)
 	}
 }
 
+/*
 void PageInterface::bandDestroyed(int type, int order)
 {
+
 	foreach(QObject *item, children())
 		if (dynamic_cast<Report::BandInterface*>(item))
 		{
@@ -505,7 +507,9 @@ void PageInterface::bandDestroyed(int type, int order)
 			if (dynamic_cast<BandInterface*>(item)->bandType() > type)
 				dynamic_cast<BandInterface*>(item)->setOrder(dynamic_cast<BandInterface*>(item)->order());
 		}
+
 }
+*/
 
 bool PageInterface::showGrid()
 {

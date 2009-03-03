@@ -42,7 +42,7 @@ inline void initMyResource()
 Overlay::Overlay(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::Overlay);
+//	setBandType(Report::BandInterface::Overlay);
 	setResizeFlags(ResizeLeft | ResizeTop | ResizeRight | ResizeBottom);
 	setHeight(50/UNIT);
 	setWidth(50/UNIT);

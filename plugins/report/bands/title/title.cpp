@@ -44,7 +44,7 @@ inline void initMyResource()
 Title::Title(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::Title);
+//	setBandType(Report::BandInterface::Title);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 

@@ -36,13 +36,15 @@ class DetailFooter : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+//	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
 	Q_PROPERTY(QString query READ query WRITE setQuery);
 
 public:
 	DetailFooter(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	~DetailFooter();
+
+	bool prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode);
 
 	int layoutPriority() {return 50;}
 

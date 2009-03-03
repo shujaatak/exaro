@@ -48,94 +48,6 @@ namespace Report
 class SqlQuery;
 class ReportInterface;
 
-/** @class ItemInterface
-* @brief Interface for items
-*
-* This is the base class for all items objects.
-* The code above show you how to add an rectangle item.
-*
-* rect.h
-* @code
-#ifndef RECT_H
-#define RECT_H
-#include <iteminterface.h>
-class Rectangle : public Report::ItemInterface
-{
-	Q_OBJECT
-	Q_INTERFACES(Report::ItemInterface);
-
-public:
-	Rectangle(QGraphicsItem* parent = 0, QObject* parentObject = 0);
-
-	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
-
-	QString toolBoxText();
-	QString toolBoxGroup();
-
-	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
-
-};
-#endif
-* @endcode
-* rect.cpp
-* @code
-#include <QtCore>
-#include <QBrush>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-#include "rect.h"
-Rectangle::Rectangle(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
-{
-}
-
-QRectF Rectangle::boundingRect() const
-{
-	return QRectF(0, 0, width(), height()); // return the boundingRect()
-}
-
-void Rectangle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	Q_UNUSED(widget);
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, rect); // if the item is in designer (option->type == QStyleOption::SO_GraphicsItem)
-
-	setupPainter(painter);
-
-	adjustRect(rect);
-
-	painter->drawRect(rect); // draw the rectangle !!
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-
-}
-
-QString Rectangle::toolBoxText()
-{
-	return tr("Rectangle");
-}
-
-QString Rectangle::toolBoxGroup()
-{
-	return tr("Shapes");
-}
-
-QObject * Rectangle::createInstance(QGraphicsItem* parent, QObject* parentObject)
-{
-	return new Rectangle(parent, parentObject);
-}
-
-Q_EXPORT_PLUGIN2(rectangle, Rectangle)
-
-* @endcode
-* Yes is that simple !!!
-*/
-
 class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
@@ -315,7 +227,7 @@ public:
 	 * This function prepare the item. This function is called before paint function
 	 * @param painter the painter used to paint in
 	 */
-	virtual void prepare(QPainter * painter);
+	virtual bool prepare(QPainter * painter, PaintInterface::PrintMode pMode = PaintInterface::pmNormal);
 	/**
 	 * This function paints the contents of an item
 	 * @param painter the painter used to paint in
@@ -387,7 +299,7 @@ public:
 	virtual bool isEnabled();
 	virtual void setEnabled(bool b);
 
-	virtual void removeItem(){/*deleteLater();*/};
+	//virtual void removeItem(){/*deleteLater();*/};
 
 	void raise();
 
@@ -468,6 +380,9 @@ signals:
 	void afterPrint(QObject * sender);
 	
 	void geometryChanged(QObject * object, QRectF newGeometry, QRectF oldGeometry);
+protected:
+	QString m_lastError;
+	PaintInterface * m_paintInterface;
 
 private:
 	int m_resizeHandle;
@@ -480,8 +395,6 @@ private:
 	QRectF oldGeometry;
 	bool m_drawSelectionBorder;
 	bool m_enabled;
-	QString m_lastError;
-	PaintInterface * m_paintInterface;
 };
 }
 

@@ -110,7 +110,7 @@ public:
 
 	ItemInterface * findItemByClassName(const char * name);
 private:
-	static bool cmpBands(BandInterface * b1, BandInterface * b2);
+//	static bool cmpBands(BandInterface * b1, BandInterface * b2);
 
 private:
 	QMap<QString, ItemInterface*> m_items;

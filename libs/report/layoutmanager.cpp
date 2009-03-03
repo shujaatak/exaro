@@ -92,6 +92,49 @@ void LayoutManager::itemAdded(ItemInterface * item)
 }
 
 
+void LayoutManager::ItemDelete(ItemInterface * item, QObject * parent)
+{
+    Q_ASSERT(item);
+
+    if (!dynamic_cast<Report::BandInterface*>(item))
+	return;
+
+    BandInterface * band = dynamic_cast<Report::BandInterface*>(item);
+
+    if (band->layoutType() == BandInterface::LayoutFree)
+	return;
+
+    QList<QGraphicsItem *> lc;
+    if (dynamic_cast<Report::ItemInterface*>(parent))
+	lc = dynamic_cast<Report::ItemInterface*>(band->parentItem())->childItems();
+    else
+	if (dynamic_cast <Report::PageInterface*> (parent))
+	    lc = dynamic_cast <Report::PageInterface*> (parent)->items();
+	    else
+		qCritical("developer error in Layout Manager ItemDelete");
+
+    int priority = band->layoutPriority();
+    BandInterface::LayoutType lType = band->layoutType();
+    int order = band->order();
+    qDebug("number items = %i", lc.count());
+
+    foreach(QGraphicsItem * tItem, lc)
+	if (dynamic_cast<Report::BandInterface*>(tItem))
+	{
+	    BandInterface * iBand = dynamic_cast<BandInterface*>(tItem);
+	    if (iBand->layoutType() == lType && iBand->layoutPriority() == priority && iBand->order() >= order)
+		iBand->setOrder(iBand->order() - 1, false);
+	}
+
+    //band->setOrder(INT_MAX, false);
+
+    qDebug("test1");
+    updatePositions(parent);
+    qDebug("test2");
+}
+
+
+
 void LayoutManager::itemGeometryChanged(QObject * item)
 {
     Q_ASSERT(item);

@@ -24,10 +24,10 @@ PaintInterface::PaintInterface(ReportInterface * report, QObject * parent)
 
 void PaintInterface::run()
 {
-    initItem();
+    initBands();
 
     freeSpace = m_report->m_currentPage->geometry();
-    this->currentPageNumber = 1;
+    this->m_currentPageNumber = 1;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, 1), QScriptValue::ReadOnly);
 
     prepareCurrentPage();
@@ -37,7 +37,7 @@ void PaintInterface::run()
     foreach(BandInterface * band, listTop)
 	if (band->accommodationType() == band->AccomodationOnce && !bandDone.contains(band))
 	    if (band->query().isEmpty())
-		paintBand(band);
+		processBand(band, pmNormal);
 	    else
 		processQuery(band->query(), band);
 
@@ -49,7 +49,7 @@ void PaintInterface::finish(QString error)
     deleteLater () ;
 }
 
-void PaintInterface::initItem()
+void PaintInterface::initBands()
 {
 
     foreach(BandInterface * band, listTop)
@@ -69,7 +69,7 @@ void PaintInterface::showError(QString err)
     qDebug("Error:\n %s", qPrintable(err));
 }
 
-void PaintInterface::paintBand(BandInterface * band)
+void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 {
 
 	if (!band /*|| m_reportCanceled*/)
@@ -77,13 +77,17 @@ void PaintInterface::paintBand(BandInterface * band)
 	if (!band->isEnabled())
 	    return;
 
-	if (!canPaint(band) || (currentPageNumber>1 && band->forceNewPage()))
+	if (!canPaint(band) /*|| (m_currentPageNumber>1 && band->forceNewPage())*/)
 	    newPage();
 
 	QPainter * m_painter = &m_report->m_painter;
 	PageInterface * m_currentPage = m_report->m_currentPage;
 	m_painter->save();
-	band->prepare(m_painter);
+	if (!band->prepare(m_painter, pMode))
+	{
+	    m_painter->restore();
+	    return;
+	}
 	if (band->layoutType() == BandInterface::LayoutBottom)
 		m_painter->translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
 	else
@@ -115,9 +119,9 @@ void PaintInterface::paintBand(BandInterface * band)
 void PaintInterface::newPage()
 {
       postprocessCurrentPage();
-      currentPageNumber++;
-      m_report->m_splashScreen.showMessage(tr("Prepare page: %1").arg(currentPageNumber));
-      m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, currentPageNumber), QScriptValue::ReadOnly);
+      m_currentPageNumber++;
+      m_report->m_splashScreen.showMessage(tr("Prepare page: %1").arg(m_currentPageNumber));
+      m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, m_currentPageNumber), QScriptValue::ReadOnly);
       m_report->m_scriptEngine->globalObject().setProperty("_rpage_", QScriptValue(m_report->m_scriptEngine, m_report->m_scriptEngine->globalObject().property("_rpage_").toInteger() + 1), QScriptValue::ReadOnly);
       m_report->m_printer->newPage();
       freeSpace = m_report->m_currentPage->geometry();
@@ -137,27 +141,29 @@ void PaintInterface::prepareCurrentPage()
     m_report->m_currentBottom = m_report->m_currentPage->geometry().bottom();
 
     foreach(BandInterface * band, listTop)
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && currentPageNumber == 1))
-	    paintBand(band);
+	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
+	    processBand(band);
 
     for (int i = listBottom.count()-1; i>=0 ;i--)
     {
 	BandInterface * band = listBottom.at(i);
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && currentPageNumber == 1))
-	    paintBand(band);
+	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
+	    processBand(band);
     }
+
+    qDebug("size of  current group is %i", currentGroup.size());
 
     if (!currentGroup.isEmpty())
 	foreach (BandInterface * band, currentGroup)
-	    if (band->reprintOnNewPage())
-		paintBand(band);
+	   // if (band->reprintOnNewPage())
+		processBand(band, pmNewPage);
 }
 
 void PaintInterface::postprocessCurrentPage()
 {
     foreach(BandInterface * band, listFree)
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && currentPageNumber == 1))
-	    paintBand(band);
+	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
+	    processBand(band);
 }
 
 
@@ -210,6 +216,7 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 
     m_currentQuery = query;
     m_currentQueryRow = 0;
+    m_currentLineNumber = 0;
 
     currentGroup.clear();
 
@@ -220,10 +227,11 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
     do
     {
 	m_currentQueryRow++;
-	m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentQueryRow), QScriptValue::ReadOnly);
+	m_currentLineNumber++;
+	m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 
 	foreach(BandInterface * band, currentGroup)
-	    paintBand(band);
+	    processBand(band);
 
 	m_report->exportRecord(query->record(), qryElement);
     }
@@ -234,6 +242,22 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
     foreach (BandInterface * band, currentGroup)
 	bandDone.append(band);
     currentGroup.clear();
+}
+
+int PaintInterface::currentPageNumber()
+{
+    return m_currentPageNumber;
+}
+
+int PaintInterface::currentQueryRow()
+{
+    return m_currentQueryRow;
+}
+
+void PaintInterface::setDetailNumber(int num)
+{
+    m_currentLineNumber = num;
+    m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 }
 
 
@@ -275,20 +299,20 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 			{
 				if (!canPaint(band))
 					newPage();
-				paintBand(band);
+				processBand(band);
 			}
 			foreach(BandInterface * band, details)
 			{
 				if (!canPaint(band))
 					newPage();
-				paintBand(band);
+				processBand(band);
 			}
 
 			foreach(BandInterface * band, detailFooters)
 			{
 				if (!canPaint(band))
 					newPage();
-				paintBand(band);
+				processBand(band);
 			}
 			continue;
 		}
@@ -322,7 +346,7 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 				{
 					if (!canPaint(band))
 						newPage();
-					paintBand(band);
+					processBand(band);
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
 				}
 			}
@@ -334,7 +358,7 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 					    continue;
 					if (!canPaint(band) || (!first && band->forceNewPage()))
 						newPage();
-					paintBand(band);
+					processBand(band);
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
 					if (band->resetDetailNumber())
 						m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
@@ -351,9 +375,9 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 					newPage();
 					foreach(BandInterface * band, detailHeaders)
 						if (band->reprintOnNewPage())
-							paintBand(band);
+							processBand(band);
 				}
-				paintBand(band);
+				processBand(band);
 			}
 			exportRecord(detailQuery->record(), qryElement);
 			first=false;
@@ -368,7 +392,7 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
 			    continue;
 			if (!canPaint(band))
 				newPage();
-			paintBand(band);
+			processBand(band);
 		}
 
 		foreach(BandInterface * band, detailFooters)

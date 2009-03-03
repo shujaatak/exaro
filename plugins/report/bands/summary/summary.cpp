@@ -42,7 +42,7 @@ inline void initMyResource()
 Summary::Summary(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::Summary);
+//	setBandType(Report::BandInterface::Summary);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 

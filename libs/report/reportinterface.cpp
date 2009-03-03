@@ -368,6 +368,7 @@ void ReportInterface::paintObjects(ItemInterface * item, QPointF translate, cons
 
 void ReportInterface::paintBand(BandInterface * band)
 {
+    /*
 	if (!band || m_reportCanceled)
 		return;
 	if (!band->isEnabled())
@@ -392,6 +393,7 @@ void ReportInterface::paintBand(BandInterface * band)
 		m_currentTop += band->geometry().height() + m_currentHeight;
 	band->unstretch();
 	m_painter.restore();
+	*/
 }
 
 void ReportInterface::paintOverlays()

@@ -33,22 +33,92 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "detailheader.h"
+#include <paintinterface.h>
 
 inline void initMyResource()
 {
 	Q_INIT_RESOURCE(detailHeader);
 }
 
-DetailHeader::DetailHeader(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
+DetailHeader::DetailHeader(QGraphicsItem* parent, QObject* parentObject)
+    : BandInterface(parent, parentObject),
+	m_reprintOnNewPage(false), m_resetDetailNumber(false), m_forceNewPage(false),
+	m_first(true), m_lastRowPrinted(-1)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::DetailHeader);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 
 
 DetailHeader::~DetailHeader()
 {
+}
+
+bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+{
+    ItemInterface::prepare(painter);
+    switch (pMode)
+    {
+	case Report::PaintInterface::pmNormal:
+	    qDebug("pmNormal row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
+
+	    if (m_resetDetailNumber)
+		m_paintInterface->setDetailNumber(1);
+
+	    if (m_forceNewPage && m_paintInterface->currentQueryRow() !=1)
+	    {
+		qDebug("cal new page row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
+		m_paintInterface->newPage();
+		qDebug("after cal new page row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
+	    }
+
+	    if (m_paintInterface->currentQueryRow() != m_lastRowPrinted) //prevent doubling in new page
+	    {
+		m_lastRowPrinted = m_paintInterface->currentQueryRow();
+		return true;
+	    }
+
+	    break;
+	case Report::PaintInterface::pmNewPage:
+	    if (m_reprintOnNewPage && !m_forceNewPage)
+	    {
+		m_lastRowPrinted = m_paintInterface->currentQueryRow();
+		return true;
+	    }
+	    break;
+	default:
+	    return false;
+    }
+
+    return false;
+}
+
+bool DetailHeader::reprintOnNewPage()
+{
+	return m_reprintOnNewPage;
+}
+
+void DetailHeader::setReprintOnNewPage(bool reprintOnNewPage)
+{
+	m_reprintOnNewPage = reprintOnNewPage;
+}
+
+bool DetailHeader::forceNewPage()
+{
+	return m_forceNewPage;
+}
+void DetailHeader::setForceNewPage(bool forceNewPage)
+{
+	m_forceNewPage=forceNewPage;
+}
+
+bool DetailHeader::resetDetailNumber()
+{
+	return m_resetDetailNumber;
+}
+void DetailHeader::setResetDetailNumber(bool resetDetailNumber)
+{
+	m_resetDetailNumber=resetDetailNumber;
 }
 
 bool DetailHeader::canContain(QObject * object)
