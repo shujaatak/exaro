@@ -1,41 +1,59 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>databaseDialog</class>
- <widget class="QDialog" name="databaseDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="databaseDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>444</width>
-    <height>351</height>
+    <height>416</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Setup database</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7" >
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6" >
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Predefined connections:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="cbConnections"/>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QLabel" name="label" >
-       <property name="text" >
+      <widget class="QLabel" name="label">
+       <property name="text">
         <string>Database driver:</string>
        </property>
-       <property name="alignment" >
+       <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="drivers" />
+      <widget class="QComboBox" name="drivers"/>
      </item>
     </layout>
    </item>
-   <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+   <item row="4" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>23</height>
@@ -43,26 +61,26 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3" >
+   <item row="5" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2" >
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label_7" >
-         <property name="text" >
+        <widget class="QLabel" name="label_7">
+         <property name="text">
           <string>UserName :</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_5" >
-         <property name="text" >
+        <widget class="QLabel" name="label_5">
+         <property name="text">
           <string>Password:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
@@ -70,13 +88,13 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" >
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLineEdit" name="user" />
+        <widget class="QLineEdit" name="user"/>
        </item>
        <item>
-        <widget class="QLineEdit" name="password" >
-         <property name="echoMode" >
+        <widget class="QLineEdit" name="password">
+         <property name="echoMode">
           <enum>QLineEdit::Password</enum>
          </property>
         </widget>
@@ -85,12 +103,12 @@
      </item>
     </layout>
    </item>
-   <item>
-    <spacer name="verticalSpacer_2" >
-     <property name="orientation" >
+   <item row="6" column="0" colspan="2">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>23</height>
@@ -98,26 +116,26 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4" >
+   <item row="7" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4" >
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_4" >
-         <property name="text" >
+        <widget class="QLabel" name="label_4">
+         <property name="text">
           <string>HostName:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_6" >
-         <property name="text" >
+        <widget class="QLabel" name="label_6">
+         <property name="text">
           <string>Port:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
@@ -125,16 +143,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3" >
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLineEdit" name="host" />
+        <widget class="QLineEdit" name="host"/>
        </item>
        <item>
-        <widget class="QLineEdit" name="port" >
-         <property name="inputMask" >
+        <widget class="QLineEdit" name="port">
+         <property name="inputMask">
           <string>00000; </string>
          </property>
-         <property name="echoMode" >
+         <property name="echoMode">
           <enum>QLineEdit::Normal</enum>
          </property>
         </widget>
@@ -143,12 +161,12 @@
      </item>
     </layout>
    </item>
-   <item>
-    <spacer name="verticalSpacer_3" >
-     <property name="orientation" >
+   <item row="8" column="0" colspan="2">
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>23</height>
@@ -156,26 +174,26 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7" >
+   <item row="9" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5" >
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
+        <widget class="QLabel" name="label_3">
+         <property name="text">
           <string>DatabaseName:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
+        <widget class="QLabel" name="label_2">
+         <property name="text">
           <string>ConnectOptions:</string>
          </property>
-         <property name="alignment" >
+         <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
@@ -183,19 +201,19 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_6" >
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5" >
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QLineEdit" name="database" >
-           <property name="inputMask" >
+          <widget class="QLineEdit" name="database">
+           <property name="inputMask">
             <string/>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="openButton" >
-           <property name="text" >
+          <widget class="QToolButton" name="openButton">
+           <property name="text">
             <string>...</string>
            </property>
           </widget>
@@ -203,18 +221,18 @@
         </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="connect" />
+        <widget class="QLineEdit" name="options"/>
        </item>
       </layout>
      </item>
     </layout>
    </item>
-   <item>
-    <spacer name="verticalSpacer_4" >
-     <property name="orientation" >
+   <item row="10" column="0" colspan="2">
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>23</height>
@@ -222,14 +240,21 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" >
+   <item row="11" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <spacer name="horizontalSpacer" >
-       <property name="orientation" >
+      <widget class="QPushButton" name="pbSave">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -238,17 +263,17 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout" >
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QPushButton" name="pushButton" >
-         <property name="text" >
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
           <string>&amp;Ok</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2" >
-         <property name="text" >
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
           <string>&amp;Cancel</string>
          </property>
         </widget>
@@ -256,6 +281,16 @@
       </layout>
      </item>
     </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>Connection name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="leConnName"/>
    </item>
   </layout>
  </widget>
@@ -266,7 +301,7 @@
   <tabstop>host</tabstop>
   <tabstop>port</tabstop>
   <tabstop>database</tabstop>
-  <tabstop>connect</tabstop>
+  <tabstop>options</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_2</tabstop>
  </tabstops>
@@ -278,11 +313,11 @@
    <receiver>databaseDialog</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>271</x>
      <y>389</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>148</x>
      <y>153</y>
     </hint>
@@ -294,11 +329,11 @@
    <receiver>databaseDialog</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>355</x>
      <y>393</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>232</x>
      <y>155</y>
     </hint>

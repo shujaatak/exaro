@@ -20,6 +20,7 @@
 #include <QSqlError>
 #include <QFileDialog>
 #include <QDir>
+#include <QSettings>
 
 #include "sqldatabasedialog.h"
 
@@ -29,6 +30,10 @@ SqlDatabaseDialog::SqlDatabaseDialog(QWidget* parent, Qt::WFlags fl)
 	setupUi(this);
 	openButton->setIcon(QIcon(":/images/openReport.png"));
 	drivers->setModel(new QStringListModel(QSqlDatabase::drivers(), this));
+
+	QSettings s;
+	connList = s.value("Designer/connections").toMap();
+	cbConnections->insertItems(-1, connList.keys());
 }
 
 SqlDatabaseDialog::~SqlDatabaseDialog()
@@ -59,4 +64,40 @@ void SqlDatabaseDialog::on_openButton_clicked()
 void SqlDatabaseDialog::on_drivers_currentIndexChanged ( int /*index*/ )
 {
 	openButton->setEnabled(drivers->currentText().contains("QSQLITE"));
+}
+
+void SqlDatabaseDialog::on_pbSave_clicked()
+{
+    if (leConnName->text().isEmpty())
+	 QMessageBox::warning(this, tr("Connection adding"),
+				tr("Connection name field is empty.\n"
+				   "Please enter name"),
+				QMessageBox::Ok);
+    else
+    {
+	QMap <QString, QVariant> map;
+	map.insert("driver", drivers->currentText());
+	map.insert("databaseName",database->text());
+	map.insert("host",host->text());
+	map.insert("port",port->text());
+	map.insert("user",user->text());
+	map.insert("password",password->text());
+	map.insert("options",options->text());
+	connList.insert(leConnName->text(), map);
+	QSettings s;
+	s.setValue("Designer/connections",connList);
+    }
+}
+
+void SqlDatabaseDialog::on_cbConnections_activated(QString text)
+{
+    QMap <QString, QVariant> map = connList[text].toMap();
+    leConnName->setText(text);
+    drivers->setCurrentIndex(drivers->findText(map.value("driver").toString()));
+    database->setText(map.value("databaseName").toString());
+    host->setText(map.value("host").toString());
+    port->setText(map.value("port").toString());
+    user->setText(map.value("user").toString());
+    password->setText(map.value("password").toString());
+    options->setText(map.value("options").toString());
 }
