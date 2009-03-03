@@ -32,6 +32,10 @@ protected slots:
 	virtual void	accept();
 	void on_openButton_clicked();
 	void on_drivers_currentIndexChanged(int index);
+	void on_pbSave_clicked();
+	void on_cbConnections_activated(QString text);
+private:
+	QMap<QString, QVariant> connList;
 };
 
 #endif
