@@ -42,7 +42,7 @@ inline void initMyResource()
 PageFooter::PageFooter(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::PageFooter);
+//	setBandType(Report::BandInterface::PageFooter);
 	setResizeFlags(FixedPos | ResizeTop);
 }
 
@@ -50,6 +50,7 @@ PageFooter::PageFooter(QGraphicsItem* parent, QObject* parentObject): BandInterf
 PageFooter::~PageFooter()
 {
 }
+
 
 bool PageFooter::canContain(QObject * object)
 {

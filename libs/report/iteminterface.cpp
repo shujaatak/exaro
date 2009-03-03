@@ -224,13 +224,14 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 	return flags;
 }
 
-void ItemInterface::prepare(QPainter * painter)
+bool ItemInterface::prepare(QPainter * painter, PaintInterface::PrintMode pMode)
 {
 	unstretch();
 	setupPainter(painter);
 	foreach(QObject * obj, QObject::children())
 		if (dynamic_cast<Report::ItemInterface*>(obj))
 			dynamic_cast<Report::ItemInterface*>(obj)->prepare(painter);
+	return true;
 }
 
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)

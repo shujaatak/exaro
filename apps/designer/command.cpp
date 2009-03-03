@@ -100,7 +100,7 @@ void AddCommand::undo()
 	m_page->removeItem( m_item );
 
 	m_item->setParentItem( 0 );
-	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
+	//dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
 	delete dynamic_cast<Report::ItemInterface*>( m_item );
 	m_mainWindow->m_lastSelectedObject = parent;
 	m_mainWindow->m_pe->setObject( parent );
@@ -146,7 +146,7 @@ void AddDomObject::undo()
 		page->removeItem( m_item );
 
 	m_item->setParentItem( 0 );
-	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
+	//dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
 	delete dynamic_cast<Report::ItemInterface*>( m_item );
 	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
@@ -314,10 +314,11 @@ DelCommand::DelCommand( Report::ItemInterface* item, mainWindow* mw )
 	m_itemName = item->objectName();
 //    m_page = dynamic_cast<Report::PageInterface*>((item)->scene());
 	m_pageName = mw->m_tw->tabText( mw->m_tw->currentIndex() );
+	m_bandOrder = dynamic_cast<Report::BandInterface*>(item)->order();
 
-	QDomDocument doc;
-	doc.appendChild( mw->m_reportEngine.objectProperties(( QObject * )item, &doc ) );
-	m_domObject = doc.toString( 0 );
+//	QDomDocument doc;
+//	doc.appendChild( mw->m_reportEngine.objectProperties(( QObject * )item, &doc ) );
+//	m_domObject = doc.toString( 0 );
 
 	const char* itemClassName = item->metaObject()->className();
 	setText( QObject::tr( "Delete %1" )
@@ -339,17 +340,25 @@ void DelCommand::redo()
 
 	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
 
-
-
 	if ( !m_item || !m_parent )
 		return;
-
+qDebug("scene1 = %i",(int)m_item->scene());
 	if ( m_page )
 		m_page->removeItem( m_item );
 
 	m_item->setParentItem( 0 );
-	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
-	delete dynamic_cast<Report::ItemInterface*>( m_item );
+	m_item->setParent(0);
+
+	QDomDocument doc;
+	doc.appendChild( m_mainWindow->m_reportEngine.objectProperties(( QObject * )m_item, &doc ) );
+	m_domObject = doc.toString( 0 );
+
+
+qDebug("scene1 = %i",(int)m_item->scene());
+//	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
+	Report::LayoutManager::ItemDelete(m_item, m_page);
+	//delete dynamic_cast<Report::ItemInterface*>( m_item );
+	delete (m_item);
 	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
 	m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
@@ -376,14 +385,8 @@ void DelCommand::undo()
 	doc.setContent( m_domObject );
 	QObject * obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
 	connectItems(obj, m_mainWindow);
-
-	if ( dynamic_cast<Report::BandInterface*>( obj ) )
-	{
-		dynamic_cast<Report::BandInterface*>( obj )->setOrder( INT_MAX );
-		dynamic_cast<Report::BandInterface*>( obj )->setGeometry( QRectF( 0, 0, dynamic_cast<Report::BandInterface*>( obj )->geometry().width(), dynamic_cast<Report::BandInterface*>( obj )->geometry().height() ) );
-	}
-
 	m_item = dynamic_cast<Report::ItemInterface*>( obj );
+		qDebug("scene1 = %i",(int)m_item->scene());
 
 	if ( dynamic_cast<Report::ItemInterface*>( m_parent ) )
 	{
@@ -395,7 +398,11 @@ void DelCommand::undo()
 	}
 	else
 		if ( dynamic_cast<Report::PageInterface*>( m_parent )->canContain( m_item ) )
+		    {
+			qDebug("test 1");
 			dynamic_cast<Report::PageInterface*>( m_parent )->addItem( m_item );
+			qDebug("test 2");
+		    }
 		else
 		{
 			delete m_item;
@@ -404,8 +411,9 @@ void DelCommand::undo()
 
 	if ( m_item )
 	{
+		qDebug("order = %i", m_bandOrder);
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
-			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
+			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( m_bandOrder );
 
 		m_mainWindow->m_pe->setObject( m_item );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
@@ -581,6 +589,7 @@ RemovePageCommand::RemovePageCommand( mainWindow * mw, int index )
 
 void RemovePageCommand::redo()
 {
+    qDebug("RemovePageCommand::redo()");
         Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
         Q_ASSERT( m_page );
 

@@ -36,6 +36,7 @@ class LayoutManager /*: public QObject*/
 public:
 
     static void itemAdded(ItemInterface * item);
+    static void ItemDelete(ItemInterface * item, QObject * parent);
     static void itemGeometryChanged(QObject * item);
     static void itemChangeOrder(QObject * item, int order);
     static void updatePositions(QObject * item);

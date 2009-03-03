@@ -42,12 +42,26 @@ inline void initMyResource()
 Detail::Detail(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::Detail);
+	//setBandType(Report::BandInterface::Detail);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 
 Detail::~Detail()
 {
+}
+
+bool Detail::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+{
+    switch (pMode)
+    {
+	case Report::PaintInterface::pmNormal:
+	    break;
+	default:
+	    return false;
+    }
+
+    ItemInterface::prepare(painter);
+    return true;
 }
 
 bool Detail::canContain(QObject * object)

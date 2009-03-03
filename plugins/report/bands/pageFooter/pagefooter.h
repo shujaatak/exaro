@@ -43,6 +43,8 @@ public:
 
 	~PageFooter();
 
+//	bool prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode);
+
 	Report::BandInterface::LayoutType layoutType() {return LayoutBottom;}
 	int layoutPriority() {return 100;}
 	Report::BandInterface::AccomodationType accommodationType() {return AccomodationEveryPage;}

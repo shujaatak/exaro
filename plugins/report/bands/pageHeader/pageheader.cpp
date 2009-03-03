@@ -43,7 +43,7 @@ inline void initMyResource()
 PageHeader::PageHeader(QGraphicsItem* parent, QObject* parentObject) : BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::PageHeader);
+//	setBandType(Report::BandInterface::PageHeader);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 

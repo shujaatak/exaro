@@ -97,6 +97,7 @@ private:
 	QString m_parentName;
 	QString m_itemName;
 	QString m_domObject;
+	int m_bandOrder;
 };
 
 class PropertyChangeCommand: public QUndoCommand

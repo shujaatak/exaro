@@ -50,7 +50,7 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 {
 	Q_OBJECT
 
-	Q_ENUMS(BandType)
+	//Q_ENUMS(BandType)
 	Q_FLAGS(Frames Frame);
 
 	/**
@@ -58,7 +58,7 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 	 * @see bandType()
 	 * @see setBandType()
 	*/
-	Q_PROPERTY(BandType bandType READ bandType WRITE setBandType DESIGNABLE false)
+	//Q_PROPERTY(BandType bandType READ bandType WRITE setBandType DESIGNABLE false)
 	/**
 	 * @see order()
 	 * @see setOrder()
@@ -81,16 +81,16 @@ public:
 	* @see bandType()
 	* @see setBandType()
 	*/
-	enum BandType {PageHeader, /**< the band is a PageHeader*/
-	               Title, /**< the band is a Title*/
-	               DetailContainer, /**< the band is a DetailContainer*/
-	               DetailHeader, /**< the band is a DetailHeader*/
-	               Detail, /**< the band is a Detail*/
-	               DetailFooter, /**< the band is a DetailFooter*/
-	               Summary, /**< the band is a Summary*/
-	               PageFooter, /**< the band is a PageFooter*/
-	               Overlay /**< the band is a Overlay*/
-	              };
+//	enum BandType {PageHeader, /**< the band is a PageHeader*/
+//	               Title, /**< the band is a Title*/
+//	               DetailContainer, /**< the band is a DetailContainer*/
+//	               DetailHeader, /**< the band is a DetailHeader*/
+//	               Detail, /**< the band is a Detail*/
+//	               DetailFooter, /**< the band is a DetailFooter*/
+//	               Summary, /**< the band is a Summary*/
+//	               PageFooter, /**< the band is a PageFooter*/
+//	               Overlay /**< the band is a Overlay*/
+//	              };
 
 	/**
 	* Frame enum
@@ -135,7 +135,7 @@ public:
 	* @see BandType
 	* @see setBandType()
 	*/
-	virtual BandType bandType();
+//	virtual BandType bandType();
 
 	virtual LayoutType layoutType();
 
@@ -202,15 +202,10 @@ public:
 	 */
 	void setQuery(const QString & query);
 
-	/**
-	 * Return true if the band is reprinted on new page
-	 * @return true if the band is reprinted on new page
-	 */
+/*
+
 	bool reprintOnNewPage();
-	/**
-	 * Set true if this band shoul be reprinted on new page
-	 * @param reprintOnNewPage
-	 */
+
 	void setReprintOnNewPage(bool reprintOnNewPage);
 
 	bool resetDetailNumber();
@@ -221,20 +216,21 @@ public:
 
 	QVariant groupFieldValue();
 	void setGroupFieldValue(const QVariant & groupFieldValue);
-
+*/
 	bool deleting();
 
 	void removeItem();
 
+/*
 	bool forceNewPage();
 	void setForceNewPage(bool forceNewPage);
-
+*/
 	void selectBand();
 
 	int freeSpace();
 
 signals:
-	void bandDelete(int, int);
+	void bandDelete(int);
 
 protected:
 	/**
@@ -243,7 +239,7 @@ protected:
 	* @see BandType
 	* @see bandType()
 	*/
-	void setBandType(BandType bandType);
+//	void setBandType(BandType bandType);
 
 	/**
 	* Draw the title 
@@ -261,18 +257,18 @@ protected slots:
 	 * @see setGeometry()
 	 */
 	void updateGeometry(QRectF rect);
-	void bandDestroyed(int type, int order);
+	//void bandDestroyed(/*int type,*/ int order);
 
 private:
 	QString m_groupField;
-	BandType m_bandType;
+//	BandType m_bandType;
 	int m_order;
 	int m_indentation;
 	Frames m_frame;
 	QString m_query;
-	bool m_reprintOnNewPage, m_deleting, m_resetDetailNumber;
-	QVariant m_groupFieldValue;
-	bool m_forceNewPage;
+	bool /*m_reprintOnNewPage,*/ m_deleting/*, m_resetDetailNumber*/;
+//	QVariant m_groupFieldValue;
+//	bool m_forceNewPage;
 	TitleItem * m_titleItem;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BandInterface::Frames);

@@ -125,8 +125,8 @@ void TitleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 		: ItemInterfaceExt(parent, parentObject),
-		m_reprintOnNewPage(false), m_deleting(false), 
-		m_resetDetailNumber(false),m_forceNewPage(false),
+		/*m_reprintOnNewPage(false),*/ m_deleting(false),
+		/*m_resetDetailNumber(false),m_forceNewPage(false),*/
 		m_titleItem(0)
 {
 	setResizeFlags(FixedPos | ResizeTop | ResizeBottom);
@@ -139,13 +139,13 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	else
 		connect(parentObject, SIGNAL(geometryChanged(QRectF)), this, SLOT(updateGeometry(QRectF)));
 
-	connect(this, SIGNAL(bandDelete(int, int)), parentObject, SLOT(bandDestroyed(int, int)));
+	//connect(this, SIGNAL(bandDelete(int, int)), parentObject, SLOT(bandDestroyed(int, int)));
 
 	m_order = -1;
 	m_indentation = 0;
 	m_frame = 0;
 	m_query = "";
-	m_bandType=Overlay;
+//	m_bandType=Overlay;
 
 	setHeight(20/UNIT);
 }
@@ -161,16 +161,19 @@ bool BandInterface::deleting()
 	return m_deleting;
 }
 
+/*
 void BandInterface::removeItem()
 {
 	m_deleting = true;
-	emit(bandDelete(m_bandType, m_order));
-        ItemInterface::removeItem();
+	//emit(bandDelete(m_bandType, m_order));
+//	emit(bandDelete(m_order));
+  //      ItemInterface::removeItem();
 }
-
+*/
 BandInterface::~BandInterface()
 {
-	delete m_titleItem;
+    qDebug("~BandInterface()");
+    delete m_titleItem;
 }
 
 BandInterface::Frames BandInterface::frame()
@@ -295,7 +298,7 @@ void BandInterface::setGeometry(QRectF rect)
 	Report::LayoutManager::itemGeometryChanged(this);
 }
 
-
+/*
 BandInterface::BandType BandInterface::bandType()
 {
 	return m_bandType;
@@ -305,6 +308,7 @@ void BandInterface::setBandType(BandType bandType)
 {
 	m_bandType = bandType;
 }
+*/
 
 BandInterface::LayoutType BandInterface::layoutType()
 {
@@ -331,6 +335,7 @@ void BandInterface::setQuery(const QString & query)
 	m_query = query;
 }
 
+/*
 bool BandInterface::reprintOnNewPage()
 {
 	return m_reprintOnNewPage;
@@ -360,6 +365,7 @@ void BandInterface::setGroupField(const QString & groupField)
 	m_groupField = groupField;
 }
 
+
 QVariant BandInterface::groupFieldValue()
 {
 	return m_groupFieldValue;
@@ -378,9 +384,11 @@ void BandInterface::setForceNewPage(bool forceNewPage)
 {
 	m_forceNewPage=forceNewPage;
 }
-
+*/
+/*
 void BandInterface::bandDestroyed(int type, int order)
 {
+
 	foreach(QObject *item, QObject::children())
 		if (dynamic_cast<BandInterface*>(item))
 		{
@@ -390,6 +398,7 @@ void BandInterface::bandDestroyed(int type, int order)
 					dynamic_cast<BandInterface*>(item)->setOrder(dynamic_cast<BandInterface*>(item)->order());
 		}
 	update();
-}
 
+}
+*/
 }

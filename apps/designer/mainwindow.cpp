@@ -156,8 +156,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( action_About_eXaro, SIGNAL( triggered( bool ) ), SLOT( about() ) );
 	connect( actionOptions, SIGNAL( triggered( bool ) ), SLOT( options() ) );
 
-	connect( actionUndo, SIGNAL( triggered( bool ) ), undoStack, SLOT( undo() ) );
-	connect( actionRedo, SIGNAL( triggered( bool ) ), undoStack, SLOT( redo() ) );
+	//connect( actionUndo, SIGNAL( triggered( bool ) ), undoStack, SLOT( undo() ) );
+	//connect( actionRedo, SIGNAL( triggered( bool ) ), undoStack, SLOT( redo() ) );
 
 	connect( m_tw, SIGNAL( currentChanged( int ) ), SLOT( currentChanged( int ) ) );
 
@@ -877,15 +877,18 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 void mainWindow::_deletePage_( int index )
 {
+    qDebug("mainWindow::_deletePage_( int index )");
 	if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
 		delete dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene();
-
+qDebug("1");
 	m_tw->removeTab( index );
 	actionRemove_page->setEnabled( m_tw->count() );
-
+qDebug("2");
 	if ( !m_tw->count() )
 		m_pe->setObject( m_report );
+	qDebug("3");
 	m_objectModel.setRootObject( m_report );
+	qDebug("4");
 }
 
 void mainWindow::on_actionBandUp_triggered()

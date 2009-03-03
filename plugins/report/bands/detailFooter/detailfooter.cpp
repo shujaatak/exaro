@@ -42,7 +42,7 @@ inline void initMyResource()
 DetailFooter::DetailFooter(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	setBandType(Report::BandInterface::DetailFooter);
+//	setBandType(Report::BandInterface::DetailFooter);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 
@@ -50,6 +50,25 @@ DetailFooter::DetailFooter(QGraphicsItem* parent, QObject* parentObject): BandIn
 DetailFooter::~DetailFooter()
 {
 }
+
+bool DetailFooter::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+{
+    ItemInterface::prepare(painter);
+    switch (pMode)
+    {
+	case Report::PaintInterface::pmNormal:
+	    return true;
+	    break;
+	case Report::PaintInterface::pmNewPage:
+	    return false;
+	    break;
+	default:
+	    return false;
+    }
+
+    return false;
+}
+
 
 bool DetailFooter::canContain(QObject * object)
 {

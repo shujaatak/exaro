@@ -36,7 +36,7 @@ class DetailHeader : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+//	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
 	Q_PROPERTY(bool reprintOnNewPage READ reprintOnNewPage WRITE setReprintOnNewPage)
 	Q_PROPERTY(bool resetDetailNumber READ resetDetailNumber WRITE setResetDetailNumber)
 	Q_PROPERTY(bool forceNewPage READ forceNewPage WRITE setForceNewPage)
@@ -50,6 +50,7 @@ public:
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);
+	bool prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();
@@ -57,6 +58,18 @@ public:
 
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
+	bool reprintOnNewPage();
+	void setReprintOnNewPage(bool reprintOnNewPage);
+	bool forceNewPage();
+	void setForceNewPage(bool forceNewPage);
+	bool resetDetailNumber();
+	void setResetDetailNumber(bool resetDetailNumber);
+private:
+	bool m_reprintOnNewPage;
+	bool m_forceNewPage;
+	bool m_resetDetailNumber;
+	bool m_first;
+	int m_lastRowPrinted;		// to prevent doubling in new page
 };
 
 #endif

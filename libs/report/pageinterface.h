@@ -164,7 +164,7 @@ public slots:
 	virtual void setBottomMagnet(bool magneted);
 	virtual void setHorizontalMagnet(bool magneted);
 	virtual void setVerticalMagnet(bool magneted);
-	virtual void bandDestroyed(int type, int order);
+	//virtual void bandDestroyed(int type, int order);
 
 protected:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
