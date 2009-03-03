@@ -295,7 +295,8 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 void BandInterface::setGeometry(QRectF rect)
 {
 	ItemInterface::setGeometry(rect);
-	Report::LayoutManager::itemGeometryChanged(this);
+	// be layout in ItemInterface setHeight
+	//Report::LayoutManager::itemGeometryChanged(this);
 }
 
 /*

@@ -27,6 +27,8 @@ void LayoutManager::itemAdded(ItemInterface * item)
 {
     Q_ASSERT(item);
 
+    qDebug("LayoutManager::itemAdded  name = %s", qPrintable(item->objectName()));
+
     if (!dynamic_cast<Report::BandInterface*>(item))
 	return;
 
@@ -89,12 +91,15 @@ void LayoutManager::itemAdded(ItemInterface * item)
     if (band->resizeFlags()|BandInterface::ResizeRight)
 	band->setWidth(band->parentGeometry().width());
 
+    qDebug("order is %i", band->order());
 }
 
 
 void LayoutManager::ItemDelete(ItemInterface * item, QObject * parent)
 {
     Q_ASSERT(item);
+
+    qDebug("LayoutManager::ItemDelete  name = %s, parent name ", qPrintable(item->objectName()), qPrintable(parent->objectName()));
 
     if (!dynamic_cast<Report::BandInterface*>(item))
 	return;
@@ -138,6 +143,8 @@ void LayoutManager::ItemDelete(ItemInterface * item, QObject * parent)
 void LayoutManager::itemGeometryChanged(QObject * item)
 {
     Q_ASSERT(item);
+
+    qDebug("LayoutManager::itemGeometryChanged name = %s", qPrintable(item->objectName()));
 
     if (!dynamic_cast<Report::BandInterface*>(item))
 	return;
@@ -242,7 +249,7 @@ void LayoutManager::itemChangeOrder(QObject * item, int order)
 			iBand->setOrder(iBand->order() + 1, false);
 		}
 		else
-		    if (iBand->order() <= order && iBand->order() > band->order())
+		    if (iBand->order() <= order && iBand->order() > band->order() && band->order() >= 0) //band->order() == -1 for uninitialised band
 			iBand->setOrder(iBand->order() - 1, false);
 	    }
 	}
@@ -265,6 +272,7 @@ void LayoutManager::updatePositions(QObject * item)
 {
     Q_ASSERT(item);
 
+
     BandMap listTop;
     BandMap listBottom;
     BandMap listFree;
@@ -284,6 +292,7 @@ void LayoutManager::updatePositions(QObject * item)
 
     by = rect.top();
     pList = listTop.uniqueKeys();
+
     for (int i = pList.count()-1; i>=0 ;i--)
     {
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
@@ -402,6 +411,6 @@ BandList LayoutManager::sortByOrder(BandList lc)
 {
     BandMap nList;
     for (int i = 0;i < lc.size();i++)
-	nList.insert(lc[i]->order(), lc[i]);
+	nList.insertMulti(lc[i]->order(), lc[i]);
     return nList.values();
 }

@@ -59,28 +59,22 @@ bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode
     ItemInterface::prepare(painter);
     switch (pMode)
     {
+	case Report::PaintInterface::pmNewPage:
+	    if (m_reprintOnNewPage && !m_forceNewPage)
+	    {
+		m_lastRowPrinted = m_paintInterface->currentQueryRow();
+		return true;
+	    }
+	    break;
 	case Report::PaintInterface::pmNormal:
-	    qDebug("pmNormal row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
 
 	    if (m_resetDetailNumber)
 		m_paintInterface->setDetailNumber(1);
 
 	    if (m_forceNewPage && m_paintInterface->currentQueryRow() !=1)
-	    {
-		qDebug("cal new page row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
 		m_paintInterface->newPage();
-		qDebug("after cal new page row=%i   lastRow=%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
-	    }
 
 	    if (m_paintInterface->currentQueryRow() != m_lastRowPrinted) //prevent doubling in new page
-	    {
-		m_lastRowPrinted = m_paintInterface->currentQueryRow();
-		return true;
-	    }
-
-	    break;
-	case Report::PaintInterface::pmNewPage:
-	    if (m_reprintOnNewPage && !m_forceNewPage)
 	    {
 		m_lastRowPrinted = m_paintInterface->currentQueryRow();
 		return true;
