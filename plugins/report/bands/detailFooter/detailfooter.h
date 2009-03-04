@@ -36,7 +36,7 @@ class DetailFooter : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-//	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+	//Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
 	Q_PROPERTY(QString query READ query WRITE setQuery);
 
 public:
