@@ -87,6 +87,16 @@ bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode
     return false;
 }
 
+QString DetailHeader::condition()
+{
+    return m_condition;
+}
+
+void DetailHeader::setCondition(const QString & condition)
+{
+    m_condition = condition;
+}
+
 bool DetailHeader::reprintOnNewPage()
 {
 	return m_reprintOnNewPage;

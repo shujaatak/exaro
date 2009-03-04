@@ -523,21 +523,28 @@ QString ItemInterface::expressionDelimeters()
 
 QString ItemInterface::processString(QString str)
 {
-    while (str.contains(expBegin))
+    while (str.contains(expBegin))				//lookup for insertion in text
     {
 	QString firstPart = str.section(expBegin,0,0);
 	QString secondPart = str.section(expBegin,1);
-	QString script = secondPart.section(expEnd,0,0);
+	QString insertion = secondPart.section(expEnd,0,0);
 	QString fourPart = secondPart.section(expEnd,1);
 
-	qDebug("first = %s", qPrintable(firstPart));
-	qDebug("script = %s", qPrintable(script));
-	qDebug("second = %s", qPrintable(fourPart));
+	QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
 
-	script = scriptEngine()->evaluate(script).toString();
+	int pos = reField.indexIn(insertion);
+	if (pos > -1)
+	{
+	    qDebug("regExp = %s", qPrintable(reField.cap(0)));
+	    QString query = reField.cap(0).section(".",0,0);
+	    QString field = reField.cap(0).section(".",1,1).remove("\"");
+	    qDebug("queryField(%s,%s)",qPrintable(query), qPrintable(field));
+	    insertion.replace(reField, queryField(query,field).toString());
+	}
 
-	str = firstPart + script + fourPart;
-	qDebug("--resilt = %s", qPrintable(str));
+	if (scriptEngine()->canEvaluate(insertion))
+	    insertion = scriptEngine()->evaluate(insertion).toString();
+	str = firstPart + insertion + fourPart;
     }
     return str;
 }

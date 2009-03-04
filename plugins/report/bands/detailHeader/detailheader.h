@@ -36,7 +36,7 @@ class DetailHeader : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-//	Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+	Q_PROPERTY(QString condition READ condition WRITE setCondition)
 	Q_PROPERTY(bool reprintOnNewPage READ reprintOnNewPage WRITE setReprintOnNewPage)
 	Q_PROPERTY(bool resetDetailNumber READ resetDetailNumber WRITE setResetDetailNumber)
 	Q_PROPERTY(bool forceNewPage READ forceNewPage WRITE setForceNewPage)
@@ -64,12 +64,15 @@ public:
 	void setForceNewPage(bool forceNewPage);
 	bool resetDetailNumber();
 	void setResetDetailNumber(bool resetDetailNumber);
+	QString condition();
+	void setCondition(const QString & condition);
 private:
 	bool m_reprintOnNewPage;
 	bool m_forceNewPage;
 	bool m_resetDetailNumber;
 	bool m_first;
 	int m_lastRowPrinted;		// to prevent doubling in new page
+	QString m_condition;		// grouping condition
 };
 
 #endif

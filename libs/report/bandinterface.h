@@ -260,7 +260,7 @@ protected slots:
 	//void bandDestroyed(/*int type,*/ int order);
 
 private:
-	QString m_groupField;
+//	QString m_groupField;
 //	BandType m_bandType;
 	int m_order;
 	int m_indentation;
