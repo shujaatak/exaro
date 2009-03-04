@@ -200,10 +200,19 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
 	setLayout(vlayout);
+
+	QSettings s;
+	restoreGeometry( s.value( "Preview/Geometry", saveGeometry() ).toByteArray() );
+	if (s.contains("Preview/AskBeforeExit"))
+	    askBeforeExit = s.value( "Preview/AskBeforeExit").toBool();
+	else
+	    askBeforeExit = true;
 }
 
 PreviewDialog::~PreviewDialog()
 {
+    	QSettings s;
+	s.setValue( "Preview/Geometry", saveGeometry() );
 	foreach(pageStruct pag, m_pages)
 		delete pag.page;
 	delete m_doc;
@@ -513,8 +522,13 @@ void PreviewDialog::accept()
 
 void PreviewDialog::reject()
 {
+    if (askBeforeExit)
+    {
 	if (QMessageBox::question(this, tr("Quit ?"), tr("Realy quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		QDialog::reject();
+    }
+    else
+	QDialog::reject();
 }
 
 }
