@@ -32,6 +32,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QtSql>
 
 #include "mainwindow.h"
 #include "designerpage.h"
@@ -901,4 +902,20 @@ void mainWindow::on_actionBandDown_triggered()
 {
    if (dynamic_cast<Report::BandInterface*>(m_lastSelectedObject))
 	dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->setOrder(dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->order() + 1);
+}
+
+void mainWindow::on_actionLastConnect_triggered()
+{
+    QSettings s;
+    QMap<QString, QVariant> connList = s.value("Designer/connections").toMap();
+
+    QMap <QString, QVariant> map = connList[ s.value("Designer/lastConnect").toString()].toMap();
+    QSqlDatabase db = QSqlDatabase::addDatabase(map.value("driver").toString());
+    db.setDatabaseName(map.value("databaseName").toString());
+    db.setHostName(map.value("host").toString());
+    db.setPort(map.value("port").toInt());
+    db.setUserName(map.value("user").toString());
+    db.setPassword(map.value("password").toString());
+    if (!db.open())
+	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
 }

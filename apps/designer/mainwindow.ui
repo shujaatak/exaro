@@ -132,7 +132,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionOpen_report"/>
    <addaction name="actionSave_report"/>
@@ -153,6 +153,7 @@
    <addaction name="actionEdit_script"/>
    <addaction name="actionExecute"/>
    <addaction name="actionSetup_a_database"/>
+   <addaction name="actionLastConnect"/>
   </widget>
   <widget class="QToolBar" name="toolBarTools">
    <property name="windowTitle">
@@ -188,7 +189,7 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionBandUp"/>
    <addaction name="actionBandDown"/>
@@ -556,6 +557,18 @@
    </property>
    <property name="toolTip">
     <string>Move band down on page if posible</string>
+   </property>
+  </action>
+  <action name="actionLastConnect">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/data_connection.png</normaloff>:/images/data_connection.png</iconset>
+   </property>
+   <property name="text">
+    <string>lastConnect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect last predefined database</string>
    </property>
   </action>
  </widget>
