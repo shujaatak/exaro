@@ -34,6 +34,8 @@ SqlDatabaseDialog::SqlDatabaseDialog(QWidget* parent, Qt::WFlags fl)
 	QSettings s;
 	connList = s.value("Designer/connections").toMap();
 	cbConnections->insertItems(-1, connList.keys());
+	cbConnections->insertItem(-1,"");
+	cbConnections->setCurrentIndex(0);
 }
 
 SqlDatabaseDialog::~SqlDatabaseDialog()

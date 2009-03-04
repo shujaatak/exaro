@@ -44,6 +44,7 @@ using namespace Report;
 ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QObject(parentObject), QGraphicsItem(parent)
 		, m_resizeHandle(2/UNIT) //2mm
 		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1),m_stretch(0)
+		, m_paintInterface(0)
 {
 	m_resizeEvent = Fixed;
 	m_resizeFlags = ResizeTop | ResizeBottom | ResizeLeft | ResizeRight;
@@ -54,6 +55,8 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
 	QSettings s;
 	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
+	expBegin = "[";
+	expEnd = "]";
 }
 
 ItemInterface::~ItemInterface()
@@ -505,6 +508,38 @@ bool ItemInterface::postPaint()
 QString ItemInterface::lastError()
 {
     return m_lastError;
+}
+
+QString ItemInterface::setExpressionDelimeters(QString str)
+{
+    expBegin = str.section(",",0,0);
+    expEnd = str.section(",",1,1);
+}
+
+QString ItemInterface::expressionDelimeters()
+{
+    return QString("%1,%2").arg(expBegin).arg(expEnd);
+}
+
+QString ItemInterface::processString(QString str)
+{
+    while (str.contains(expBegin))
+    {
+	QString firstPart = str.section(expBegin,0,0);
+	QString secondPart = str.section(expBegin,1);
+	QString script = secondPart.section(expEnd,0,0);
+	QString fourPart = secondPart.section(expEnd,1);
+
+	qDebug("first = %s", qPrintable(firstPart));
+	qDebug("script = %s", qPrintable(script));
+	qDebug("second = %s", qPrintable(fourPart));
+
+	script = scriptEngine()->evaluate(script).toString();
+
+	str = firstPart + script + fourPart;
+	qDebug("--resilt = %s", qPrintable(str));
+    }
+    return str;
 }
 /*
 QStringList ItemInterface::dependsOn()

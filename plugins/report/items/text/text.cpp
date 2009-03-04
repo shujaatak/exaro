@@ -91,6 +91,7 @@ void Text::prepare(QPainter * painter)
 	QRectF rect = boundingRect();
 	adjustRect(rect);
 	QFontMetricsF fm(painter->font());
+	m_printText = processString(m_text);
 	if (m_sizePolicy==AutoSize)
 	{
 		qreal wd=fm.width(m_text);
@@ -120,7 +121,11 @@ void Text::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
 	painter->save();
 	painter->setRenderHint(QPainter::TextAntialiasing);
-	painter->drawText(rect, textFlags(), m_text);
+	if (option->type == QStyleOption::SO_GraphicsItem)
+	    painter->drawText(rect, textFlags(), m_text);
+	else
+	    if (scriptEngine())
+		painter->drawText(rect, textFlags(), processString(m_text));
 	painter->restore();
 	if (option->type != QStyleOption::SO_GraphicsItem)
 		emit afterPrint(this);
