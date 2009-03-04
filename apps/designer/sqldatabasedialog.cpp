@@ -44,16 +44,18 @@ SqlDatabaseDialog::~SqlDatabaseDialog()
 
 void SqlDatabaseDialog::accept()
 {
-	QSqlDatabase db = QSqlDatabase::addDatabase(drivers->currentText());
-	db.setDatabaseName(database->text());
-	db.setHostName(host->text());
-	db.setPort(port->text().toInt());
-	db.setUserName(user->text());
-	db.setPassword(password->text());
-	if (!db.open())
-		QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
-	else
-		QDialog::accept();
+    QSettings s;
+    s.setValue("Designer/lastConnect", cbConnections->currentText());
+    QSqlDatabase db = QSqlDatabase::addDatabase(drivers->currentText());
+    db.setDatabaseName(database->text());
+    db.setHostName(host->text());
+    db.setPort(port->text().toInt());
+    db.setUserName(user->text());
+    db.setPassword(password->text());
+    if (!db.open())
+	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
+    else
+	QDialog::accept();
 }
 
 void SqlDatabaseDialog::on_openButton_clicked()
