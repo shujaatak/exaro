@@ -311,6 +311,10 @@ public:
 
 //	virtual QStringList dependsOn();
 
+	QString setExpressionDelimeters(QString str);	    // expression delimeter for exec scripts in text
+	QString expressionDelimeters();
+	QString processString(QString str);
+
 protected:
 	/**
 	 * This event handler, for event event, can be reimplemented to receive mouse press events for this item. Mouse press events are only delivered to items that accept the mouse button that is pressed. By default, an item accepts all mouse buttons, but you can change this by calling setAcceptedMouseButtons().
@@ -395,6 +399,7 @@ private:
 	QRectF oldGeometry;
 	bool m_drawSelectionBorder;
 	bool m_enabled;
+	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
 };
 }
 

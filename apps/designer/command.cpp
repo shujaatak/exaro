@@ -309,12 +309,17 @@ void MoveCommand::undo()
 
 DelCommand::DelCommand( Report::ItemInterface* item, mainWindow* mw )
 {
+	qDebug("DelCommand::DelCommand");
+	Q_ASSERT(item);
+	Q_ASSERT(mw);
+
 	m_mainWindow = mw;
 	m_parentName = dynamic_cast<Report::ItemInterface*>( item->parent() ) ? dynamic_cast<Report::ItemInterface*>( item->parent() )->objectName() : QString();
 	m_itemName = item->objectName();
 //    m_page = dynamic_cast<Report::PageInterface*>((item)->scene());
 	m_pageName = mw->m_tw->tabText( mw->m_tw->currentIndex() );
-	m_bandOrder = dynamic_cast<Report::BandInterface*>(item)->order();
+	if (dynamic_cast<Report::BandInterface*>(item))
+	    m_bandOrder = dynamic_cast<Report::BandInterface*>(item)->order();
 
 //	QDomDocument doc;
 //	doc.appendChild( mw->m_reportEngine.objectProperties(( QObject * )item, &doc ) );
@@ -328,6 +333,7 @@ DelCommand::DelCommand( Report::ItemInterface* item, mainWindow* mw )
 
 void DelCommand::redo()
 {
+	qDebug("DelCommand::redo()");
 	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
 	Q_ASSERT( m_page );
 

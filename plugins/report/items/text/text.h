@@ -98,7 +98,7 @@ public:
 
 private:
 	TextFlags m_textFlags;
-	QString m_text;
+	QString m_text, m_printText;
 	SizePolicy m_sizePolicy;
 };
 
