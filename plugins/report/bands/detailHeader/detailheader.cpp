@@ -57,6 +57,7 @@ DetailHeader::~DetailHeader()
 bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 {
     ItemInterface::prepare(painter);
+    bool ok = false;
     switch (pMode)
     {
 	case Report::PaintInterface::pmNewPage:
@@ -67,16 +68,21 @@ bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode
 	    }
 	    break;
 	case Report::PaintInterface::pmNormal:
-
-	    if (m_resetDetailNumber)
-		m_paintInterface->setDetailNumber(1);
-
-	    if (m_forceNewPage && m_paintInterface->currentQueryRow() !=1)
-		m_paintInterface->newPage();
-
+	qDebug("currentQueryRow()=%i         m_lastRowPrinted =%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
+	qDebug("m_groupValue =%s   processString(m_condition)=%s", qPrintable(m_groupValue), qPrintable(processString(m_condition)));
 	    if (m_paintInterface->currentQueryRow() != m_lastRowPrinted) //prevent doubling in new page
+		if (m_condition.isEmpty() || (!m_condition.isEmpty() && m_groupValue != processString(m_condition)))
+			ok = true;
+	    if (ok)
 	    {
 		m_lastRowPrinted = m_paintInterface->currentQueryRow();
+
+		if (m_resetDetailNumber)
+		    m_paintInterface->setDetailNumber(1);
+		if (m_forceNewPage && m_paintInterface->currentQueryRow() !=1)
+		    m_paintInterface->newPage();
+		if (!m_condition.isEmpty())
+		    m_groupValue = processString(m_condition);
 		return true;
 	    }
 	    break;

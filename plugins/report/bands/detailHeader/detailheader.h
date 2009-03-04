@@ -73,6 +73,7 @@ private:
 	bool m_first;
 	int m_lastRowPrinted;		// to prevent doubling in new page
 	QString m_condition;		// grouping condition
+	QString m_groupValue;
 };
 
 #endif
