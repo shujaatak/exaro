@@ -37,6 +37,7 @@ class Detail : public Report::BandInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
 	Q_PROPERTY(QString query READ query WRITE setQuery);
+	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
 
 public:
 	Detail(QGraphicsItem* parent = 0, QObject* parentObject = 0);
@@ -55,6 +56,12 @@ public:
 	QString toolBoxGroup();
 
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
+
+	bool isZebra();			    //light and dark rows
+	void setZebra(bool b);
+private:
+	bool m_isZebra;
+	bool odd;	//counter for zebra
 
 };
 

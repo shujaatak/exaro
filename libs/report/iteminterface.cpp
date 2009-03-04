@@ -541,9 +541,10 @@ QString ItemInterface::processString(QString str)
 	    qDebug("queryField(%s,%s)",qPrintable(query), qPrintable(field));
 	    insertion.replace(reField, queryField(query,field).toString());
 	}
+	else
+	    if (scriptEngine()->canEvaluate(insertion))
+		insertion = scriptEngine()->evaluate(insertion).toString();
 
-	if (scriptEngine()->canEvaluate(insertion))
-	    insertion = scriptEngine()->evaluate(insertion).toString();
 	str = firstPart + insertion + fourPart;
     }
     return str;

@@ -44,6 +44,8 @@ Detail::Detail(QGraphicsItem* parent, QObject* parentObject): BandInterface(pare
 	initMyResource();
 	//setBandType(Report::BandInterface::Detail);
 	setResizeFlags(FixedPos | ResizeBottom);
+	m_isZebra = true;
+	odd = false;
 }
 
 Detail::~Detail()
@@ -64,6 +66,17 @@ bool Detail::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode
     return true;
 }
 
+bool Detail::isZebra()
+{
+    return m_isZebra;
+}
+
+void Detail::setZebra(bool b)
+{
+    m_isZebra = b;
+}
+
+
 bool Detail::canContain(QObject * object)
 {
 	return (!dynamic_cast<Report::BandInterface*>(object) && dynamic_cast<Report::ItemInterface*>(object));
@@ -82,7 +95,12 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	setupPainter(painter);
+
 	painter->fillRect(rect,painter->brush());
+
+	if (option->type != QStyleOption::SO_GraphicsItem && m_isZebra && odd)
+	    painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
+	odd = !odd;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
