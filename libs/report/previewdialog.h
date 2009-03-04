@@ -100,6 +100,7 @@ private:
 	QList <pageStruct> m_pages;
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
+	bool askBeforeExit;
 };
 
 }
