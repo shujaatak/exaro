@@ -83,7 +83,8 @@ bool SqlQuery::next()
 {
 	emit(beforeNext());
 	bool ret=QSqlQuery::next();
-	emit(afterNext());
+	if (ret)
+		emit(afterNext());
 	return ret;
 }
 
