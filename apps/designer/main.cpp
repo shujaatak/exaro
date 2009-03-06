@@ -46,7 +46,6 @@ int main(int argc, char **argv)
 			app.installTranslator(&translator);
 		}
 /*
-
 	QPixmap pixmap(":/images/exaro_splash.png");
 	QSplashScreen splash(pixmap);
 	splash.show();

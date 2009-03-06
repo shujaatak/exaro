@@ -12,6 +12,7 @@ add_subdirectory(htmlscript)
 add_subdirectory(line)
 add_subdirectory(pie)
 add_subdirectory(script)
+add_subdirectory(formula)
 
 if (EXARO_LICENSE STREQUAL "GPL")
     find_package(Zint)
