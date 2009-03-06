@@ -84,9 +84,9 @@ private:
 	QSignalMapper * m_smTemplate;
 	NameValidator * m_nameValidator;
 	QSignalMapper * m_smReport;
-	QUndoStack *undoStack;
-	QUndoView *undoView;
-
+	QUndoStack *m_undoStack;
+	QUndoView *m_undoView;
+	int m_lastUndoIndex;
 public slots:
 	void selectLastObject();
 

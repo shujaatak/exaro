@@ -47,6 +47,7 @@ public:
 public slots:
 	void setObject(QObject * object);
 	void propertyChanged(QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value);
+
 private slots:
 	void setFontFamily(const QFont & font);
 	void setFontStyle(const QString & style);

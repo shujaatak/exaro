@@ -48,6 +48,10 @@
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
 
+#ifndef EXARO_VERSION
+	#define EXARO_VERSION "0.0.0"
+#endif
+
 mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 		: QMainWindow( parent, fl ), m_report( 0 )
 {
@@ -101,13 +105,15 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dwObjectInspector->setAllowedAreas( Qt::AllDockWidgetAreas );
 	addDockWidget( Qt::BottomDockWidgetArea, m_dwObjectInspector );
 
-	undoStack = new QUndoStack( this );
-	undoView = new QUndoView( undoStack );
-	undoView->setWindowTitle( tr( "Command List" ) );
+	m_undoStack = new QUndoStack( this );
+	m_undoView = new QUndoView( m_undoStack );
+	m_undoView->setWindowTitle( tr( "Command List" ) );
+
+	m_lastUndoIndex=m_undoStack->index();
 
 	m_dwUndoView = new QDockWidget( tr( "Command List" ), this );
 	m_dwUndoView->setObjectName( "Command List" );
-	m_dwUndoView->setWidget( undoView );
+	m_dwUndoView->setWidget( m_undoView );
 	m_dwUndoView->setAllowedAreas( Qt::AllDockWidgetAreas );
 	addDockWidget( Qt::BottomDockWidgetArea, m_dwUndoView );
 
@@ -171,8 +177,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( action_About_eXaro, SIGNAL( triggered( bool ) ), SLOT( about() ) );
 	connect( actionOptions, SIGNAL( triggered( bool ) ), SLOT( options() ) );
 
-	connect( actionUndo, SIGNAL( triggered( bool ) ), undoStack, SLOT( undo() ) );
-	connect( actionRedo, SIGNAL( triggered( bool ) ), undoStack, SLOT( redo() ) );
+	connect( actionUndo, SIGNAL( triggered( bool ) ), m_undoStack, SLOT( undo() ) );
+	connect( actionRedo, SIGNAL( triggered( bool ) ), m_undoStack, SLOT( redo() ) );
 
 	connect( m_tw, SIGNAL( currentChanged( int ) ), SLOT( currentChanged( int ) ) );
 
@@ -264,10 +270,10 @@ void mainWindow::setupActions()
 	actionRedo->setShortcuts( QKeySequence::Redo );
 	actionZoom_in->setShortcuts( QKeySequence::ZoomIn );
 	actionZoom_out->setShortcuts( QKeySequence::ZoomOut );
-	connect( undoStack, SIGNAL( canUndoChanged( bool ) ), actionUndo, SLOT( setEnabled( bool ) ) );
-	connect( undoStack, SIGNAL( canRedoChanged( bool ) ), actionRedo, SLOT( setEnabled( bool ) ) );
-	actionUndo->setEnabled( undoStack->canUndo() );
-	actionRedo->setEnabled( undoStack->canRedo() );
+	connect( m_undoStack, SIGNAL( canUndoChanged( bool ) ), actionUndo, SLOT( setEnabled( bool ) ) );
+	connect( m_undoStack, SIGNAL( canRedoChanged( bool ) ), actionRedo, SLOT( setEnabled( bool ) ) );
+	actionUndo->setEnabled( m_undoStack->canUndo() );
+	actionRedo->setEnabled( m_undoStack->canRedo() );
 }
 
 void mainWindow::saveItem()
@@ -306,9 +312,9 @@ void mainWindow::openItem()
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
 		if ( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
-			undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject )->scene() ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
+			m_undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject )->scene() ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
 		else
-			undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( m_lastSelectedObject ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
+			m_undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( m_lastSelectedObject ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
 	}
 }
 
@@ -346,7 +352,7 @@ bool mainWindow::selectObject( QObject * object, QModelIndex index )
 
 bool mainWindow::askToSaveReport()
 {
-	if ( undoStack->index() )
+	if ( m_undoStack->index() != m_lastUndoIndex )
 		switch ( QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
 		{
 			case QMessageBox::Yes:
@@ -437,7 +443,7 @@ void mainWindow::del()
 	if ( !( item = dynamic_cast<QGraphicsItem*>( m_lastSelectedObject ) ) || !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
 		return;
 	QUndoCommand *delCommand = new DelCommand( dynamic_cast<Report::ItemInterface*>( item ), this );
-	undoStack->push( delCommand );
+	m_undoStack->push( delCommand );
 }
 
 void mainWindow::cut()
@@ -495,7 +501,8 @@ void mainWindow::newReport()
 	m_dui->setUis( m_report->uis() );
 	m_objectModel.setRootObject( m_report );
 	m_nameValidator->setRootObject( m_report );
-	undoStack->clear();
+	m_undoStack->clear();
+	m_lastUndoIndex=m_undoStack->index();
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 }
 
@@ -535,6 +542,7 @@ void mainWindow::openReport( const QString & report )
 	QFile file( report );
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
+		m_pe->setObject( 0 );
 		while ( m_tw->count() )
 		{
 			m_tw->setCurrentIndex( 0 );
@@ -579,7 +587,8 @@ void mainWindow::openReport( const QString & report )
 	m_nameValidator->setRootObject( m_report );
 	m_objectModel.setRootObject( m_report );
 	zoomWYSIWYG();
-	undoStack->clear();
+	m_undoStack->clear();
+	m_lastUndoIndex=m_undoStack->index();
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
 }
 
@@ -753,7 +762,7 @@ void mainWindow::newPage()
 	if ( !m_reportEngine.pages().count() )
 		return;
 	QUndoCommand *newPageCommand = new NewPageCommand( this );
-	undoStack->push( newPageCommand );
+	m_undoStack->push( newPageCommand );
 }
 
 void mainWindow::selectLastObject()
@@ -775,7 +784,7 @@ void mainWindow::itemSelected( QObject *object, QPointF pos )
 		                : dynamic_cast<Report::PageInterface*>( dynamic_cast<Report::ItemInterface*>( object )->scene() );
 
 		QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
-		undoStack->push( addCommand );
+		m_undoStack->push( addCommand );
 		lw->setCurrentRow( -1 );
 	}
 	else
@@ -788,7 +797,7 @@ void mainWindow::itemSelected( QObject *object, QPointF pos )
 void mainWindow::removePage()
 {
 	QUndoCommand *removePageCommand = new RemovePageCommand( this, m_tw->currentIndex() );
-	undoStack->push( removePageCommand );
+	m_undoStack->push( removePageCommand );
 }
 
 void mainWindow::currentChanged( int index )
@@ -804,19 +813,19 @@ void mainWindow::currentChanged( int index )
 void mainWindow::itemMoved( QObject *movedItem, QPointF movedFromPosition )
 {
 	QUndoCommand *moveCommand = new MoveCommand( dynamic_cast<Report::ItemInterface*>( movedItem ), movedFromPosition, this );
-	undoStack->push( moveCommand );
+	m_undoStack->push( moveCommand );
 }
 
 void mainWindow::propertyChanged( QObject * obj, const QString & propertyName, const QVariant & old_value, const QVariant & new_value )
 {
 	QUndoCommand *propertyChangeCommand = new PropertyChangeCommand( obj, propertyName, old_value, new_value, this );
-	undoStack->push( propertyChangeCommand );
+	m_undoStack->push( propertyChangeCommand );
 }
 
 void mainWindow::itemGeometryChanged( QObject* object, QRectF newGeometry, QRectF oldGeometry )
 {
 	QUndoCommand *geometryChangeCommand = new GeometryChangeCommand( object, newGeometry, oldGeometry, this );
-	undoStack->push( geometryChangeCommand );
+	m_undoStack->push( geometryChangeCommand );
 }
 
 
