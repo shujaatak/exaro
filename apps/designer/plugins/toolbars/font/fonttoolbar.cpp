@@ -112,6 +112,8 @@ void FontToolbar::setObject(QObject* object)
 {
 	m_object=object;
 	setEnabled(false);
+	if (!m_object)
+		return;
 	QVariant font=m_object->property("font");
 	if (font.isValid())
 	{
