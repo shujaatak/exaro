@@ -488,7 +488,7 @@ QVariant ItemInterface::queryField(const QString & query, const QString & field)
 		return tr("Query '%1' not found").arg(query);
 
 	if (!qry->record().field(field).isValid())
-		return tr("Field '%1' not found").arg(query);
+		return tr("Field '%1' not found").arg(field);
 
 	return qry->value(field);
 }
