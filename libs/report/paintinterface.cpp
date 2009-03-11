@@ -9,24 +9,57 @@
 using namespace Report;
 
 PaintInterface::PaintInterface(ReportInterface * report, QObject * parent)
-	:QObject(parent)
+	:QThread(parent)
 {
-    /*
-    m_page = ;
-    m_scriptEngine = scriptEngine;
-    m_painter = painter;
-*/
     m_report = report;
-    LayoutManager::splitOnLayoutTypesSorted(report->m_currentPage, &listTop, &listBottom, &listFree);
-
 }
 
 
 void PaintInterface::run()
 {
+
+    m_report->m_doc.appendChild(m_report->m_doc.createComment("Author '" + m_report->author() + "'"));
+
+    m_report->pdf_file = new QTemporaryFile(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf", this);
+    if (!m_report->pdf_file->open())
+	throw QString(tr("Can't create temporary files"));
+
+
+    m_printer = new PaintDevice(m_report->pdf_file);
+    m_report->m_exportNode = m_report->m_doc.createElement("export");
+    m_painter.begin(m_printer);
+    m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    bool first=true;
+    foreach(QObject * obj, m_report->children())
+    {
+	if (!first)
+	    m_printer->newPage();
+	if (dynamic_cast<PageInterface*>(obj))
+	{
+	    m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
+	    m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
+
+	    m_currentPage = dynamic_cast<PageInterface*>(obj);
+	    processPage();
+	}
+    }
+    m_painter.end();
+    delete m_printer;
+    m_printer = 0;
+
+}
+
+void PaintInterface::processPage()
+{
+    listTop.clear();
+    listBottom.clear();
+    listFree.clear();
+
+    LayoutManager::splitOnLayoutTypesSorted(m_currentPage, &listTop, &listBottom, &listFree);
+
     initBands();
 
-    freeSpace = m_report->m_currentPage->geometry();
+    freeSpace = m_currentPage->geometry();
     this->m_currentPageNumber = 1;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, 1), QScriptValue::ReadOnly);
 
@@ -38,8 +71,8 @@ void PaintInterface::run()
 	if (band->accommodationType() == band->AccomodationOnce && !bandDone.contains(band))
 	    if (band->query().isEmpty())
 		processBand(band, pmNormal);
-	    else
-		processQuery(band->query(), band);
+    else
+	processQuery(band->query(), band);
 
 }
 
@@ -51,6 +84,7 @@ void PaintInterface::finish(QString error)
 
 void PaintInterface::initBands()
 {
+    qDebug("PaintInterface::initBands()");
 
     foreach(BandInterface * band, listTop)
 	if (!band->printingPrepare(this))
@@ -71,31 +105,41 @@ void PaintInterface::showError(QString err)
 
 void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 {
-
+    qDebug("PaintInterface::processBand");
 	if (!band /*|| m_reportCanceled*/)
 		return;
 	if (!band->isEnabled())
 	    return;
 
-	if (!canPaint(band) /*|| (m_currentPageNumber>1 && band->forceNewPage())*/)
+	if (!canPaint(band) )
 	    newPage();
 
-	QPainter * m_painter = &m_report->m_painter;
-	PageInterface * m_currentPage = m_report->m_currentPage;
-	m_painter->save();
-	if (!band->prepare(m_painter, pMode))
+	//QPainter * m_painter = &m_report->m_painter;
+//	PageInterface * m_currentPage = m_report->m_currentPage;
+	m_painter.save();
+
+	foreach(QObject * obj, ((QObject*)band)->children())		//preProcess all child items
 	{
-	    m_painter->restore();
+	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
+	    if (item)
+		if (!item->prepare(&m_painter, pMode))
+		    finish(item->lastError());
+	}
+
+	if (!band->prepare(&m_painter, pMode))				//preProcess band
+	{
+	    m_painter.restore();
 	    return;
 	}
+
 	if (band->layoutType() == BandInterface::LayoutBottom)
-		m_painter->translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
+		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
 	else
 	    if (band->layoutType() == BandInterface::LayoutTop)
-		m_painter->translate(/*freeSpace.x() +*/ band->x(), freeSpace.top());
+		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.top());
 	    else
 		if (band->layoutType() == BandInterface::LayoutFree)
-		    m_painter->translate(band->geometry().x(), band->geometry().y());
+		    m_painter.translate(band->geometry().x(), band->geometry().y());
 
 //	m_report->m_currentHeight = 0;
 //	m_currentSize = QSize(0,0);
@@ -111,21 +155,22 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	else
 		freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
 //	band->unstretch();
-	m_painter->restore();
+	m_painter.restore();
 }
 
 
 
 void PaintInterface::newPage()
 {
-      postprocessCurrentPage();
-      m_currentPageNumber++;
-      m_report->m_splashScreen.showMessage(tr("Prepare page: %1").arg(m_currentPageNumber));
-      m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, m_currentPageNumber), QScriptValue::ReadOnly);
-      m_report->m_scriptEngine->globalObject().setProperty("_rpage_", QScriptValue(m_report->m_scriptEngine, m_report->m_scriptEngine->globalObject().property("_rpage_").toInteger() + 1), QScriptValue::ReadOnly);
-      m_report->m_printer->newPage();
-      freeSpace = m_report->m_currentPage->geometry();
-      prepareCurrentPage();
+    postprocessCurrentPage();
+    m_currentPageNumber++;
+//    m_report->m_splashScreen.showMessage(tr("Prepare page: %1").arg(m_currentPageNumber));
+    m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, m_currentPageNumber), QScriptValue::ReadOnly);
+    m_report->m_scriptEngine->globalObject().setProperty("_rpage_", QScriptValue(m_report->m_scriptEngine, m_report->m_scriptEngine->globalObject().property("_rpage_").toInteger() + 1), QScriptValue::ReadOnly);
+    m_printer->newPage();
+    freeSpace = m_currentPage->geometry();
+    prepareCurrentPage();
+    emit showProcess(tr("Prepare page: %1").arg(m_currentPageNumber));
 }
 
 
@@ -137,8 +182,8 @@ bool PaintInterface::canPaint(BandInterface * band)
 
 void PaintInterface::prepareCurrentPage()
 {
-    m_report->m_currentTop = m_report->m_currentPage->geometry().y();
-    m_report->m_currentBottom = m_report->m_currentPage->geometry().bottom();
+    m_report->m_currentTop = m_currentPage->geometry().y();
+    m_report->m_currentBottom = m_currentPage->geometry().bottom();
 
     foreach(BandInterface * band, listTop)
 	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
@@ -175,11 +220,11 @@ void PaintInterface::paintObjects(ItemInterface * item, QPointF translate, const
 	QStyleOptionGraphicsItem option;
 	option.type = 31;
 	option.exposedRect = dynamic_cast<BandInterface *>(item) ? QRectF(0, 0, dynamic_cast<BandInterface *>(item)->geometry().width(), dynamic_cast<BandInterface *>(item)->geometry().height()) : item->geometry();
-	m_report->m_painter.save();
+	m_painter.save();
 	option.exposedRect.translate(translate);
-	m_report->m_painter.setClipRect(clipRect);
-	item->paint(&m_report->m_painter, &option);
-	m_report->m_painter.restore();
+	m_painter.setClipRect(clipRect);
+	item->paint(&m_painter, &option);
+	m_painter.restore();
 	translate += option.exposedRect.topLeft();
 	foreach(QObject * obj, ((QObject*)item)->children())
 		paintObjects(dynamic_cast<ItemInterface *>(obj), translate, option.exposedRect);
@@ -192,7 +237,7 @@ void PaintInterface::processQuery(QString queryName, BandInterface * band )
     if (!query)
     {
 	QString bandName = band ? band->objectName(): "Unknown";
-	finish(tr("Query named \'%1\'not found for band \'%2\'").arg(queryName).arg(bandName) );
+	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(queryName).arg(bandName) );
     }
 
     //already exec()'d ?
@@ -260,6 +305,20 @@ void PaintInterface::setDetailNumber(int num)
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 }
 
+/*
+void PaintInterface::exportRecord(const QSqlRecord & record, QDomElement & el)
+{
+	QDomElement rowElement = m_doc.createElement("row");
+	for (int i = 0;i < record.count();i++)
+	{
+		QDomElement field = m_doc.createElement("field");
+		field.setAttribute("type", typeIsNumber(record.field(i).value().type()) ? QString("float") : QString("string"));
+		field.appendChild(m_doc.createTextNode(record.field(i).value().toString()));
+		rowElement.appendChild(field);
+	}
+	el.appendChild(rowElement);
+}
+*/
 
 /*
 	foreach(BandInterface * detailContainerBand, m_detailContainerBands)

@@ -299,17 +299,6 @@ void BandInterface::setGeometry(QRectF rect)
 	//Report::LayoutManager::itemGeometryChanged(this);
 }
 
-/*
-BandInterface::BandType BandInterface::bandType()
-{
-	return m_bandType;
-}
-
-void BandInterface::setBandType(BandType bandType)
-{
-	m_bandType = bandType;
-}
-*/
 
 BandInterface::LayoutType BandInterface::layoutType()
 {
@@ -336,56 +325,6 @@ void BandInterface::setQuery(const QString & query)
 	m_query = query;
 }
 
-/*
-bool BandInterface::reprintOnNewPage()
-{
-	return m_reprintOnNewPage;
-}
-
-void BandInterface::setReprintOnNewPage(bool reprintOnNewPage)
-{
-	m_reprintOnNewPage = reprintOnNewPage;
-}
-
-bool BandInterface::resetDetailNumber()
-{
-	return m_resetDetailNumber;
-}
-void BandInterface::setResetDetailNumber(bool resetDetailNumber)
-{
-	m_resetDetailNumber=resetDetailNumber;
-}
-
-QString BandInterface::groupField()
-{
-	return m_groupField;
-}
-
-void BandInterface::setGroupField(const QString & groupField)
-{
-	m_groupField = groupField;
-}
-
-
-QVariant BandInterface::groupFieldValue()
-{
-	return m_groupFieldValue;
-}
-
-void BandInterface::setGroupFieldValue(const QVariant & groupFieldValue)
-{
-	m_groupFieldValue = groupFieldValue;
-}
-
-bool BandInterface::forceNewPage()
-{
-	return m_forceNewPage;
-}
-void BandInterface::setForceNewPage(bool forceNewPage)
-{
-	m_forceNewPage=forceNewPage;
-}
-*/
 /*
 void BandInterface::bandDestroyed(int type, int order)
 {

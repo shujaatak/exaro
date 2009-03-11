@@ -35,11 +35,13 @@
 #include <QMenu>
 
 #include "globals.h"
-#include "iteminterface.h"
+//#include "iteminterface.h"
 
 /** \namespace Report */
 namespace Report
 {
+
+class ItemInterface;
 
 /** \class PageInterface
 * \brief Interface for pages

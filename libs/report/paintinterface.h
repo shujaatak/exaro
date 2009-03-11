@@ -7,13 +7,17 @@
 #include "sqlquery.h"
 #include "layoutmanager.h"
 
+#include "pageinterface.h"
+#include "paintdevice.h"
+
+
 namespace Report
 {
 
 class PageInterface;
 class ReportInterface;
 
-class PaintInterface : public QObject
+class PaintInterface : public QThread
 {
     Q_OBJECT
 public:
@@ -34,6 +38,8 @@ public:
 
 public slots:
     void showError(QString err);
+signals:
+    void showProcess(QString str);
 
 private:
     void run();
@@ -43,6 +49,8 @@ private:
     void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
     void processQuery(QString queryName, BandInterface * band = 0);
     bool canPaint(BandInterface * band);
+    void processPage();
+//    void exportRecord(const QSqlRecord & record, QDomElement & el);
 
 private:
     BandList  listTop;
@@ -58,6 +66,12 @@ private:
     int m_currentQueryRow;	    // can't be changed - use for positioning in query
     int m_currentLineNumber;	    //can be changed by Bands or in user script
     BandInterface * currentBand;
+    PageInterface * m_currentPage;
+
+    PaintDevice * m_printer;
+
+    QPainter m_painter;
+
     //QSize m_currentSize;
     /*
     PageInterface * m_page;
