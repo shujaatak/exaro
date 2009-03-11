@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru">
 <context>
     <name>Arc</name>
     <message>
@@ -42,7 +43,6 @@
 <context>
     <name>ChangeColor</name>
     <message>
-        <location filename="../plugins/propertyEditor/color/changecolor.cpp" line="25"/>
         <source>Change color</source>
         <translation type="obsolete">Изменить цвет</translation>
     </message>
@@ -50,12 +50,10 @@
 <context>
     <name>ChangeFont</name>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/changefont.cpp" line="25"/>
         <source>Change font</source>
         <translation type="obsolete">Сменить шрифт</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/changefont.cpp" line="30"/>
         <source>Choose a font</source>
         <translation type="obsolete">Выбрать шрифт</translation>
     </message>
@@ -63,12 +61,13 @@
 <context>
     <name>ChartContainer</name>
     <message>
-        <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="85"/>
+        <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="73"/>
+        <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="86"/>
         <source>Chart container</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="90"/>
+        <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="91"/>
         <source>Charts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -112,12 +111,13 @@
 <context>
     <name>Detail</name>
     <message>
-        <location filename="../plugins/report/bands/detail/detail.cpp" line="105"/>
+        <location filename="../plugins/report/bands/detail/detail.cpp" line="108"/>
+        <location filename="../plugins/report/bands/detail/detail.cpp" line="137"/>
         <source>Detail</source>
         <translation>Данные</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/detail/detail.cpp" line="110"/>
+        <location filename="../plugins/report/bands/detail/detail.cpp" line="142"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -125,12 +125,13 @@
 <context>
     <name>DetailContainer</name>
     <message>
-        <location filename="../plugins/report/bands/detailContainer/detailcontainer.cpp" line="86"/>
+        <location filename="../plugins/report/bands/detailContainer_/detailcontainer.cpp" line="73"/>
+        <location filename="../plugins/report/bands/detailContainer_/detailcontainer.cpp" line="87"/>
         <source>DetailContainer</source>
         <translation>Данные - контейнер</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/detailContainer/detailcontainer.cpp" line="91"/>
+        <location filename="../plugins/report/bands/detailContainer_/detailcontainer.cpp" line="92"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -138,12 +139,13 @@
 <context>
     <name>DetailFooter</name>
     <message>
-        <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="105"/>
+        <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="96"/>
+        <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="124"/>
         <source>Detail footer</source>
         <translation>Данные - нижний колонтитул</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="110"/>
+        <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="129"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -151,12 +153,13 @@
 <context>
     <name>DetailHeader</name>
     <message>
-        <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="107"/>
+        <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="158"/>
+        <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="187"/>
         <source>Detail header</source>
         <translation>Данные - верхний колонтитул</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="112"/>
+        <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="192"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -164,87 +167,70 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flagsList.ui" line="13"/>
         <source>Flags</source>
         <translation type="obsolete">флаги</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flagsList.ui" line="30"/>
         <source>Check all</source>
         <translation type="obsolete">Отменить выбор всего</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flagsList.ui" line="37"/>
         <source>Uncheck all</source>
         <translation type="obsolete">Снять выбор всего</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/pixmap/pixmapDialog.ui" line="64"/>
         <source>Cancel</source>
         <translation type="obsolete">Отмена</translation>
     </message>
     <message>
-        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="13"/>
         <source>Dialog</source>
         <translation type="obsolete">Диалог</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/pixmap/pixmapDialog.ui" line="26"/>
         <source>Choose</source>
         <translation type="obsolete">Выбрать</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="141"/>
         <source>Clear</source>
         <translation type="obsolete">Очистить</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="67"/>
         <source>StringList</source>
         <translation type="obsolete">Список</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="95"/>
         <source>New String</source>
         <translation type="obsolete">Новая строка</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="98"/>
         <source>&amp;New</source>
         <translation type="obsolete">Новая</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="108"/>
         <source>Delete String</source>
         <translation type="obsolete">Удалить строку</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="111"/>
         <source>&amp;Delete</source>
         <translation type="obsolete">Удалить</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="158"/>
         <source>&amp;Value:</source>
         <translation type="obsolete">Значение:</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="196"/>
         <source>Move String Up</source>
         <translation type="obsolete">Двигать строку вверх</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="199"/>
         <source>Up</source>
         <translation type="obsolete">Вверх</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="206"/>
         <source>Move String Down</source>
         <translation type="obsolete">Двигать строку вниз</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="209"/>
         <source>Down</source>
         <translation type="obsolete">Вниз</translation>
     </message>
@@ -274,6 +260,7 @@
         <translation>Пробел</translation>
     </message>
     <message>
+        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="66"/>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="117"/>
         <source>Other</source>
         <translation>Другое</translation>
@@ -304,17 +291,14 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flagsList.ui" line="30"/>
         <source>C&amp;heck all</source>
         <translation type="obsolete">Выбрать все</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flagsList.ui" line="37"/>
         <source>&amp;Uncheck all</source>
         <translation type="obsolete">Снять выбор всего</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="55"/>
         <source>StringList editor</source>
         <translation type="obsolete">Редактор списка</translation>
     </message>
@@ -324,7 +308,6 @@
         <translation>Настройки CSV</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.ui" line="134"/>
         <source>File...</source>
         <translation type="obsolete">Файл...</translation>
     </message>
@@ -345,6 +328,7 @@
 <context>
     <name>ExaroApplication</name>
     <message>
+        <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unhandle exception</source>
         <translation type="unfinished"></translation>
@@ -358,35 +342,29 @@
 <context>
     <name>Field</name>
     <message>
-        <location filename="../plugins/report/items/field/field.cpp" line="42"/>
         <source>field</source>
-        <translation>поле</translation>
+        <translation type="obsolete">поле</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/field/field.cpp" line="42"/>
         <source>query</source>
-        <translation>запрос</translation>
+        <translation type="obsolete">запрос</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/field/field.cpp" line="147"/>
         <source>Field</source>
-        <translation>Поле</translation>
+        <translation type="obsolete">Поле</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/field/field.cpp" line="152"/>
         <source>Text</source>
-        <translation>Текст</translation>
+        <translation type="obsolete">Текст</translation>
     </message>
 </context>
 <context>
     <name>Flags</name>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flags.cpp" line="33"/>
         <source>Change flags</source>
         <translation type="obsolete">Изменить флаги</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/flags/flags.cpp" line="41"/>
         <source> flags</source>
         <translation type="obsolete">флаги</translation>
     </message>
@@ -399,6 +377,7 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="../plugins/report/export/html/html.cpp" line="55"/>
         <location filename="../plugins/report/export/html/html.cpp" line="109"/>
         <source>Export</source>
         <translation>Экспорт</translation>
@@ -435,12 +414,12 @@
 <context>
     <name>ItemInterface</name>
     <message>
-        <location filename="../libs/report/iteminterface.cpp" line="412"/>
+        <location filename="../libs/report/iteminterface.cpp" line="396"/>
         <source>Query &apos;%1&apos; not found</source>
         <translation>Запрос &apos;%1&apos; не найден</translation>
     </message>
     <message>
-        <location filename="../libs/report/iteminterface.cpp" line="415"/>
+        <location filename="../libs/report/iteminterface.cpp" line="399"/>
         <source>Field &apos;%1&apos; not found</source>
         <translation>Поле &apos;%1&apos; не найдено</translation>
     </message>
@@ -461,12 +440,10 @@
 <context>
     <name>Line</name>
     <message>
-        <location filename="../plugins/report/items/line/line.cpp" line="94"/>
         <source>Line</source>
         <translation type="obsolete">Линия</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/line/line.cpp" line="99"/>
         <source>Shapes</source>
         <translation type="obsolete">Фигуры</translation>
     </message>
@@ -485,6 +462,20 @@
     </message>
 </context>
 <context>
+    <name>Memo</name>
+    <message>
+        <location filename="../plugins/report/items/memo/memo.cpp" line="42"/>
+        <source>Memo item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plugins/report/items/memo/memo.cpp" line="141"/>
+        <location filename="../plugins/report/items/memo/memo.cpp" line="146"/>
+        <source>Memo</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Ods</name>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="53"/>
@@ -492,6 +483,7 @@
         <translation>Шаблон OASIS *.ods</translation>
     </message>
     <message>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="58"/>
         <location filename="../plugins/report/export/ods/ods.cpp" line="190"/>
         <source>Export</source>
         <translation>Экспорт</translation>
@@ -502,6 +494,16 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="126"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="132"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="138"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="144"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="150"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="156"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="162"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="168"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="174"/>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="180"/>
         <location filename="../plugins/report/export/ods/ods.cpp" line="186"/>
         <source>ODS Export</source>
         <translation>ODS Экспорт</translation>
@@ -570,75 +572,76 @@
 <context>
     <name>OptionsDialog</name>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="14"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="13"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="20"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="19"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="26"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="25"/>
         <source>designer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="36"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="35"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="59"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="45"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="65"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="53"/>
         <source>Icon size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="73"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="64"/>
         <source>12 x 12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="78"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="69"/>
         <source>16 x 16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="83"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="74"/>
         <source>24 x 24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="88"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="79"/>
         <source>32 x 32</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="93"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="84"/>
         <source>48 x 48</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="101"/>
-        <source>font Size:</source>
+        <location filename="../apps/designer/optionsdialog.ui" line="100"/>
+        <source>Draw selection border around items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Overlay</name>
     <message>
-        <location filename="../plugins/report/bands/overlay/overlay.cpp" line="108"/>
+        <location filename="../plugins/report/bands/overlay/overlay.cpp" line="81"/>
+        <location filename="../plugins/report/bands/overlay/overlay.cpp" line="109"/>
         <source>Overlay</source>
         <translation>Оверлей</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/overlay/overlay.cpp" line="113"/>
+        <location filename="../plugins/report/bands/overlay/overlay.cpp" line="114"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -646,12 +649,13 @@
 <context>
     <name>PageFooter</name>
     <message>
-        <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="106"/>
+        <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="79"/>
+        <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="107"/>
         <source>Page footer</source>
         <translation>Страница - нижний колонтитул</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="111"/>
+        <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="112"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -659,6 +663,7 @@
 <context>
     <name>PageHeader</name>
     <message>
+        <location filename="../plugins/report/bands/pageHeader/pageheader.cpp" line="79"/>
         <location filename="../plugins/report/bands/pageHeader/pageheader.cpp" line="107"/>
         <source>Page header</source>
         <translation>Страница - верхний колонтитул</translation>
@@ -670,14 +675,33 @@
     </message>
 </context>
 <context>
+    <name>PaintInterface</name>
+    <message>
+        <location filename="../libs/report/paintinterface.cpp" line="123"/>
+        <source>Prepare page: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libs/report/paintinterface.cpp" line="195"/>
+        <source>Query named &apos;%1&apos;not found for band &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../libs/report/paintinterface.cpp" line="201"/>
+        <source>query &apos;%1&apos; exacution error:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Picture</name>
     <message>
-        <location filename="../plugins/report/items/picture/picture.cpp" line="251"/>
+        <location filename="../plugins/report/items/picture/picture.cpp" line="254"/>
         <source>Picture</source>
         <translation>Картинка</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/picture/picture.cpp" line="256"/>
+        <location filename="../plugins/report/items/picture/picture.cpp" line="259"/>
         <source>Shapes</source>
         <translation>Фигуры</translation>
     </message>
@@ -711,7 +735,6 @@
 <context>
     <name>Pixmap</name>
     <message>
-        <location filename="../plugins/propertyEditor/pixmap/pixmap.cpp" line="33"/>
         <source>Choose a image</source>
         <translation type="obsolete">Выбрать картинку</translation>
     </message>
@@ -719,12 +742,10 @@
 <context>
     <name>PixmapDialog</name>
     <message>
-        <location filename="../plugins/propertyEditor/pixmap/pixmapdialog.cpp" line="51"/>
         <source>Open Image</source>
         <translation type="obsolete">Открыть картинку</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/pixmap/pixmapdialog.cpp" line="51"/>
         <source>Image Files (*.png *.jpg *.bmp)</source>
         <translation type="obsolete">Графические файлы (*.png *.jpg *.bmp)</translation>
     </message>
@@ -732,12 +753,10 @@
 <context>
     <name>PropertyEditor::PropertyModel</name>
     <message>
-        <location filename="../libs/propertyEditor/propertymodel.cpp" line="155"/>
         <source>Property</source>
         <translation type="obsolete">Свойство</translation>
     </message>
     <message>
-        <location filename="../libs/propertyEditor/propertymodel.cpp" line="158"/>
         <source>Value</source>
         <translation type="obsolete">Значение</translation>
     </message>
@@ -750,53 +769,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="117"/>
+        <location filename="../apps/designer/command.cpp" line="119"/>
         <source>Open item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="219"/>
+        <location filename="../apps/designer/command.cpp" line="215"/>
         <source>Open item %1(%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="279"/>
+        <location filename="../apps/designer/command.cpp" line="280"/>
         <source>Move %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="322"/>
+        <location filename="../apps/designer/command.cpp" line="329"/>
         <source>Delete %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="485"/>
+        <location filename="../apps/designer/command.cpp" line="439"/>
+        <location filename="../apps/designer/command.cpp" line="495"/>
         <source>&apos;%1&apos; property &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="555"/>
+        <location filename="../apps/designer/command.cpp" line="507"/>
+        <location filename="../apps/designer/command.cpp" line="567"/>
         <source>&apos;%1&apos; change size &apos;%2x%3&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="569"/>
+        <location filename="../apps/designer/command.cpp" line="581"/>
         <source>NewPage &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="591"/>
+        <location filename="../apps/designer/command.cpp" line="609"/>
         <source>Remove Page &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="641"/>
+        <location filename="../apps/designer/command.cpp" line="627"/>
+        <location filename="../apps/designer/command.cpp" line="634"/>
         <source>%1 at (%2, %3)</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
 </context>
 <context>
     <name>QueryEditDialog</name>
@@ -806,7 +825,6 @@
         <translation>Редактор запросов</translation>
     </message>
     <message>
-        <location filename="../apps/designer/queryeditdialog.cpp" line="39"/>
         <source>Cancel</source>
         <translation type="obsolete">Отмена</translation>
     </message>
@@ -900,7 +918,6 @@
         <translation>Имя запроса:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
         <source>Report</source>
         <translation type="obsolete">Отчет</translation>
     </message>
@@ -933,6 +950,7 @@
         <translation>Форма</translation>
     </message>
     <message>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="96"/>
         <location filename="../apps/designer/designeruiwidget.cpp" line="117"/>
         <source>ui name:</source>
         <translation>Имя формы:</translation>
@@ -943,7 +961,6 @@
         <translation>Создать форму</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="156"/>
         <source>Report</source>
         <translation type="obsolete">Отчет</translation>
     </message>
@@ -1025,32 +1042,32 @@
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="224"/>
+        <location filename="../libs/report/previewdialog.cpp" line="233"/>
         <source>Please select an export format</source>
         <translation>Пожалуйста выберите формат экспорта</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="229"/>
+        <location filename="../libs/report/previewdialog.cpp" line="238"/>
         <source>&amp;Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="233"/>
+        <location filename="../libs/report/previewdialog.cpp" line="242"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="239"/>
+        <location filename="../libs/report/previewdialog.cpp" line="248"/>
         <source>Export format</source>
         <translation>Формат экспорта</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="516"/>
+        <location filename="../libs/report/previewdialog.cpp" line="527"/>
         <source>Quit ?</source>
         <translation>Выйти?</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="516"/>
+        <location filename="../libs/report/previewdialog.cpp" line="527"/>
         <source>Realy quit?</source>
         <translation>Действительно выйти?</translation>
     </message>
@@ -1058,7 +1075,7 @@
 <context>
     <name>Report::ReportEngine</name>
     <message>
-        <location filename="../libs/report/reportengine.cpp" line="335"/>
+        <location filename="../libs/report/reportengine.cpp" line="339"/>
         <source>Can&apos;t find %1</source>
         <translation>Не найдено  %1</translation>
     </message>
@@ -1066,22 +1083,23 @@
 <context>
     <name>Report::ReportInterface</name>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="290"/>
+        <location filename="../libs/report/reportinterface.cpp" line="309"/>
         <source>Prepare page: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="472"/>
+        <location filename="../libs/report/reportinterface.cpp" line="447"/>
+        <location filename="../libs/report/reportinterface.cpp" line="497"/>
         <source>Uncaught exception at line %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="436"/>
+        <location filename="../libs/report/reportinterface.cpp" line="461"/>
         <source>Importing extension: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="482"/>
+        <location filename="../libs/report/reportinterface.cpp" line="507"/>
         <source>Can&apos;t create temporary files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1120,19 +1138,12 @@
 <context>
     <name>Script</name>
     <message>
-        <location filename="../plugins/report/items/script/script.cpp" line="42"/>
-        <source>1+1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../plugins/report/items/script/script.cpp" line="139"/>
         <source>Script</source>
-        <translation>Скрипт</translation>
+        <translation type="obsolete">Скрипт</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/script/script.cpp" line="144"/>
         <source>Text</source>
-        <translation>Текст</translation>
+        <translation type="obsolete">Текст</translation>
     </message>
 </context>
 <context>
@@ -1148,7 +1159,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/scripteditdialog.cpp" line="42"/>
         <source>Cancel</source>
         <translation type="obsolete">Отмена</translation>
     </message>
@@ -1183,11 +1193,13 @@
         <translation>Проверить</translation>
     </message>
     <message>
+        <location filename="../apps/designer/scripteditdialog.cpp" line="103"/>
         <location filename="../apps/designer/scripteditdialog.cpp" line="111"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
+        <location filename="../apps/designer/scripteditdialog.cpp" line="103"/>
         <location filename="../apps/designer/scripteditdialog.cpp" line="111"/>
         <source>the script is invalid</source>
         <translation>Скрипт содержит ошибку</translation>
@@ -1211,25 +1223,35 @@
 <context>
     <name>SqlDatabaseDialog</name>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.cpp" line="47"/>
+        <location filename="../apps/designer/sqldatabasedialog.cpp" line="56"/>
         <source>Connection error</source>
         <translation>Ошибка подключения</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.cpp" line="54"/>
+        <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
         <source>Open SQLite Database</source>
         <translation>Открытие БД SQLite</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.cpp" line="54"/>
+        <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
         <source>SQLite Database (*.db *.db3 *.sqlite *.sqlite3);;All files (*.*)</source>
         <translation>БД SQLite (*.db *.db3 *.sqlite *.sqlite3);;Все файлы (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
+        <source>Connection adding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
+        <source>Connection name field is empty.
+Please enter name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StringList</name>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlist.cpp" line="42"/>
         <source>Change stringlist</source>
         <translation type="obsolete">Изменить список</translation>
     </message>
@@ -1237,7 +1259,6 @@
 <context>
     <name>StringListEditor</name>
     <message>
-        <location filename="../plugins/propertyEditor/stringlist/stringlisteditor.cpp" line="154"/>
         <source>Choose a data file</source>
         <translation type="obsolete">Выбрать файл с данными</translation>
     </message>
@@ -1245,6 +1266,7 @@
 <context>
     <name>Summary</name>
     <message>
+        <location filename="../plugins/report/bands/summary/summary.cpp" line="76"/>
         <location filename="../plugins/report/bands/summary/summary.cpp" line="104"/>
         <source>Summary</source>
         <translation>Итог</translation>
@@ -1264,6 +1286,7 @@
     </message>
     <message>
         <location filename="../plugins/report/items/text/text.cpp" line="141"/>
+        <location filename="../plugins/report/items/text/text.cpp" line="146"/>
         <source>Text</source>
         <translation>Текст</translation>
     </message>
@@ -1271,12 +1294,13 @@
 <context>
     <name>Title</name>
     <message>
-        <location filename="../plugins/report/bands/title/title.cpp" line="109"/>
+        <location filename="../plugins/report/bands/title/title.cpp" line="82"/>
+        <location filename="../plugins/report/bands/title/title.cpp" line="111"/>
         <source>Title</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="../plugins/report/bands/title/title.cpp" line="114"/>
+        <location filename="../plugins/report/bands/title/title.cpp" line="116"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
     </message>
@@ -1284,47 +1308,38 @@
 <context>
     <name>Ui</name>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="182"/>
         <source>Tool Box</source>
         <translation type="obsolete">Инструменты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="60"/>
         <source>Property Editor</source>
         <translation type="obsolete">Свойства</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="66"/>
         <source>Query Editor</source>
         <translation type="obsolete">Запросы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="73"/>
         <source>Ui Editor</source>
         <translation type="obsolete">Формы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="185"/>
         <source>Object Inspector</source>
         <translation type="obsolete">Объекты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="154"/>
         <source>report name</source>
         <translation type="obsolete">Имя отчета</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.cpp" line="41"/>
         <source>Any</source>
         <translation type="obsolete">Любой</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="183"/>
         <source>test2</source>
         <translation type="obsolete">тест2</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="183"/>
         <source>test3</source>
         <translation type="obsolete">тест3</translation>
     </message>
@@ -1347,17 +1362,12 @@
         <translation>Лицензионное соглашение</translation>
     </message>
     <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="188"/>
-        <source>&amp;Close</source>
-        <translation>Закрыть </translation>
-    </message>
-    <message encoding="UTF-8">
         <location filename="../apps/designer/aboutdialog.ui" line="49"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:400;&quot;&gt;(c) 2008,&lt;/span&gt;&lt;span style=&quot; font-size:large;&quot;&gt; BogDan Vatra&lt;/span&gt;&lt;span style=&quot; font-size:large; font-weight:400;&quot;&gt;  &amp;lt;&amp;lt; bog_dan_ro@yahoo.com &amp;gt;&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:large; font-weight:400;&quot;&gt;(c) 2008-2009&lt;/span&gt;&lt;span style=&quot; font-size:large;&quot;&gt; eXaro &lt;/span&gt;&lt;span style=&quot; font-size:large; font-weight:400;&quot;&gt;team http://exaro.sourceforge.net/&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:large;&quot;&gt;GNU GENERAL PUBLIC LICENSE&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;Version 3, 29 June 2007 &lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;Copyright © 2007 Free Software Foundation, Inc. &amp;lt;http://fsf.org/&amp;gt;&lt;/p&gt;
@@ -1471,71 +1481,90 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;END OF TERMS AND CONDITIONS &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../apps/designer/aboutdialog.ui" line="188"/>
+        <source>&amp;Close</source>
+        <translation>Закрыть </translation>
+    </message>
 </context>
 <context>
     <name>databaseDialog</name>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="13"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="14"/>
         <source>Setup database</source>
         <translation>Настройка БД</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="21"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="20"/>
+        <source>Predefined connections:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="39"/>
         <source>Database driver:</source>
         <translation>Драйвер БД:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="53"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="71"/>
         <source>UserName :</source>
         <translation>пользователь:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="63"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="81"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="108"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="126"/>
         <source>HostName:</source>
         <translation>Имя хоста:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="118"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="136"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="135"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="153"/>
         <source>00000; </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="166"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="184"/>
         <source>DatabaseName:</source>
         <translation>Имя БД:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="176"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="194"/>
         <source>ConnectOptions:</source>
         <translation>Опции подключения:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="199"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="217"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="252"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="248"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="288"/>
+        <source>Connection name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <translation type="obsolete">Отмена</translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="245"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="270"/>
         <source>&amp;Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/sqldatabasedialog.ui" line="252"/>
+        <location filename="../apps/designer/sqldatabasedialog.ui" line="277"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1571,7 +1600,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>designerUiType</name>
     <message>
-        <location filename="../apps/designer/designeruitype.ui" line="13"/>
         <source>Dialog</source>
         <translation type="obsolete">Диалог</translation>
     </message>
@@ -1637,447 +1665,478 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>mainWindow</name>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="350"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="351"/>
         <source>eXaro</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="350"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="351"/>
         <source>Save changes ?</source>
         <translation>Сохранить именения?</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="492"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="491"/>
         <source>Report name</source>
         <translation>Имя отчета</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="200"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="300"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="594"/>
+        <location filename="../apps/designer/mainwindow.ui" line="224"/>
         <source>Open report</source>
         <translation>Открыть отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="594"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="595"/>
         <source>Report (*.bdrt)</source>
         <translation>Отчет (*.bdrt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="212"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="691"/>
+        <location filename="../apps/designer/mainwindow.ui" line="236"/>
         <source>Save report</source>
         <translation>Сохранить отчет</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="24"/>
         <source>Type:</source>
         <translation type="obsolete">Тип:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="101"/>
         <source>Height:</source>
         <translation type="obsolete">Высота:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="142"/>
         <source>Width (pdf471):</source>
         <translation type="obsolete">Ширина (pdf471):</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="191"/>
         <source>Security level:</source>
         <translation type="obsolete">Уровень безопасности:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="128"/>
         <source>Whitespace width:</source>
         <translation type="obsolete">Ширина пробела:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="245"/>
         <source>Border width:</source>
         <translation type="obsolete">Ширина границы:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="272"/>
         <source>Border type:</source>
         <translation type="obsolete">Тип границы</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="283"/>
         <source>No border</source>
         <translation type="obsolete">Без границы</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="363"/>
         <source>&amp;Generate</source>
         <translation type="obsolete">Генерировать</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="383"/>
         <source>Close</source>
         <translation type="obsolete">Закрыть</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="64"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="63"/>
         <source>Tool Box</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="71"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="70"/>
         <source>Property Editor</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="79"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="78"/>
         <source>Query Editor</source>
         <translation>Запросы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="86"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="85"/>
         <source>Ui Editor</source>
         <translation>Формы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="100"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="99"/>
         <source>Object Inspector</source>
         <translation>Объекты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="201"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="185"/>
         <source>report name</source>
         <translation>Имя отчета</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="37"/>
+        <location filename="../apps/designer/mainwindow.ui" line="38"/>
         <source>&amp;File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="62"/>
+        <location filename="../apps/designer/mainwindow.ui" line="63"/>
         <source>&amp;Report</source>
         <translation>Отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="76"/>
+        <location filename="../apps/designer/mainwindow.ui" line="77"/>
         <source>&amp;Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="103"/>
+        <location filename="../apps/designer/mainwindow.ui" line="104"/>
         <source>&amp;Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="109"/>
+        <location filename="../apps/designer/mainwindow.ui" line="110"/>
         <source>&amp;Help</source>
         <translation>Справка</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="122"/>
+        <location filename="../apps/designer/mainwindow.ui" line="123"/>
         <source>Tool Bar</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="179"/>
+        <location filename="../apps/designer/mainwindow.ui" line="203"/>
         <source>&amp;Remove page</source>
         <translation>Удалить страницу</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="182"/>
+        <location filename="../apps/designer/mainwindow.ui" line="206"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="191"/>
+        <location filename="../apps/designer/mainwindow.ui" line="215"/>
         <source>New report</source>
         <translation>Новый отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="203"/>
+        <location filename="../apps/designer/mainwindow.ui" line="227"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="215"/>
+        <location filename="../apps/designer/mainwindow.ui" line="239"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="224"/>
+        <location filename="../apps/designer/mainwindow.ui" line="248"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="227"/>
+        <location filename="../apps/designer/mainwindow.ui" line="251"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="236"/>
+        <location filename="../apps/designer/mainwindow.ui" line="260"/>
         <source>New page</source>
         <translation>Новая страница</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="245"/>
+        <location filename="../apps/designer/mainwindow.ui" line="269"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="248"/>
+        <location filename="../apps/designer/mainwindow.ui" line="272"/>
         <source>Ctrl++</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="257"/>
+        <location filename="../apps/designer/mainwindow.ui" line="281"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="260"/>
+        <location filename="../apps/designer/mainwindow.ui" line="284"/>
         <source>Ctrl+-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="269"/>
+        <location filename="../apps/designer/mainwindow.ui" line="293"/>
         <source>Zoom original</source>
         <translation>Оригинал</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="281"/>
+        <location filename="../apps/designer/mainwindow.ui" line="305"/>
         <source>Edit script</source>
         <translation>Редактировать скрипт</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="284"/>
+        <location filename="../apps/designer/mainwindow.ui" line="308"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="293"/>
+        <location filename="../apps/designer/mainwindow.ui" line="317"/>
         <source>Save report as ...</source>
         <translation>Сохранить отчет как...</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="296"/>
+        <location filename="../apps/designer/mainwindow.ui" line="320"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="305"/>
+        <location filename="../apps/designer/mainwindow.ui" line="329"/>
         <source>Execute</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="308"/>
+        <location filename="../apps/designer/mainwindow.ui" line="332"/>
         <source>F9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="317"/>
+        <location filename="../apps/designer/mainwindow.ui" line="341"/>
         <source>Setup a database</source>
         <translation>Настройки БД</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="326"/>
+        <location filename="../apps/designer/mainwindow.ui" line="350"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="329"/>
+        <location filename="../apps/designer/mainwindow.ui" line="353"/>
         <source>Ctrl+C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="338"/>
+        <location filename="../apps/designer/mainwindow.ui" line="362"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="341"/>
+        <location filename="../apps/designer/mainwindow.ui" line="365"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="350"/>
+        <location filename="../apps/designer/mainwindow.ui" line="374"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="353"/>
+        <location filename="../apps/designer/mainwindow.ui" line="377"/>
         <source>Ctrl+V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="362"/>
+        <location filename="../apps/designer/mainwindow.ui" line="386"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="365"/>
+        <location filename="../apps/designer/mainwindow.ui" line="389"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="377"/>
+        <location filename="../apps/designer/mainwindow.ui" line="401"/>
         <source>Left magnet</source>
         <translation>Магнит слева</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="389"/>
+        <location filename="../apps/designer/mainwindow.ui" line="413"/>
         <source>Right magnet</source>
         <translation>Магниь справа</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="401"/>
+        <location filename="../apps/designer/mainwindow.ui" line="425"/>
         <source>Top magnet</source>
         <translation>Магнит сверху</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="413"/>
+        <location filename="../apps/designer/mainwindow.ui" line="437"/>
         <source>Bottom magnet</source>
         <translation>Магнит снизу</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="425"/>
+        <location filename="../apps/designer/mainwindow.ui" line="449"/>
         <source>Vertical magnet</source>
         <translation>Вертикальный магнит</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="437"/>
+        <location filename="../apps/designer/mainwindow.ui" line="461"/>
         <source>Horizontal magnet</source>
         <translation>Горизонтальный магнит</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="442"/>
+        <location filename="../apps/designer/mainwindow.ui" line="466"/>
         <source>Set designer path</source>
         <translation>Путь к дизайнеру</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="447"/>
+        <location filename="../apps/designer/mainwindow.ui" line="471"/>
         <source>&amp;About eXaro</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="456"/>
+        <location filename="../apps/designer/mainwindow.ui" line="480"/>
         <source>Zoom WYSIWYG</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="41"/>
+        <location filename="../apps/designer/mainwindow.ui" line="544"/>
+        <source>Move band up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="547"/>
+        <source>Move band up in page if posible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="556"/>
+        <source>Move Band down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="559"/>
+        <source>Move band down on page if posible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="568"/>
+        <source>lastConnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="571"/>
+        <source>Connect last predefined database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Item Width:</source>
         <translation type="obsolete">Ширина элемента:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="71"/>
         <source>Item Height:</source>
         <translation type="obsolete">Высота элемента:</translation>
     </message>
     <message>
-        <location filename="../libs/zint/frontend_qt4/mainWindow.ui" line="218"/>
         <source>Scale factor:</source>
         <translation type="obsolete">Коэф. масштабирования:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="501"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="55"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="500"/>
         <source>eXaro v%1 unsaved report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="111"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="107"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="110"/>
         <source>Command List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="277"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="278"/>
         <source>Save item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="300"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="279"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="301"/>
         <source>Item (*.bdrti)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="701"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="584"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="702"/>
         <source>eXaro v%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="464"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="609"/>
+        <location filename="../apps/designer/mainwindow.ui" line="488"/>
         <source>Open template</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="609"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="610"/>
         <source>Exaro Template (*.extt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="691"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="692"/>
         <source>Report (*.bdrt);;Template (*.extt)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="13"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="920"/>
+        <source>Connection error</source>
+        <translation type="unfinished">Ошибка подключения</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="14"/>
         <source>eXaro v1.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="41"/>
+        <location filename="../apps/designer/mainwindow.ui" line="42"/>
         <source>Open last temlate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="46"/>
+        <location filename="../apps/designer/mainwindow.ui" line="47"/>
         <source>Open last report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="158"/>
+        <location filename="../apps/designer/mainwindow.ui" line="160"/>
+        <location filename="../apps/designer/mainwindow.ui" line="180"/>
         <source>toolBar_2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="272"/>
+        <location filename="../apps/designer/mainwindow.ui" line="296"/>
         <source>Ctrl+0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="459"/>
+        <location filename="../apps/designer/mainwindow.ui" line="483"/>
         <source>Ctrl+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="469"/>
+        <location filename="../apps/designer/mainwindow.ui" line="493"/>
         <source>Options...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="478"/>
+        <location filename="../apps/designer/mainwindow.ui" line="502"/>
         <source>&amp;Save item as ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="487"/>
+        <location filename="../apps/designer/mainwindow.ui" line="511"/>
         <source>Open item from ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="496"/>
+        <location filename="../apps/designer/mainwindow.ui" line="520"/>
         <source>Undo</source>
         <translation type="unfinished">Отменить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="499"/>
+        <location filename="../apps/designer/mainwindow.ui" line="523"/>
         <source>Ctrl+Z</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="508"/>
+        <location filename="../apps/designer/mainwindow.ui" line="532"/>
         <source>Redo</source>
         <translation type="unfinished">Повторить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="511"/>
+        <location filename="../apps/designer/mainwindow.ui" line="535"/>
         <source>Ctrl+R</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2085,52 +2144,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>metricFontDialog</name>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="13"/>
         <source>Font</source>
         <translation type="obsolete">Шрифт</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="19"/>
         <source>Writing systems:</source>
         <translation type="obsolete">Система печати:</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="43"/>
         <source>Font families</source>
         <translation type="obsolete">Семейства шрифтов</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="65"/>
         <source>Font style</source>
         <translation type="obsolete">Стили шрифтов</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="93"/>
         <source>Font size (mm)</source>
         <translation type="obsolete">Размеры шрифтов (мм)</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="148"/>
         <source>Font effects</source>
         <translation type="obsolete">Эффекты шрифтов</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="154"/>
         <source>Strikeout</source>
         <translation type="obsolete">Перечеркнуть</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="161"/>
         <source>Underline</source>
         <translation type="obsolete">Подчеркнуть</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="171"/>
         <source>Font sample</source>
         <translation type="obsolete">Образец</translation>
     </message>
     <message>
-        <location filename="../plugins/propertyEditor/metricfont/metricfontdialog.ui" line="183"/>
         <source>Font writing systems:</source>
         <translation type="obsolete">Система написания шрифта:</translation>
     </message>

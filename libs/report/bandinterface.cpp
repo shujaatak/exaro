@@ -125,8 +125,7 @@ void TitleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 		: ItemInterfaceExt(parent, parentObject),
-		/*m_reprintOnNewPage(false),*/ m_deleting(false),
-		/*m_resetDetailNumber(false),m_forceNewPage(false),*/
+		m_deleting(false),
 		m_titleItem(0)
 {
 	setResizeFlags(FixedPos | ResizeTop | ResizeBottom);
@@ -139,13 +138,10 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	else
 		connect(parentObject, SIGNAL(geometryChanged(QRectF)), this, SLOT(updateGeometry(QRectF)));
 
-	//connect(this, SIGNAL(bandDelete(int, int)), parentObject, SLOT(bandDestroyed(int, int)));
-
 	m_order = -1;
 	m_indentation = 0;
 	m_frame = 0;
 	m_query = "";
-//	m_bandType=Overlay;
 
 	setHeight(20/UNIT);
 }
@@ -161,18 +157,8 @@ bool BandInterface::deleting()
 	return m_deleting;
 }
 
-/*
-void BandInterface::removeItem()
-{
-	m_deleting = true;
-	//emit(bandDelete(m_bandType, m_order));
-//	emit(bandDelete(m_order));
-  //      ItemInterface::removeItem();
-}
-*/
 BandInterface::~BandInterface()
 {
-    qDebug("~BandInterface()");
     delete m_titleItem;
 }
 
@@ -325,20 +311,36 @@ void BandInterface::setQuery(const QString & query)
 	m_query = query;
 }
 
-/*
-void BandInterface::bandDestroyed(int type, int order)
+void BandInterface::addAgregateValue(QString value)
 {
-
-	foreach(QObject *item, QObject::children())
-		if (dynamic_cast<BandInterface*>(item))
-		{
-			if (dynamic_cast<BandInterface*>(item)->bandType() == type && dynamic_cast<BandInterface*>(item)->order() > order)
-				dynamic_cast<BandInterface*>(item)->setOrder(dynamic_cast<BandInterface*>(item)->order() - 1);
-			if (dynamic_cast<BandInterface*>(item)->bandType() > type)
-					dynamic_cast<BandInterface*>(item)->setOrder(dynamic_cast<BandInterface*>(item)->order());
-		}
-	update();
-
+    if (!m_agregateValues.contains(value))
+    {
+	ValueStruct vStruct;
+	if (stringIsField(value))
+	    stringToField (value, &vStruct.query, &vStruct.field);
+	m_agregateValues.insert(value, vStruct);
+    }
 }
-*/
+
+QList<qreal> BandInterface::agregateValues(QString value)
+{
+    if (!m_agregateValues.contains(value))
+	return m_agregateValues.value(value).list;
+    else return QList<qreal>();
+}
+
+void BandInterface::accumulateAgregateValues()
+{
+    QHashIterator <QString, ValueStruct> i(m_agregateValues);
+    while (i.hasNext()) {
+	i.next();
+	QString value = i.key();
+	ValueStruct vStruct = i.value();
+	if (vStruct.query.isEmpty())
+	    vStruct.list.append( scriptEngine()->globalObject().property(value).toNumber() );
+	else
+	    vStruct.list.append( queryField(vStruct.query, vStruct.field).toDouble() );
+    }
+}
+
 }

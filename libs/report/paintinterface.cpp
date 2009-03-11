@@ -118,11 +118,12 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 //	PageInterface * m_currentPage = m_report->m_currentPage;
 	m_painter.save();
 
+#warning    "FIXME - need optimization and proceed child item only if band be paint"
 	foreach(QObject * obj, ((QObject*)band)->children())		//preProcess all child items
 	{
 	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
 	    if (item)
-		if (!item->prepare(&m_painter, pMode))
+		if (!item->printingPrepare(this))
 		    finish(item->lastError());
 	}
 

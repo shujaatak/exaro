@@ -59,12 +59,6 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	expEnd = "]";
 }
 
-/*
-bool ItemInterface::init()
-{
-
-}
-*/
 
 ItemInterface::~ItemInterface()
 {
@@ -175,8 +169,6 @@ int ItemInterface::resizeHandle()
 
 void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug("ItemInterface::mousePressEvent");
-	qDebug("Name = %s, Z=%f", metaObject()->className(), zValue());
 	oldGeometry = geometry();
 	foreach(QGraphicsItem *item, scene()->items())
 		if (item->zValue() == 1)
@@ -528,6 +520,31 @@ QString ItemInterface::expressionDelimeters()
     return QString("%1,%2").arg(expBegin).arg(expEnd);
 }
 
+bool ItemInterface::stringIsField(QString str)
+{
+    QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
+    int pos = reField.indexIn(str);
+    if (pos > -1)
+	return true;
+    else
+	return false;
+}
+
+bool ItemInterface::stringToField (QString str, QString * query, QString * field)
+{
+    bool ok = false;
+    QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
+    int pos = reField.indexIn(str);
+    if (pos > -1)
+    {
+	*query = reField.cap(0).section(".",0,0);
+	*field = reField.cap(0).section(".",1,1).remove("\"");
+	ok = true;
+    }
+    return ok;
+}
+
+
 QString ItemInterface::processString(QString str)
 {
     while (str.contains(expBegin))				//lookup for insertion in text
@@ -542,10 +559,10 @@ QString ItemInterface::processString(QString str)
 	int pos = reField.indexIn(insertion);
 	if (pos > -1)
 	{
-	    qDebug("regExp = %s", qPrintable(reField.cap(0)));
+//	    qDebug("regExp = %s", qPrintable(reField.cap(0)));
 	    QString query = reField.cap(0).section(".",0,0);
 	    QString field = reField.cap(0).section(".",1,1).remove("\"");
-	    qDebug("queryField(%s,%s)",qPrintable(query), qPrintable(field));
+//	    qDebug("queryField(%s,%s)",qPrintable(query), qPrintable(field));
 	    insertion.replace(reField, queryField(query,field).toString());
 	}
 	else
@@ -556,22 +573,17 @@ QString ItemInterface::processString(QString str)
     }
     return str;
 }
-/*
-QStringList ItemInterface::dependsOn()
+
+void ItemInterface::addAgregateValue(QString value)
 {
-    return QStringList();
-}
-*/
-
-
-/*
-void ItemInterface::paintBefore(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0)
-{
-
+    if (dynamic_cast<Report::BandInterface*>(parentItem()))
+	dynamic_cast<Report::BandInterface*>(parentItem())->addAgregateValue(value);
 }
 
-void ItemInterface::paintAfter(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0)
+QList<qreal> ItemInterface::agregateValues(QString value)
 {
-
+    if (dynamic_cast<Report::BandInterface*>(parentItem()))
+	return dynamic_cast<Report::BandInterface*>(parentItem())->agregateValues(value);
+    else
+	return QList<qreal>();
 }
-*/

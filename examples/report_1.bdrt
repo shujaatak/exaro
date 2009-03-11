@@ -6,10 +6,10 @@
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
         <queries type="QVariantMap" >
-            <query_0 type="QString" >select item_types.name as category, item.name, item.weight, item.type
+            <query_0 type="QString" >select item_types.name as category, item.name, item.weight, item.type, item.img
 from item 
 inner join item_types on item.type = item_types.[id]
---where item.type &lt;> 1 and item.type &lt;> 2
+where item.type &lt;> 1 and item.type &lt;> 2
 order by category</query_0>
         </queries>
         <uis type="QVariantMap" />
@@ -242,7 +242,7 @@ order by category</query_0>
                             <properties>
                                 <objectName type="QString" >memo_3</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >722.633,14.035,293,45</geometry>
+                                <geometry type="QRectF" >722.633,14.035,363,45</geometry>
                                 <opacity type="int" >100</opacity>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
@@ -362,7 +362,7 @@ order by category</query_0>
                     <properties>
                         <objectName type="QString" >detail</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,309,1798,60</geometry>
+                        <geometry type="QRectF" >150,309,1798,65</geometry>
                         <opacity type="int" >100</opacity>
                         <pen type="QPen" >
                             <brush type="QBrush" >
@@ -380,7 +380,7 @@ order by category</query_0>
                         </pen>
                         <brush type="QBrush" >
                             <color type="QColor" >255,244,222,255</color>
-                            <style type="int" >6</style>
+                            <style type="int" >0</style>
                             <texture type="QPixmap" ></texture>
                         </brush>
                         <backgroundBrush type="QBrush" >
@@ -401,7 +401,7 @@ order by category</query_0>
                             <properties>
                                 <objectName type="QString" >field_1</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >715.88,9.875,300,45</geometry>
+                                <geometry type="QRectF" >715.88,9.875,362,45</geometry>
                                 <opacity type="int" >100</opacity>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
