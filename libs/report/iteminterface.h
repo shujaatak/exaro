@@ -303,6 +303,7 @@ public:
 
 	void raise();
 
+	//virtual bool init();
 	virtual bool printingPrepare(PaintInterface * paintInterface);	    //default implementation do nothing
 	virtual bool prePaint();	    //default implementation do nothing
 	virtual bool postPaint();	    //default implementation do nothing

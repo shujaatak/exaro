@@ -49,7 +49,7 @@
 
 #include "bandinterface.h"
 #include "globals.h"
-
+#include "processdialog.h"
 
 /** \namespace Report */
 namespace Report
@@ -227,6 +227,7 @@ public slots:
 	 * Call this slot to cancel the report execution
 	 */
 	void cancelReport();
+//	void showProcess(QString str);
 
 signals:
 	/**
@@ -239,17 +240,17 @@ signals:
 	 */
 	void afterExec();
 
-
+	void showProcess(QString str);
 protected:
-	virtual void paintPage(PageInterface * page);
-	virtual void paintBand(BandInterface * band);
+//	virtual void paintPage();
+//	virtual void paintBand(BandInterface * band);
 	virtual void setScriptEngineGlobalVariables();
-	virtual	void paintOverlays();
+//	virtual	void paintOverlays();
 
 protected:
-	PaintDevice * m_printer;
-
-	QPainter m_painter;
+//	PaintDevice * m_printer;
+//
+//	QPainter m_painter;
 	QDomDocument m_doc;
 	QDomNode m_exportNode;
 	QScriptEngine * m_scriptEngine;
@@ -257,16 +258,17 @@ protected:
 private:
 	void setReportObjectsToScriptEngineGlobalVariables(QObject * object);
 	void addOrderedBand(QList<BandInterface *> & m_bands, BandInterface * band);
-	void newPage();
-	void prepareCurrentPage();
-	bool canPaint(BandInterface * band);
+//	void newPage();
+//	void prepareCurrentPage();
+//	bool canPaint(BandInterface * band);
 	void exportRecord(const QSqlRecord & record, QDomElement & el);
-	void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
+//	void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
 	void cleanUpObjects();
 	bool isNumber(QVariant::Type type);
 
 private slots:
 	void scriptException(const QScriptValue & exception );
+	void previewFinished();
 
 private:
 	bool m_reportCanceled;
@@ -285,10 +287,14 @@ private:
 	FunctionValues m_functionValues;
 	ReportValues m_values;
 	qreal m_currentHeight, m_currentTop, m_currentBottom;
-	PageInterface * m_currentPage;
-	QSplashScreen m_splashScreen;
+//	PageInterface * m_currentPage;
+//	QSplashScreen m_splashScreen;
 	QSqlDatabase m_sqlDatabase;
 	QStringList m_uiPluginsPaths;
+
+	PaintInterface * paintInterface;
+	ProcessDialog * processDialog;
+	QTemporaryFile * pdf_file;
 
 	friend class PaintInterface;
 };

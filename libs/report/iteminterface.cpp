@@ -59,6 +59,13 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	expEnd = "]";
 }
 
+/*
+bool ItemInterface::init()
+{
+
+}
+*/
+
 ItemInterface::~ItemInterface()
 {
 }
