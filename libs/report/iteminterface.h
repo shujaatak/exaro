@@ -47,6 +47,7 @@ namespace Report
 
 class SqlQuery;
 class ReportInterface;
+class PaintInterface;
 
 class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
@@ -299,22 +300,21 @@ public:
 	virtual bool isEnabled();
 	virtual void setEnabled(bool b);
 
-	//virtual void removeItem(){/*deleteLater();*/};
-
 	void raise();
 
-	//virtual bool init();
 	virtual bool printingPrepare(PaintInterface * paintInterface);	    //default implementation do nothing
 	virtual bool prePaint();	    //default implementation do nothing
 	virtual bool postPaint();	    //default implementation do nothing
 
 	virtual QString lastError();
 
-//	virtual QStringList dependsOn();
-
 	QString setExpressionDelimeters(QString str);	    // expression delimeter for exec scripts in text
 	QString expressionDelimeters();
 	QString processString(QString str);
+	static bool stringIsField(QString str);
+	static bool stringToField (QString str, QString * query, QString * field);
+	virtual void addAgregateValue(QString value);
+	virtual QList<qreal> agregateValues(QString value);
 
 protected:
 	/**
@@ -355,8 +355,6 @@ protected:
 
 	static QFont fontConvert(QFont & font);
 	static const QRectF adjustRect(QRectF & rect, const QPen & pen);
-//	void paintBefore(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
-//	void paintAfter(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 signals:
 	/**

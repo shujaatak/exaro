@@ -39,6 +39,14 @@
 namespace Report
 {
 
+struct ValueStruct
+{
+    QString query;	//if empty - use QtScript values
+    QString field;
+    QList<qreal> list;
+};
+
+
 class TitleItem;
 
 /** \class BandInterface
@@ -50,15 +58,8 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 {
 	Q_OBJECT
 
-	//Q_ENUMS(BandType)
 	Q_FLAGS(Frames Frame);
 
-	/**
-	 * @see BandType
-	 * @see bandType()
-	 * @see setBandType()
-	*/
-	//Q_PROPERTY(BandType bandType READ bandType WRITE setBandType DESIGNABLE false)
 	/**
 	 * @see order()
 	 * @see setOrder()
@@ -75,23 +76,6 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 	*/
 	Q_PROPERTY(Frames frame READ frame WRITE setFrame)
 public:
-	/**
-	* BandType enum
-	*
-	* @see bandType()
-	* @see setBandType()
-	*/
-//	enum BandType {PageHeader, /**< the band is a PageHeader*/
-//	               Title, /**< the band is a Title*/
-//	               DetailContainer, /**< the band is a DetailContainer*/
-//	               DetailHeader, /**< the band is a DetailHeader*/
-//	               Detail, /**< the band is a Detail*/
-//	               DetailFooter, /**< the band is a DetailFooter*/
-//	               Summary, /**< the band is a Summary*/
-//	               PageFooter, /**< the band is a PageFooter*/
-//	               Overlay /**< the band is a Overlay*/
-//	              };
-
 	/**
 	* Frame enum
 	*
@@ -129,13 +113,6 @@ public:
 
 	~BandInterface();
 
-	/**
-	* Return the type of the band
-	* @return BandInterface::BandType band type
-	* @see BandType
-	* @see setBandType()
-	*/
-//	virtual BandType bandType();
 
 	virtual LayoutType layoutType();
 
@@ -202,44 +179,21 @@ public:
 	 */
 	void setQuery(const QString & query);
 
-/*
-
-	bool reprintOnNewPage();
-
-	void setReprintOnNewPage(bool reprintOnNewPage);
-
-	bool resetDetailNumber();
-	void setResetDetailNumber(bool resetDetailNumber);
-
-	QString groupField();
-	void setGroupField(const QString & groupField);
-
-	QVariant groupFieldValue();
-	void setGroupFieldValue(const QVariant & groupFieldValue);
-*/
 	bool deleting();
 
 	void removeItem();
 
-/*
-	bool forceNewPage();
-	void setForceNewPage(bool forceNewPage);
-*/
 	void selectBand();
 
 	int freeSpace();
+	void addAgregateValue(QString value);
+	QList<qreal> agregateValues(QString value);
+	void accumulateAgregateValues();
 
 signals:
 	void bandDelete(int);
 
 protected:
-	/**
-	* Set the type of the band. This should set only once in the band constructor.
-	* @param bandType
-	* @see BandType
-	* @see bandType()
-	*/
-//	void setBandType(BandType bandType);
 
 	/**
 	* Draw the title 
@@ -260,17 +214,17 @@ protected slots:
 	//void bandDestroyed(/*int type,*/ int order);
 
 private:
-//	QString m_groupField;
-//	BandType m_bandType;
 	int m_order;
 	int m_indentation;
 	Frames m_frame;
 	QString m_query;
-	bool /*m_reprintOnNewPage,*/ m_deleting/*, m_resetDetailNumber*/;
-//	QVariant m_groupFieldValue;
-//	bool m_forceNewPage;
+	bool m_deleting;
 	TitleItem * m_titleItem;
+
+protected:
+	QHash <QString, ValueStruct> m_agregateValues;
 };
+
 Q_DECLARE_OPERATORS_FOR_FLAGS(BandInterface::Frames);
 }
 Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");

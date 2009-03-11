@@ -52,13 +52,25 @@ Picture::Picture(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	initMyResource();
 	setWidth(20/UNIT); //20 mm
 	setHeight(20/UNIT); // 20 mm
-	m_emptyBrush = QBrush(QPixmap(":/empty.png"));
+	m_emptyBrush = QBrush(QImage(":/empty.png"));
 	m_font=QFont("Serif");
 	m_font.setPointSizeF(3.5);
 	m_font.setStyleStrategy(QFont::PreferMatch);
 	m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
+bool Picture::printingPrepare(Report::PaintInterface * paintInterface)
+{ 
+    if (stringIsField(m_queryField))
+    {
+	QString query;
+	QString field;
+	stringToField (m_queryField, &query, &field);
+	if (!m_image.loadFromData(ItemInterface::queryField(query,field).toByteArray()))
+	    qDebug("ERROR loading image from field!!!");
+	return ItemInterface::printingPrepare(paintInterface);
+    }
+}
 
 Picture::PaintTypes Picture::paintType()
 {
@@ -329,5 +341,13 @@ void Picture::setFont(const QFont & font)
 	update();
 }
 
+QString Picture::queryField()
+{
+    return m_queryField;
+}
 
+void Picture::setQueryField(QString str)
+{
+    m_queryField = str;
+}
 Q_EXPORT_PLUGIN2(picture, Picture)

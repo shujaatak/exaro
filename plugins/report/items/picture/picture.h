@@ -42,6 +42,7 @@ class Picture : public Report::ItemInterface
 	Q_PROPERTY(PaintTypes howToPaintPicture READ paintType WRITE setPaintType)
 	Q_PROPERTY(DrawTextTypes drawTextType READ drawTextType WRITE setDrawTextType)
 	Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
+	Q_PROPERTY(QString queryField READ queryField WRITE setQueryField)
 	Q_PROPERTY(QString text READ comment WRITE setComment)
 	Q_PROPERTY(QFont font READ font WRITE setFont)
 	Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
@@ -75,6 +76,8 @@ public:
 
 public:
 	Picture(QGraphicsItem* parent = 0, QObject* parentObject = 0);
+
+	bool printingPrepare(Report::PaintInterface * paintInterface);
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -113,6 +116,9 @@ public:
 	QFont font();
 	void setFont(const QFont & font);
 
+	QString queryField();
+	void setQueryField(QString str);
+
 private:
 	PaintTypes m_paintType;
 	FrameTypes m_frameType;
@@ -126,6 +132,7 @@ private:
 	int m_borderWidth;
 	QBrush m_emptyBrush;
 	QFont m_font;
+	QString m_queryField;
 };
 
 
