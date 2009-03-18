@@ -54,16 +54,16 @@ DetailHeader::~DetailHeader()
 {
 }
 
-bool DetailHeader::printingPrepare(Report::PaintInterface * paintInterface)
+bool DetailHeader::init(Report::PaintInterface * paintInterface)
 {
     m_lastRowPrinted = -1;
     m_groupValue = "";
-    return ItemInterface::printingPrepare(paintInterface);
+    return ItemInterface::init(paintInterface);
 }
 
-bool DetailHeader::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+bool DetailHeader::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 {
-    ItemInterface::prepare(painter);
+    ItemInterface::prePaint(painter);
     bool ok = false;
     switch (pMode)
     {

@@ -82,9 +82,15 @@ QRectF Memo::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Memo::prepare(QPainter * painter)
+bool Memo::init(Report::PaintInterface * paintInterface)
 {
-	ItemInterface::prepare(painter);
+    ItemInterface::init(paintInterface);
+    storeAgregateValuesFromString(m_text);  // lookup for agragate functions
+}
+
+void Memo::prePaint(QPainter * painter)
+{
+	ItemInterface::prePaint(painter);
 	if (m_sizePolicy==None)
 		return;
 

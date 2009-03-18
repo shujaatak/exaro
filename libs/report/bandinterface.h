@@ -189,6 +189,8 @@ public:
 	void addAgregateValue(QString value);
 	QList<qreal> agregateValues(QString value);
 	void accumulateAgregateValues();
+	void resetAgregateValues();
+	int agregateCounter();
 
 signals:
 	void bandDelete(int);
@@ -223,6 +225,7 @@ private:
 
 protected:
 	QHash <QString, ValueStruct> m_agregateValues;
+	int m_agregateCounter;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(BandInterface::Frames);

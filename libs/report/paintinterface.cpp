@@ -87,16 +87,28 @@ void PaintInterface::initBands()
     qDebug("PaintInterface::initBands()");
 
     foreach(BandInterface * band, listTop)
-	if (!band->printingPrepare(this))
+	if (!band->init(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
+	else
+	    foreach(QObject * obj, band->QObject::children())
+		if (dynamic_cast<Report::ItemInterface*>(obj))
+		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
     foreach(BandInterface * band, listBottom)
-	if (!band->printingPrepare(this))
+	if (!band->init(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
+    	else
+	    foreach(QObject * obj, band->QObject::children())
+		if (dynamic_cast<Report::ItemInterface*>(obj))
+		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
     foreach(BandInterface * band, listFree)
-	if (!band->printingPrepare(this))
+	if (!band->init(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
-
+    	else
+	    foreach(QObject * obj, band->QObject::children())
+		if (dynamic_cast<Report::ItemInterface*>(obj))
+		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
 }
+
 
 void PaintInterface::showError(QString err)
 {
@@ -114,20 +126,19 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	if (!canPaint(band) )
 	    newPage();
 
-	//QPainter * m_painter = &m_report->m_painter;
-//	PageInterface * m_currentPage = m_report->m_currentPage;
 	m_painter.save();
 
-#warning    "FIXME - need optimization and proceed child item only if band be paint"
+	#warning    "FIXME - need optimization and proceed child item only if band be paint"
 	foreach(QObject * obj, ((QObject*)band)->children())		//preProcess all child items
 	{
+	    qDebug("process child name=%s",qPrintable(obj->objectName()));
 	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
 	    if (item)
-		if (!item->printingPrepare(this))
+		if (!item->prePaint(&m_painter, pMode))
 		    finish(item->lastError());
 	}
 
-	if (!band->prepare(&m_painter, pMode))				//preProcess band
+	if (!band->prePaint(&m_painter, pMode))				//preProcess band
 	{
 	    m_painter.restore();
 	    return;
@@ -148,6 +159,15 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	    ///NEED CHECK FOR GROUP
 
 	paintObjects(band, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+
+	foreach(QObject * obj, ((QObject*)band)->children())		//postProcess all child items
+	{
+	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
+	    if (item)
+		item->postPaint();
+	}
+
+	band->postPaint();				//postProcess band
 
 //	m_report->m_currentHeight += band->indentation();
 

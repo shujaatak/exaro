@@ -228,7 +228,7 @@ public:
 	 * This function prepare the item. This function is called before paint function
 	 * @param painter the painter used to paint in
 	 */
-	virtual bool prepare(QPainter * painter, PaintInterface::PrintMode pMode = PaintInterface::pmNormal);
+	//virtual bool prepare(QPainter * painter, PaintInterface::PrintMode pMode = PaintInterface::pmNormal);
 	/**
 	 * This function paints the contents of an item
 	 * @param painter the painter used to paint in
@@ -302,8 +302,9 @@ public:
 
 	void raise();
 
-	virtual bool printingPrepare(PaintInterface * paintInterface);	    //default implementation do nothing
-	virtual bool prePaint();	    //default implementation do nothing
+	virtual bool init(PaintInterface * paintInterface);	    //default implementation do nothing
+//	virtual bool prePaint();	    //default implementation do nothing
+	virtual bool prePaint(QPainter * painter, PaintInterface::PrintMode pMode = PaintInterface::pmNormal);
 	virtual bool postPaint();	    //default implementation do nothing
 
 	virtual QString lastError();
@@ -313,8 +314,12 @@ public:
 	QString processString(QString str);
 	static bool stringIsField(QString str);
 	static bool stringToField (QString str, QString * query, QString * field);
+	static QStringList getAgregateFunctionsFromString(QString str);
+	static QString calculateAgregateFunctions(QString str, ItemInterface* item);
+	void storeAgregateValuesFromString(QString str);
 	virtual void addAgregateValue(QString value);
 	virtual QList<qreal> agregateValues(QString value);
+	virtual int agregateCounter();
 
 protected:
 	/**

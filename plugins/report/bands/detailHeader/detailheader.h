@@ -50,8 +50,8 @@ public:
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);
-	bool prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode);
-	bool printingPrepare(Report::PaintInterface * paintInterface);
+	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode);
+	bool init(Report::PaintInterface * paintInterface);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();

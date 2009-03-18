@@ -324,23 +324,42 @@ void BandInterface::addAgregateValue(QString value)
 
 QList<qreal> BandInterface::agregateValues(QString value)
 {
-    if (!m_agregateValues.contains(value))
+//   qDebug("BandInterface::agregateValues contain value \"%s\" - %i", qPrintable(value), (int)m_agregateValues.contains(value));
+    if (m_agregateValues.contains(value))
 	return m_agregateValues.value(value).list;
-    else return QList<qreal>();
+    else
+	return QList<qreal>();
 }
 
 void BandInterface::accumulateAgregateValues()
 {
-    QHashIterator <QString, ValueStruct> i(m_agregateValues);
+    QMutableHashIterator <QString, ValueStruct> i(m_agregateValues);
     while (i.hasNext()) {
 	i.next();
 	QString value = i.key();
-	ValueStruct vStruct = i.value();
-	if (vStruct.query.isEmpty())
-	    vStruct.list.append( scriptEngine()->globalObject().property(value).toNumber() );
+	ValueStruct * vStruct = &i.value();
+	if (vStruct->query.isEmpty())
+	    vStruct->list.append( scriptEngine()->globalObject().property(value).toNumber() );
 	else
-	    vStruct.list.append( queryField(vStruct.query, vStruct.field).toDouble() );
+	    vStruct->list.append( queryField(vStruct->query, vStruct->field).toDouble() );
+
     }
+    m_agregateCounter++;
+}
+
+void BandInterface::resetAgregateValues()
+{
+    QMutableHashIterator <QString, ValueStruct> i(m_agregateValues);
+    while (i.hasNext()) {
+	i.next();
+	i.value().list.clear();
+    }
+    m_agregateCounter = 0;
+}
+
+int BandInterface::agregateCounter()
+{
+    return m_agregateCounter;
 }
 
 }

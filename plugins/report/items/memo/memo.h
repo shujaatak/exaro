@@ -77,7 +77,8 @@ public:
 
 	QRectF boundingRect() const;
 
-	void prepare(QPainter * painter);
+	bool init(Report::PaintInterface * paintInterface);
+	void prePaint(QPainter * painter);
 
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
