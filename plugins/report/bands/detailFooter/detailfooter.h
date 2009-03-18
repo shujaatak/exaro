@@ -36,7 +36,7 @@ class DetailFooter : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-	//Q_PROPERTY(QString groupField READ groupField WRITE setGroupField)
+	Q_PROPERTY(QString condition READ condition WRITE setCondition)
 	Q_PROPERTY(QString query READ query WRITE setQuery);
 
 public:
@@ -44,7 +44,8 @@ public:
 
 	~DetailFooter();
 
-	bool prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode);
+	bool init(Report::PaintInterface * paintInterface);
+	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode);
 
 	int layoutPriority() {return 50;}
 
@@ -57,6 +58,13 @@ public:
 	QString toolBoxGroup();
 
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
+
+	QString condition();
+	void setCondition(const QString & condition);
+private:
+	QString m_condition;		// grouping condition
+	QString m_groupValue;
+	bool needResetAgregateValues;
 };
 
 #endif

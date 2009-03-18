@@ -51,13 +51,51 @@ DetailFooter::~DetailFooter()
 {
 }
 
-bool DetailFooter::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+bool DetailFooter::init(Report::PaintInterface * paintInterface)
 {
-    ItemInterface::prepare(painter);
+    m_groupValue = "";
+    m_agregateCounter = 0;
+    needResetAgregateValues = true;
+    return ItemInterface::init(paintInterface);
+}
+
+bool DetailFooter::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+{
+    ItemInterface::prePaint(painter);
+    bool ok = false;
     switch (pMode)
     {
 	case Report::PaintInterface::pmNormal:
-	    return true;
+	    if (needResetAgregateValues)
+		resetAgregateValues();
+
+	    accumulateAgregateValues();
+
+	    if (!m_condition.isEmpty())
+	    {
+		m_groupValue = processString(m_condition);	    
+		findQuery(query())->next();		    // query lookahead
+
+		if (m_groupValue != processString(m_condition))
+		    ok = true;
+		else
+		    ok = false;
+
+		findQuery(query())->previous();		    //back
+	    }
+	    else
+		ok = true;
+
+	    if (ok)
+	    {
+		needResetAgregateValues = true;
+		return true;
+	    }
+	    else
+	    {
+		needResetAgregateValues = false;
+		return false;
+	    }
 	    break;
 	case Report::PaintInterface::pmNewPage:
 	    return false;
@@ -132,6 +170,16 @@ QString DetailFooter::toolBoxGroup()
 QObject * DetailFooter::createInstance(QGraphicsItem* parent, QObject* parentObject)
 {
 	return new DetailFooter(parent, parentObject);
+}
+
+QString DetailFooter::condition()
+{
+    return m_condition;
+}
+
+void DetailFooter::setCondition(const QString & condition)
+{
+    m_condition = condition;
 }
 
 Q_EXPORT_PLUGIN2(detailFooter, DetailFooter)

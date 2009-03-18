@@ -52,17 +52,18 @@ Detail::~Detail()
 {
 }
 
-bool Detail::prepare(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+bool Detail::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 {
     switch (pMode)
     {
 	case Report::PaintInterface::pmNormal:
+	    accumulateAgregateValues();
 	    break;
 	default:
 	    return false;
     }
 
-    ItemInterface::prepare(painter);
+    ItemInterface::prePaint(painter);
     return true;
 }
 

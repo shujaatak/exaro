@@ -79,9 +79,9 @@ void HtmlScript::setSizeFlags(SizeFlags sizeFlags)
 	m_sizeFlags=sizeFlags;
 }
 
-void HtmlScript::prepare(QPainter * painter)
+void HtmlScript::prePaint(QPainter * painter)
 {
-	ItemInterface::prepare(painter);
+	ItemInterface::prePaint(painter);
 	if (!m_sizeFlags)
 		return;
 

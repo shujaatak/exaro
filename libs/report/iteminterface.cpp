@@ -226,16 +226,6 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 	return flags;
 }
 
-bool ItemInterface::prepare(QPainter * painter, PaintInterface::PrintMode pMode)
-{
-	unstretch();
-	setupPainter(painter);
-	foreach(QObject * obj, QObject::children())
-		if (dynamic_cast<Report::ItemInterface*>(obj))
-			dynamic_cast<Report::ItemInterface*>(obj)->prepare(painter);
-	return true;
-}
-
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	Q_UNUSED(painter);
@@ -488,16 +478,20 @@ void ItemInterface::raise()
 	setZValue(1);
 }
 
-bool ItemInterface::printingPrepare(PaintInterface * paintInterface)
+bool ItemInterface::init(PaintInterface * paintInterface)
 {
     m_paintInterface = paintInterface;
     return true;
 }
 
-bool ItemInterface::prePaint()
+
+bool ItemInterface::prePaint(QPainter * painter, PaintInterface::PrintMode pMode)
 {
-    return true;
+	unstretch();
+	setupPainter(painter);
+	return true;
 }
+
 
 bool ItemInterface::postPaint()
 {
@@ -554,6 +548,8 @@ QString ItemInterface::processString(QString str)
 	QString insertion = secondPart.section(expEnd,0,0);
 	QString fourPart = secondPart.section(expEnd,1);
 
+	insertion = calculateAgregateFunctions(insertion, this);
+
 	QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
 
 	int pos = reField.indexIn(insertion);
@@ -574,9 +570,90 @@ QString ItemInterface::processString(QString str)
     return str;
 }
 
+QStringList ItemInterface::getAgregateFunctionsFromString(QString str)
+{
+    QStringList list;
+    QRegExp reField("(sum|min|max|avg|count)\\((.*)\\)", Qt::CaseInsensitive);
+    reField.setMinimal(true);
+    int pos = 0;
+    while ((pos = reField.indexIn(str, pos)) != -1)
+    {
+	list.append(reField.cap(0));
+	pos += reField.matchedLength();
+    }
+    return list;
+}
+
+void ItemInterface::storeAgregateValuesFromString(QString str)
+{
+    QStringList functionList = getAgregateFunctionsFromString(str);
+    foreach (QString arg1, functionList)
+    {
+	QRegExp reField("\\((.*)\\)");
+	int pos = reField.indexIn(str);
+	if (pos > -1)
+	    addAgregateValue(reField.cap(1).section(",",0,0).trimmed());
+    }
+}
+
+QString ItemInterface::calculateAgregateFunctions(QString str, ItemInterface* item)
+{
+//    qDebug("calculateAgregateFunctions(%s)",qPrintable(str));
+    QString newStr = str;
+    QRegExp reField("(sum|min|max|avg|count)\\((.*)\\)", Qt::CaseInsensitive);
+    reField.setMinimal(true);
+    int pos = 0;
+
+    while ((pos = reField.indexIn(newStr, pos)) != -1)
+    {
+	QString value = reField.cap(0);
+	QString func = reField.cap(1).toLower().trimmed();
+	QString args = reField.cap(2);
+//	qDebug("calculating function = \'%s\' with arguments = \'%s\'", qPrintable(func), qPrintable(args));
+	qreal result = 0.0;
+
+	if (func == "sum")
+	{
+	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+//	    qDebug("number of elements = %i", item->agregateValues(arg).count());
+	    foreach (qreal val, item->agregateValues(arg))
+		result += val;
+	};
+
+	if (func == "avg")
+	{
+	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    foreach (qreal val, item->agregateValues(arg))
+		result += val;
+	    result = result / (qreal)item->agregateCounter();
+	};
+	if (func == "min")
+	{
+	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    result = INT_MAX;
+	    foreach (qreal val, item->agregateValues(arg))
+		result = qMin(result,val);
+	};
+	if (func == "max")
+	{
+	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    foreach (qreal val, item->agregateValues(arg))
+		result = qMax(result,val);
+	};
+	if (func == "count")
+		result = item->agregateCounter();
+
+
+	newStr.replace(value, QString::number(result));
+	pos += reField.matchedLength();
+    }
+    return newStr;
+}
+
 void ItemInterface::addAgregateValue(QString value)
 {
-    if (dynamic_cast<Report::BandInterface*>(parentItem()))
+//    qDebug("ItemInterface::addAgregateValue(%s)",qPrintable(value));
+    if (dynamic_cast<Report::BandInterface*>(parentItem()) && !value.isEmpty())
 	dynamic_cast<Report::BandInterface*>(parentItem())->addAgregateValue(value);
 }
 
@@ -586,4 +663,12 @@ QList<qreal> ItemInterface::agregateValues(QString value)
 	return dynamic_cast<Report::BandInterface*>(parentItem())->agregateValues(value);
     else
 	return QList<qreal>();
+}
+
+int ItemInterface::agregateCounter()
+{
+     if (dynamic_cast<Report::BandInterface*>(parentItem()))
+	return dynamic_cast<Report::BandInterface*>(parentItem())->agregateCounter();
+    else
+	return 0;
 }

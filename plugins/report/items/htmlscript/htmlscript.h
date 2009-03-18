@@ -52,7 +52,7 @@ public:
 	HtmlScript(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
-	void prepare(QPainter * painter);
+	void prePaint(QPainter * painter);
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
