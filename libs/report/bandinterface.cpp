@@ -140,7 +140,6 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 
 	m_order = -1;
 	m_indentation = 0;
-	m_frame = 0;
 	m_query = "";
 
 	setHeight(20/UNIT);
@@ -160,17 +159,6 @@ bool BandInterface::deleting()
 BandInterface::~BandInterface()
 {
     delete m_titleItem;
-}
-
-BandInterface::Frames BandInterface::frame()
-{
-	return m_frame;
-}
-
-void BandInterface::setFrame(Frames frame)
-{
-	m_frame = frame;
-	update();
 }
 
 int BandInterface::freeSpace()

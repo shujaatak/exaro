@@ -58,8 +58,6 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 {
 	Q_OBJECT
 
-	Q_FLAGS(Frames Frame);
-
 	/**
 	 * @see order()
 	 * @see setOrder()
@@ -70,24 +68,7 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 	 * @see setIndentation()
 	*/
 	Q_PROPERTY(int indentation READ indentation WRITE setIndentation)
-	/**
-	 * @see frame()
-	 * @see setFrame()
-	*/
-	Q_PROPERTY(Frames frame READ frame WRITE setFrame)
 public:
-	/**
-	* Frame enum
-	*
-	* @see frame()
-	* @see setFrame()
-	*/
-	enum Frame {DrawLeft = 1, /**< Draw left frame*/
-	            DrawRight = 2, /**< Draw right frame*/
-	            DrawTop = 4, /**< Draw top frame*/
-	            DrawBottom = 8 /**< Draw bottom frame*/
-	           };
-
 	/**
 	* TitlePosition enum
 	*
@@ -100,7 +81,6 @@ public:
 
 	enum AccomodationType {AccomodationOnce, AccomodationFirstPage, AccomodationLastPage, AccomodationEveryPage};
 
-	Q_DECLARE_FLAGS(Frames, Frame);
 
 public:
 	/**
@@ -139,22 +119,6 @@ public:
 	* @see order()
 	*/
 	void setOrder(int order, bool refreshOthers = true);
-
-	/**
-	* Return what frame should draw
-	* @return BandInterface::Frames
-	* @see setFrame()
-	* @see Frame
-	*/
-	Frames frame();
-	/**
-	* Set the band frames
-	* @param frame
-	* @see frame()
-	* @see Frame
-	*/
-	void setFrame(Frames frame);
-
 	/**
 	* Returns the space between bands.
 	* @return int
@@ -218,7 +182,6 @@ protected slots:
 private:
 	int m_order;
 	int m_indentation;
-	Frames m_frame;
 	QString m_query;
 	bool m_deleting;
 	TitleItem * m_titleItem;
@@ -227,8 +190,6 @@ protected:
 	QHash <QString, ValueStruct> m_agregateValues;
 	int m_agregateCounter;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(BandInterface::Frames);
 }
 Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");
 

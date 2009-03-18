@@ -46,6 +46,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1),m_stretch(0)
 		, m_paintInterface(0)
 {
+    	m_frame = 0;
 	m_resizeEvent = Fixed;
 	m_resizeFlags = ResizeTop | ResizeBottom | ResizeLeft | ResizeRight;
 	m_width = 20/UNIT; // 20 mm
@@ -62,6 +63,17 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 
 ItemInterface::~ItemInterface()
 {
+}
+
+ItemInterface::Frames ItemInterface::frame()
+{
+	return m_frame;
+}
+
+void ItemInterface::setFrame(Frames frame)
+{
+	m_frame = frame;
+	update();
 }
 
 void ItemInterface::drawSelection(QPainter * painter, QRectF rect)

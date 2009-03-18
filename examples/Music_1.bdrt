@@ -1,0 +1,796 @@
+<!DOCTYPE report>
+<StdReport>
+    <properties>
+        <objectName type="QString" >report</objectName>
+        <name type="QString" >Имя отчета</name>
+        <author type="QString" >(c) 2008 BogDan</author>
+        <script type="QString" ></script>
+        <queries type="QVariantMap" >
+            <query_0 type="QString" >select * from song;</query_0>
+        </queries>
+        <uis type="QVariantMap" />
+        <menuGroup type="int" >90</menuGroup>
+        <order type="int" >90</order>
+        <menus type="QStringList" >
+            <string type="QString" >/Program/Reports</string>
+        </menus>
+        <icon type="QPixmap" ></icon>
+        <description type="QString" ></description>
+        <recommends type="QString" ></recommends>
+    </properties>
+    <children>
+        <Page>
+            <properties>
+                <objectName type="QString" >page</objectName>
+                <backgroundBrush type="QBrush" >
+                    <color type="QColor" >0,0,0,255</color>
+                    <style type="int" >0</style>
+                    <texture type="QPixmap" ></texture>
+                </backgroundBrush>
+                <foregroundBrush type="QBrush" >
+                    <color type="QColor" >0,0,0,255</color>
+                    <style type="int" >0</style>
+                    <texture type="QPixmap" ></texture>
+                </foregroundBrush>
+                <itemIndexMethod type="" />
+                <sceneRect type="QRectF" >0,0,2098.15,2971.27</sceneRect>
+                <bspTreeDepth type="int" >0</bspTreeDepth>
+                <palette type="QPalette" />
+                <font type="QFont" >Serif,5,-1,5,50,0,0,0,0,0</font>
+                <sortCacheEnabled type="bool" >false</sortCacheEnabled>
+                <stickyFocus type="bool" >false</stickyFocus>
+                <pageSize type="int" >0</pageSize>
+                <orientation type="int" >0</orientation>
+                <geometry type="QRectF" >150,100,1798,2771</geometry>
+                <paperRect type="QRectF" >0,0,2098.15,2971.27</paperRect>
+                <magnetArea type="int" >1</magnetArea>
+                <showGrid type="bool" >false</showGrid>
+            </properties>
+            <children>
+                <DetailHeader>
+                    <properties>
+                        <objectName type="QString" >detailheader_1</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,351,1798,115</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >15</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >190,235,255,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                        <condition type="QString" >[query_0."artist"]</condition>
+                        <reprintOnNewPage type="bool" >false</reprintOnNewPage>
+                        <resetDetailNumber type="bool" >false</resetDetailNumber>
+                        <forceNewPage type="bool" >false</forceNewPage>
+                        <query type="QString" >query_0</query>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_5</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >125.354,2.0833,1386,97</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,8,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >[query_0."artist"]</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </DetailHeader>
+                <DetailHeader>
+                    <properties>
+                        <objectName type="QString" >detailheader</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,466,1798,79</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >8</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >98,255,0,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >1</order>
+                        <indentation type="int" >0</indentation>
+                        <condition type="QString" >[query_0."album"]</condition>
+                        <reprintOnNewPage type="bool" >true</reprintOnNewPage>
+                        <resetDetailNumber type="bool" >true</resetDetailNumber>
+                        <forceNewPage type="bool" >false</forceNewPage>
+                        <query type="QString" >query_0</query>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >text</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >291.354,8.6041,1386,67</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >[query_0."album"]</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </DetailHeader>
+                <Detail>
+                    <properties>
+                        <objectName type="QString" >detail</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,545,1798,65</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >255,244,222,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >2</order>
+                        <indentation type="int" >0</indentation>
+                        <query type="QString" >query_0</query>
+                        <zebra type="bool" >true</zebra>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >field_1</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >1175.88,9.875,362,45</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >[query_0."lenght"]</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >text_1</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >5.3125,12.2292,142,45</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >[_line_]</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >text_2</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >154.812,13.5208,1004,44</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >[query_0."title"]</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </Detail>
+                <DetailFooter>
+                    <properties>
+                        <objectName type="QString" >detailfooter</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,610,1798,55</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >175,157,183,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >3</order>
+                        <indentation type="int" >0</indentation>
+                        <condition type="QString" >[query_0."album"]</condition>
+                        <query type="QString" >query_0</query>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_4</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >122.188,8.9375,361,45</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Quantity = [count()]</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </DetailFooter>
+                <Title>
+                    <properties>
+                        <objectName type="QString" >title</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,162,1798,189</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >255,255,2,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_1</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >8.1875,129.188,124,48</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >№</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_2</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >255.229,128.911,436,50</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Title</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_3</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >1169.63,130.306,363,48.9375</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Lenght</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_9</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >765.479,9.3125,291,110</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,9,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Songs</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </Title>
+                <PageHeader>
+                    <properties>
+                        <objectName type="QString" >pageheader</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,100,1798,62</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >0,68,255,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >3.70833,4.0208,303,50</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Music Cathalog</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </PageHeader>
+                <PageFooter>
+                    <properties>
+                        <objectName type="QString" >pagefooter</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,2805.94,1798,65.0625</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >247,0,255,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >0</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >0</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >0</order>
+                        <indentation type="int" >0</indentation>
+                    </properties>
+                    <children>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_10</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >1490.71,6.0208,303,50</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Page №[_page_]</text>
+                            </properties>
+                        </Memo>
+                    </children>
+                </PageFooter>
+            </children>
+        </Page>
+    </children>
+</StdReport>

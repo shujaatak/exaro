@@ -53,6 +53,8 @@ class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 
+	Q_FLAGS(Frames Frame);
+
 	/**
 	 * @see isEnabled()
 	 * @see setEnabled()
@@ -68,9 +70,24 @@ class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 	 * @see setOpacity()
 	*/
 	Q_PROPERTY(int opacity READ opacity WRITE setOpacity)
+	/**
+	 * @see frame()
+	 * @see setFrame()
+	*/
+	Q_PROPERTY(Frames frame READ frame WRITE setFrame)
 
 public:
-
+	/**
+	* Frame enum
+	*
+	* @see frame()
+	* @see setFrame()
+	*/
+	enum Frame {DrawLeft = 1, /**< Draw left frame*/
+		    DrawRight = 2, /**< Draw right frame*/
+		    DrawTop = 4, /**< Draw top frame*/
+		    DrawBottom = 8 /**< Draw bottom frame*/
+		   };
 	/** @enum ResizeFlags
 	* @see resizeFlags()
 	* @see setResizeFlags()
@@ -83,6 +100,8 @@ public:
 	                  FixedPos = 16 /**< Item cant be moved*/
 	                 };
 
+	Q_DECLARE_FLAGS(Frames, Frame);
+
 public:
 	/**
 	 * ItemInterface constructor
@@ -92,6 +111,20 @@ public:
 	ItemInterface(QGraphicsItem* parent = 0, QObject * parentObject = 0);
 	virtual ~ItemInterface();
 
+	/**
+	* Return what frame should draw
+	* @return BandInterface::Frames
+	* @see setFrame()
+	* @see Frame
+	*/
+	Frames frame();
+	/**
+	* Set the band frames
+	* @param frame
+	* @see frame()
+	* @see Frame
+	*/
+	void setFrame(Frames frame);
 	/**
 	 * Return resizeHandle pixels
 	 * @return pixels
@@ -393,6 +426,7 @@ protected:
 	PaintInterface * m_paintInterface;
 
 private:
+	Frames m_frame;
 	int m_resizeHandle;
 	int m_resizeEvent;
 	int m_resizeFlags;
@@ -405,6 +439,7 @@ private:
 	bool m_enabled;
 	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(ItemInterface::Frames);
 }
 
 Q_DECLARE_INTERFACE(Report::ItemInterface, "ro.bigendian.Report.ItemInterface/1.0");
