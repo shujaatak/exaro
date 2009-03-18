@@ -558,24 +558,34 @@ QString ItemInterface::processString(QString str)
 	QString firstPart = str.section(expBegin,0,0);
 	QString secondPart = str.section(expBegin,1);
 	QString insertion = secondPart.section(expEnd,0,0);
+
 	QString fourPart = secondPart.section(expEnd,1);
 
+//	qDebug("============= before calculate===== %s",qPrintable(insertion));
 	insertion = calculateAgregateFunctions(insertion, this);
+//	qDebug("============= after calculate===== %s",qPrintable(insertion));
 
 	QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
+	reField.setMinimal(true);
 
-	int pos = reField.indexIn(insertion);
-	if (pos > -1)
+	int pos = 0;
+	while ((pos = reField.indexIn(insertion, pos)) != -1)
 	{
-//	    qDebug("regExp = %s", qPrintable(reField.cap(0)));
 	    QString query = reField.cap(0).section(".",0,0);
 	    QString field = reField.cap(0).section(".",1,1).remove("\"");
-//	    qDebug("queryField(%s,%s)",qPrintable(query), qPrintable(field));
-	    insertion.replace(reField, queryField(query,field).toString());
+//	    qDebug("query = \'%s\'; field = \'%s\'", qPrintable(query), qPrintable(field));
+	    insertion.replace(reField.cap(0), queryField(query,field).toString());
+	    pos += reField.matchedLength();
 	}
-	else
-	    if (scriptEngine()->canEvaluate(insertion))
-		insertion = scriptEngine()->evaluate(insertion).toString();
+	
+//	qDebug("============= after field parse===== %s",qPrintable(insertion));
+	
+	QString evaluateStr;
+	
+	if (scriptEngine()->canEvaluate(insertion))
+		evaluateStr = scriptEngine()->evaluate(insertion).toString();
+	if (!scriptEngine()->hasUncaughtException())
+	    insertion = evaluateStr;
 
 	str = firstPart + insertion + fourPart;
     }

@@ -75,8 +75,8 @@ bool DetailHeader::prePaint(QPainter * painter, Report::PaintInterface::PrintMod
 	    }
 	    break;
 	case Report::PaintInterface::pmNormal:
-	qDebug("currentQueryRow()=%i         m_lastRowPrinted =%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
-	qDebug("m_groupValue =%s   processString(m_condition)=%s", qPrintable(m_groupValue), qPrintable(processString(m_condition)));
+//	qDebug("currentQueryRow()=%i         m_lastRowPrinted =%i", m_paintInterface->currentQueryRow(), m_lastRowPrinted);
+//	qDebug("m_groupValue =%s   processString(m_condition)=%s", qPrintable(m_groupValue), qPrintable(processString(m_condition)));
 	    if (m_paintInterface->currentQueryRow() != m_lastRowPrinted) //prevent doubling in new page
 		if (m_condition.isEmpty() || (!m_condition.isEmpty() && m_groupValue != processString(m_condition)))
 			ok = true;
