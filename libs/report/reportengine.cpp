@@ -225,15 +225,25 @@ QString ReportEngine::uniqueName(const QString & className, QObject * rootObject
 }
 
 
-/*
+
 bool ReportEngine::cmpBands(BandInterface * b1, BandInterface * b2)
 {
+    if (b1->layoutType() == b2->layoutType())
+    {
+	if (b1->layoutPriority() == b2->layoutPriority())
+	    return b1->order() < b2->order();
+	return b1->layoutPriority() < b2->layoutPriority();
+    }
+    return b1->layoutType() < b2->layoutType();
+
+    /*
 	if (b1->bandType()==b2->bandType())
 		return b1->order()<b2->order();
 
 	return b1->bandType()<b2->bandType();
+	*/
 }
-*/
+
 
 QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 {
@@ -259,8 +269,8 @@ QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 			bands.push_back(dynamic_cast<BandInterface*>(child));
 
 
-//	if (bands.size())
-//		qSort(bands.begin(), bands.end(), cmpBands);
+	if (bands.size())
+		qSort(bands.begin(), bands.end(), cmpBands);
 
 	if (object->children().size())
 	{
