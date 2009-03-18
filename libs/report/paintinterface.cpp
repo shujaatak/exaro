@@ -123,9 +123,6 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	if (!band->isEnabled())
 	    return;
 
-	if (!canPaint(band) )
-	    newPage();
-
 	m_painter.save();
 
 	#warning    "FIXME - need optimization and proceed child item only if band be paint"
@@ -143,6 +140,9 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	    m_painter.restore();
 	    return;
 	}
+
+	if (!canPaint(band) )
+	    newPage();
 
 	if (band->layoutType() == BandInterface::LayoutBottom)
 		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
@@ -197,6 +197,8 @@ void PaintInterface::newPage()
 
 bool PaintInterface::canPaint(BandInterface * band)
 {
+    if (!(freeSpace.top() + band->geometry().height() <= freeSpace.bottom()))
+	    qDebug("freeSpace.top = %f, band.h=%f, free.bott=%f", freeSpace.top(), band->geometry().height(), freeSpace.bottom());
 	return (freeSpace.top() + band->geometry().height() <= freeSpace.bottom());
 }
 

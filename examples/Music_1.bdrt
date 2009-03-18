@@ -254,7 +254,7 @@
                             <properties>
                                 <objectName type="QString" >field_1</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >1175.88,9.875,362,45</geometry>
+                                <geometry type="QRectF" >1175.88,9.875,437,45</geometry>
                                 <opacity type="int" >100</opacity>
                                 <frame type="int" >0</frame>
                                 <pen type="QPen" >
@@ -285,7 +285,7 @@
                                 <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
-                                <text type="QString" >[query_0."lenght"]</text>
+                                <text type="QString" >[query_0."lenght" ]</text>
                             </properties>
                         </Memo>
                         <Memo>
@@ -370,7 +370,7 @@
                     <properties>
                         <objectName type="QString" >detailfooter</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,610,1798,55</geometry>
+                        <geometry type="QRectF" >150,610,1798,59</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >0</frame>
                         <pen type="QPen" >
@@ -409,7 +409,7 @@
                             <properties>
                                 <objectName type="QString" >memo_4</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >122.188,8.9375,361,45</geometry>
+                                <geometry type="QRectF" >122.188,8.9375,708,45</geometry>
                                 <opacity type="int" >100</opacity>
                                 <frame type="int" >0</frame>
                                 <pen type="QPen" >
@@ -437,10 +437,48 @@
                                     <texture type="QPixmap" ></texture>
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
-                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <font type="QFont" >Serif,3.5,-1,5,75,0,0,0,0,0</font>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Quantity = [count()]</text>
+                            </properties>
+                        </Memo>
+                        <Memo>
+                            <properties>
+                                <objectName type="QString" >memo_6</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >1076.19,7.9375,713,45</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <pen type="QPen" >
+                                    <brush type="QBrush" >
+                                        <color type="QColor" >0,0,0,255</color>
+                                        <style type="int" >1</style>
+                                        <texture type="QPixmap" ></texture>
+                                    </brush>
+                                    <capStyle type="int" >16</capStyle>
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <isCosmetic type="bool" >true</isCosmetic>
+                                    <joinStyle type="int" >64</joinStyle>
+                                    <miterLimit type="double" >2</miterLimit>
+                                    <style type="int" >1</style>
+                                    <width type="int" >0</width>
+                                </pen>
+                                <brush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush" >
+                                    <color type="QColor" >0,0,0,255</color>
+                                    <style type="int" >0</style>
+                                    <texture type="QPixmap" ></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int" >0</backgroundMode>
+                                <font type="QFont" >Serif,3.5,-1,5,75,0,0,0,0,0</font>
+                                <textFlags type="int" >0</textFlags>
+                                <sizePolicy type="int" >0</sizePolicy>
+                                <text type="QString" >Total lenght [sum(query_0."lenght")]</text>
                             </properties>
                         </Memo>
                     </children>
@@ -600,7 +638,7 @@
                             <properties>
                                 <objectName type="QString" >memo_9</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >765.479,9.3125,291,110</geometry>
+                                <geometry type="QRectF" >73.1873,7.3125,1662,110</geometry>
                                 <opacity type="int" >100</opacity>
                                 <frame type="int" >0</frame>
                                 <pen type="QPen" >
@@ -629,7 +667,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <font type="QFont" >Serif,9,-1,5,50,0,0,0,0,0</font>
-                                <textFlags type="int" >0</textFlags>
+                                <textFlags type="int" >132</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Songs</text>
                             </properties>

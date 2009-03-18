@@ -235,13 +235,6 @@ bool ReportEngine::cmpBands(BandInterface * b1, BandInterface * b2)
 	return b1->layoutPriority() < b2->layoutPriority();
     }
     return b1->layoutType() < b2->layoutType();
-
-    /*
-	if (b1->bandType()==b2->bandType())
-		return b1->order()<b2->order();
-
-	return b1->bandType()<b2->bandType();
-	*/
 }
 
 

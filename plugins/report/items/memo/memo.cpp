@@ -128,7 +128,7 @@ void Memo::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 	painter->save();
 	painter->setRenderHint(QPainter::TextAntialiasing);
 	if (option->type == QStyleOption::SO_GraphicsItem)
-	    painter->drawText(rect, TextFlags(), m_text);
+	    painter->drawText(rect, textFlags(), m_text);
 	else
 	    if (scriptEngine())
 		painter->drawText(rect, textFlags(), processString(m_text));
