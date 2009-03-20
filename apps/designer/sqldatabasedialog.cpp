@@ -53,7 +53,7 @@ void SqlDatabaseDialog::accept()
     db.setUserName(user->text());
     db.setPassword(password->text());
     if (!db.open())
-	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
+	QMessageBox::critical(this, tr("Connection error"), tr("Can't open database\n%1").arg(db.lastError().text()), QMessageBox::Ok);
     else
 	QDialog::accept();
 }

@@ -34,10 +34,102 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 	connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(deleteItem()));
 	connect(m_editButton, SIGNAL(clicked()), this, SLOT(editItem()));
 	connect(m_editName, SIGNAL(clicked()), this, SLOT(editName()));
+
+	queryTable->hide();
+	queryTable->setModel(&m_queryModel);
+
+	m_dataTableModel = 0;
+
+	resetConnection();
+	m_syntax.setDocument(editQuery->document());
 }
 
 DesignerQueryWidget::~DesignerQueryWidget()
 {
+}
+
+void DesignerQueryWidget::resetConnection()
+{
+    if (QSqlDatabase::database().isOpen())
+    {
+	m_tw->setTabEnabled(1,true);
+	tablesList->clear();
+	tablesList->addItems(QSqlDatabase::database().database().tables(QSql::AllTables));
+    }
+    else
+    {
+	qWarning("w: Could not connect to database");
+	m_tw->setTabEnabled(1,false);
+    }
+}
+
+void DesignerQueryWidget::on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+{
+    if (m_dataTableModel)
+	delete m_dataTableModel;
+
+    m_dataTableModel = new QSqlTableModel(this);
+
+    m_dataTableModel->setTable(current->text());
+    m_dataTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    m_dataTableModel->select();
+
+    dataTable->setModel(m_dataTableModel);
+    dataTable->resizeColumnsToContents();
+    dataTable->resizeRowsToContents();
+}
+
+void DesignerQueryWidget::on_bQueryExec_clicked()
+{
+    if (!QSqlDatabase::database().isOpen())
+    {
+	queryTable->hide();
+	queryResultText->show();
+	queryResultText->setPlainText("No database connection selected.\nAdd activate a connection in the left tree view.");
+	return;
+    }
+
+    // initialize new sql query object
+    m_queryModel.setQuery(editQuery->toPlainText());
+
+    if (m_queryModel.lastError().isValid())
+    {
+	queryTable->hide();
+	queryResultText->show();
+
+	queryResultText->setPlainText(QString("%1\n%2")
+				      .arg(m_queryModel.lastError().driverText())
+				      .arg(m_queryModel.lastError().databaseText()));
+    }
+    else
+    {
+	// query was successful
+
+	if (m_queryModel.query().isSelect())
+	{
+	    queryResultText->hide();
+	    queryTable->show();
+	    queryTable->resizeColumnsToContents();
+	    queryTable->resizeRowsToContents();
+	}
+	else
+	{
+	    queryTable->hide();
+	    queryResultText->show();
+
+	    queryResultText->setPlainText(QString("%1 rows affected.")
+					  .arg( m_queryModel.query().numRowsAffected() ));
+	}
+    }
+}
+
+void DesignerQueryWidget::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+{
+    if (!current)
+	return;
+    if (previous)
+	m_queries[previous->text()] = editQuery->toPlainText();
+    editQuery->setPlainText(m_queries[current->text()].toString());
 }
 
 void DesignerQueryWidget::editItem()
@@ -48,6 +140,15 @@ void DesignerQueryWidget::editItem()
 	if (QDialog::Accepted == d.exec())
 		m_queries[m_listWidget->currentItem()->text()] = d.query();
 }
+/*
+void DesignerQueryWidget::on_m_listWidget_currentTextChanged ( const QString & currentText )
+{
+    QString query = m_queries[currentText].toString();
+    m_queries.remove(m_listWidget->currentItem()->text());
+    m_queries[currentText] = query;
+    m_listWidget->currentItem()->setText(text);
+}
+*/
 
 void DesignerQueryWidget::editName()
 {
@@ -79,7 +180,7 @@ void DesignerQueryWidget::createItem()
 		return;
 
 	QListWidgetItem * i = new QListWidgetItem();
-
+//	i->setFlags (i->flags () | Qt::ItemIsEditable);
 	i->setText(text);
 
 	m_listWidget->addItem(i);
@@ -99,11 +200,14 @@ void DesignerQueryWidget::setQueries(QMap <QString, QVariant> queries)
 	m_queries = queries;
 	m_listWidget->clear();
 	foreach(QString keys, m_queries.keys())
-	m_listWidget->addItem(keys);
-
+	{
+	    QListWidgetItem * i = new QListWidgetItem();
+//	    i->setFlags (i->flags () | Qt::ItemIsEditable);
+	    i->setText(keys);
+	    m_listWidget->addItem(i);
+	}
 	if (m_listWidget->count())
 		m_listWidget->setCurrentRow(0);
-
 	refreshButtons();
 }
 
