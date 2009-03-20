@@ -75,13 +75,14 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_nameValidator = new NameValidator( this );
 	m_pe->setValidator( QVariant::String, m_nameValidator );
 
+	/*
 	m_dwQueryEditor = new QDockWidget( tr( "Query Editor" ), this );
 	m_dquery = new Report::DesignerQueryWidget( m_dwQueryEditor );
 	m_dwQueryEditor->setObjectName( "Query Editor" );
 	m_dwQueryEditor->setWidget( m_dquery );
 	m_dwQueryEditor->setAllowedAreas( Qt::AllDockWidgetAreas );
 	addDockWidget( Qt::BottomDockWidgetArea, m_dwQueryEditor );
-
+*/
 	m_dwUiEditor = new QDockWidget( tr( "Ui Editor" ), this );
 	m_dui = new Report::DesignerUiWidget( m_dwUiEditor );
 	m_dwUiEditor->setObjectName( "Ui Editor" );
@@ -115,6 +116,9 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_tw = new QTabWidget( this );
 	setCentralWidget( m_tw );
+
+	m_dquery = new Report::DesignerQueryWidget( m_tw);
+	m_tw->addTab(m_dquery, tr("Queries"));
 
 	actionRemove_page->setEnabled( false );
 
@@ -206,7 +210,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_dwToolBox->toggleViewAction()->setIcon( QIcon( ":/images/button_tool.png" ) );
 	m_dwPropertyEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_property.png" ) );
-	m_dwQueryEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_sql.png" ) );
+//	m_dwQueryEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_sql.png" ) );
 	m_dwUiEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_uieditor.png" ) );
 	m_dwObjectInspector->toggleViewAction()->setIcon( QIcon( ":/images/button_objects.png" ) );
 	m_dwUndoView->toggleViewAction()->setIcon( QIcon( ":/images/button_commands.png" ) );
@@ -214,14 +218,14 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	menuTools->addSeparator();
 	menuTools->addAction( m_dwToolBox->toggleViewAction() );
 	menuTools->addAction( m_dwPropertyEditor->toggleViewAction() );
-	menuTools->addAction( m_dwQueryEditor->toggleViewAction() );
+//	menuTools->addAction( m_dwQueryEditor->toggleViewAction() );
 	menuTools->addAction( m_dwUiEditor->toggleViewAction() );
 	menuTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	menuTools->addAction( m_dwUndoView->toggleViewAction() );
 
 	toolBarTools->addAction( m_dwToolBox->toggleViewAction() );
 	toolBarTools->addAction( m_dwPropertyEditor->toggleViewAction() );
-	toolBarTools->addAction( m_dwQueryEditor->toggleViewAction() );
+//	toolBarTools->addAction( m_dwQueryEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwUiEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	toolBarTools->addAction( m_dwUndoView->toggleViewAction() );
@@ -248,6 +252,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	restoreGeometry( s.value( "Geometry", saveGeometry() ).toByteArray() );
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
+
+	newReport();
 }
 
 void mainWindow::setupActions()
@@ -456,6 +462,7 @@ void mainWindow::setupDatabase()
 {
 	SqlDatabaseDialog d;
 	d.exec();
+	m_dquery->resetConnection();
 }
 
 void mainWindow::executeReport()
@@ -480,9 +487,9 @@ void mainWindow::newReport()
 {
 	if ( !askToSaveReport() )
 		return;
-	while ( m_tw->count() )
+	while ( m_tw->count() > 1 )		//queryEditor in tab0
 	{
-		m_tw->setCurrentIndex( 0 );
+		m_tw->setCurrentIndex( 1 );
 		removePage();
 	}
 	delete m_report;
@@ -498,6 +505,7 @@ void mainWindow::newReport()
 	m_nameValidator->setRootObject( m_report );
 	undoStack->clear();
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
+	newPage();
 }
 
 void mainWindow::editScript()
@@ -532,13 +540,12 @@ void mainWindow::openReport( const QString & report )
 	s.setValue( "Designer/reportDir", f.absolutePath() );
 	s.setValue( "Designer/lastReports", list.join( ";;" ) );
 
-
 	QFile file( report );
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
-		while ( m_tw->count() )
+		while ( m_tw->count() > 1 )		//queryEditor in tab0
 		{
-			m_tw->setCurrentIndex( 0 );
+			m_tw->setCurrentIndex( 1 );
 			removePage();
 		}
 		delete m_report;
@@ -558,10 +565,9 @@ void mainWindow::openReport( const QString & report )
 	{
 		if ( !dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) )
 			continue;
-
 		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
 		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
-		m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
+		int lastTab = m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
 	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
@@ -569,9 +575,12 @@ void mainWindow::openReport( const QString & report )
 			connectItem( obj );
 		setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 		gw->centerOn( 0, 0 );
+		m_tw->setCurrentIndex(lastTab);
+		zoomWYSIWYG();
 	}
 
-	actionRemove_page->setEnabled( m_tw->count() );
+	actionRemove_page->setEnabled( m_tw->count() > 2);
+	m_tw->setCurrentIndex(1);			    // 0 is always queryEditor
 
 	m_dquery->setQueries( m_report->queries() );
 	m_dui->setUis( m_report->uis() );
@@ -579,13 +588,13 @@ void mainWindow::openReport( const QString & report )
 	m_pe->setObject( m_report );
 	m_nameValidator->setRootObject( m_report );
 	m_objectModel.setRootObject( m_report );
-	zoomWYSIWYG();
 	undoStack->clear();
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
 }
 
 void mainWindow::openReport()
 {
+    qDebug("6");
 	QSettings s;
 	QString reportDir = s.value( "Designer/reportDir" ).toString();
 	if ( reportDir.isEmpty() )
@@ -595,7 +604,7 @@ void mainWindow::openReport()
 	                reportDir , tr( "Report (*.bdrt)" ) );
 	if ( !fileName.size() )
 		return;
-
+qDebug("7");
 	openReport( fileName );
 }
 
@@ -795,12 +804,14 @@ void mainWindow::removePage()
 
 void mainWindow::currentChanged( int index )
 {
-	if ( index < 0 )
-	{
-		m_pe->setObject( 0 );
-		return;
-	}
-	m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
+    if ( index < 1 )		// query editor in tab0
+    {
+	m_pe->setObject( 0 );
+	actionRemove_page->setEnabled( false);
+	return;
+    }
+    actionRemove_page->setEnabled( true);
+    m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
 }
 
 void mainWindow::itemMoved( QObject *movedItem, QPointF movedFromPosition )
@@ -878,18 +889,17 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 void mainWindow::_deletePage_( int index )
 {
-    qDebug("mainWindow::_deletePage_( int index )");
-	if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
-		delete dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene();
-qDebug("1");
-	m_tw->removeTab( index );
-	actionRemove_page->setEnabled( m_tw->count() );
-qDebug("2");
-	if ( !m_tw->count() )
-		m_pe->setObject( m_report );
-	qDebug("3");
-	m_objectModel.setRootObject( m_report );
-	qDebug("4");
+    if (index < 1)		// queryEditor in tab0 & one page
+	return;
+
+    if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
+	delete dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene();
+    m_tw->removeTab( index );
+    actionRemove_page->setEnabled( m_tw->count() > 2);
+    
+    if ( !m_tw->count() )
+	m_pe->setObject( m_report );
+    m_objectModel.setRootObject( m_report );
 }
 
 void mainWindow::on_actionBandUp_triggered()
@@ -918,4 +928,5 @@ void mainWindow::on_actionLastConnect_triggered()
     db.setPassword(map.value("password").toString());
     if (!db.open())
 	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
+    m_dquery->resetConnection();
 }

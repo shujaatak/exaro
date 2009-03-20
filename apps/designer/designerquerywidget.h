@@ -19,8 +19,9 @@
 #define DESIGNERQUERYWIDGET_H
 
 #include <QWidget>
+#include <QtSql>
 #include "ui_designerquerywidget.h"
-
+#include "sqlsyntaxhighlighter.h"
 
 namespace Report
 {
@@ -31,6 +32,9 @@ class DesignerQueryWidget : public QWidget, public Ui::designerQueryWidget
 
 private:
 	QMap <QString, QVariant> m_queries;
+	SQLSyntaxHighlighter m_syntax;
+	QSqlQueryModel 	m_queryModel;
+	QSqlTableModel*	m_dataTableModel;
 
 protected:
 	void refreshButtons();
@@ -42,12 +46,17 @@ public:
 	QMap <QString, QVariant> queries();
 	void setQueries(QMap <QString, QVariant> queries);
 
+private slots:
+	void on_bQueryExec_clicked();
+	void on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous );
+	void on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 
 public slots:
 	void createItem();
 	void deleteItem();
 	void editItem();
 	void editName();
+	void resetConnection();
 };
 
 }
