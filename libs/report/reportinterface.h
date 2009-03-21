@@ -71,6 +71,7 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QString script READ script WRITE setScript DESIGNABLE false)
 	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
+	Q_PROPERTY(int version READ version WRITE setVersion DESIGNABLE false)
 public:
 	struct FunctionValue
 	{
@@ -221,6 +222,18 @@ public:
 	 */
 	void setUiPluginsPaths(const QStringList & uiPluginsPaths);
 
+	/**
+	 * Get the report file version
+	 * @param Paths
+	 */
+
+	double version();
+	/**
+	 * Sets the report file version
+	 * @param Paths
+	 */
+	void setVersion(double tVersion);
+
 
 public slots:
 	/**
@@ -277,6 +290,7 @@ private:
 	QString m_script;
 	QVariantMap m_queries;
 	QVariantMap m_uis;
+	double m_version;
 	QList<BandInterface *> m_pageHeaderBands;
 	QList<BandInterface *> m_titleBands;
 	QList<BandInterface *> m_detailContainerBands;
