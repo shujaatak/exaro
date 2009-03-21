@@ -69,6 +69,7 @@ ReportInterface::ReportInterface(QObject *parent)
 	m_reportCanceled = false;
 	paintInterface = 0;
 	processDialog = 0;
+	m_version = 0.0;
 }
 
 ReportInterface::~ReportInterface()
@@ -299,6 +300,17 @@ QVariantMap ReportInterface::uis()
 void ReportInterface::setUis(QVariantMap uis)
 {
 	m_uis = uis;
+}
+
+#warning FIXMI: not imlemented report file version checking
+double ReportInterface::version()
+{
+    return m_version;
+}
+
+void ReportInterface::setVersion(double tVersion)
+{
+    m_version = tVersion;
 }
 
 QScriptEngine * ReportInterface::scriptEngine()

@@ -44,6 +44,8 @@
 #include "namevalidator.h"
 
 #define ROWS_IN_MENU  10
+#define STATIC_TABS	2
+#define FILE_FORMAT_VERSION 3.0
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
 #define screen_widthMM (((double)QDesktopWidget().screen()->width() /(double)QDesktopWidget().screen()->physicalDpiX() )*25.4)
@@ -256,7 +258,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dscript = new Report::DesignerScriptWidget( m_tw );
 	m_tw->addTab(m_dscript, tr("Script"));
 
-	//newReport();
+	newReport();
 }
 
 void mainWindow::setupActions()
@@ -356,6 +358,7 @@ bool mainWindow::selectObject( QObject * object, QModelIndex index )
 
 bool mainWindow::askToSaveReport()
 {
+    Q_ASSERT(undoStack);
 	if ( undoStack->index() )
 		switch ( QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
 		{
@@ -486,13 +489,14 @@ void mainWindow::closeEvent( QCloseEvent *event )
 		event->ignore();
 }
 
-void mainWindow::newReport()
+void mainWindow::newReport( bool notAsk )
 {
-	if ( !askToSaveReport() )
+	if ( !notAsk && !askToSaveReport() )
 		return;
-	while ( m_tw->count() > 1 )		//queryEditor in tab0
+
+	while ( m_tw->count() > STATIC_TABS )
 	{
-		m_tw->setCurrentIndex( 1 );
+		m_tw->setCurrentIndex( STATIC_TABS );
 		removePage();
 	}
 	delete m_report;
@@ -500,26 +504,14 @@ void mainWindow::newReport()
 	m_report->setObjectName( "report" );
 	m_report->setName( tr( "Report name" ) );
 	m_report->setAuthor( "(c) 2008 BogDan" );
-	m_pe->setObject( m_report );
+	m_report->setVersion( FILE_FORMAT_VERSION );
+	refreshReportBeholders(m_report);
 	m_saveFile = "";
-	m_dquery->setQueries( m_report->queries() );
-	m_dui->setUis( m_report->uis() );
-	m_objectModel.setRootObject( m_report );
-	m_nameValidator->setRootObject( m_report );
 	undoStack->clear();
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 	newPage();
 }
 
-/*
-void mainWindow::editScript()
-{
-	ScriptEditDialog se;
-	se.setText( m_report->script() );
-	if ( QDialog::Accepted == se.exec() )
-		m_report->setScript( se.text() );
-}
-*/
 void mainWindow::connectItem( QObject * obj )
 {
 	connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
@@ -528,9 +520,9 @@ void mainWindow::connectItem( QObject * obj )
 		connectItem( child );
 }
 
-void mainWindow::openReport( const QString & report )
+void mainWindow::openReport( const QString & report, bool notAsk)
 {
-	if ( !askToSaveReport() )
+	if ( !notAsk && !askToSaveReport() )
 		return;
 
 	QSettings s;
@@ -547,20 +539,29 @@ void mainWindow::openReport( const QString & report )
 	QFile file( report );
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
-		while ( m_tw->count() > 1 )		//queryEditor in tab0
+		while ( m_tw->count() > STATIC_TABS )
 		{
-			m_tw->setCurrentIndex( 1 );
+			m_tw->setCurrentIndex( STATIC_TABS );
 			removePage();
 		}
 		delete m_report;
 		m_report = dynamic_cast<Report::ReportInterface*>( m_reportEngine.loadReport( &file ) );
+		refreshReportBeholders(m_report);
 		file.close();
 	}
 
 	if ( !m_report )
 	{
-		newReport();
+		newReport(true);
 		return;
+	}
+
+	qDebug("version = %f", m_report->version());
+	if ((int)m_report->version() < (int)FILE_FORMAT_VERSION )
+	{
+	    QMessageBox::critical(this,"eXaro", tr("File has too old format version and can't be opened"), QMessageBox::Ok);
+	    newReport(true);
+	    return;
 	}
 
 	QGraphicsView * gw = 0;
@@ -583,22 +584,17 @@ void mainWindow::openReport( const QString & report )
 		zoomWYSIWYG();
 	}
 
-	actionRemove_page->setEnabled( m_tw->count() > 2);
-	m_tw->setCurrentIndex(1);			    // 0 is always queryEditor
+	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
+	m_tw->setCurrentIndex( STATIC_TABS );
 
-	m_dquery->setQueries( m_report->queries() );
-	m_dui->setUis( m_report->uis() );
+//	refreshReportBeholders(m_report);
 	m_saveFile = report;
-	m_pe->setObject( m_report );
-	m_nameValidator->setRootObject( m_report );
-	m_objectModel.setRootObject( m_report );
 	undoStack->clear();
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
 }
 
-void mainWindow::openReport()
+void mainWindow::openReport( bool notAsk)
 {
-    qDebug("6");
 	QSettings s;
 	QString reportDir = s.value( "Designer/reportDir" ).toString();
 	if ( reportDir.isEmpty() )
@@ -608,8 +604,7 @@ void mainWindow::openReport()
 	                reportDir , tr( "Report (*.bdrt)" ) );
 	if ( !fileName.size() )
 		return;
-qDebug("7");
-	openReport( fileName );
+	openReport( fileName , notAsk);
 }
 
 void mainWindow::openTemplate()
@@ -802,19 +797,21 @@ void mainWindow::itemSelected( QObject *object, QPointF pos )
 
 void mainWindow::removePage()
 {
-	QUndoCommand *removePageCommand = new RemovePageCommand( this, m_tw->currentIndex() );
-	undoStack->push( removePageCommand );
+    if (m_tw->currentIndex() < STATIC_TABS)
+	return;
+    QUndoCommand *removePageCommand = new RemovePageCommand( this, m_tw->currentIndex() );
+    undoStack->push( removePageCommand );
 }
 
 void mainWindow::currentChanged( int index )
 {
-    if ( index < 2 )		// query & script editor in tab0, tab1
+    if ( index <  STATIC_TABS)		// query & script editor in tab0, tab1
     {
 	m_pe->setObject( 0 );
 	actionRemove_page->setEnabled( false);
 	return;
     }
-    actionRemove_page->setEnabled( true);
+    actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
     m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
 }
 
@@ -873,14 +870,14 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 	int m_index = m_tw->insertTab( afterIndex, ( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
 	m_tw->setCurrentWidget(( QWidget* ) gw );
 
-	actionRemove_page->setEnabled( m_tw->count() );
+	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 
 	connect( dynamic_cast<Report::PageInterface*>( gw->scene() ), SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
 	connect( dynamic_cast<Report::PageInterface*>( gw->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
 
 	setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 
-	if ( 1 == m_tw->count() )
+	if ( (STATIC_TABS + 1) == m_tw->count() )
 		m_pe->setObject( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 
 	m_objectModel.setRootObject( m_report );
@@ -893,15 +890,15 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 void mainWindow::_deletePage_( int index )
 {
-    if (index < 1)		// queryEditor in tab0 & one page
+    if (index < STATIC_TABS)		// queryEditor in tab0 & one page
 	return;
 
     if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
 	delete dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene();
     m_tw->removeTab( index );
-    actionRemove_page->setEnabled( m_tw->count() > 2);
+    actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
     
-    if ( !m_tw->count() )
+    if ( m_tw->count() >= STATIC_TABS )
 	m_pe->setObject( m_report );
     m_objectModel.setRootObject( m_report );
 }
@@ -933,4 +930,13 @@ void mainWindow::on_actionLastConnect_triggered()
     if (!db.open())
 	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
     m_dquery->resetConnection();
+}
+
+void mainWindow::refreshReportBeholders(Report::ReportInterface* report)
+{
+    	m_dquery->setQueries( report->queries() );
+	m_dui->setUis( report->uis() );
+	m_pe->setObject( report );
+	m_nameValidator->setRootObject( report );
+	m_objectModel.setRootObject( report );
 }

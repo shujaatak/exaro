@@ -61,6 +61,7 @@ private:
 	int _createNewPage_(Report::PageInterface* page = 0, int afterIndex = -1, QString pageName = QString());
 	void _deletePage_(int index);
 	void setupActions();
+	void refreshReportBeholders(Report::ReportInterface* report);
 
 private:
 	ObjectModel m_objectModel;
@@ -103,12 +104,11 @@ protected slots:
 	void zoomOut();
 	void zoomOriginal();
 	void zoomWYSIWYG();
-//	void editScript();
 	void saveReport();
 	void saveReportAs();
-	void openReport();
-	void openReport(const QString & report);
-	void newReport();
+	void openReport(bool notAsk = false);
+	void openReport(const QString & report, bool notAsk = false);
+	void newReport(bool notAsk = false);
 	void openTemplate();
 	void openTemplate(const QString &);
 	void prepareLastTemplateMenu();
