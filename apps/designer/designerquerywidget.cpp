@@ -35,6 +35,10 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 //	connect(m_editButton, SIGNAL(clicked()), this, SLOT(editItem()));
 	connect(m_editName, SIGNAL(clicked()), this, SLOT(editName()));
 
+	connect(b_dbTables, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
+	connect(b_dbViews, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
+	connect(b_dbSystem, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
+
 	queryTable->hide();
 	queryTable->setModel(&m_queryModel);
 
@@ -53,8 +57,7 @@ void DesignerQueryWidget::resetConnection()
     if (QSqlDatabase::database().isOpen())
     {
 	m_tw->setTabEnabled(1,true);
-	tablesList->clear();
-	tablesList->addItems(QSqlDatabase::database().database().tables(QSql::AllTables));
+	fillTablesList();
     }
     else
     {
@@ -63,8 +66,22 @@ void DesignerQueryWidget::resetConnection()
     }
 }
 
+void DesignerQueryWidget::fillTablesList()
+{
+    tablesList->clear();
+    if (b_dbTables->isChecked ())
+	tablesList->addItems(QSqlDatabase::database().tables(QSql::Tables));
+    if (b_dbViews->isChecked ())
+	tablesList->addItems(QSqlDatabase::database().tables(QSql::Views));
+    if (b_dbSystem->isChecked ())
+	tablesList->addItems(QSqlDatabase::database().tables(QSql::SystemTables));
+}
+
+
 void DesignerQueryWidget::on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
+    if (!current)
+	return;
     if (m_dataTableModel)
 	delete m_dataTableModel;
 
