@@ -65,7 +65,6 @@
     <addaction name="actionNew_page"/>
     <addaction name="actionRemove_page"/>
     <addaction name="separator"/>
-    <addaction name="actionEdit_script"/>
     <addaction name="separator"/>
     <addaction name="actionSetup_a_database"/>
     <addaction name="separator"/>
@@ -150,7 +149,6 @@
    <addaction name="actionBottom_magnet"/>
    <addaction name="actionVertical_magnet"/>
    <addaction name="actionHorizontal_magnet"/>
-   <addaction name="actionEdit_script"/>
    <addaction name="actionExecute"/>
    <addaction name="actionSetup_a_database"/>
    <addaction name="actionLastConnect"/>
@@ -294,18 +292,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+0</string>
-   </property>
-  </action>
-  <action name="actionEdit_script">
-   <property name="icon">
-    <iconset resource="report.qrc">
-     <normaloff>:/images/javascript.png</normaloff>:/images/javascript.png</iconset>
-   </property>
-   <property name="text">
-    <string>Edit script</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
    </property>
   </action>
   <action name="actionSave_report_as">

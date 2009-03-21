@@ -32,7 +32,7 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 	refreshButtons();
 	connect(m_createButton, SIGNAL(clicked()), this, SLOT(createItem()));
 	connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(deleteItem()));
-	connect(m_editButton, SIGNAL(clicked()), this, SLOT(editItem()));
+//	connect(m_editButton, SIGNAL(clicked()), this, SLOT(editItem()));
 	connect(m_editName, SIGNAL(clicked()), this, SLOT(editName()));
 
 	queryTable->hide();
@@ -132,6 +132,7 @@ void DesignerQueryWidget::on_m_listWidget_currentItemChanged ( QListWidgetItem *
     editQuery->setPlainText(m_queries[current->text()].toString());
 }
 
+/*
 void DesignerQueryWidget::editItem()
 {
 	QueryEditDialog d;
@@ -140,6 +141,7 @@ void DesignerQueryWidget::editItem()
 	if (QDialog::Accepted == d.exec())
 		m_queries[m_listWidget->currentItem()->text()] = d.query();
 }
+*/
 /*
 void DesignerQueryWidget::on_m_listWidget_currentTextChanged ( const QString & currentText )
 {
@@ -167,7 +169,7 @@ void DesignerQueryWidget::editName()
 void DesignerQueryWidget::refreshButtons()
 {
 	m_deleteButton->setEnabled(m_listWidget->count());
-	m_editButton->setEnabled(m_listWidget->count());
+//	m_editButton->setEnabled(m_listWidget->count());
 }
 
 

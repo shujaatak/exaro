@@ -4,14 +4,14 @@ project(exaro)
 
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_INCLUDE_DIR})
 
-set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.cpp
+set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  designerscriptwidget.cpp
 		designerpage.cpp         main.cpp              scriptsyntaxhighlighter.cpp
 		designerquerywidget.cpp  mainwindow.cpp        sqldatabasedialog.cpp
 		designeruitype.cpp       objectmodel.cpp       sqlsyntaxhighlighter.cpp
-		designeruiwidget.cpp     queryeditdialog.cpp	optionsdialog.cpp 
+		designeruiwidget.cpp     optionsdialog.cpp 
 		namevalidator.cpp command.cpp)
-QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  queryeditdialog.h          sqlsyntaxhighlighter.h
-			designerpage.h         exaroapplication.h  scripteditdialog.h
+QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  sqlsyntaxhighlighter.h
+			designerpage.h         exaroapplication.h  designerscriptwidget.h
 			designerquerywidget.h  mainwindow.h        scriptsyntaxhighlighter.h
 			designeruitype.h       objectmodel.h       sqldatabasedialog.h	optionsdialog.h
 			namevalidator.h)

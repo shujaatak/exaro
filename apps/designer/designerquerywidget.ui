@@ -56,23 +56,13 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="m_editButton">
-           <property name="toolTip">
-            <string>Edit Query</string>
-           </property>
+          <widget class="QToolButton" name="m_editName">
            <property name="text">
-            <string>Edit query</string>
+            <string>Edit name</string>
            </property>
            <property name="icon">
             <iconset resource="report.qrc">
              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="m_editName">
-           <property name="text">
-            <string>Edit name</string>
            </property>
           </widget>
          </item>
