@@ -90,7 +90,6 @@ private:
 	QUndoStack *undoStack;
 	QUndoView *undoView;
 	QToolBar *itemLayoutToolbar;
-//	Report::LayoutManager  * m_ltManager;
 
 public slots:
 	void selectLastObject();

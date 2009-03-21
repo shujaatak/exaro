@@ -54,9 +54,9 @@ private slots:
 public slots:
 	void createItem();
 	void deleteItem();
-//	void editItem();
 	void editName();
 	void resetConnection();
+	void fillTablesList();
 };
 
 }

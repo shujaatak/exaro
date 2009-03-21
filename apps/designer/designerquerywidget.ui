@@ -29,7 +29,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabQueries">
       <attribute name="title">
@@ -50,7 +50,7 @@
             <string>Create</string>
            </property>
            <property name="icon">
-            <iconset resource="report.qrc">
+            <iconset>
              <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
            </property>
           </widget>
@@ -61,7 +61,7 @@
             <string>Edit name</string>
            </property>
            <property name="icon">
-            <iconset resource="report.qrc">
+            <iconset>
              <normaloff>:/images/edit.png</normaloff>:/images/edit.png</iconset>
            </property>
           </widget>
@@ -75,7 +75,7 @@
             <string>Delete</string>
            </property>
            <property name="icon">
-            <iconset resource="report.qrc">
+            <iconset>
              <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
            </property>
           </widget>
@@ -102,7 +102,7 @@
             <string>Execute Query</string>
            </property>
            <property name="icon">
-            <iconset resource="report.qrc">
+            <iconset>
              <normaloff>:/images/validate.png</normaloff>:/images/validate.png</iconset>
            </property>
           </widget>
@@ -209,34 +209,108 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QListWidget" name="tablesList">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>150</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="sizeIncrement">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="b_dbTables">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>show user Tables</string>
+               </property>
+               <property name="text">
+                <string>T</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="b_dbViews">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Show Views</string>
+               </property>
+               <property name="text">
+                <string>V</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="b_dbSystem">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>show system Tables</string>
+               </property>
+               <property name="text">
+                <string>S</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QListWidget" name="tablesList">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="sizeIncrement">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QTableView" name="dataTable">
@@ -262,8 +336,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="report.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

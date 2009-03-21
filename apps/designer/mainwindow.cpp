@@ -77,14 +77,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_nameValidator = new NameValidator( this );
 	m_pe->setValidator( QVariant::String, m_nameValidator );
 
-	/*
-	m_dwQueryEditor = new QDockWidget( tr( "Query Editor" ), this );
-	m_dquery = new Report::DesignerQueryWidget( m_dwQueryEditor );
-	m_dwQueryEditor->setObjectName( "Query Editor" );
-	m_dwQueryEditor->setWidget( m_dquery );
-	m_dwQueryEditor->setAllowedAreas( Qt::AllDockWidgetAreas );
-	addDockWidget( Qt::BottomDockWidgetArea, m_dwQueryEditor );
-*/
 	m_dwUiEditor = new QDockWidget( tr( "Ui Editor" ), this );
 	m_dui = new Report::DesignerUiWidget( m_dwUiEditor );
 	m_dwUiEditor->setObjectName( "Ui Editor" );
@@ -141,9 +133,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( actionZoom_out, SIGNAL( triggered( bool ) ), SLOT( zoomOut() ) );
 	connect( actionZoom_original, SIGNAL( triggered( bool ) ), SLOT( zoomOriginal() ) );
 	connect( actionZoom_WYSIWYG, SIGNAL( triggered( bool ) ), SLOT( zoomWYSIWYG() ) );
-
-
-//	connect( actionEdit_script, SIGNAL( triggered( bool ) ), SLOT( editScript() ) );
 
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( saveReport() ) );
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( executeReport() ) );
@@ -209,7 +198,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_dwToolBox->toggleViewAction()->setIcon( QIcon( ":/images/button_tool.png" ) );
 	m_dwPropertyEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_property.png" ) );
-//	m_dwQueryEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_sql.png" ) );
 	m_dwUiEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_uieditor.png" ) );
 	m_dwObjectInspector->toggleViewAction()->setIcon( QIcon( ":/images/button_objects.png" ) );
 	m_dwUndoView->toggleViewAction()->setIcon( QIcon( ":/images/button_commands.png" ) );
@@ -217,14 +205,12 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	menuTools->addSeparator();
 	menuTools->addAction( m_dwToolBox->toggleViewAction() );
 	menuTools->addAction( m_dwPropertyEditor->toggleViewAction() );
-//	menuTools->addAction( m_dwQueryEditor->toggleViewAction() );
 	menuTools->addAction( m_dwUiEditor->toggleViewAction() );
 	menuTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	menuTools->addAction( m_dwUndoView->toggleViewAction() );
 
 	toolBarTools->addAction( m_dwToolBox->toggleViewAction() );
 	toolBarTools->addAction( m_dwPropertyEditor->toggleViewAction() );
-//	toolBarTools->addAction( m_dwQueryEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwUiEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	toolBarTools->addAction( m_dwUndoView->toggleViewAction() );
@@ -556,7 +542,6 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		return;
 	}
 
-	qDebug("version = %f", m_report->version());
 	if ((int)m_report->version() < (int)FILE_FORMAT_VERSION )
 	{
 	    QMessageBox::critical(this,"eXaro", tr("File has too old format version and can't be opened"), QMessageBox::Ok);
@@ -587,7 +572,6 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 	m_tw->setCurrentIndex( STATIC_TABS );
 
-//	refreshReportBeholders(m_report);
 	m_saveFile = report;
 	undoStack->clear();
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
@@ -805,7 +789,7 @@ void mainWindow::removePage()
 
 void mainWindow::currentChanged( int index )
 {
-    if ( index <  STATIC_TABS)		// query & script editor in tab0, tab1
+    if ( index <  STATIC_TABS)
     {
 	m_pe->setObject( 0 );
 	actionRemove_page->setEnabled( false);
@@ -890,7 +874,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 void mainWindow::_deletePage_( int index )
 {
-    if (index < STATIC_TABS)		// queryEditor in tab0 & one page
+    if (index < STATIC_TABS)
 	return;
 
     if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
