@@ -13,9 +13,8 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-
-#ifndef QUERYEDITDIALOG_H
-#define QUERYEDITDIALOG_H
+#ifndef DESIGNERSCRIPTWIDGET_H
+#define DESIGNERSCRIPTWIDGET_H
 
 #include <QDialog>
 #include <QAction>
@@ -25,21 +24,29 @@
 #include <QPushButton>
 #include <QSpacerItem>
 
-class SQLSyntaxHighlighter;
+class ScriptSyntaxHighlighter;
 
-class QueryEditDialog : public QDialog
+namespace Report
+{
+
+class DesignerScriptWidget : public QWidget
 {
 	Q_OBJECT
-
 public:
-	QueryEditDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
-	~QueryEditDialog();
+	DesignerScriptWidget(QWidget* parent = 0);
 
-	void setQuery(const QString & query);
-	QString query();
+	~DesignerScriptWidget();
+
+	QString text();
+	void setText(const QString & string);
+
+	bool isValid();
+
+//protected:
+//	void accept();
 
 private slots:
-	void showResults();
+	void validate();
 
 private:
 	QGridLayout *gridLayout;
@@ -49,7 +56,7 @@ private:
 	QPushButton *okButton;
 	QPushButton *cancelButton;
 
-	QAction * m_showResults;
+	QAction * m_validateAction;
 
 	QAction * m_undoAction;
 	QAction * m_redoAction;
@@ -57,8 +64,7 @@ private:
 	QAction * m_copyAction;
 	QAction * m_pasteAction;
 	QAction * m_cutAction;
-	SQLSyntaxHighlighter * m_syntax;
+	ScriptSyntaxHighlighter * m_syntax;
 };
-
+}
 #endif
-

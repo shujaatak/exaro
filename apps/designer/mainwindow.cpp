@@ -36,7 +36,7 @@
 
 #include "mainwindow.h"
 #include "designerpage.h"
-#include "scripteditdialog.h"
+//#include "scripteditdialog.h"
 #include "sqldatabasedialog.h"
 #include "iteminterface.h"
 #include "aboutdialog.h"
@@ -117,9 +117,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_tw = new QTabWidget( this );
 	setCentralWidget( m_tw );
 
-	m_dquery = new Report::DesignerQueryWidget( m_tw);
-	m_tw->addTab(m_dquery, tr("Queries"));
-
 	actionRemove_page->setEnabled( false );
 
 	connect( actionNew_report, SIGNAL( triggered( bool ) ), SLOT( newReport() ) );
@@ -144,7 +141,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( actionZoom_WYSIWYG, SIGNAL( triggered( bool ) ), SLOT( zoomWYSIWYG() ) );
 
 
-	connect( actionEdit_script, SIGNAL( triggered( bool ) ), SLOT( editScript() ) );
+//	connect( actionEdit_script, SIGNAL( triggered( bool ) ), SLOT( editScript() ) );
 
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( saveReport() ) );
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( executeReport() ) );
@@ -253,7 +250,13 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
 
-	newReport();
+	m_dquery = new Report::DesignerQueryWidget( m_tw);
+	m_tw->addTab(m_dquery, tr("Queries"));
+
+	m_dscript = new Report::DesignerScriptWidget( m_tw );
+	m_tw->addTab(m_dscript, tr("Script"));
+
+	//newReport();
 }
 
 void mainWindow::setupActions()
@@ -508,6 +511,7 @@ void mainWindow::newReport()
 	newPage();
 }
 
+/*
 void mainWindow::editScript()
 {
 	ScriptEditDialog se;
@@ -515,7 +519,7 @@ void mainWindow::editScript()
 	if ( QDialog::Accepted == se.exec() )
 		m_report->setScript( se.text() );
 }
-
+*/
 void mainWindow::connectItem( QObject * obj )
 {
 	connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
@@ -804,7 +808,7 @@ void mainWindow::removePage()
 
 void mainWindow::currentChanged( int index )
 {
-    if ( index < 1 )		// query editor in tab0
+    if ( index < 2 )		// query & script editor in tab0, tab1
     {
 	m_pe->setObject( 0 );
 	actionRemove_page->setEnabled( false);

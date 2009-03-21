@@ -27,6 +27,7 @@
 #include "ui_mainwindow.h"
 #include "propertyeditor.h"
 #include "designerquerywidget.h"
+#include "designerscriptwidget.h"
 #include "designeruiwidget.h"
 #include "objectmodel.h"
 #include "command.h"
@@ -70,6 +71,7 @@ private:
 	QToolBox * m_tb;
 	PropertyEditor::PropertyEditor *m_pe;
 	Report::DesignerQueryWidget * m_dquery;
+	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;
 	QObject * m_lastSelectedObject;
@@ -101,7 +103,7 @@ protected slots:
 	void zoomOut();
 	void zoomOriginal();
 	void zoomWYSIWYG();
-	void editScript();
+//	void editScript();
 	void saveReport();
 	void saveReportAs();
 	void openReport();
