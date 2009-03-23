@@ -291,12 +291,12 @@ private:
 	QVariantMap m_queries;
 	QVariantMap m_uis;
 	double m_version;
-	QList<BandInterface *> m_pageHeaderBands;
-	QList<BandInterface *> m_titleBands;
-	QList<BandInterface *> m_detailContainerBands;
-	QList<BandInterface *> m_summaryBands;
-	QList<BandInterface *> m_pageFooterBands;
-	QList<BandInterface *> m_pageOverlayBands;
+//	QList<BandInterface *> m_pageHeaderBands;
+//	QList<BandInterface *> m_titleBands;
+//	QList<BandInterface *> m_detailContainerBands;
+//	QList<BandInterface *> m_summaryBands;
+//	QList<BandInterface *> m_pageFooterBands;
+//	QList<BandInterface *> m_pageOverlayBands;
 	QObjectList m_objectList;
 	FunctionValues m_functionValues;
 	ReportValues m_values;

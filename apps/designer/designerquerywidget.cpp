@@ -45,7 +45,13 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 	m_dataTableModel = 0;
 
 	resetConnection();
+
+	QFont font("Arial", 12);
+	font.setFixedPitch(true);
+	editQuery->setFont(font);
+
 	m_syntax.setDocument(editQuery->document());
+	stackedWidget->setCurrentIndex(0);
 }
 
 DesignerQueryWidget::~DesignerQueryWidget()
@@ -75,6 +81,14 @@ void DesignerQueryWidget::fillTablesList()
 	tablesList->addItems(QSqlDatabase::database().tables(QSql::Views));
     if (b_dbSystem->isChecked ())
 	tablesList->addItems(QSqlDatabase::database().tables(QSql::SystemTables));
+}
+
+void DesignerQueryWidget::on_b_properties_toggled ( bool checked )
+{
+    if (checked)
+	stackedWidget->setCurrentIndex(1);
+    else
+	stackedWidget->setCurrentIndex(0);
 }
 
 
@@ -145,7 +159,10 @@ void DesignerQueryWidget::on_m_listWidget_currentItemChanged ( QListWidgetItem *
     if (!current)
 	return;
     if (previous)
+    {
 	m_queries[previous->text()] = editQuery->toPlainText();
+	//m_queries[previous->text()]
+    }
     editQuery->setPlainText(m_queries[current->text()].toString());
 }
 

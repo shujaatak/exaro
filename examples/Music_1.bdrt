@@ -2,7 +2,6 @@
 <StdReport>
     <properties>
         <objectName type="QString" >report</objectName>
-        <version type="qreal" >3.0</version>
         <name type="QString" >Имя отчета</name>
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
@@ -10,6 +9,7 @@
             <query_0 type="QString" >select * from song;</query_0>
         </queries>
         <uis type="QVariantMap" />
+        <version type="int" >3</version>
         <menuGroup type="int" >90</menuGroup>
         <order type="int" >90</order>
         <menus type="QStringList" >

@@ -250,10 +250,25 @@ QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 		QDomElement pro = doc->createElement("properties");
 
 		for (int p = 0;p < object->metaObject()->propertyCount();p++)
-			pro.appendChild(variatToDom(doc, object->metaObject()->property(p).name(), object->property(object->metaObject()->property(p).name())));
+			pro.appendChild(variantToDom(doc, object->metaObject()->property(p).name(), object->property(object->metaObject()->property(p).name())));
 
 		d.appendChild(pro);
 	}
+
+	/*
+	/// *** store SQL query
+	if (dynamic_cast<ReportInterface*>(object))
+	    foreach (QString queryName, dynamic_cast<ReportInterface*>(object)->queries().values())
+	    {
+		QDomElement pro = doc->createElement("queries");
+		query
+
+		for (int p = 0;p < object->metaObject()->propertyCount();p++)
+		    pro.appendChild(variantToDom(doc, object->metaObject()->property(p).name(), object->property(object->metaObject()->property(p).name())));
+
+		d.appendChild(pro);
+	    }
+*/
 
 	QList<BandInterface*> bands;
 

@@ -38,7 +38,9 @@ namespace Report
 {
 class SqlQuery : public QObject, public QSqlQuery
 {
-	Q_OBJECT
+    Q_OBJECT
+    Q_PROPERTY(QString parentQuery READ parentQuery WRITE setParentQuery)
+
 public:
 	SqlQuery(QObject *parent = 0, QSqlDatabase db = QSqlDatabase() );
 	~SqlQuery();
@@ -57,6 +59,9 @@ public:
 	Q_INVOKABLE QVariant value(int index) const;
 	Q_INVOKABLE QVariant value(const QString & field) const;
 
+	QString parentQuery();
+	void setParentQuery(QString pQuery);
+
 signals:
 	void beforeNext();
 	void afterNext();
@@ -68,6 +73,9 @@ signals:
 	void afterLast();
 	void beforeSeek(int index);
 	void afterSeek(int index);
+
+private:
+	QString m_parentQuery;
 
 };
 }

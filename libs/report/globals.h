@@ -50,7 +50,7 @@
 namespace Report
 {
 
-KONTAMABIL_EXPORTS QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant & value);
+KONTAMABIL_EXPORTS QDomElement variantToDom(QDomDocument * doc, const QString & name, const QVariant & value);
 KONTAMABIL_EXPORTS QVariant domToVariant(const QDomElement & dom);
 KONTAMABIL_EXPORTS bool typeIsNumber(QVariant::Type type);
 

@@ -43,6 +43,16 @@ SqlQuery::~SqlQuery()
 }
 
 
+QString SqlQuery::parentQuery()
+{
+    return m_parentQuery;
+}
+
+void SqlQuery::setParentQuery(QString pQuery)
+{
+    m_parentQuery = pQuery;
+}
+
 bool SqlQuery::exec()
 {
 	return QSqlQuery::exec();

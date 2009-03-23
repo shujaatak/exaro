@@ -43,6 +43,7 @@ public:
 	DesignerQueryWidget(QWidget* parent = 0, Qt::WFlags fl = 0);
 	~DesignerQueryWidget();
 
+
 	QMap <QString, QVariant> queries();
 	void setQueries(QMap <QString, QVariant> queries);
 
@@ -50,6 +51,7 @@ private slots:
 	void on_bQueryExec_clicked();
 	void on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous );
 	void on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous );
+	void on_b_properties_toggled ( bool checked );
 
 public slots:
 	void createItem();
