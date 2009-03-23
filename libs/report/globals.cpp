@@ -46,7 +46,7 @@
 namespace Report
 {
 
-QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant & value)
+QDomElement variantToDom(QDomDocument * doc, const QString & name, const QVariant & value)
 {
 	if (!doc)
 		return QDomElement();
@@ -117,7 +117,7 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				</tag_name>
 			*/
 			foreach(QString str, value.toStringList())
-				dom.appendChild(variatToDom(doc, "string", str));
+				dom.appendChild(variantToDom(doc, "string", str));
 			break;
 
 		case QVariant::ByteArray://<tag_name type="ByteArray">string_value</tag_name>
@@ -164,7 +164,7 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 		break;
 
 		case QVariant::Image:	//<tag_name type="Pixmap">base64png</tag_name>
-			return variatToDom(doc, name, QPixmap::fromImage(value.value<QImage>()));
+			return variantToDom(doc, name, QPixmap::fromImage(value.value<QImage>()));
 			break;
 
 		case QVariant::Brush:
@@ -207,29 +207,29 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				</gradient>
 			</tag_name>
 			*/
-			dom.appendChild(variatToDom(doc, "color", value.value<QBrush>().color()));
-			dom.appendChild(variatToDom(doc, "style", value.value<QBrush>().style()));
-			dom.appendChild(variatToDom(doc, "texture", value.value<QBrush>().texture()));
+			dom.appendChild(variantToDom(doc, "color", value.value<QBrush>().color()));
+			dom.appendChild(variantToDom(doc, "style", value.value<QBrush>().style()));
+			dom.appendChild(variantToDom(doc, "texture", value.value<QBrush>().texture()));
 			if (value.value<QBrush>().gradient() && value.value<QBrush>().gradient()->type()!=QGradient::NoGradient)
 			{
 				QDomElement gel=doc->createElement("gradient");
-				gel.appendChild(variatToDom(doc, "spread", value.value<QBrush>().gradient()->spread()));
-				gel.appendChild(variatToDom(doc, "coordinateMode", value.value<QBrush>().gradient()->coordinateMode()));
-				gel.appendChild(variatToDom(doc, "type", value.value<QBrush>().gradient()->type()));
+				gel.appendChild(variantToDom(doc, "spread", value.value<QBrush>().gradient()->spread()));
+				gel.appendChild(variantToDom(doc, "coordinateMode", value.value<QBrush>().gradient()->coordinateMode()));
+				gel.appendChild(variantToDom(doc, "type", value.value<QBrush>().gradient()->type()));
 				switch(value.value<QBrush>().gradient()->type())
 				{
 					case QGradient::LinearGradient:
-						gel.appendChild(variatToDom(doc, "start",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->start()));
-						gel.appendChild(variatToDom(doc, "final",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->finalStop()));
+						gel.appendChild(variantToDom(doc, "start",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->start()));
+						gel.appendChild(variantToDom(doc, "final",reinterpret_cast<const QLinearGradient*>(value.value<QBrush>().gradient())->finalStop()));
 						break;
 					case QGradient::RadialGradient:
-						gel.appendChild(variatToDom(doc, "center",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->center()));
-						gel.appendChild(variatToDom(doc, "radius",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->radius()));
-						gel.appendChild(variatToDom(doc, "focalPoint",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->focalPoint()));
+						gel.appendChild(variantToDom(doc, "center",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->center()));
+						gel.appendChild(variantToDom(doc, "radius",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->radius()));
+						gel.appendChild(variantToDom(doc, "focalPoint",reinterpret_cast<const QRadialGradient*>(value.value<QBrush>().gradient())->focalPoint()));
 						break;
 					case QGradient::ConicalGradient:
-						gel.appendChild(variatToDom(doc, "angle",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->angle()));
-						gel.appendChild(variatToDom(doc, "center",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->center()));
+						gel.appendChild(variantToDom(doc, "angle",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->angle()));
+						gel.appendChild(variantToDom(doc, "center",reinterpret_cast<const QConicalGradient*>(value.value<QBrush>().gradient())->center()));
 						break;
 					default:
 						break;
@@ -238,8 +238,8 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				foreach(QGradientStop stop, value.value<QBrush>().gradient()->stops())
 				{
 					QDomElement stp=doc->createElement("stop");
-					stp.appendChild(variatToDom(doc, "point",stop.first));
-					stp.appendChild(variatToDom(doc, "color", stop.second));
+					stp.appendChild(variantToDom(doc, "point",stop.first));
+					stp.appendChild(variantToDom(doc, "color", stop.second));
 					stops.appendChild(stp);
 				}
 				gel.appendChild(stops);
@@ -264,14 +264,14 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				<width>width_value</width>
 			</tag_name>
 			*/
-			dom.appendChild(variatToDom(doc, "brush", value.value<QPen>().brush()));
-			dom.appendChild(variatToDom(doc, "capStyle", value.value<QPen>().capStyle()));
-			dom.appendChild(variatToDom(doc, "color", value.value<QPen>().color()));
-			dom.appendChild(variatToDom(doc, "isCosmetic", value.value<QPen>().isCosmetic()));
-			dom.appendChild(variatToDom(doc, "joinStyle", value.value<QPen>().joinStyle()));
-			dom.appendChild(variatToDom(doc, "miterLimit", value.value<QPen>().miterLimit()));
-			dom.appendChild(variatToDom(doc, "style", value.value<QPen>().style()));
-			dom.appendChild(variatToDom(doc, "width", value.value<QPen>().width()));
+			dom.appendChild(variantToDom(doc, "brush", value.value<QPen>().brush()));
+			dom.appendChild(variantToDom(doc, "capStyle", value.value<QPen>().capStyle()));
+			dom.appendChild(variantToDom(doc, "color", value.value<QPen>().color()));
+			dom.appendChild(variantToDom(doc, "isCosmetic", value.value<QPen>().isCosmetic()));
+			dom.appendChild(variantToDom(doc, "joinStyle", value.value<QPen>().joinStyle()));
+			dom.appendChild(variantToDom(doc, "miterLimit", value.value<QPen>().miterLimit()));
+			dom.appendChild(variantToDom(doc, "style", value.value<QPen>().style()));
+			dom.appendChild(variantToDom(doc, "width", value.value<QPen>().width()));
 			break;
 
 		case QVariant::Map:
@@ -285,7 +285,7 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 			*/
 			foreach(QString key, value.toMap().uniqueKeys())
 				foreach(QVariant val, value.toMap().values(key))
-					dom.appendChild(variatToDom(doc, key, val));
+					dom.appendChild(variantToDom(doc, key, val));
 			break;
 
 		case QVariant::Region:
@@ -297,7 +297,7 @@ QDomElement variatToDom(QDomDocument * doc, const QString & name, const QVariant
 				</tag_name>
 			*/
 			foreach(QRect r, value.value<QRegion>().rects())
-				dom.appendChild(variatToDom(doc, "rect", r));
+				dom.appendChild(variantToDom(doc, "rect", r));
 			break;
 
 		default:
