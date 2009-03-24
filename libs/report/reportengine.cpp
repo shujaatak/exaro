@@ -240,7 +240,7 @@ bool ReportEngine::cmpBands(BandInterface * b1, BandInterface * b2)
 
 QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 {
-	if (!dynamic_cast<ReportInterface*>(object) && !dynamic_cast<PageInterface*>(object) && !dynamic_cast<ItemInterface*>(object))
+	if (!dynamic_cast<ReportInterface*>(object) && !dynamic_cast<SqlQuery*>(object) && !dynamic_cast<PageInterface*>(object) && !dynamic_cast<ItemInterface*>(object))
 		return QDomElement();
 
 	QDomElement d = doc->createElement(object->metaObject()->className());
@@ -254,21 +254,6 @@ QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 
 		d.appendChild(pro);
 	}
-
-	/*
-	/// *** store SQL query
-	if (dynamic_cast<ReportInterface*>(object))
-	    foreach (QString queryName, dynamic_cast<ReportInterface*>(object)->queries().values())
-	    {
-		QDomElement pro = doc->createElement("queries");
-		query
-
-		for (int p = 0;p < object->metaObject()->propertyCount();p++)
-		    pro.appendChild(variantToDom(doc, object->metaObject()->property(p).name(), object->property(object->metaObject()->property(p).name())));
-
-		d.appendChild(pro);
-	    }
-*/
 
 	QList<BandInterface*> bands;
 
@@ -318,14 +303,23 @@ void ReportEngine::setObjectPropertiesFromDom(QObject * object, const QDomElemen
 QObject * ReportEngine::objectFromDom(QObject * parent, const QDomElement & dom)
 {
 	QObject * obj = 0;
-
-	for (int r = 0;r < m_reports.size();r++)
-		if (dom.tagName() == m_reports[r]->metaObject()->className())
-		{
-			obj = m_reports[r]->createInstance(parent);
-			setObjectPropertiesFromDom(obj, dom);
-			break;
-		}
+#warning PLEASE REVIEW THIS !!!!
+	SqlQuery * q = new SqlQuery(parent);
+	if (dom.tagName() == q->metaObject()->className())
+	{
+		obj = q;
+		setObjectPropertiesFromDom(obj, dom);
+	}
+	else 
+		delete q;
+	if (!obj)
+		for (int r = 0;r < m_reports.size();r++)
+			if (dom.tagName() == m_reports[r]->metaObject()->className())
+			{
+				obj = m_reports[r]->createInstance(parent);
+				setObjectPropertiesFromDom(obj, dom);
+				break;
+			}
 
 	if (!obj)
 		for (int p = 0;p < m_pages.size();p++)

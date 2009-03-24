@@ -18,7 +18,6 @@
 #include <QMessageBox>
 
 #include "designerquerywidget.h"
-#include "queryeditdialog.h"
 
 namespace Report
 {

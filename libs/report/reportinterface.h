@@ -158,13 +158,17 @@ public:
 	 * Return the report queries
 	 * @return queries
 	 */
+	QList<SqlQuery *> _queries();
+
 	QVariantMap queries();
 	/**
 	 * Sets the report queries
 	 * @param queries report queries
 	 */
+	void _setQueries(QList<SqlQuery *> queries);
 	void setQueries(QVariantMap queries);
-
+	void addQuery(SqlQuery * query);
+	
 	/**
 	 * Return the report uis
 	 * @return
