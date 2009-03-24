@@ -348,7 +348,6 @@ void DelCommand::redo()
 
 	if ( !m_item || !m_parent )
 		return;
-qDebug("scene1 = %i",(int)m_item->scene());
 	if ( m_page )
 		m_page->removeItem( m_item );
 
@@ -360,7 +359,6 @@ qDebug("scene1 = %i",(int)m_item->scene());
 	m_domObject = doc.toString( 0 );
 
 
-qDebug("scene1 = %i",(int)m_item->scene());
 //	dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
 	Report::LayoutManager::ItemDelete(m_item, m_page);
 	//delete dynamic_cast<Report::ItemInterface*>( m_item );
@@ -392,7 +390,6 @@ void DelCommand::undo()
 	QObject * obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
 	connectItems(obj, m_mainWindow);
 	m_item = dynamic_cast<Report::ItemInterface*>( obj );
-		qDebug("scene1 = %i",(int)m_item->scene());
 
 	if ( dynamic_cast<Report::ItemInterface*>( m_parent ) )
 	{

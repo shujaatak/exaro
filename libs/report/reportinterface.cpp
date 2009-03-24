@@ -161,12 +161,12 @@ bool ReportInterface::exec()
 
 
 	// prepare queries
-	foreach(QString key, m_queries.keys())
+	foreach(Report::SqlQuery * qry, _queries())
 	{
-		SqlQuery * sql = new SqlQuery(this,m_sqlDatabase);
+/*		SqlQuery * sql = new SqlQuery(this,m_sqlDatabase);
 		sql->setObjectName(key);
-		sql->prepare(m_queries[key].toString());
-		m_scriptEngine->globalObject().setProperty(key, m_scriptEngine->newQObject(sql), QScriptValue::ReadOnly);
+		sql->prepare(m_queries[key].toString());*/
+		m_scriptEngine->globalObject().setProperty(qry->objectName(), m_scriptEngine->newQObject(qry), QScriptValue::ReadOnly);
 	}
 
 	//prepare uis
@@ -236,9 +236,9 @@ void ReportInterface::previewFinished()
 void ReportInterface::cleanUpObjects()
 {
 	foreach(QObject * obj, children())
-		if (dynamic_cast<SqlQuery*>(obj))
+/*		if (dynamic_cast<SqlQuery*>(obj))
 			delete dynamic_cast<SqlQuery*>(obj);
-		else
+		else*/
 			delete dynamic_cast<QWidget*>(obj);
 }
 
@@ -282,14 +282,32 @@ void ReportInterface::setAuthor(const QString & author)
 	m_author = author;
 }
 
+QList< SqlQuery* > ReportInterface::_queries() 
+{
+	return findChildren<SqlQuery*>();
+}
+
+
 QVariantMap ReportInterface::queries()
 {
 	return m_queries;
 }
 
+void ReportInterface::_setQueries(QList< Report::SqlQuery* > queries) 
+{
+	foreach(Report::SqlQuery* qry, queries)
+		qry->setParent(this);
+}
+
+
 void ReportInterface::setQueries(QVariantMap queries)
 {
 	m_queries = queries;
+}
+
+void ReportInterface::addQuery(SqlQuery * query)
+{
+	query->setParent(this);
 }
 
 QVariantMap ReportInterface::uis()
