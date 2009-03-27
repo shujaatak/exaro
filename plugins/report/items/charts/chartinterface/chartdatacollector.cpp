@@ -185,13 +185,13 @@ void ChartDataCollector::setupConnections()
 {
 	m_chartValues.clear();
 	m_otherValue.value=0;
-	if (m_chartDataSource!=FromStaticData && m_query.length() && findQuery(m_query))
+	if (m_chartDataSource!=FromStaticData && m_query.length() && findDataset(m_query))
 	{
-		findQuery(m_query)->disconnect();
-		connect(findQuery(m_query),SIGNAL(afterFirst()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterNext()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterPrevious()),SLOT(collectData()));
-		connect(findQuery(m_query),SIGNAL(afterLast()),SLOT(collectData()));
+		findDataset(m_query)->disconnect();
+		connect(findDataset(m_query),SIGNAL(afterFirst()),SLOT(collectData()));
+		connect(findDataset(m_query),SIGNAL(afterNext()),SLOT(collectData()));
+		connect(findDataset(m_query),SIGNAL(afterPrevious()),SLOT(collectData()));
+		connect(findDataset(m_query),SIGNAL(afterLast()),SLOT(collectData()));
 	}
 }
 void ChartDataCollector::addChartValue(const Report::ChartInterface::_chartValue & value)
@@ -227,7 +227,7 @@ void ChartDataCollector::clear()
 
 void ChartDataCollector::collectData()
 {
-	SqlQuery * qry=findQuery(m_query);
+	DataSet * qry=findDataset(m_query);
 	if (!qry)
 		return;
 

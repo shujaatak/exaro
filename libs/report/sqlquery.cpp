@@ -27,109 +27,164 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
+#include <QtSql>
 #include <QSqlRecord>
+#include <QSqlDatabase>
 
 #include "sqlquery.h"
 namespace Report
 {
-SqlQuery::SqlQuery(QObject *parent, QSqlDatabase db)
-		: QObject(parent), QSqlQuery(db)
+DataSet::DataSet(QObject *parent)
+		: QSqlQueryModel(parent)
 {
+    m_currentRow = 0;
+    m_isPopulated = false;
 }
 
 
-SqlQuery::~SqlQuery()
+DataSet::~DataSet()
 {
 }
 
+QString DataSet::text()
+{
+    return m_queryText;
+}
 
-QString SqlQuery::parentQuery()
+void DataSet::setText(QString str)
+{
+    m_queryText = str;
+}
+
+
+QString DataSet::parentQuery()
 {
     return m_parentQuery;
 }
 
-void SqlQuery::setParentQuery(QString pQuery)
+void DataSet::setParentQuery(QString pQuery)
 {
     m_parentQuery = pQuery;
 }
 
-bool SqlQuery::exec()
+void DataSet::setParentCondition(QStringList list)
 {
-	return QSqlQuery::exec();
+    m_parentCondition = list;
 }
 
-bool SqlQuery::exec(const QString & query)
+QStringList DataSet::parentCondition()
 {
-	return QSqlQuery::exec(query);
+    return m_parentCondition;
 }
 
-void SqlQuery::bindValue(const QString & placeholder, const QVariant & val, QSql::ParamType paramType)
+bool DataSet::populate()
 {
-	QSqlQuery::bindValue(placeholder, val, paramType);
+    setQuery(m_queryText);
+    bool ret = !lastError().isValid();
+    if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
+	while (canFetchMore())
+	    fetchMore();
+    m_isPopulated = ret;
+    return ret;
 }
 
-void SqlQuery::bindValue(int pos, const QVariant & val, QSql::ParamType paramType)
+bool DataSet::populate(const QString & query)
 {
-	QSqlQuery::bindValue(pos, val, paramType);
+    setText(query);
+    return populate();
 }
 
-bool SqlQuery::first()
+bool DataSet::isPopulated()
+{
+    return m_isPopulated;
+}
+
+bool DataSet::first()
 {
 	emit(beforeFirst());
-	bool ret=QSqlQuery::first();
+	m_currentRow = 0;
+	bool ret = size();
 	emit(afterFirst());
 	return ret;
 }
 
-bool SqlQuery::last()
+bool DataSet::last()
 {
 	emit(beforeLast());
-	bool ret=QSqlQuery::last();
+	m_currentRow = rowCount();
+	bool ret = !record(m_currentRow).isEmpty();
 	emit(afterLast());
 	return ret;
 }
 
-bool SqlQuery::next()
+bool DataSet::next()
 {
 	emit(beforeNext());
-	bool ret=QSqlQuery::next();
+	m_currentRow++;
+	bool ret = m_currentRow < size();
 	emit(afterNext());
 	return ret;
 }
 
-bool SqlQuery::previous()
+bool DataSet::previous()
 {
 	emit(beforePrevious());
-	bool ret=QSqlQuery::previous();
+	m_currentRow--;
+	bool ret = m_currentRow >= 0;
 	emit(afterPrevious());
 	return ret;
 }
 
-bool SqlQuery::prepare(const QString & query)
+/*
+bool DataSet::prepare(const QString & query)
 {
 	return QSqlQuery::prepare(query);
 }
+*/
 
-bool SqlQuery::seek(int index, bool relative)
+bool DataSet::seek(int index)
 {
 	emit(beforeSeek(index));
-	bool ret=QSqlQuery::seek(index, relative);
+	m_currentRow = index;
+	bool ret = !record(m_currentRow).isEmpty();
 	emit(afterSeek(index));
 	return ret;
 }
 
-int SqlQuery::size()
+int DataSet::size()
 {
-	return QSqlQuery::size();
+	return rowCount();
 }
 
-QVariant SqlQuery::value(int index) const
+QVariant DataSet::value(int index) const
 {
-	return QSqlQuery::value(index);
+    return record(m_currentRow).value(index);
 }
 
-QVariant SqlQuery::value(const QString & field) const
+QVariant DataSet::value(const QString & field) const
 {
-	return record().value(field);
+    return record(m_currentRow).value(field);
 }
+
+QVariant DataSet::lookaheadValue(int index) const
+{
+    return m_currentRow+1 < rowCount() && index < columnCount() ?  record(m_currentRow + 1).value(index) : QVariant::Invalid;
+}
+
+QVariant DataSet::lookaheadValue(const QString & field) const
+{
+    return m_currentRow+1 < rowCount() ?  record(m_currentRow + 1).value(field) : QVariant::Invalid;
+}
+
+QVariant DataSet::lookbackValue(int index) const
+{
+    return m_currentRow-1 < 0 && index < columnCount() ?  record(m_currentRow + 1).value(index) : QVariant::Invalid;
+}
+
+QVariant DataSet::lookbackValue(const QString & field) const
+{
+    return m_currentRow-1 < 0  ?  record(m_currentRow + 1).value(field) : QVariant::Invalid;
+}
+
+
 }

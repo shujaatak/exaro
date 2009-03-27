@@ -62,13 +62,13 @@ Picture::Picture(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 bool Picture::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 { 
     qDebug("Picture::prePaint(QPainter * painter)");
-    if (stringIsField(m_queryField))
+    if (stringIsField(m_datasetField))
     {
 	qDebug("isField");
-	QString query;
+	QString dataset;
 	QString field;
-	stringToField (m_queryField, &query, &field);
-	if (!m_image.loadFromData(ItemInterface::queryField(query,field).toByteArray()))
+	stringToField (m_datasetField, &dataset, &field);
+	if (!m_image.loadFromData(ItemInterface::datasetField(dataset,field).toByteArray()))
 	    qDebug("ERROR loading image from field!!!");
 	return ItemInterface::prePaint(painter);
     }
@@ -76,7 +76,7 @@ bool Picture::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMo
 
 bool Picture::postPaint()
 {
-    if (stringIsField(m_queryField))
+    if (stringIsField(m_datasetField))
 	m_image = QImage();
 }
 
@@ -349,13 +349,13 @@ void Picture::setFont(const QFont & font)
 	update();
 }
 
-QString Picture::queryField()
+QString Picture::datasetField()
 {
-    return m_queryField;
+    return m_datasetField;
 }
 
-void Picture::setQueryField(QString str)
+void Picture::setDatasetField(QString str)
 {
-    m_queryField = str;
+    m_datasetField = str;
 }
 Q_EXPORT_PLUGIN2(picture, Picture)

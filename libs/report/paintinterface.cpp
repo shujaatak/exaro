@@ -14,13 +14,18 @@ PaintInterface::PaintInterface(ReportInterface * report, QObject * parent)
     m_report = report;
 }
 
+PaintInterface::~PaintInterface()
+{
+    delete m_printer;
+}
 
 void PaintInterface::run()
 {
-
+    emit showProcess(tr("Init painter..."));
     m_report->m_doc.appendChild(m_report->m_doc.createComment("Author '" + m_report->author() + "'"));
 
-    m_report->pdf_file = new QTemporaryFile(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf", this);
+    #warning 'FIXME: review creating file in same thread'
+    m_report->pdf_file = new QTemporaryFile(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf", m_report);
     if (!m_report->pdf_file->open())
 	throw QString(tr("Can't create temporary files"));
 
@@ -69,22 +74,23 @@ void PaintInterface::processPage()
 
     foreach(BandInterface * band, listTop)
 	if (band->accommodationType() == band->AccomodationOnce && !bandDone.contains(band))
-	    if (band->query().isEmpty())
+	    if (band->dataset().isEmpty())
 		processBand(band, pmNormal);
     else
-	processQuery(band->query(), band);
+	processDataset(band->dataset(), band);
 
 }
 
 void PaintInterface::finish(QString error)
 {
+//    qDebug("PaintInterface::finish");
     showError(error);
     deleteLater () ;
 }
 
 void PaintInterface::initBands()
 {
-    qDebug("PaintInterface::initBands()");
+//    qDebug("PaintInterface::initBands()");
 
     foreach(BandInterface * band, listTop)
 	if (!band->init(this))
@@ -117,9 +123,9 @@ void PaintInterface::showError(QString err)
 
 void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 {
-    qDebug("PaintInterface::processBand");
 	if (!band /*|| m_reportCanceled*/)
 		return;
+//	qDebug("PaintInterface::processBand = %s", qPrintable(band->objectName()));
 	if (!band->isEnabled())
 	    return;
 
@@ -128,7 +134,7 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	#warning    "FIXME - need optimization and proceed child item only if band be paint"
 	foreach(QObject * obj, ((QObject*)band)->children())		//preProcess all child items
 	{
-	    qDebug("process child name=%s",qPrintable(obj->objectName()));
+//	    qDebug("process child name=%s",qPrintable(obj->objectName()));
 	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
 	    if (item)
 		if (!item->prePaint(&m_painter, pMode))
@@ -185,26 +191,24 @@ void PaintInterface::newPage()
 {
     postprocessCurrentPage();
     m_currentPageNumber++;
-//    m_report->m_splashScreen.showMessage(tr("Prepare page: %1").arg(m_currentPageNumber));
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, m_currentPageNumber), QScriptValue::ReadOnly);
     m_report->m_scriptEngine->globalObject().setProperty("_rpage_", QScriptValue(m_report->m_scriptEngine, m_report->m_scriptEngine->globalObject().property("_rpage_").toInteger() + 1), QScriptValue::ReadOnly);
     m_printer->newPage();
     freeSpace = m_currentPage->geometry();
     prepareCurrentPage();
-    emit showProcess(tr("Prepare page: %1").arg(m_currentPageNumber));
+
 }
 
 
 bool PaintInterface::canPaint(BandInterface * band)
 {
-    if (!(freeSpace.top() + band->geometry().height() <= freeSpace.bottom()))
-	    qDebug("freeSpace.top = %f, band.h=%f, free.bott=%f", freeSpace.top(), band->geometry().height(), freeSpace.bottom());
-	return (freeSpace.top() + band->geometry().height() <= freeSpace.bottom());
+    return (freeSpace.top() + band->geometry().height() <= freeSpace.bottom());
 }
 
 
 void PaintInterface::prepareCurrentPage()
 {
+    emit showProcess(tr("Prepare page: %1").arg(m_currentPageNumber));
     m_report->m_currentTop = m_currentPage->geometry().y();
     m_report->m_currentBottom = m_currentPage->geometry().bottom();
 
@@ -219,11 +223,10 @@ void PaintInterface::prepareCurrentPage()
 	    processBand(band);
     }
 
-    qDebug("size of  current group is %i", currentGroup.size());
+//    qDebug("size of  current group is %i", currentGroup.size());
 
     if (!currentGroup.isEmpty())
 	foreach (BandInterface * band, currentGroup)
-	   // if (band->reprintOnNewPage())
 		processBand(band, pmNewPage);
 }
 
@@ -254,58 +257,59 @@ void PaintInterface::paintObjects(ItemInterface * item, QPointF translate, const
 }
 
 
-void PaintInterface::processQuery(QString queryName, BandInterface * band )
+void PaintInterface::processDataset(QString datasetName, BandInterface * band )
 {
-    SqlQuery * query = m_report->findChild<SqlQuery *>(queryName);
-    if (!query)
+//    qDebug("PaintInterface::processDataset = %s", qPrintable(datasetName));
+    DataSet * dtst = m_report->findChild<DataSet *>(datasetName);
+    if (!dtst)
     {
 	QString bandName = band ? band->objectName(): "Unknown";
-	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(queryName).arg(bandName) );
+	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(datasetName).arg(bandName) );
     }
 
     //already exec()'d ?
-    if (!query->first())
-	if (!(query->exec() && query->first()))
-	    finish(tr("query \'%1\' exacution error:\n").arg(queryName).arg(query->lastError().text()));
+    if (!dtst->first())
+	if ( !(dtst->populate() && dtst->first()) )
+	    finish(tr("query \'%1\' execution error: %2").arg(datasetName).arg(dtst->lastError().text()));
 
-    QDomElement qryElement = m_report->m_doc.createElement("query");
-    qryElement.setAttribute("name", query->objectName());
+    QDomElement dtstElement = m_report->m_doc.createElement("dataset");
+    dtstElement.setAttribute("name", dtst->objectName());
     QDomElement rowElement = m_report->m_doc.createElement("row");
-    for (int i = 0;i < query->record().count();i++)
+    for (int i = 0;i < dtst->record().count();i++)
     {
 	QDomElement field = m_report->m_doc.createElement("field");
 	field.setAttribute("type", "columnName");
-	field.appendChild(m_report->m_doc.createTextNode(query->record().fieldName(i)));
+	field.appendChild(m_report->m_doc.createTextNode(dtst->record().fieldName(i)));
 	rowElement.appendChild(field);
     }
-    qryElement.appendChild(rowElement);
+    dtstElement.appendChild(rowElement);
 
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, 0), QScriptValue::ReadOnly);
 
-    m_currentQuery = query;
-    m_currentQueryRow = 0;
+    m_currentDataset = dtst;
+    m_currentDatasetRow = 0;
     m_currentLineNumber = 0;
 
     currentGroup.clear();
 
     foreach(BandInterface * band, listTop)
-	if (band->query() == queryName)
+	if (band->dataset() == datasetName)
 	    currentGroup.append(band);
 
     do
     {
-	m_currentQueryRow++;
+	m_currentDatasetRow++;
 	m_currentLineNumber++;
 	m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 
 	foreach(BandInterface * band, currentGroup)
 	    processBand(band);
 
-	m_report->exportRecord(query->record(), qryElement);
+	m_report->exportRecord(dtst->record(), dtstElement);
     }
-    while (query->next());
+    while (dtst->next());
 
-    m_report->m_exportNode.appendChild(qryElement);
+    m_report->m_exportNode.appendChild(dtstElement);
 
     foreach (BandInterface * band, currentGroup)
 	bandDone.append(band);
@@ -317,9 +321,9 @@ int PaintInterface::currentPageNumber()
     return m_currentPageNumber;
 }
 
-int PaintInterface::currentQueryRow()
+int PaintInterface::currentDatasetRow()
 {
-    return m_currentQueryRow;
+    return m_currentDatasetRow;
 }
 
 void PaintInterface::setDetailNumber(int num)
@@ -328,159 +332,3 @@ void PaintInterface::setDetailNumber(int num)
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 }
 
-/*
-void PaintInterface::exportRecord(const QSqlRecord & record, QDomElement & el)
-{
-	QDomElement rowElement = m_doc.createElement("row");
-	for (int i = 0;i < record.count();i++)
-	{
-		QDomElement field = m_doc.createElement("field");
-		field.setAttribute("type", typeIsNumber(record.field(i).value().type()) ? QString("float") : QString("string"));
-		field.appendChild(m_doc.createTextNode(record.field(i).value().toString()));
-		rowElement.appendChild(field);
-	}
-	el.appendChild(rowElement);
-}
-*/
-
-/*
-	foreach(BandInterface * detailContainerBand, m_detailContainerBands)
-	{
-		QList<BandInterface *> detailHeaders;
-		QList<BandInterface *> details;
-		QList<BandInterface *> detailFooters;
-		prepareCurrentPage();
-
-		m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
-
-		foreach(QObject * obj, ((QObject*)detailContainerBand)->children())
-		{
-			BandInterface * bd = dynamic_cast<BandInterface *>(obj);
-			if (!bd)
-				continue;
-			switch (bd->bandType())
-			{
-				case BandInterface::DetailHeader:
-					addOrderedBand(detailHeaders, bd);
-					break;
-				case BandInterface::Detail:
-					addOrderedBand(details, bd);
-					break;
-				case BandInterface::DetailFooter:
-					addOrderedBand(detailFooters, bd);
-					break;
-				default:
-					break;
-			}
-		}
-		SqlQuery * detailQuery = detailContainerBand->findQuery(detailContainerBand->query());
-		if (!detailQuery || !detailQuery->isActive())
-		{
-			// no query ?!?!?!?
-			foreach(BandInterface * band, detailHeaders)
-			{
-				if (!canPaint(band))
-					newPage();
-				processBand(band);
-			}
-			foreach(BandInterface * band, details)
-			{
-				if (!canPaint(band))
-					newPage();
-				processBand(band);
-			}
-
-			foreach(BandInterface * band, detailFooters)
-			{
-				if (!canPaint(band))
-					newPage();
-				processBand(band);
-			}
-			continue;
-		}
-//==
-		if (!detailQuery->isValid())
-			detailQuery->first();
-
-		QDomElement qryElement = m_doc.createElement("query");
-		qryElement.setAttribute("name", detailQuery->objectName());
-		QDomElement rowElement = m_doc.createElement("row");
-		for (int i = 0;i < detailQuery->record().count();i++)
-		{
-			QDomElement field = m_doc.createElement("field");
-			field.setAttribute("type", "columnName");
-			field.appendChild(m_doc.createTextNode(detailQuery->record().fieldName(i)));
-			rowElement.appendChild(field);
-		}
-		qryElement.appendChild(rowElement);
-
-		bool first=true;
-		do
-		{
-			foreach(BandInterface * band, detailFooters)
-			{
-				if (!band->isEnabled())
-				    continue;
-				if (!band->groupFieldValue().isValid())
-					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
-
-				if (band->groupFieldValue() != detailContainerBand->queryField(detailContainerBand->query(), band->groupField()))
-				{
-					if (!canPaint(band))
-						newPage();
-					processBand(band);
-					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
-				}
-			}
-
-			foreach(BandInterface * band, detailHeaders)
-				if (band->groupFieldValue() != detailContainerBand->queryField(detailContainerBand->query(), band->groupField()))
-				{
-					if (!band->isEnabled())
-					    continue;
-					if (!canPaint(band) || (!first && band->forceNewPage()))
-						newPage();
-					processBand(band);
-					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
-					if (band->resetDetailNumber())
-						m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
-				}
-
-			m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, m_scriptEngine->globalObject().property("_detailNumber_").toInteger() + 1), QScriptValue::ReadOnly);
-
-			foreach(BandInterface * band, details)
-			{
-				if (!band->isEnabled())
-				    continue;
-				if (!canPaint(band))
-				{
-					newPage();
-					foreach(BandInterface * band, detailHeaders)
-						if (band->reprintOnNewPage())
-							processBand(band);
-				}
-				processBand(band);
-			}
-			exportRecord(detailQuery->record(), qryElement);
-			first=false;
-		}
-		while (detailQuery->next());
-
-		m_exportNode.appendChild(qryElement);
-
-		foreach(BandInterface * band, detailFooters)
-		{
-			if (!band->isEnabled())
-			    continue;
-			if (!canPaint(band))
-				newPage();
-			processBand(band);
-		}
-
-		foreach(BandInterface * band, detailFooters)
-			band->setGroupFieldValue(QVariant());
-
-		foreach(BandInterface * band, detailHeaders)
-			band->setGroupFieldValue(QVariant());
-	}
-	*/

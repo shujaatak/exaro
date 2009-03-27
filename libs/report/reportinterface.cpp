@@ -60,6 +60,17 @@ static QScriptValue getSetDateFormat(QScriptContext *context, QScriptEngine *eng
 	return QScriptValue(engine, context->argument(0).toDateTime().toString(context->argument(1).toString()));
 }
 
+static QScriptValue abs(QScriptContext *context, QScriptEngine *engine)
+{
+	if (context->argumentCount() != 2)
+		return engine->undefinedValue();
+
+	return QScriptValue(engine, context->argument(0).toDateTime().toString(context->argument(1).toString()));
+}
+/// abs arctan cos exp frac int ln pi round sin trunk
+/// chr(int) compare (str, str), copy delete insert lengh lowercase namecase ord pos setlength trim uppercase
+///dec inc inputBox messageBox random varType
+//date dayof = 1..31 dayOfWeek daysInMonth monthOf now = date and time, time = curtime yearOf isLeapYear
 namespace Report
 {
 
@@ -159,14 +170,11 @@ bool ReportInterface::exec()
 			m_scriptEngine->importExtension(extention);
 		}
 
-
 	// prepare queries
-	foreach(Report::SqlQuery * qry, _queries())
+	foreach(Report::DataSet * dtst, datasets())
 	{
-/*		SqlQuery * sql = new SqlQuery(this,m_sqlDatabase);
-		sql->setObjectName(key);
-		sql->prepare(m_queries[key].toString());*/
-		m_scriptEngine->globalObject().setProperty(qry->objectName(), m_scriptEngine->newQObject(qry), QScriptValue::ReadOnly);
+	    m_scriptEngine->globalObject().setProperty(dtst->objectName(), m_scriptEngine->newQObject(dtst), QScriptValue::ReadOnly);
+	    qApp->processEvents();
 	}
 
 	//prepare uis
@@ -182,6 +190,7 @@ bool ReportInterface::exec()
 		QWidget *widget = loader.load(&buf);
 		if (widget)
 			m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
+		qApp->processEvents();
 	}
 
 	setScriptEngineGlobalVariables();
@@ -192,13 +201,10 @@ bool ReportInterface::exec()
 	if (m_scriptEngine->hasUncaughtException())
 		QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(m_scriptEngine->uncaughtExceptionLineNumber()), m_scriptEngine->uncaughtException().toString());
 
-
 	emit beforeExec();
 
 	if (paintInterface) delete paintInterface;
-
 	paintInterface = new PaintInterface(this);
-
 	connect(paintInterface, SIGNAL(finished ()), this, SLOT(previewFinished()));
 	connect(paintInterface, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
 
@@ -282,32 +288,33 @@ void ReportInterface::setAuthor(const QString & author)
 	m_author = author;
 }
 
-QList< SqlQuery* > ReportInterface::_queries() 
+QList< DataSet* > ReportInterface::datasets()
 {
-	return findChildren<SqlQuery*>();
+	return findChildren<DataSet*>();
 }
 
-
+/*
 QVariantMap ReportInterface::queries()
 {
 	return m_queries;
 }
-
-void ReportInterface::_setQueries(QList< Report::SqlQuery* > queries) 
+*/
+void ReportInterface::setDatasets(QList< Report::DataSet* > datasets)
 {
-	foreach(Report::SqlQuery* qry, queries)
-		qry->setParent(this);
+	foreach(Report::DataSet* dtst, datasets)
+		dtst->setParent(this);
 }
 
-
+/*
 void ReportInterface::setQueries(QVariantMap queries)
 {
 	m_queries = queries;
 }
+*/
 
-void ReportInterface::addQuery(SqlQuery * query)
+void ReportInterface::addDataset(DataSet * dataset)
 {
-	query->setParent(this);
+	dataset->setParent(this);
 }
 
 QVariantMap ReportInterface::uis()

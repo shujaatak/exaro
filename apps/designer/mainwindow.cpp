@@ -459,6 +459,7 @@ void mainWindow::setupDatabase()
 
 void mainWindow::executeReport()
 {
+    	m_dquery->sync();
 	m_report->exec();
 }
 
@@ -686,7 +687,7 @@ void mainWindow::saveReport()
 	if ( !m_saveFile.length() )
 		return;
 
-	m_report->setQueries( m_dquery->queries() );
+	m_dquery->sync();
 	m_report->setUis( m_dui->uis() );
 
 	if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
@@ -918,7 +919,7 @@ void mainWindow::on_actionLastConnect_triggered()
 
 void mainWindow::refreshReportBeholders(Report::ReportInterface* report)
 {
-    	m_dquery->setQueries( report->queries() );
+    	m_dquery->setReport( report );
 	m_dui->setUis( report->uis() );
 	m_pe->setObject( report );
 	m_nameValidator->setRootObject( report );

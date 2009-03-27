@@ -41,7 +41,7 @@ namespace Report
 
 struct ValueStruct
 {
-    QString query;	//if empty - use QtScript values
+    QString dataset;	//if empty - use QtScript values
     QString field;
     QList<qreal> list;
 };
@@ -136,12 +136,12 @@ public:
 	 * Return the query name
 	 * @return query name
 	 */
-	QString query();
+	QString dataset();
 	/**
 	 * Sets the query name
 	 * @param query query name
 	 */
-	void setQuery(const QString & query);
+	void setDataset(const QString & dataset);
 
 	bool deleting();
 
@@ -182,7 +182,7 @@ protected slots:
 private:
 	int m_order;
 	int m_indentation;
-	QString m_query;
+	QString m_dataset;
 	bool m_deleting;
 	TitleItem * m_titleItem;
 

@@ -240,7 +240,7 @@ bool ReportEngine::cmpBands(BandInterface * b1, BandInterface * b2)
 
 QDomElement ReportEngine::objectProperties(QObject * object, QDomDocument * doc)
 {
-	if (!dynamic_cast<ReportInterface*>(object) && !dynamic_cast<SqlQuery*>(object) && !dynamic_cast<PageInterface*>(object) && !dynamic_cast<ItemInterface*>(object))
+	if (!dynamic_cast<ReportInterface*>(object) && !dynamic_cast<DataSet*>(object) && !dynamic_cast<PageInterface*>(object) && !dynamic_cast<ItemInterface*>(object))
 		return QDomElement();
 
 	QDomElement d = doc->createElement(object->metaObject()->className());
@@ -304,7 +304,7 @@ QObject * ReportEngine::objectFromDom(QObject * parent, const QDomElement & dom)
 {
 	QObject * obj = 0;
 #warning PLEASE REVIEW THIS !!!!
-	SqlQuery * q = new SqlQuery(parent);
+	DataSet * q = new DataSet(parent);
 	if (dom.tagName() == q->metaObject()->className())
 	{
 		obj = q;

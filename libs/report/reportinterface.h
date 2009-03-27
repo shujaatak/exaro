@@ -69,7 +69,7 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QString name READ name WRITE setName)
 	Q_PROPERTY(QString author READ author WRITE setAuthor)
 	Q_PROPERTY(QString script READ script WRITE setScript DESIGNABLE false)
-	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
+//	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
 	Q_PROPERTY(int version READ version WRITE setVersion DESIGNABLE false)
 public:
@@ -158,16 +158,16 @@ public:
 	 * Return the report queries
 	 * @return queries
 	 */
-	QList<SqlQuery *> _queries();
+	QList<DataSet *> datasets();
 
-	QVariantMap queries();
+//	QVariantMap queries();
 	/**
 	 * Sets the report queries
 	 * @param queries report queries
 	 */
-	void _setQueries(QList<SqlQuery *> queries);
-	void setQueries(QVariantMap queries);
-	void addQuery(SqlQuery * query);
+	void setDatasets(QList<DataSet *> datasets);
+//	void setQueries(QVariantMap queries);
+	void addDataset(DataSet * dataset);
 	
 	/**
 	 * Return the report uis
@@ -292,7 +292,7 @@ private:
 	QString m_name;
 	QString m_author;
 	QString m_script;
-	QVariantMap m_queries;
+//	QVariantMap m_queries;
 	QVariantMap m_uis;
 	double m_version;
 //	QList<BandInterface *> m_pageHeaderBands;

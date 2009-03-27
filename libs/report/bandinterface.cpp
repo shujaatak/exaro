@@ -140,7 +140,7 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 
 	m_order = -1;
 	m_indentation = 0;
-	m_query = "";
+	m_dataset = "";
 
 	setHeight(20/UNIT);
 }
@@ -289,14 +289,14 @@ BandInterface::AccomodationType BandInterface::accommodationType()
     return AccomodationOnce;
 }
 
-QString BandInterface::query()
+QString BandInterface::dataset()
 {
-	return m_query;
+	return m_dataset;
 }
 
-void BandInterface::setQuery(const QString & query)
+void BandInterface::setDataset(const QString & dataset)
 {
-	m_query = query;
+	m_dataset = dataset;
 }
 
 void BandInterface::addAgregateValue(QString value)
@@ -305,7 +305,7 @@ void BandInterface::addAgregateValue(QString value)
     {
 	ValueStruct vStruct;
 	if (stringIsField(value))
-	    stringToField (value, &vStruct.query, &vStruct.field);
+	    stringToField (value, &vStruct.dataset, &vStruct.field);
 	m_agregateValues.insert(value, vStruct);
     }
 }
@@ -326,10 +326,10 @@ void BandInterface::accumulateAgregateValues()
 	i.next();
 	QString value = i.key();
 	ValueStruct * vStruct = &i.value();
-	if (vStruct->query.isEmpty())
+	if (vStruct->dataset.isEmpty())
 	    vStruct->list.append( scriptEngine()->globalObject().property(value).toNumber() );
 	else
-	    vStruct->list.append( queryField(vStruct->query, vStruct->field).toDouble() );
+	    vStruct->list.append( datasetField(vStruct->dataset, vStruct->field).toDouble() );
 
     }
     m_agregateCounter++;

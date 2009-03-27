@@ -289,7 +289,7 @@ public:
 	 * @param query query to search
 	 * @return a valid SqlQuery query pointer or 0.
 	 */
-	SqlQuery * findQuery(const QString & query);
+	DataSet * findDataset(const QString & dataset);
 
 	/**
 	 * Return the field from query
@@ -297,7 +297,7 @@ public:
 	 * @param field field to find
 	 * @return an QVariant value or an error message
 	 */
-	QVariant queryField(const QString & query, const QString & field);
+	QVariant datasetField(const QString & dataset, const QString & field);
 
 	/**
 	 * Return the report script engine

@@ -24,11 +24,12 @@ public:
     enum PrintMode {pmNormal, pmNewPage, pmClosePage, pmReportEnd, pmCheckIteration};
 public:
     PaintInterface(ReportInterface * report, QObject * parent = 0);
+    ~PaintInterface();
 
     void prepareCurrentPage();
     void postprocessCurrentPage();
     int currentPageNumber();
-    int currentQueryRow();
+    int currentDatasetRow();
     void setDetailNumber(int num);
     //QString currentBandNameInThead();
     //void checkAllIteration(QString queryName = QString());  //add band to array and process it in all iteration in query queryName
@@ -47,7 +48,7 @@ private:
     void processBand(BandInterface * band, PrintMode pMode = pmNormal);
     void initBands();
     void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
-    void processQuery(QString queryName, BandInterface * band = 0);
+    void processDataset(QString datasetName, BandInterface * band = 0);
     bool canPaint(BandInterface * band);
     void processPage();
 //    void exportRecord(const QSqlRecord & record, QDomElement & el);
@@ -62,8 +63,8 @@ private:
     ReportInterface * m_report;
     int m_currentPageNumber;
 
-    SqlQuery * m_currentQuery;
-    int m_currentQueryRow;	    // can't be changed - use for positioning in query
+    DataSet * m_currentDataset;
+    int m_currentDatasetRow;	    // can't be changed - use for positioning in query
     int m_currentLineNumber;	    //can be changed by Bands or in user script
     BandInterface * currentBand;
     PageInterface * m_currentPage;
