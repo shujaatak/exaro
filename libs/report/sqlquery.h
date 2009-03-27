@@ -27,40 +27,54 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#ifndef SQLQUERY_H
-#define SQLQUERY_H
+#ifndef DATASET_H
+#define DATASET_H
 
 #include <QObject>
-#include <QSqlQuery>
+#include <QSqlQueryModel>
 #include <QVariant>
+#include <QStringList>
 
 namespace Report
 {
-class SqlQuery : public QObject, public QSqlQuery
+class DataSet : public QSqlQueryModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString text READ text WRITE setText)
     Q_PROPERTY(QString parentQuery READ parentQuery WRITE setParentQuery)
+    Q_PROPERTY(QStringList parentCondition READ parentCondition WRITE setParentCondition)
 
 public:
-	SqlQuery(QObject *parent = 0, QSqlDatabase db = QSqlDatabase() );
-	~SqlQuery();
+	DataSet(QObject *parent = 0);
+	~DataSet();
 
-	Q_INVOKABLE bool exec();
-	Q_INVOKABLE bool exec(const QString & query);
-	Q_INVOKABLE void bindValue(const QString & placeholder, const QVariant & val, QSql::ParamType paramType = QSql::In);
-	Q_INVOKABLE void bindValue(int pos, const QVariant & val, QSql::ParamType paramType = QSql::In);
+//	Q_INVOKABLE bool exec();
+//	Q_INVOKABLE bool exec(const QString & query);
+//	Q_INVOKABLE void bindValue(const QString & placeholder, const QVariant & val, QSql::ParamType paramType = QSql::In);
+//	Q_INVOKABLE void bindValue(int pos, const QVariant & val, QSql::ParamType paramType = QSql::In);
 	Q_INVOKABLE bool first();
 	Q_INVOKABLE bool last();
 	Q_INVOKABLE bool next();
 	Q_INVOKABLE bool previous();
-	Q_INVOKABLE bool prepare(const QString & query);
-	Q_INVOKABLE bool seek(int index, bool relative = false);
+	Q_INVOKABLE bool populate();
+	Q_INVOKABLE bool populate(const QString & query);
+	Q_INVOKABLE bool isPopulated();
+//	Q_INVOKABLE bool prepare(const QString & query);
+	Q_INVOKABLE bool seek(int index);
 	Q_INVOKABLE int size();
 	Q_INVOKABLE QVariant value(int index) const;
 	Q_INVOKABLE QVariant value(const QString & field) const;
+	Q_INVOKABLE QVariant lookaheadValue(int index) const;
+	Q_INVOKABLE QVariant lookaheadValue(const QString & field) const;
+	Q_INVOKABLE QVariant lookbackValue(int index) const;
+	Q_INVOKABLE QVariant lookbackValue(const QString & field) const;
 
-	QString parentQuery();
-	void setParentQuery(QString pQuery);
+	QString	    parentQuery();
+	void	    setParentQuery(QString pQuery);
+	QStringList parentCondition();
+	void	    setParentCondition(QStringList str);
+	QString	    text();
+	void	    setText(QString str);
 
 signals:
 	void beforeNext();
@@ -76,6 +90,10 @@ signals:
 
 private:
 	QString m_parentQuery;
+	QStringList m_parentCondition;
+	QString m_queryText;
+	int m_currentRow;
+	bool m_isPopulated;
 
 };
 }

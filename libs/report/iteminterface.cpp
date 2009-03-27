@@ -374,7 +374,7 @@ qreal ItemInterface::minWidth() const
     return m_minWidth;
 }
 
-SqlQuery * ItemInterface::findQuery(const QString & query)
+DataSet * ItemInterface::findDataset(const QString & dataset)
 {
 	QObject * p = parent();
 	while (p)
@@ -385,21 +385,21 @@ SqlQuery * ItemInterface::findQuery(const QString & query)
 	}
 
 	if (p)
-		return p->findChild<SqlQuery *>(query);
+		return p->findChild<DataSet *>(dataset);
 	return 0;
 }
 
-QVariant ItemInterface::queryField(const QString & query, const QString & field)
+QVariant ItemInterface::datasetField(const QString & dataset, const QString & field)
 {
-	SqlQuery * qry = findQuery(query);
+	DataSet * dtst = findDataset(dataset);
 
-	if (!qry)
-		return tr("Query '%1' not found").arg(query);
+	if (!dtst)
+		return tr("Query '%1' not found").arg(dataset);
 
-	if (!qry->record().field(field).isValid())
-		return tr("Field '%1' not found").arg(query);
+	if (!dtst->record().field(field).isValid())
+		return tr("Field '%1' not found").arg(dataset);
 
-	return qry->value(field);
+	return dtst->value(field);
 }
 
 int ItemInterface::opacity()
@@ -553,7 +553,7 @@ bool ItemInterface::stringToField (QString str, QString * query, QString * field
 
 QString ItemInterface::processString(QString str)
 {
-    while (str.contains(expBegin))				//lookup for insertion in text
+    while (str.contains(expBegin))
     {
 	QString firstPart = str.section(expBegin,0,0);
 	QString secondPart = str.section(expBegin,1);
@@ -561,9 +561,7 @@ QString ItemInterface::processString(QString str)
 
 	QString fourPart = secondPart.section(expEnd,1);
 
-//	qDebug("============= before calculate===== %s",qPrintable(insertion));
 	insertion = calculateAgregateFunctions(insertion, this);
-//	qDebug("============= after calculate===== %s",qPrintable(insertion));
 
 	QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
 	reField.setMinimal(true);
@@ -571,21 +569,19 @@ QString ItemInterface::processString(QString str)
 	int pos = 0;
 	while ((pos = reField.indexIn(insertion, pos)) != -1)
 	{
-	    QString query = reField.cap(0).section(".",0,0);
+	    QString dataset = reField.cap(0).section(".",0,0);
 	    QString field = reField.cap(0).section(".",1,1).remove("\"");
-//	    qDebug("query = \'%s\'; field = \'%s\'", qPrintable(query), qPrintable(field));
-	    insertion.replace(reField.cap(0), queryField(query,field).toString());
+	    insertion.replace(reField.cap(0), datasetField(dataset,field).toString());
 	    pos += reField.matchedLength();
 	}
 	
-//	qDebug("============= after field parse===== %s",qPrintable(insertion));
-	
 	QString evaluateStr;
-	
+	#warning 'FIXMI: need optimize checking for script present'
 	if (scriptEngine()->canEvaluate(insertion))
 		evaluateStr = scriptEngine()->evaluate(insertion).toString();
 	if (!scriptEngine()->hasUncaughtException())
 	    insertion = evaluateStr;
+//	else qWarning("QtScript has exeption in:\n%s",qPrintable(evaluateStr));
 
 	str = firstPart + insertion + fourPart;
     }
@@ -620,7 +616,6 @@ void ItemInterface::storeAgregateValuesFromString(QString str)
 
 QString ItemInterface::calculateAgregateFunctions(QString str, ItemInterface* item)
 {
-//    qDebug("calculateAgregateFunctions(%s)",qPrintable(str));
     QString newStr = str;
     QRegExp reField("(sum|min|max|avg|count)\\((.*)\\)", Qt::CaseInsensitive);
     reField.setMinimal(true);
@@ -631,13 +626,11 @@ QString ItemInterface::calculateAgregateFunctions(QString str, ItemInterface* it
 	QString value = reField.cap(0);
 	QString func = reField.cap(1).toLower().trimmed();
 	QString args = reField.cap(2);
-//	qDebug("calculating function = \'%s\' with arguments = \'%s\'", qPrintable(func), qPrintable(args));
 	qreal result = 0.0;
 
 	if (func == "sum")
 	{
 	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
-//	    qDebug("number of elements = %i", item->agregateValues(arg).count());
 	    foreach (qreal val, item->agregateValues(arg))
 		result += val;
 	};
@@ -674,7 +667,6 @@ QString ItemInterface::calculateAgregateFunctions(QString str, ItemInterface* it
 
 void ItemInterface::addAgregateValue(QString value)
 {
-//    qDebug("ItemInterface::addAgregateValue(%s)",qPrintable(value));
     if (dynamic_cast<Report::BandInterface*>(parentItem()) && !value.isEmpty())
 	dynamic_cast<Report::BandInterface*>(parentItem())->addAgregateValue(value);
 }

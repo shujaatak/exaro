@@ -5,9 +5,6 @@
         <name type="QString" >Имя отчета</name>
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
-        <queries type="QVariantMap" >
-            <query_0 type="QString" >select * from song;</query_0>
-        </queries>
         <uis type="QVariantMap" />
         <version type="int" >3</version>
         <menuGroup type="int" >90</menuGroup>
@@ -87,7 +84,7 @@
                         <reprintOnNewPage type="bool" >false</reprintOnNewPage>
                         <resetDetailNumber type="bool" >false</resetDetailNumber>
                         <forceNewPage type="bool" >false</forceNewPage>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" >query_0</dataset>
                     </properties>
                     <children>
                         <Memo>
@@ -169,7 +166,7 @@
                         <reprintOnNewPage type="bool" >true</reprintOnNewPage>
                         <resetDetailNumber type="bool" >true</resetDetailNumber>
                         <forceNewPage type="bool" >false</forceNewPage>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" >query_0</dataset>
                     </properties>
                     <children>
                         <Memo>
@@ -247,7 +244,7 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >2</order>
                         <indentation type="int" >0</indentation>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" >query_0</dataset>
                         <zebra type="bool" >true</zebra>
                     </properties>
                     <children>
@@ -403,7 +400,7 @@
                         <order type="int" >3</order>
                         <indentation type="int" >0</indentation>
                         <condition type="QString" >[query_0."album"]</condition>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" >query_0</dataset>
                     </properties>
                     <children>
                         <Memo>
@@ -831,5 +828,13 @@
                 </PageFooter>
             </children>
         </Page>
+        <Report::DataSet>
+            <properties>
+                <objectName type="QString" >query_0</objectName>
+                <text type="QString" >select * from song;</text>
+                <parentQuery type="QString" ></parentQuery>
+                <parentCondition type="QStringList" />
+            </properties>
+        </Report::DataSet>
     </children>
 </StdReport>

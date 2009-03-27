@@ -71,17 +71,15 @@ bool DetailFooter::prePaint(QPainter * painter, Report::PaintInterface::PrintMod
 
 	    accumulateAgregateValues();
 
-	    if (!m_condition.isEmpty())
+	    if (!m_condition.isEmpty() && !dataset().isEmpty())
 	    {
-		m_groupValue = processString(m_condition);	    
-		findQuery(query())->next();		    // query lookahead
-
+		m_groupValue = processString(m_condition);
+		findDataset(dataset())->next();		    // query lookahead
 		if (m_groupValue != processString(m_condition))
 		    ok = true;
 		else
 		    ok = false;
-
-		findQuery(query())->previous();		    //back
+		findDataset(dataset())->previous();		    //back
 	    }
 	    else
 		ok = true;

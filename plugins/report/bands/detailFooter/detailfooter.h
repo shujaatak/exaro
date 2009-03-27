@@ -36,8 +36,8 @@ class DetailFooter : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-	Q_PROPERTY(QString condition READ condition WRITE setCondition)
-	Q_PROPERTY(QString query READ query WRITE setQuery);
+	Q_PROPERTY(QString condition READ condition WRITE setCondition);
+	Q_PROPERTY(QString dataset READ dataset WRITE setDataset);
 
 public:
 	DetailFooter(QGraphicsItem* parent = 0, QObject* parentObject = 0);

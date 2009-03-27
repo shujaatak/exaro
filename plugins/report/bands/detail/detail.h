@@ -36,7 +36,7 @@ class Detail : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
-	Q_PROPERTY(QString query READ query WRITE setQuery);
+	Q_PROPERTY(QString dataset READ dataset WRITE setDataset);
 	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
 
 public:

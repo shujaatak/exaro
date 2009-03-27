@@ -26,15 +26,18 @@
 namespace Report
 {
 
+class ReportInterface;
+
 class DesignerQueryWidget : public QWidget, public Ui::designerQueryWidget
 {
 	Q_OBJECT
 
 private:
-	QMap <QString, QVariant> m_queries;
+//	QMap <QString, QVariant> m_queries;
 	SQLSyntaxHighlighter m_syntax;
 	QSqlQueryModel 	m_queryModel;
 	QSqlTableModel*	m_dataTableModel;
+	ReportInterface * m_report;
 
 protected:
 	void refreshButtons();
@@ -44,8 +47,10 @@ public:
 	~DesignerQueryWidget();
 
 
-	QMap <QString, QVariant> queries();
-	void setQueries(QMap <QString, QVariant> queries);
+	void setReport(ReportInterface * report);
+
+//	QMap <QString, QVariant> queries();
+//	void setQueries(QMap <QString, QVariant> queries);
 
 private slots:
 	void on_bQueryExec_clicked();
@@ -59,6 +64,7 @@ public slots:
 	void editName();
 	void resetConnection();
 	void fillTablesList();
+	void sync();
 };
 
 }

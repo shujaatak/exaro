@@ -18,12 +18,14 @@
 #include <QMessageBox>
 
 #include "designerquerywidget.h"
+#include "reportinterface.h"
+#include "reportengine.h"
 
 namespace Report
 {
 
 DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
-		: QWidget(parent, fl), Ui::designerQueryWidget()
+		: QWidget(parent, fl), Ui::designerQueryWidget(), m_report(0)
 {
 	setupUi(this);
 	setWindowTitle(tr("Queries"));
@@ -31,7 +33,6 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 	refreshButtons();
 	connect(m_createButton, SIGNAL(clicked()), this, SLOT(createItem()));
 	connect(m_deleteButton, SIGNAL(clicked()), this, SLOT(deleteItem()));
-//	connect(m_editButton, SIGNAL(clicked()), this, SLOT(editItem()));
 	connect(m_editName, SIGNAL(clicked()), this, SLOT(editName()));
 
 	connect(b_dbTables, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
@@ -45,7 +46,7 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 
 	resetConnection();
 
-	QFont font("Arial", 12);
+	QFont font("Arial", 10);
 	font.setFixedPitch(true);
 	editQuery->setFont(font);
 
@@ -55,6 +56,23 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 
 DesignerQueryWidget::~DesignerQueryWidget()
 {
+}
+
+void DesignerQueryWidget::setReport(ReportInterface * report)
+{
+    m_report = report;
+    m_listWidget->clear();
+    editQuery->clear();
+    foreach(DataSet * q, m_report->datasets())
+    {
+	QListWidgetItem * i = new QListWidgetItem();
+	i->setText(q->objectName());
+	m_listWidget->addItem(i);
+	m_listWidget->setCurrentItem(i);
+    }
+
+    resetConnection();
+    refreshButtons();
 }
 
 void DesignerQueryWidget::resetConnection()
@@ -155,108 +173,95 @@ void DesignerQueryWidget::on_bQueryExec_clicked()
 
 void DesignerQueryWidget::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
-    if (!current)
+    if (!current || !m_report)
 	return;
+
+    qDebug("DesignerQueryWidget::on_m_listWidget_currentItemChanged");
     if (previous)
     {
-	m_queries[previous->text()] = editQuery->toPlainText();
-	//m_queries[previous->text()]
+	DataSet * q = m_report->findChild<DataSet *>(previous->text());
+	if (q)
+	    q->setText(	editQuery->toPlainText() );
+	else
+	    qWarning("Cant find query named \'%s\'", qPrintable(previous->text()));
     }
-    editQuery->setPlainText(m_queries[current->text()].toString());
+    DataSet * q = m_report->findChild<DataSet *>(current->text());
+    if (q)
+	editQuery->setPlainText(q->text());
+    else
+	qWarning("Cant find query named \'%s\'", qPrintable(current->text()));
 }
 
-/*
-void DesignerQueryWidget::editItem()
-{
-	QueryEditDialog d;
-	d.setQuery(m_queries[m_listWidget->currentItem()->text()].toString());
-
-	if (QDialog::Accepted == d.exec())
-		m_queries[m_listWidget->currentItem()->text()] = d.query();
-}
-*/
-/*
-void DesignerQueryWidget::on_m_listWidget_currentTextChanged ( const QString & currentText )
-{
-    QString query = m_queries[currentText].toString();
-    m_queries.remove(m_listWidget->currentItem()->text());
-    m_queries[currentText] = query;
-    m_listWidget->currentItem()->setText(text);
-}
-*/
 
 void DesignerQueryWidget::editName()
 {
-	bool ok;
-	QString text = QInputDialog::getText(this, tr("Query object"), tr("query name:"), QLineEdit::Normal, m_listWidget->currentItem()->text(), &ok);
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Query object"), tr("query name:"), QLineEdit::Normal, m_listWidget->currentItem()->text(), &ok);
 
-	if (!ok || text.isEmpty())
-		return;
+    if (!ok || text.isEmpty())
+	return;
 
-	QString query = m_queries[m_listWidget->currentItem()->text()].toString();
-	m_queries.remove(m_listWidget->currentItem()->text());
-	m_queries[text] = query;
+    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    if (q)
+    {
+	q->setObjectName(text);
 	m_listWidget->currentItem()->setText(text);
+    }
+    else
+	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+
 }
 
 void DesignerQueryWidget::refreshButtons()
 {
 	m_deleteButton->setEnabled(m_listWidget->count());
-//	m_editButton->setEnabled(m_listWidget->count());
 }
 
 
 void DesignerQueryWidget::createItem()
 {
-	bool ok;
-	QString text = QInputDialog::getText(this, tr("Create an query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(m_listWidget->count()), &ok);
+    Q_ASSERT(m_report);
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Create an query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(m_listWidget->count()), &ok);
 
-	if (!ok || text.isEmpty())
-		return;
+    if (!ok || text.isEmpty())
+	return;
 
-	QListWidgetItem * i = new QListWidgetItem();
-//	i->setFlags (i->flags () | Qt::ItemIsEditable);
-	i->setText(text);
-
-	m_listWidget->addItem(i);
-
-	m_listWidget->setCurrentItem(i);
-
-	refreshButtons();
-}
-
-QMap <QString, QVariant> DesignerQueryWidget::queries()
-{
-	return m_queries;
-}
-
-void DesignerQueryWidget::setQueries(QMap <QString, QVariant> queries)
-{
-	m_queries = queries;
-	m_listWidget->clear();
-	foreach(QString keys, m_queries.keys())
-	{
-	    QListWidgetItem * i = new QListWidgetItem();
-//	    i->setFlags (i->flags () | Qt::ItemIsEditable);
-	    i->setText(keys);
-	    m_listWidget->addItem(i);
-	}
-	if (m_listWidget->count())
-		m_listWidget->setCurrentRow(0);
-	refreshButtons();
+    DataSet * q = new DataSet();
+    m_report->addDataset(q);
+    q->setObjectName(ReportEngine::uniqueName(text, m_report));
+    QListWidgetItem * i = new QListWidgetItem();
+    //	i->setFlags (i->flags () | Qt::ItemIsEditable);
+    i->setText(q->objectName());
+    m_listWidget->addItem(i);
+    m_listWidget->setCurrentItem(i);
+    refreshButtons();
 }
 
 void DesignerQueryWidget::deleteItem()
 {
+    Q_ASSERT(m_report);
+    if (QMessageBox::Ok != QMessageBox::question(this, tr("eXaro"), tr("Delete current query ?"), QMessageBox::Ok | QMessageBox::Cancel))
+	return;
 
-	if (QMessageBox::Ok != QMessageBox::question(this, tr("eXaro"), tr("Delete current query ?"), QMessageBox::Ok | QMessageBox::Cancel))
-		return;
-
-	m_queries.remove(m_listWidget->currentItem()->text());
-
+    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    if (q)
+    {
 	delete m_listWidget->currentItem();
-
+	delete q;
 	refreshButtons();
+    }
+    else
+	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+}
+
+void DesignerQueryWidget::sync()
+{
+    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    if (q)
+	q->setText( editQuery->toPlainText() );
+    else
+	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
 }
 
 }
