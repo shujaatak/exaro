@@ -209,6 +209,10 @@ set(INSTALL_PLUGINS_EXPORT_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}
                                   LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report/export"
                                   ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/report/export" COMPONENT Devel )
 
+set(INSTALL_PLUGINS_DATASET_DEFAULT_ARGS  RUNTIME DESTINATION "${BIN_INSTALL_DIR}/report/dataset"
+                                  LIBRARY DESTINATION "${LIB_INSTALL_DIR}/report/dataset"
+                                  ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/report/dataset" COMPONENT Devel )
+
 
 
 # on the Mac support an extra install directory for application bundles starting with cmake 2.6

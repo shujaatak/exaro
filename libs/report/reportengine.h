@@ -38,6 +38,7 @@
 #include "pageinterface.h"
 #include "iteminterface.h"
 #include "bandinterface.h"
+#include "dataset.h"
 #include "globals.h"
 
 namespace Report
@@ -67,6 +68,11 @@ public:
 	 * @return report
 	 */
 	const QList<Report::ReportInterface*> & reports() const;
+	/**
+	 * Return a list o dataset plugins
+	 * @return report
+	 */
+	const QList<Report::DataSet*> & datasets() const;
 
 	/**
 	 * Save the report
@@ -109,6 +115,7 @@ public:
 	void copy(QObject* object);
 
 	ItemInterface * findItemByClassName(const char * name);
+	DataSet * findDatasetByClassName(const char * name);
 private:
 	static bool cmpBands(BandInterface * b1, BandInterface * b2);
 
@@ -116,6 +123,7 @@ private:
 	QMap<QString, ItemInterface*> m_items;
 	QList<PageInterface*> m_pages;
 	QList<ReportInterface*> m_reports;
+	QList<DataSet*> m_datasets;
 	QString lastObject;
 };
 
