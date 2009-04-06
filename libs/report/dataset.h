@@ -30,51 +30,46 @@
 #ifndef DATASET_H
 #define DATASET_H
 
+#include <QAbstractTableModel>
 #include <QObject>
-#include <QSqlQueryModel>
 #include <QVariant>
 #include <QStringList>
 
+class DataSetEditor;
+
 namespace Report
 {
-class DataSet : public QSqlQueryModel
+class DataSet : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText)
-    Q_PROPERTY(QString parentQuery READ parentQuery WRITE setParentQuery)
+    Q_PROPERTY(QString parentDataset READ parentDataset WRITE setParentDataset)
     Q_PROPERTY(QStringList parentCondition READ parentCondition WRITE setParentCondition)
 
 public:
 	DataSet(QObject *parent = 0);
 	~DataSet();
 
-//	Q_INVOKABLE bool exec();
-//	Q_INVOKABLE bool exec(const QString & query);
-//	Q_INVOKABLE void bindValue(const QString & placeholder, const QVariant & val, QSql::ParamType paramType = QSql::In);
-//	Q_INVOKABLE void bindValue(int pos, const QVariant & val, QSql::ParamType paramType = QSql::In);
-	Q_INVOKABLE bool first();
-	Q_INVOKABLE bool last();
-	Q_INVOKABLE bool next();
-	Q_INVOKABLE bool previous();
-	Q_INVOKABLE bool populate();
-	Q_INVOKABLE bool populate(const QString & query);
-	Q_INVOKABLE bool isPopulated();
-//	Q_INVOKABLE bool prepare(const QString & query);
-	Q_INVOKABLE bool seek(int index);
-	Q_INVOKABLE int size();
-	Q_INVOKABLE QVariant value(int index) const;
-	Q_INVOKABLE QVariant value(const QString & field) const;
-	Q_INVOKABLE QVariant lookaheadValue(int index) const;
-	Q_INVOKABLE QVariant lookaheadValue(const QString & field) const;
-	Q_INVOKABLE QVariant lookbackValue(int index) const;
-	Q_INVOKABLE QVariant lookbackValue(const QString & field) const;
+	Q_INVOKABLE virtual bool first();
+	Q_INVOKABLE virtual bool last();
+	Q_INVOKABLE virtual bool next();
+	Q_INVOKABLE virtual bool previous();
+	Q_INVOKABLE virtual bool populate();
+	Q_INVOKABLE virtual bool isPopulated();
+	Q_INVOKABLE virtual bool seek(int index);
+	Q_INVOKABLE virtual int size();
+	Q_INVOKABLE virtual QVariant value(int index) const;
+	Q_INVOKABLE virtual QVariant value(const QString & field) const;
+	Q_INVOKABLE virtual QVariant lookaheadValue(int index) const;
+	Q_INVOKABLE virtual QVariant lookaheadValue(const QString & field) const;
+	Q_INVOKABLE virtual QVariant lookbackValue(int index) const;
+	Q_INVOKABLE virtual QVariant lookbackValue(const QString & field) const;
+	virtual DataSet * createInstance(QObject* parent = 0);
+	virtual DataSetEditor * createEditor();
 
-	QString	    parentQuery();
-	void	    setParentQuery(QString pQuery);
+	QString	    parentDataset();
+	void	    setParentDataset(QString pDataset);
 	QStringList parentCondition();
 	void	    setParentCondition(QStringList str);
-	QString	    text();
-	void	    setText(QString str);
 
 signals:
 	void beforeNext();
@@ -89,12 +84,11 @@ signals:
 	void afterSeek(int index);
 
 private:
-	QString m_parentQuery;
+	QString m_parentDataset;
 	QStringList m_parentCondition;
-	QString m_queryText;
-	int m_currentRow;
-	bool m_isPopulated;
 
 };
 }
+Q_DECLARE_INTERFACE(Report::DataSet, "ro.bigendian.ReportDesigner.DataSet/1.0");
+
 #endif

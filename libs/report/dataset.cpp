@@ -30,15 +30,14 @@
 #include <QtSql>
 #include <QSqlRecord>
 #include <QSqlDatabase>
+#include "dataset.h"
+#include "dataseteditor.h"
 
-#include "sqlquery.h"
 namespace Report
 {
 DataSet::DataSet(QObject *parent)
-		: QSqlQueryModel(parent)
+		: QObject(parent)
 {
-    m_currentRow = 0;
-    m_isPopulated = false;
 }
 
 
@@ -46,25 +45,15 @@ DataSet::~DataSet()
 {
 }
 
-QString DataSet::text()
+
+QString	DataSet::parentDataset()
 {
-    return m_queryText;
+    return m_parentDataset;
 }
 
-void DataSet::setText(QString str)
+void DataSet::setParentDataset(QString pDataset)
 {
-    m_queryText = str;
-}
-
-
-QString DataSet::parentQuery()
-{
-    return m_parentQuery;
-}
-
-void DataSet::setParentQuery(QString pQuery)
-{
-    m_parentQuery = pQuery;
+    m_parentDataset = pDataset;
 }
 
 void DataSet::setParentCondition(QStringList list)
@@ -77,114 +66,23 @@ QStringList DataSet::parentCondition()
     return m_parentCondition;
 }
 
-bool DataSet::populate()
-{
-    setQuery(m_queryText);
-    bool ret = !lastError().isValid();
-    if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
-	while (canFetchMore())
-	    fetchMore();
-    m_isPopulated = ret;
-    return ret;
-}
 
-bool DataSet::populate(const QString & query)
-{
-    setText(query);
-    return populate();
-}
-
-bool DataSet::isPopulated()
-{
-    return m_isPopulated;
-}
-
-bool DataSet::first()
-{
-	emit(beforeFirst());
-	m_currentRow = 0;
-	bool ret = size();
-	emit(afterFirst());
-	return ret;
-}
-
-bool DataSet::last()
-{
-	emit(beforeLast());
-	m_currentRow = rowCount();
-	bool ret = !record(m_currentRow).isEmpty();
-	emit(afterLast());
-	return ret;
-}
-
-bool DataSet::next()
-{
-	emit(beforeNext());
-	m_currentRow++;
-	bool ret = m_currentRow < size();
-	emit(afterNext());
-	return ret;
-}
-
-bool DataSet::previous()
-{
-	emit(beforePrevious());
-	m_currentRow--;
-	bool ret = m_currentRow >= 0;
-	emit(afterPrevious());
-	return ret;
-}
-
-/*
-bool DataSet::prepare(const QString & query)
-{
-	return QSqlQuery::prepare(query);
-}
-*/
-
-bool DataSet::seek(int index)
-{
-	emit(beforeSeek(index));
-	m_currentRow = index;
-	bool ret = !record(m_currentRow).isEmpty();
-	emit(afterSeek(index));
-	return ret;
-}
-
-int DataSet::size()
-{
-	return rowCount();
-}
-
-QVariant DataSet::value(int index) const
-{
-    return record(m_currentRow).value(index);
-}
-
-QVariant DataSet::value(const QString & field) const
-{
-    return record(m_currentRow).value(field);
-}
-
-QVariant DataSet::lookaheadValue(int index) const
-{
-    return m_currentRow+1 < rowCount() && index < columnCount() ?  record(m_currentRow + 1).value(index) : QVariant::Invalid;
-}
-
-QVariant DataSet::lookaheadValue(const QString & field) const
-{
-    return m_currentRow+1 < rowCount() ?  record(m_currentRow + 1).value(field) : QVariant::Invalid;
-}
-
-QVariant DataSet::lookbackValue(int index) const
-{
-    return m_currentRow-1 < 0 && index < columnCount() ?  record(m_currentRow + 1).value(index) : QVariant::Invalid;
-}
-
-QVariant DataSet::lookbackValue(const QString & field) const
-{
-    return m_currentRow-1 < 0  ?  record(m_currentRow + 1).value(field) : QVariant::Invalid;
-}
+bool DataSet::first() {return false;}
+bool DataSet::last(){return false;}
+bool DataSet::next(){return false;}
+bool DataSet::previous(){return false;}
+bool DataSet::populate(){return false;}
+bool DataSet::isPopulated(){return false;}
+bool DataSet::seek(int index){return false;}
+int DataSet::size(){return 0;}
+QVariant DataSet::value(int index) const{return QVariant();}
+QVariant DataSet::value(const QString & field) const{return QVariant();}
+QVariant DataSet::lookaheadValue(int index) const{return QVariant();}
+QVariant DataSet::lookaheadValue(const QString & field) const{return QVariant();}
+QVariant DataSet::lookbackValue(int index) const{return QVariant();}
+QVariant DataSet::lookbackValue(const QString & field) const{return QVariant();}
+DataSet * DataSet::createInstance(QObject* parent){return new DataSet(parent);}
+DataSetEditor * DataSet::createEditor() {return 0;}
 
 
 }

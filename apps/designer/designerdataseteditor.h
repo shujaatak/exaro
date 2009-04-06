@@ -15,12 +15,12 @@
  ***************************************************************************/
 
 
-#ifndef DESIGNERQUERYWIDGET_H
-#define DESIGNERQUERYWIDGET_H
+#ifndef DESIGNERDATASETEDITOR_H
+#define DESIGNERDATASETEDITOR_H
 
 #include <QWidget>
 #include <QtSql>
-#include "ui_designerquerywidget.h"
+#include "ui_designerdataseteditor.h"
 #include "sqlsyntaxhighlighter.h"
 
 namespace Report
@@ -28,7 +28,7 @@ namespace Report
 
 class ReportInterface;
 
-class DesignerQueryWidget : public QWidget, public Ui::designerQueryWidget
+class DesignerDatasetEditor : public QWidget, public Ui::DesignerDatasetEditor
 {
 	Q_OBJECT
 
@@ -43,8 +43,8 @@ protected:
 	void refreshButtons();
 
 public:
-	DesignerQueryWidget(QWidget* parent = 0, Qt::WFlags fl = 0);
-	~DesignerQueryWidget();
+	DesignerDatasetEditor(QWidget* parent = 0, Qt::WFlags fl = 0);
+	~DesignerDatasetEditor();
 
 
 	void setReport(ReportInterface * report);

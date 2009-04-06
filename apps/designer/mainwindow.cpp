@@ -238,7 +238,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
 
-	m_dquery = new Report::DesignerQueryWidget( m_tw);
+	m_dquery = new Report::DesignerDatasetEditor( m_tw);
 	m_tw->addTab(m_dquery, tr("Queries"));
 
 	m_dscript = new Report::DesignerScriptWidget( m_tw );

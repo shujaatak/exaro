@@ -101,6 +101,23 @@ ReportEngine::ReportEngine(QObject *parent)
 		else
 			qCritical() << plugin << loader.errorString();
 	}
+
+	pluginsDir.cd("export");
+
+	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+	{
+		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+		QObject *plugin = loader.instance();
+		if (plugin)
+		{
+			if (dynamic_cast<DataSet*>(plugin))
+				m_datasets.push_back(dynamic_cast<DataSet*>(plugin));
+		}
+		else
+			qCritical() << plugin << loader.errorString();
+	}
+
 }
 
 bool ReportEngine::saveReport(const QString & fileName, ReportInterface * report)
@@ -178,6 +195,21 @@ const QList<PageInterface*>  & ReportEngine::pages() const
 const QList<ReportInterface*> & ReportEngine::reports() const
 {
 	return m_reports;
+}
+
+const QList<Report::DataSet*> & ReportEngine::datasets() const
+{
+    return m_datasets;
+}
+
+DataSet * ReportEngine::findDatasetByClassName(const char * name)
+{
+    foreach (DataSet * dtst, m_datasets)
+    {
+	if (dtst->metaObject()->className() == name)
+	    return dtst;
+    }
+    return 0;
 }
 
 ReportEngine::~ReportEngine()

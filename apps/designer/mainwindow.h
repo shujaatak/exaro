@@ -26,7 +26,7 @@
 
 #include "ui_mainwindow.h"
 #include "propertyeditor.h"
-#include "designerquerywidget.h"
+#include "designerdataseteditor.h"
 #include "designerscriptwidget.h"
 #include "designeruiwidget.h"
 #include "objectmodel.h"
@@ -71,7 +71,7 @@ private:
 	QTabWidget *m_tw;
 	QToolBox * m_tb;
 	PropertyEditor::PropertyEditor *m_pe;
-	Report::DesignerQueryWidget * m_dquery;
+	Report::DesignerDatasetEditor * m_dquery;
 	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;

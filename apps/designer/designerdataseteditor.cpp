@@ -17,18 +17,21 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
-#include "designerquerywidget.h"
+#include "designerdataseteditor.h"
 #include "reportinterface.h"
 #include "reportengine.h"
+//#include "sqldataset.h"
+
+class SqlDataSet;
 
 namespace Report
 {
 
-DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
-		: QWidget(parent, fl), Ui::designerQueryWidget(), m_report(0)
+DesignerDatasetEditor::DesignerDatasetEditor(QWidget* parent, Qt::WFlags fl)
+		: QWidget(parent, fl), Ui::DesignerDatasetEditor(), m_report(0)
 {
 	setupUi(this);
-	setWindowTitle(tr("Queries"));
+	setWindowTitle(tr("Data"));
 	m_listWidget->clear();
 	refreshButtons();
 	connect(m_createButton, SIGNAL(clicked()), this, SLOT(createItem()));
@@ -54,11 +57,11 @@ DesignerQueryWidget::DesignerQueryWidget(QWidget* parent, Qt::WFlags fl)
 	stackedWidget->setCurrentIndex(0);
 }
 
-DesignerQueryWidget::~DesignerQueryWidget()
+DesignerDatasetEditor::~DesignerDatasetEditor()
 {
 }
 
-void DesignerQueryWidget::setReport(ReportInterface * report)
+void DesignerDatasetEditor::setReport(ReportInterface * report)
 {
     m_report = report;
     m_listWidget->clear();
@@ -75,7 +78,7 @@ void DesignerQueryWidget::setReport(ReportInterface * report)
     refreshButtons();
 }
 
-void DesignerQueryWidget::resetConnection()
+void DesignerDatasetEditor::resetConnection()
 {
     if (QSqlDatabase::database().isOpen())
     {
@@ -89,7 +92,7 @@ void DesignerQueryWidget::resetConnection()
     }
 }
 
-void DesignerQueryWidget::fillTablesList()
+void DesignerDatasetEditor::fillTablesList()
 {
     tablesList->clear();
     if (b_dbTables->isChecked ())
@@ -100,7 +103,7 @@ void DesignerQueryWidget::fillTablesList()
 	tablesList->addItems(QSqlDatabase::database().tables(QSql::SystemTables));
 }
 
-void DesignerQueryWidget::on_b_properties_toggled ( bool checked )
+void DesignerDatasetEditor::on_b_properties_toggled ( bool checked )
 {
     if (checked)
 	stackedWidget->setCurrentIndex(1);
@@ -109,7 +112,7 @@ void DesignerQueryWidget::on_b_properties_toggled ( bool checked )
 }
 
 
-void DesignerQueryWidget::on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
     if (!current)
 	return;
@@ -127,7 +130,7 @@ void DesignerQueryWidget::on_tablesList_currentItemChanged ( QListWidgetItem * c
     dataTable->resizeRowsToContents();
 }
 
-void DesignerQueryWidget::on_bQueryExec_clicked()
+void DesignerDatasetEditor::on_bQueryExec_clicked()
 {
     if (!QSqlDatabase::database().isOpen())
     {
@@ -171,29 +174,36 @@ void DesignerQueryWidget::on_bQueryExec_clicked()
     }
 }
 
-void DesignerQueryWidget::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
+void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
     if (!current || !m_report)
 	return;
-
-    qDebug("DesignerQueryWidget::on_m_listWidget_currentItemChanged");
+/*
+    qDebug("DesignerDatasetEditor::on_m_listWidget_currentItemChanged");
     if (previous)
     {
 	DataSet * q = m_report->findChild<DataSet *>(previous->text());
 	if (q)
-	    q->setText(	editQuery->toPlainText() );
+	{
+	    if  (dynamic_cast<SqlDataSet *>(q))
+		dynamic_cast<SqlDataSet *>(q)->setText( editQuery->toPlainText() );
+	}
 	else
 	    qWarning("Cant find query named \'%s\'", qPrintable(previous->text()));
     }
     DataSet * q = m_report->findChild<DataSet *>(current->text());
     if (q)
-	editQuery->setPlainText(q->text());
+    {
+	if  (dynamic_cast<SqlDataSet *>(q))
+	    editQuery->setPlainText(dynamic_cast<SqlDataSet *>(q)->text());
+    }
     else
 	qWarning("Cant find query named \'%s\'", qPrintable(current->text()));
+	*/
 }
 
 
-void DesignerQueryWidget::editName()
+void DesignerDatasetEditor::editName()
 {
     bool ok;
     QString text = QInputDialog::getText(this, tr("Query object"), tr("query name:"), QLineEdit::Normal, m_listWidget->currentItem()->text(), &ok);
@@ -212,13 +222,13 @@ void DesignerQueryWidget::editName()
 
 }
 
-void DesignerQueryWidget::refreshButtons()
+void DesignerDatasetEditor::refreshButtons()
 {
 	m_deleteButton->setEnabled(m_listWidget->count());
 }
 
 
-void DesignerQueryWidget::createItem()
+void DesignerDatasetEditor::createItem()
 {
     Q_ASSERT(m_report);
     bool ok;
@@ -238,7 +248,7 @@ void DesignerQueryWidget::createItem()
     refreshButtons();
 }
 
-void DesignerQueryWidget::deleteItem()
+void DesignerDatasetEditor::deleteItem()
 {
     Q_ASSERT(m_report);
     if (QMessageBox::Ok != QMessageBox::question(this, tr("eXaro"), tr("Delete current query ?"), QMessageBox::Ok | QMessageBox::Cancel))
@@ -255,13 +265,18 @@ void DesignerQueryWidget::deleteItem()
 	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
 }
 
-void DesignerQueryWidget::sync()
+void DesignerDatasetEditor::sync()
 {
+    /*
     DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
     if (q)
-	q->setText( editQuery->toPlainText() );
+    {
+	if  (dynamic_cast<SqlDataSet *>(q))
+	    dynamic_cast<SqlDataSet *>(q)->setText( editQuery->toPlainText() );
+    }
     else
 	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+	*/
 }
 
 }
