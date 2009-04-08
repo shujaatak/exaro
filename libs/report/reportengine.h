@@ -115,7 +115,7 @@ public:
 	void copy(QObject* object);
 
 	ItemInterface * findItemByClassName(const char * name);
-	DataSet * findDatasetByClassName(const char * name);
+	DataSet * findDatasetByClassName(QString name);
 private:
 	static bool cmpBands(BandInterface * b1, BandInterface * b2);
 

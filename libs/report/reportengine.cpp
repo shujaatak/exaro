@@ -102,7 +102,7 @@ ReportEngine::ReportEngine(QObject *parent)
 			qCritical() << plugin << loader.errorString();
 	}
 
-	pluginsDir.cd("export");
+	pluginsDir.cd("dataset");
 
 	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
 	{
@@ -197,12 +197,12 @@ const QList<ReportInterface*> & ReportEngine::reports() const
 	return m_reports;
 }
 
-const QList<Report::DataSet*> & ReportEngine::datasets() const
+const QList<DataSet*> & ReportEngine::datasets() const
 {
     return m_datasets;
 }
 
-DataSet * ReportEngine::findDatasetByClassName(const char * name)
+DataSet * ReportEngine::findDatasetByClassName(QString name)
 {
     foreach (DataSet * dtst, m_datasets)
     {

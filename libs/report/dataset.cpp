@@ -27,9 +27,6 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#include <QtSql>
-#include <QSqlRecord>
-#include <QSqlDatabase>
 #include "dataset.h"
 #include "dataseteditor.h"
 
@@ -83,6 +80,9 @@ QVariant DataSet::lookbackValue(int index) const{return QVariant();}
 QVariant DataSet::lookbackValue(const QString & field) const{return QVariant();}
 DataSet * DataSet::createInstance(QObject* parent){return new DataSet(parent);}
 DataSetEditor * DataSet::createEditor() {return 0;}
-
+QAbstractTableModel * DataSet::model() {return 0;}
+QString DataSet::name() { return tr("Unknown"); }
+QString DataSet::lastError() {return QString();}
+QString DataSet::fieldName(int column ) {return tr("Unknown");}
 
 }

@@ -8,7 +8,7 @@ class DataSet;
 class DataSetEditor : public QWidget
 {
 public:
-    DataSetEditor();
+    DataSetEditor(QWidget * parent = 0);
 
     virtual void setDataset(DataSet* dtst);
     virtual DataSet * dataset();

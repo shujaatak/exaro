@@ -1,7 +1,8 @@
 #include "dataseteditor.h"
 #include "dataset.h"
 
-DataSetEditor::DataSetEditor(): m_dataset(0)
+DataSetEditor::DataSetEditor(QWidget * parent)
+    : QWidget (parent), m_dataset(0)
 {
 }
 

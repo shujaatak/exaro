@@ -37,7 +37,7 @@
 
 #include "iteminterface.h"
 #include "reportinterface.h"
-#include "sqlquery.h"
+//#include "sqlquery.h"
 
 using namespace Report;
 
@@ -396,7 +396,7 @@ QVariant ItemInterface::datasetField(const QString & dataset, const QString & fi
 	if (!dtst)
 		return tr("Query '%1' not found").arg(dataset);
 
-	if (!dtst->record().field(field).isValid())
+	if (!dtst->value(field).isValid())
 		return tr("Field '%1' not found").arg(dataset);
 
 	return dtst->value(field);

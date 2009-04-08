@@ -14,21 +14,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QInputDialog>
-#include <QMessageBox>
+//#include <QInputDialog>
+//#include <QMessageBox>
 
 #include "designerdataseteditor.h"
 #include "reportinterface.h"
 #include "reportengine.h"
-//#include "sqldataset.h"
-
-class SqlDataSet;
+#include "dataset.h"
+#include "newdatasetdialog.h"
 
 namespace Report
 {
 
-DesignerDatasetEditor::DesignerDatasetEditor(QWidget* parent, Qt::WFlags fl)
-		: QWidget(parent, fl), Ui::DesignerDatasetEditor(), m_report(0)
+DesignerDatasetEditor::DesignerDatasetEditor(ReportEngine * engine, QWidget* parent, Qt::WFlags fl)
+		: QWidget(parent, fl), Ui::DesignerDatasetEditor(), m_report(0), m_engine(engine)
 {
 	setupUi(this);
 	setWindowTitle(tr("Data"));
@@ -43,17 +42,17 @@ DesignerDatasetEditor::DesignerDatasetEditor(QWidget* parent, Qt::WFlags fl)
 	connect(b_dbSystem, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
 
 	queryTable->hide();
-	queryTable->setModel(&m_queryModel);
+//	queryTable->setModel(&m_queryModel);
 
-	m_dataTableModel = 0;
+//	m_dataTableModel = 0;
 
 	resetConnection();
 
-	QFont font("Arial", 10);
-	font.setFixedPitch(true);
-	editQuery->setFont(font);
+//	QFont font("Arial", 10);
+//	font.setFixedPitch(true);
+//	editQuery->setFont(font);
 
-	m_syntax.setDocument(editQuery->document());
+//	m_syntax.setDocument(editQuery->document());
 	stackedWidget->setCurrentIndex(0);
 }
 
@@ -65,7 +64,7 @@ void DesignerDatasetEditor::setReport(ReportInterface * report)
 {
     m_report = report;
     m_listWidget->clear();
-    editQuery->clear();
+//    editQuery->clear();
     foreach(DataSet * q, m_report->datasets())
     {
 	QListWidgetItem * i = new QListWidgetItem();
@@ -116,6 +115,7 @@ void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem *
 {
     if (!current)
 	return;
+    /*
     if (m_dataTableModel)
 	delete m_dataTableModel;
 
@@ -128,10 +128,12 @@ void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem *
     dataTable->setModel(m_dataTableModel);
     dataTable->resizeColumnsToContents();
     dataTable->resizeRowsToContents();
+    */
 }
 
 void DesignerDatasetEditor::on_bQueryExec_clicked()
 {
+    /*
     if (!QSqlDatabase::database().isOpen())
     {
 	queryTable->hide();
@@ -172,6 +174,7 @@ void DesignerDatasetEditor::on_bQueryExec_clicked()
 					  .arg( m_queryModel.query().numRowsAffected() ));
 	}
     }
+    */
 }
 
 void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
@@ -232,20 +235,28 @@ void DesignerDatasetEditor::createItem()
 {
     Q_ASSERT(m_report);
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Create an query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(m_listWidget->count()), &ok);
+    NewDatasetDialog d;
+    foreach (Report::DataSet* dtst, m_engine->datasets())
+	d.addType(dtst->metaObject()->className());
+    d.setName(QString("ds_%1").arg(m_listWidget->count()));
 
-    if (!ok || text.isEmpty())
+    if (!d.exec())
 	return;
 
-    DataSet * q = new DataSet();
-    m_report->addDataset(q);
-    q->setObjectName(ReportEngine::uniqueName(text, m_report));
+    Report::DataSet * plugin = dynamic_cast<Report::DataSet *>(m_engine->findDatasetByClassName( d.type() ));
+    if (plugin == 0 )
+	return;
+
+    Report::DataSet * dtst = dynamic_cast<Report::DataSet *> (plugin->createInstance(m_report));
+    m_report->addDataset(dtst);
+    dtst->setObjectName(ReportEngine::uniqueName(d.name(), m_report));
     QListWidgetItem * i = new QListWidgetItem();
     //	i->setFlags (i->flags () | Qt::ItemIsEditable);
-    i->setText(q->objectName());
+    i->setText(dtst->objectName());
     m_listWidget->addItem(i);
     m_listWidget->setCurrentItem(i);
     refreshButtons();
+
 }
 
 void DesignerDatasetEditor::deleteItem()

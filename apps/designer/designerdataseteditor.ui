@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DesignerDatasetEditor</class>
- <widget class="QWidget" name="designerQueryWidget">
+ <widget class="QWidget" name="DesignerDatasetEditor">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -31,9 +31,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabQueries">
+     <widget class="QWidget" name="tabDatasets">
       <attribute name="title">
-       <string>Queries</string>
+       <string>Datasets</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -158,16 +158,8 @@
           <widget class="QWidget" name="layoutWidget">
            <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-             <widget class="QTextEdit" name="editQuery">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="acceptRichText">
-               <bool>false</bool>
-              </property>
+             <widget class="QStackedWidget" name="stackedWidget_2">
+              <widget class="QWidget" name="page"/>
              </widget>
             </item>
            </layout>

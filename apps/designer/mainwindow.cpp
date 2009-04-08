@@ -238,8 +238,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
 
-	m_dquery = new Report::DesignerDatasetEditor( m_tw);
-	m_tw->addTab(m_dquery, tr("Queries"));
+	m_wdataset = new Report::DesignerDatasetEditor( &m_reportEngine,  m_tw);
+	m_tw->addTab(m_wdataset , tr("Data"));
 
 	m_dscript = new Report::DesignerScriptWidget( m_tw );
 	m_tw->addTab(m_dscript, tr("Script"));
@@ -454,12 +454,12 @@ void mainWindow::setupDatabase()
 {
 	SqlDatabaseDialog d;
 	d.exec();
-	m_dquery->resetConnection();
+	m_wdataset ->resetConnection();
 }
 
 void mainWindow::executeReport()
 {
-    	m_dquery->sync();
+    	m_wdataset ->sync();
 	m_report->exec();
 }
 
@@ -687,7 +687,7 @@ void mainWindow::saveReport()
 	if ( !m_saveFile.length() )
 		return;
 
-	m_dquery->sync();
+	m_wdataset ->sync();
 	m_report->setUis( m_dui->uis() );
 
 	if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
@@ -914,12 +914,12 @@ void mainWindow::on_actionLastConnect_triggered()
     db.setPassword(map.value("password").toString());
     if (!db.open())
 	QMessageBox::critical(this, tr("Connection error"), db.lastError().text(), QMessageBox::Ok);
-    m_dquery->resetConnection();
+    m_wdataset ->resetConnection();
 }
 
 void mainWindow::refreshReportBeholders(Report::ReportInterface* report)
 {
-    	m_dquery->setReport( report );
+    	m_wdataset ->setReport( report );
 	m_dui->setUis( report->uis() );
 	m_pe->setObject( report );
 	m_nameValidator->setRootObject( report );
