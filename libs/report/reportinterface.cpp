@@ -29,7 +29,7 @@
 
 #include "reportinterface.h"
 #include "pageinterface.h"
-#include "sqlquery.h"
+//#include "sqlquery.h"
 
 #include <QBuffer>
 #include <QWidget>

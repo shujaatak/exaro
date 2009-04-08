@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QScriptEngine>
 #include <QPainter>
-#include "sqlquery.h"
+#include "dataset.h"
 #include "layoutmanager.h"
 
 #include "pageinterface.h"

@@ -7,16 +7,17 @@ include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_IN
 set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  designerscriptwidget.cpp
 		designerpage.cpp         main.cpp              scriptsyntaxhighlighter.cpp
 		designerdataseteditor.cpp  mainwindow.cpp        sqldatabasedialog.cpp
-		designeruitype.cpp       objectmodel.cpp       sqlsyntaxhighlighter.cpp
-		designeruiwidget.cpp     optionsdialog.cpp 
+		designeruitype.cpp       objectmodel.cpp
+		designeruiwidget.cpp     optionsdialog.cpp newdatasetdialog.cpp
 		namevalidator.cpp command.cpp)
-QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  sqlsyntaxhighlighter.h
+QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  
 			designerpage.h         exaroapplication.h  designerscriptwidget.h
 			designerdataseteditor.h  mainwindow.h        scriptsyntaxhighlighter.h
 			designeruitype.h       objectmodel.h       sqldatabasedialog.h	optionsdialog.h
-			namevalidator.h)
+			namevalidator.h newdatasetdialog.h)
 QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.ui
-			designerdataseteditor.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui)
+			designerdataseteditor.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui
+			newdatasetdialog.ui)
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
 if(WIN32)

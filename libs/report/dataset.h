@@ -65,6 +65,10 @@ public:
 	Q_INVOKABLE virtual QVariant lookbackValue(const QString & field) const;
 	virtual DataSet * createInstance(QObject* parent = 0);
 	virtual DataSetEditor * createEditor();
+	Q_INVOKABLE virtual QAbstractTableModel * model();
+	Q_INVOKABLE virtual QString name();
+	Q_INVOKABLE virtual QString lastError();
+	Q_INVOKABLE virtual QString fieldName(int column );
 
 	QString	    parentDataset();
 	void	    setParentDataset(QString pDataset);

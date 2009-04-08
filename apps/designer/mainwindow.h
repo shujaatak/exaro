@@ -71,7 +71,7 @@ private:
 	QTabWidget *m_tw;
 	QToolBox * m_tb;
 	PropertyEditor::PropertyEditor *m_pe;
-	Report::DesignerDatasetEditor * m_dquery;
+	Report::DesignerDatasetEditor * m_wdataset;
 	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;

@@ -1,7 +1,7 @@
 #include "paintinterface.h"
 #include <QtSql>
 #include <paintdevice.h>
-#include <sqlquery.h>
+//#include <sqlquery.h>
 #include "reportinterface.h"
 #include "pageinterface.h"
 
@@ -270,16 +270,16 @@ void PaintInterface::processDataset(QString datasetName, BandInterface * band )
     //already exec()'d ?
     if (!dtst->first())
 	if ( !(dtst->populate() && dtst->first()) )
-	    finish(tr("query \'%1\' execution error: %2").arg(datasetName).arg(dtst->lastError().text()));
+	    finish(tr("query \'%1\' execution error: %2").arg(datasetName).arg(dtst->lastError()));
 
     QDomElement dtstElement = m_report->m_doc.createElement("dataset");
     dtstElement.setAttribute("name", dtst->objectName());
     QDomElement rowElement = m_report->m_doc.createElement("row");
-    for (int i = 0;i < dtst->record().count();i++)
+    for (int i = 0;i < dtst->size() ;i++)
     {
 	QDomElement field = m_report->m_doc.createElement("field");
 	field.setAttribute("type", "columnName");
-	field.appendChild(m_report->m_doc.createTextNode(dtst->record().fieldName(i)));
+	field.appendChild(m_report->m_doc.createTextNode(dtst->fieldName(i)));
 	rowElement.appendChild(field);
     }
     dtstElement.appendChild(rowElement);
@@ -305,7 +305,8 @@ void PaintInterface::processDataset(QString datasetName, BandInterface * band )
 	foreach(BandInterface * band, currentGroup)
 	    processBand(band);
 
-	m_report->exportRecord(dtst->record(), dtstElement);
+#warning 'FIXMI: implement exportRecord'
+//	m_report->exportRecord(dtst->record(), dtstElement);
     }
     while (dtst->next());
 

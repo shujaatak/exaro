@@ -19,14 +19,14 @@
 #define DESIGNERDATASETEDITOR_H
 
 #include <QWidget>
-#include <QtSql>
+//#include <QtSql>
 #include "ui_designerdataseteditor.h"
-#include "sqlsyntaxhighlighter.h"
 
 namespace Report
 {
 
 class ReportInterface;
+class ReportEngine;
 
 class DesignerDatasetEditor : public QWidget, public Ui::DesignerDatasetEditor
 {
@@ -34,16 +34,17 @@ class DesignerDatasetEditor : public QWidget, public Ui::DesignerDatasetEditor
 
 private:
 //	QMap <QString, QVariant> m_queries;
-	SQLSyntaxHighlighter m_syntax;
-	QSqlQueryModel 	m_queryModel;
-	QSqlTableModel*	m_dataTableModel;
+//	SQLSyntaxHighlighter m_syntax;
+//	QSqlQueryModel 	m_queryModel;
+//	QSqlTableModel*	m_dataTableModel;
 	ReportInterface * m_report;
+	ReportEngine * m_engine;
 
 protected:
 	void refreshButtons();
 
 public:
-	DesignerDatasetEditor(QWidget* parent = 0, Qt::WFlags fl = 0);
+	DesignerDatasetEditor(ReportEngine * engine, QWidget* parent = 0, Qt::WFlags fl = 0);
 	~DesignerDatasetEditor();
 
 
