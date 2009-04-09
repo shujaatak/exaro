@@ -35,8 +35,8 @@
       <attribute name="title">
        <string>Datasets</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
         <layout class="QHBoxLayout">
          <property name="margin">
           <number>0</number>
@@ -101,12 +101,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="bQueryExec">
+          <widget class="QToolButton" name="bDatasetExec">
            <property name="toolTip">
             <string>Execute Query</string>
            </property>
            <property name="text">
-            <string>Execute Query</string>
+            <string>Execute Dataset</string>
            </property>
            <property name="icon">
             <iconset>
@@ -129,7 +129,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -155,19 +155,17 @@
             <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
            </property>
           </widget>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QStackedWidget" name="stackedWidget_2">
-              <widget class="QWidget" name="page"/>
-             </widget>
-            </item>
+          <widget class="QWidget" name="gridLayoutWidget">
+           <layout class="QGridLayout" name="gridLayoutEditors">
+            <property name="spacing">
+             <number>0</number>
+            </property>
            </layout>
           </widget>
          </widget>
          <widget class="QStackedWidget" name="stackedWidget">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="queryResult">
            <layout class="QGridLayout" name="gridLayout_3">
@@ -175,7 +173,7 @@
              <number>0</number>
             </property>
             <item row="0" column="0">
-             <widget class="QTextEdit" name="queryResultText">
+             <widget class="QTextEdit" name="datasetResultText">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -191,7 +189,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QTableView" name="queryTable">
+             <widget class="QTableView" name="datasetTable">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -221,7 +219,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Parent query:</string>
+                 <string>Parent dataset:</string>
                 </property>
                </widget>
               </item>

@@ -2,20 +2,19 @@
 #define DATASETEDITOR_H
 
 #include <QWidget>
-
-class DataSet;
+#include <dataset.h>
 
 class DataSetEditor : public QWidget
 {
 public:
     DataSetEditor(QWidget * parent = 0);
 
-    virtual void setDataset(DataSet* dtst);
-    virtual DataSet * dataset();
+    virtual void setDataset(Report::DataSet* dtst);
+    virtual Report::DataSet * dataset();
     virtual void sync();
 
-private:
-    DataSet * m_dataset;
+protected:
+    Report::DataSet * m_dataset;
 };
 
 #endif // DATASETEDITOR_H

@@ -6,6 +6,6 @@ DataSetEditor::DataSetEditor(QWidget * parent)
 {
 }
 
-void DataSetEditor::setDataset(DataSet* dtst) {m_dataset = dtst;}
-DataSet * DataSetEditor::dataset() {return m_dataset;}
+void DataSetEditor::setDataset(Report::DataSet* dtst) {m_dataset = dtst;}
+Report::DataSet * DataSetEditor::dataset() {return m_dataset;}
 void DataSetEditor::sync() {};
