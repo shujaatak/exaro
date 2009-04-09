@@ -828,13 +828,13 @@
                 </PageFooter>
             </children>
         </Page>
-        <Report::DataSet>
+        <SqlDataset>
             <properties>
                 <objectName type="QString" >query_0</objectName>
-                <text type="QString" >select * from song;</text>
-                <parentQuery type="QString" ></parentQuery>
+                <parentDataset type="QString" ></parentDataset>
                 <parentCondition type="QStringList" />
+                <text type="QString" >select * from song;</text>
             </properties>
-        </Report::DataSet>
+        </SqlDataset>
     </children>
 </StdReport>

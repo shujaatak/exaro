@@ -60,21 +60,38 @@ DesignerDatasetEditor::DesignerDatasetEditor(ReportEngine * engine, QWidget* par
 
 DesignerDatasetEditor::~DesignerDatasetEditor()
 {
-    foreach (QWidget* w, m_editors)
+    foreach (DataSetEditor* w, m_editors)
 	delete w;
 }
 
 void DesignerDatasetEditor::setReport(ReportInterface * report)
 {
     m_report = report;
+
+    if (currentEditor)
+	gridLayoutEditors->removeWidget(currentEditor);
+    currentEditor = 0;
+
+    foreach (DataSetEditor* w, m_editors)
+	delete w;
+    m_editors.clear();
+
     m_listWidget->clear();
-//    editQuery->clear();
-    foreach(DataSet * q, m_report->datasets())
+
+    foreach(DataSet * dtst, m_report->datasets())
     {
 	QListWidgetItem * i = new QListWidgetItem();
-	i->setText(q->objectName());
+	i->setText(dtst->objectName());
 	m_listWidget->addItem(i);
 	m_listWidget->setCurrentItem(i);
+
+	if (!m_editors.contains(dtst->metaObject()->className()))
+	{
+	    DataSetEditor * ed = dtst->createEditor();
+	    if (!ed)
+		ed = new DataSetEditor(this);
+	    m_editors.insertMulti(dtst->metaObject()->className(), ed);
+	}
     }
 
     resetConnection();
@@ -162,10 +179,11 @@ void DesignerDatasetEditor::on_bDatasetExec_clicked()
 
 void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
-    if (!current || !m_report || !currentEditor)
+    qDebug("DesignerDatasetEditor::on_m_listWidget_currentItemChanged ");
+    if (!current || !m_report)
 	return;
 
-    if (previous)
+    if (previous && currentEditor)
 	currentEditor->sync();
 
     DataSet * dtst = m_report->findChild<DataSet *>(current->text());
@@ -173,11 +191,15 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
 
     if ( currentEditor != m_editors.value(dtst->metaObject()->className()) )
     {
-	gridLayoutEditors->removeWidget(currentEditor);
+	if (currentEditor)
+	    gridLayoutEditors->removeWidget(currentEditor);
 	currentEditor = m_editors.value(dtst->metaObject()->className());
 	gridLayoutEditors->addWidget( currentEditor );
     }
-    currentEditor->setDataset(dtst);
+
+    if (currentEditor)
+	currentEditor->setDataset(dtst);
+
 }
 
 

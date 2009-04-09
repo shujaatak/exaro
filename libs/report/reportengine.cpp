@@ -335,15 +335,27 @@ void ReportEngine::setObjectPropertiesFromDom(QObject * object, const QDomElemen
 QObject * ReportEngine::objectFromDom(QObject * parent, const QDomElement & dom)
 {
 	QObject * obj = 0;
+
 #warning PLEASE REVIEW THIS !!!!
+
+	for (int i = 0;i < m_datasets.size();i++)
+	    if (dom.tagName() == m_datasets[i]->metaObject()->className())
+	    {
+		obj = m_datasets[i]->createInstance(parent);
+		setObjectPropertiesFromDom(obj, dom);
+		break;
+	    }
+	/*
 	DataSet * q = new DataSet(parent);
 	if (dom.tagName() == q->metaObject()->className())
 	{
 		obj = q;
 		setObjectPropertiesFromDom(obj, dom);
 	}
+
 	else 
 		delete q;
+		*/
 	if (!obj)
 		for (int r = 0;r < m_reports.size();r++)
 			if (dom.tagName() == m_reports[r]->metaObject()->className())
