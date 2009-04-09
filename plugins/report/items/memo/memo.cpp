@@ -157,4 +157,4 @@ QObject * Memo::createInstance(QGraphicsItem* parent, QObject* parentObject)
 	return new Memo(parent, parentObject);
 }
 
-Q_EXPORT_PLUGIN2(Memo, Memo)
+Q_EXPORT_PLUGIN2(memo, Memo)

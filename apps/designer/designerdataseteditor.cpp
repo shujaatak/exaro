@@ -16,11 +16,13 @@
 
 //#include <QInputDialog>
 //#include <QMessageBox>
+#include <QStackedWidget>
 
 #include "designerdataseteditor.h"
 #include "reportinterface.h"
 #include "reportengine.h"
 #include "dataset.h"
+#include "dataseteditor.h"
 #include "newdatasetdialog.h"
 
 namespace Report
@@ -31,6 +33,7 @@ DesignerDatasetEditor::DesignerDatasetEditor(ReportEngine * engine, QWidget* par
 {
 	setupUi(this);
 	setWindowTitle(tr("Data"));
+
 	m_listWidget->clear();
 	refreshButtons();
 	connect(m_createButton, SIGNAL(clicked()), this, SLOT(createItem()));
@@ -41,10 +44,9 @@ DesignerDatasetEditor::DesignerDatasetEditor(ReportEngine * engine, QWidget* par
 	connect(b_dbViews, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
 	connect(b_dbSystem, SIGNAL(toggled ( bool )), this, SLOT(fillTablesList()));
 
-	queryTable->hide();
-//	queryTable->setModel(&m_queryModel);
+	datasetTable->hide();
 
-//	m_dataTableModel = 0;
+	m_dataTableModel = 0;
 
 	resetConnection();
 
@@ -52,12 +54,14 @@ DesignerDatasetEditor::DesignerDatasetEditor(ReportEngine * engine, QWidget* par
 //	font.setFixedPitch(true);
 //	editQuery->setFont(font);
 
-//	m_syntax.setDocument(editQuery->document());
 	stackedWidget->setCurrentIndex(0);
+	currentEditor = 0;
 }
 
 DesignerDatasetEditor::~DesignerDatasetEditor()
 {
+    foreach (QWidget* w, m_editors)
+	delete w;
 }
 
 void DesignerDatasetEditor::setReport(ReportInterface * report)
@@ -115,7 +119,7 @@ void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem *
 {
     if (!current)
 	return;
-    /*
+
     if (m_dataTableModel)
 	delete m_dataTableModel;
 
@@ -128,100 +132,71 @@ void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem *
     dataTable->setModel(m_dataTableModel);
     dataTable->resizeColumnsToContents();
     dataTable->resizeRowsToContents();
-    */
+
 }
 
-void DesignerDatasetEditor::on_bQueryExec_clicked()
+void DesignerDatasetEditor::on_bDatasetExec_clicked()
 {
-    /*
-    if (!QSqlDatabase::database().isOpen())
+    if (!currentEditor)
+	return;
+
+    DataSet * dtst = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    Q_ASSERT(dtst);
+
+    currentEditor->sync();
+
+    if (!dtst->populate())
     {
-	queryTable->hide();
-	queryResultText->show();
-	queryResultText->setPlainText("No database connection selected.\nAdd activate a connection in the left tree view.");
+	datasetTable->hide();
+	datasetResultText->show();
+	datasetResultText->setPlainText(dtst->lastError());
 	return;
     }
 
-    // initialize new sql query object
-    m_queryModel.setQuery(editQuery->toPlainText());
-
-    if (m_queryModel.lastError().isValid())
-    {
-	queryTable->hide();
-	queryResultText->show();
-
-	queryResultText->setPlainText(QString("%1\n%2")
-				      .arg(m_queryModel.lastError().driverText())
-				      .arg(m_queryModel.lastError().databaseText()));
-    }
-    else
-    {
-	// query was successful
-
-	if (m_queryModel.query().isSelect())
-	{
-	    queryResultText->hide();
-	    queryTable->show();
-	    queryTable->resizeColumnsToContents();
-	    queryTable->resizeRowsToContents();
-	}
-	else
-	{
-	    queryTable->hide();
-	    queryResultText->show();
-
-	    queryResultText->setPlainText(QString("%1 rows affected.")
-					  .arg( m_queryModel.query().numRowsAffected() ));
-	}
-    }
-    */
+    datasetTable->setModel(dtst->model());
+    datasetResultText->hide();
+    datasetTable->show();
+    datasetTable->resizeColumnsToContents();
+    datasetTable->resizeRowsToContents();
 }
 
 void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
 {
-    if (!current || !m_report)
+    if (!current || !m_report || !currentEditor)
 	return;
-/*
-    qDebug("DesignerDatasetEditor::on_m_listWidget_currentItemChanged");
+
     if (previous)
+	currentEditor->sync();
+
+    DataSet * dtst = m_report->findChild<DataSet *>(current->text());
+    Q_ASSERT(dtst);
+
+    if ( currentEditor != m_editors.value(dtst->metaObject()->className()) )
     {
-	DataSet * q = m_report->findChild<DataSet *>(previous->text());
-	if (q)
-	{
-	    if  (dynamic_cast<SqlDataSet *>(q))
-		dynamic_cast<SqlDataSet *>(q)->setText( editQuery->toPlainText() );
-	}
-	else
-	    qWarning("Cant find query named \'%s\'", qPrintable(previous->text()));
+	gridLayoutEditors->removeWidget(currentEditor);
+	currentEditor = m_editors.value(dtst->metaObject()->className());
+	gridLayoutEditors->addWidget( currentEditor );
     }
-    DataSet * q = m_report->findChild<DataSet *>(current->text());
-    if (q)
-    {
-	if  (dynamic_cast<SqlDataSet *>(q))
-	    editQuery->setPlainText(dynamic_cast<SqlDataSet *>(q)->text());
-    }
-    else
-	qWarning("Cant find query named \'%s\'", qPrintable(current->text()));
-	*/
+    currentEditor->setDataset(dtst);
 }
 
 
 void DesignerDatasetEditor::editName()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Query object"), tr("query name:"), QLineEdit::Normal, m_listWidget->currentItem()->text(), &ok);
+    QString text = QInputDialog::getText(this, tr("Dataset object"), tr("dataset name:"), QLineEdit::Normal, m_listWidget->currentItem()->text(), &ok);
 
     if (!ok || text.isEmpty())
 	return;
 
-    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
-    if (q)
+    DataSet * dtst = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    if (dtst)
     {
-	q->setObjectName(text);
+	dtst->setObjectName(text);
 	m_listWidget->currentItem()->setText(text);
     }
     else
-	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+	qWarning("Cant find dataset named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
 
 }
 
@@ -234,12 +209,13 @@ void DesignerDatasetEditor::refreshButtons()
 void DesignerDatasetEditor::createItem()
 {
     Q_ASSERT(m_report);
+
     bool ok;
+
     NewDatasetDialog d;
     foreach (Report::DataSet* dtst, m_engine->datasets())
 	d.addType(dtst->metaObject()->className());
     d.setName(QString("ds_%1").arg(m_listWidget->count()));
-
     if (!d.exec())
 	return;
 
@@ -250,13 +226,29 @@ void DesignerDatasetEditor::createItem()
     Report::DataSet * dtst = dynamic_cast<Report::DataSet *> (plugin->createInstance(m_report));
     m_report->addDataset(dtst);
     dtst->setObjectName(ReportEngine::uniqueName(d.name(), m_report));
+
     QListWidgetItem * i = new QListWidgetItem();
     //	i->setFlags (i->flags () | Qt::ItemIsEditable);
     i->setText(dtst->objectName());
     m_listWidget->addItem(i);
     m_listWidget->setCurrentItem(i);
-    refreshButtons();
+    if (currentEditor)
+	gridLayoutEditors->removeWidget(currentEditor);
 
+    if (!m_editors.contains(dtst->metaObject()->className()))
+    {
+	DataSetEditor * ed = dtst->createEditor();
+	if (!ed)
+	    ed = new DataSetEditor(this);
+	m_editors.insertMulti(dtst->metaObject()->className(), ed);
+    }
+
+    Q_ASSERT (m_editors.value(dtst->metaObject()->className(),0) == 0);
+
+    currentEditor = m_editors.value(dtst->metaObject()->className());
+    currentEditor->setDataset(dtst);
+    gridLayoutEditors->addWidget( currentEditor );
+    refreshButtons();
 }
 
 void DesignerDatasetEditor::deleteItem()
@@ -265,29 +257,21 @@ void DesignerDatasetEditor::deleteItem()
     if (QMessageBox::Ok != QMessageBox::question(this, tr("eXaro"), tr("Delete current query ?"), QMessageBox::Ok | QMessageBox::Cancel))
 	return;
 
-    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
-    if (q)
+    DataSet * dtst = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
+    if (dtst)
     {
 	delete m_listWidget->currentItem();
-	delete q;
+	delete dtst;
 	refreshButtons();
     }
     else
-	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+	qWarning("Cant find dataset named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
 }
 
 void DesignerDatasetEditor::sync()
 {
-    /*
-    DataSet * q = m_report->findChild<DataSet *>(m_listWidget->currentItem()->text());
-    if (q)
-    {
-	if  (dynamic_cast<SqlDataSet *>(q))
-	    dynamic_cast<SqlDataSet *>(q)->setText( editQuery->toPlainText() );
-    }
-    else
-	qWarning("Cant find query named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
-	*/
+    if (currentEditor)
+	currentEditor->sync();
 }
 
 }
