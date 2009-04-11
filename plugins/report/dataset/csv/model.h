@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by Mikhalov Alexander                              *
@@ -27,31 +28,39 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#ifndef SQLDATASETEDITOR_H
-#define SQLDATASETEDITOR_H
+#ifndef CSVMODEL_H
+#define CSVMODEL_H
 
-#include <dataseteditor.h>
-#include "dataset.h"
+#include <QAbstractTableModel>
+#include <QModelIndex>
+#include <QVariant>
 
-namespace Ui {
-    class SqlDatasetEditor;
-}
+typedef QList<QStringList>  Array;
 
-class SqlDatasetEditor : public DataSetEditor
+class Model : public QAbstractTableModel
 {
     Q_OBJECT
-    Q_DISABLE_COPY(SqlDatasetEditor)
-public:
-    explicit SqlDatasetEditor(QWidget *parent = 0);
-    virtual ~SqlDatasetEditor();
 
-    void setDataset(Report::DataSet* dtst);
-    void sync();
-protected:
-    virtual void changeEvent(QEvent *e);
+public:
+    Model(QObject *parent = 0);
+    ~Model();
+
+    void setArray(Array array);
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const;
+//    QModelIndex index(int row, int column,
+//                      const QModelIndex &parent = QModelIndex()) const;
+//    QModelIndex parent(const QModelIndex &child) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
 private:
-    Ui::SqlDatasetEditor *m_ui;
+    Array m_array;
+    int m_columns;
+    int m_rows;
 };
 
-#endif // SQLDATASETEDITOR_H
+#endif

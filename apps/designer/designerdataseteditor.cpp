@@ -1,21 +1,32 @@
 /***************************************************************************
- *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bogdan@licentia.eu                                                    *
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2008 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
+ **                   GNU General Public License Usage                    **
  *                                                                         *
- *   This program is free software: you can redistribute it and/or modify  *
+ *   This library is free software: you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation, either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
- *   This program is distributed in the hope that it will be useful,       *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
- ***************************************************************************/
+ ****************************************************************************/
 
-//#include <QInputDialog>
-//#include <QMessageBox>
 #include <QStackedWidget>
 
 #include "designerdataseteditor.h"
@@ -91,6 +102,12 @@ void DesignerDatasetEditor::setReport(ReportInterface * report)
 	    if (!ed)
 		ed = new DataSetEditor(this);
 	    m_editors.insertMulti(dtst->metaObject()->className(), ed);
+	}
+	if (!currentEditor)
+	{
+	    currentEditor = m_editors.value(dtst->metaObject()->className());
+	    currentEditor->setDataset(dtst);
+	    gridLayoutEditors->addWidget( currentEditor );
 	}
     }
 
@@ -192,14 +209,19 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
     if ( currentEditor != m_editors.value(dtst->metaObject()->className()) )
     {
 	if (currentEditor)
+	{
 	    gridLayoutEditors->removeWidget(currentEditor);
+	    currentEditor->hide();
+	}
 	currentEditor = m_editors.value(dtst->metaObject()->className());
-	gridLayoutEditors->addWidget( currentEditor );
+	if (currentEditor)
+	{
+	    gridLayoutEditors->addWidget( currentEditor );
+	    currentEditor->show();
+	}
     }
-
     if (currentEditor)
 	currentEditor->setDataset(dtst);
-
 }
 
 
@@ -227,7 +249,6 @@ void DesignerDatasetEditor::refreshButtons()
 	m_deleteButton->setEnabled(m_listWidget->count());
 }
 
-
 void DesignerDatasetEditor::createItem()
 {
     Q_ASSERT(m_report);
@@ -249,14 +270,6 @@ void DesignerDatasetEditor::createItem()
     m_report->addDataset(dtst);
     dtst->setObjectName(ReportEngine::uniqueName(d.name(), m_report));
 
-    QListWidgetItem * i = new QListWidgetItem();
-    //	i->setFlags (i->flags () | Qt::ItemIsEditable);
-    i->setText(dtst->objectName());
-    m_listWidget->addItem(i);
-    m_listWidget->setCurrentItem(i);
-    if (currentEditor)
-	gridLayoutEditors->removeWidget(currentEditor);
-
     if (!m_editors.contains(dtst->metaObject()->className()))
     {
 	DataSetEditor * ed = dtst->createEditor();
@@ -264,6 +277,14 @@ void DesignerDatasetEditor::createItem()
 	    ed = new DataSetEditor(this);
 	m_editors.insertMulti(dtst->metaObject()->className(), ed);
     }
+
+    QListWidgetItem * i = new QListWidgetItem();
+    //	i->setFlags (i->flags () | Qt::ItemIsEditable);
+    i->setText(dtst->objectName());
+    m_listWidget->addItem(i);
+    m_listWidget->setCurrentItem(i);
+    if (currentEditor)
+	gridLayoutEditors->removeWidget(currentEditor);
 
     Q_ASSERT (m_editors.value(dtst->metaObject()->className(),0) == 0);
 

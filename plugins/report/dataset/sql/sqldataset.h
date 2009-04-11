@@ -1,7 +1,7 @@
 /***************************************************************************
  *   This file is part of the eXaro project                                *
- *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2008 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
