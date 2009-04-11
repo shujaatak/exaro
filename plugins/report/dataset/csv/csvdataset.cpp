@@ -27,82 +27,108 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#include "sqldataset.h"
-#include "sqldataseteditor.h"
+#include "QtCore"
+#include "csvdataset.h"
+#include "csvdataseteditor.h"
 
-SqlDataset::SqlDataset(QObject *parent)
+CsvDataset::CsvDataset(QObject *parent)
  : Report::DataSet(parent)
 {
     m_currentRow = 0;
     m_isPopulated = false;
+    m_delimeter = ",";
 }
 
 
-SqlDataset::~SqlDataset()
+CsvDataset::~CsvDataset()
 {
 }
 
 
-Report::DataSet * SqlDataset::createInstance(QObject* parent)
+Report::DataSet * CsvDataset::createInstance(QObject* parent)
 {
-    return new SqlDataset(parent);
+    return new CsvDataset(parent);
 }
 
-DataSetEditor * SqlDataset::createEditor()
+DataSetEditor * CsvDataset::createEditor()
 {
-    return new SqlDatasetEditor();
+    return new CsvDatasetEditor();
 }
 
-QString SqlDataset::name()
+QString CsvDataset::name()
 {
-    return QString("SQL Dataset");
+    return QString("CSV Dataset");
 }
 
-QString SqlDataset::lastError()
+QString CsvDataset::lastError()
 {
-    return m_model.lastError().text();
+    return m_error;
 }
 
-QString SqlDataset::fieldName(int column )
+QString	CsvDataset::fileName()
 {
+    return m_fileName;
+}
+
+void CsvDataset::setFileName(QString str)
+{
+    m_fileName = str;
+}
+
+QStringList CsvDataset::list()
+{
+    return m_list;
+}
+
+void  CsvDataset::setList(QStringList list)
+{
+    m_list = list;
+}
+
+QString CsvDataset::delimeter ()
+{
+    return m_delimeter;
+}
+
+void CsvDataset::setDelimeter (QString str)
+{
+    m_delimeter = str;
+}
+
+QString CsvDataset::fieldName(int column )
+{
+    return QString();
+    /*
     if (m_isPopulated)
 	return m_model.record().fieldName(column);
     else
 	return QString();
+	*/
 }
 
-QAbstractTableModel * SqlDataset::model()
+QAbstractTableModel * CsvDataset::model()
 {
     return &m_model;
 }
 
-QString SqlDataset::text()
+
+bool CsvDataset::populate()
 {
-    return m_queryText;
+    Array array;
+    for (int i=0; i<m_list.count(); i++)
+	array.append(m_list.at(i).split(m_delimeter));
+    m_model.setArray(array);
+
+    m_isPopulated = true;
+    return true;
 }
 
-void SqlDataset::setText(QString str)
-{
-    m_queryText = str;
-}
-
-bool SqlDataset::populate()
-{
-    m_model.setQuery(m_queryText);
-    bool ret = !m_model.lastError().isValid();
-    if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
-	while (m_model.canFetchMore())
-	    m_model.fetchMore();
-    m_isPopulated = ret;
-    return ret;
-}
-
-bool SqlDataset::isPopulated()
+bool CsvDataset::isPopulated()
 {
     return m_isPopulated;
 }
 
-bool SqlDataset::first()
+bool CsvDataset::first()
 {
 	emit(beforeFirst());
 	m_currentRow = 0;
@@ -111,16 +137,16 @@ bool SqlDataset::first()
 	return ret;
 }
 
-bool SqlDataset::last()
+bool CsvDataset::last()
 {
 	emit(beforeLast());
 	m_currentRow = m_model.rowCount();
-	bool ret = !m_model.record(m_currentRow).isEmpty();
+	bool ret = m_currentRow < m_model.rowCount() ? true:false;
 	emit(afterLast());
 	return ret;
 }
 
-bool SqlDataset::next()
+bool CsvDataset::next()
 {
 	emit(beforeNext());
 	m_currentRow++;
@@ -129,7 +155,7 @@ bool SqlDataset::next()
 	return ret;
 }
 
-bool SqlDataset::previous()
+bool CsvDataset::previous()
 {
 	emit(beforePrevious());
 	m_currentRow--;
@@ -138,55 +164,55 @@ bool SqlDataset::previous()
 	return ret;
 }
 
-/*
-bool SqlDataset::prepare(const QString & query)
-{
-	return QSqlQuery::prepare(query);
-}
-*/
 
-bool SqlDataset::seek(int index)
+bool CsvDataset::seek(int index)
 {
 	emit(beforeSeek(index));
 	m_currentRow = index;
-	bool ret = !m_model.record(m_currentRow).isEmpty();
+	bool ret = (m_currentRow >=0 && m_currentRow < m_model.rowCount() ? true:false);
 	emit(afterSeek(index));
 	return ret;
 }
 
-int SqlDataset::size()
+int CsvDataset::size()
 {
 	return m_model.rowCount();
 }
 
-QVariant SqlDataset::value(int index) const
+QVariant CsvDataset::value(int index) const
 {
-    return m_model.record(m_currentRow).value(index);
+    return m_model.data( m_model.index(m_currentRow,index) );
 }
 
-QVariant SqlDataset::value(const QString & field) const
+
+QVariant CsvDataset::value(const QString & field) const
 {
-    return m_model.record(m_currentRow).value(field);
+    return QVariant();
+//    return m_model.record(m_currentRow).value(field);
 }
 
-QVariant SqlDataset::lookaheadValue(int index) const
+QVariant CsvDataset::lookaheadValue(int index) const
 {
-    return m_currentRow+1 < m_model.rowCount() && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
+     return QVariant();
+//    return m_currentRow+1 < m_model.rowCount() && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
 }
 
-QVariant SqlDataset::lookaheadValue(const QString & field) const
+QVariant CsvDataset::lookaheadValue(const QString & field) const
 {
-    return m_currentRow+1 < m_model.rowCount() ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
+     return QVariant();
+//    return m_currentRow+1 < m_model.rowCount() ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
 }
 
-QVariant SqlDataset::lookbackValue(int index) const
+QVariant CsvDataset::lookbackValue(int index) const
 {
-    return m_currentRow-1 < 0 && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
+     return QVariant();
+//    return m_currentRow-1 < 0 && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
 }
 
-QVariant SqlDataset::lookbackValue(const QString & field) const
+QVariant CsvDataset::lookbackValue(const QString & field) const
 {
-    return m_currentRow-1 < 0  ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
+     return QVariant();
+//    return m_currentRow-1 < 0  ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
 }
 
-Q_EXPORT_PLUGIN2(sqlDataset, SqlDataset)
+Q_EXPORT_PLUGIN2(csvDataset, CsvDataset)

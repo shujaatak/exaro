@@ -27,31 +27,34 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
-#ifndef SQLDATASETEDITOR_H
-#define SQLDATASETEDITOR_H
+#ifndef CSVDATASETEDITOR_H
+#define CSVDATASETEDITOR_H
 
 #include <dataseteditor.h>
 #include "dataset.h"
 
 namespace Ui {
-    class SqlDatasetEditor;
+    class CsvDatasetEditor;
 }
 
-class SqlDatasetEditor : public DataSetEditor
+class CsvDatasetEditor : public DataSetEditor
 {
     Q_OBJECT
-    Q_DISABLE_COPY(SqlDatasetEditor)
+    Q_DISABLE_COPY(CsvDatasetEditor)
 public:
-    explicit SqlDatasetEditor(QWidget *parent = 0);
-    virtual ~SqlDatasetEditor();
+    explicit CsvDatasetEditor(QWidget *parent = 0);
+    virtual ~CsvDatasetEditor();
 
     void setDataset(Report::DataSet* dtst);
     void sync();
 protected:
     virtual void changeEvent(QEvent *e);
+private slots:
+    void on_bBrowse_clicked();
+    void on_bInject_clicked();
 
 private:
-    Ui::SqlDatasetEditor *m_ui;
+    Ui::CsvDatasetEditor *m_ui;
 };
 
-#endif // SQLDATASETEDITOR_H
+#endif // CSVDATASETEDITOR_H
