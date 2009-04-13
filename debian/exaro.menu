@@ -1,0 +1,8 @@
+?package(exaro):\
+        needs="X11"\
+        section="Applications/Programming"\
+        hints="KDE,Development"\
+        title="eXaro"\
+        longtitle="eXaro report"\
+        icon="/usr/share/icons/application-bdrt.png"\
+        command="/usr/bin/exaro"
