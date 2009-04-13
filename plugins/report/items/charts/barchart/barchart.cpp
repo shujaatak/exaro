@@ -32,7 +32,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QLinearGradient>
-#include <QGLPixelBuffer>
+//#include <QGLPixelBuffer>
 
 #include "barchart.h"
 
