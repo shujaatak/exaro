@@ -1,0 +1,3 @@
+usr/include/*
+usr/lib/libReport.so
+usr/share/cmake-2.6/Modules/FindExaro.cmake
