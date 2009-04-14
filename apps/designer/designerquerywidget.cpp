@@ -99,7 +99,7 @@ void DesignerQueryWidget::setQueries(QMap <QString, QVariant> queries)
 	m_queries = queries;
 	m_listWidget->clear();
 	foreach(QString keys, m_queries.keys())
-	m_listWidget->addItem(keys);
+		m_listWidget->addItem(keys);
 
 	if (m_listWidget->count())
 		m_listWidget->setCurrentRow(0);

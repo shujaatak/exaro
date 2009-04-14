@@ -140,7 +140,7 @@ public:
 	 * @param parent parent object
 	 * @return report instance
 	 */
-	virtual Report::ReportInterface * createInstance(QObject * parent) = 0;
+	virtual Report::ReportInterface * createInstance(QObject * parent=0) = 0;
 
 	/**
 	 * Return report script

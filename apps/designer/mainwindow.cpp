@@ -42,6 +42,7 @@
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 #include "namevalidator.h"
+#include "reportwizard.h"
 
 #define ROWS_IN_MENU  10
 
@@ -491,18 +492,29 @@ void mainWindow::newReport()
 		removePage();
 	}
 	delete m_report;
-	m_report = m_reportEngine.reports()[0]->createInstance( 0 );
-	m_report->setObjectName( "report" );
-	m_report->setName( tr( "Report name" ) );
-	m_report->setAuthor( "(c) 2008 BogDan" );
-	m_pe->setObject( m_report );
-	m_saveFile = "";
-	m_dquery->setQueries( m_report->queries() );
-	m_dui->setUis( m_report->uis() );
-	m_objectModel.setRootObject( m_report );
-	m_nameValidator->setRootObject( m_report );
-	m_undoStack->clear();
-	m_lastUndoIndex=m_undoStack->index();
+	m_pe->setObject(0);
+	m_objectModel.setRootObject(0);
+	m_nameValidator->setRootObject( 0 );
+
+	reportWizard rw(&m_reportEngine);
+	if (QDialog::Accepted==rw.exec())
+	{
+		qDebug()<<"ioi";
+		m_report=rw.report();
+		setupReport();
+	}
+	else
+	{
+		qDebug()<<"cuc";
+		m_report = m_reportEngine.reports()[0]->createInstance( 0 );
+		m_report->setObjectName( "report" );
+		m_report->setName( tr( "Report name" ) );
+		m_report->setAuthor( "(c) 2008 BogDan" );
+		m_pe->setObject( m_report );
+		m_saveFile = "";
+		m_undoStack->clear();
+		m_lastUndoIndex=m_undoStack->index();
+	}
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 }
 
@@ -520,6 +532,39 @@ void mainWindow::connectItem( QObject * obj )
 	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), this, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * child, obj->children() )
 		connectItem( child );
+}
+
+void mainWindow::setupReport() 
+{
+	QGraphicsView * gw = 0;
+
+	for ( int p = 0; p < m_report->children().size();p++ )
+	{
+		if ( !dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) )
+			continue;
+
+		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
+		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
+		m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
+		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
+		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
+		foreach (QObject * obj, m_report->children()[p]->children())
+			connectItem( obj );
+		setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
+		gw->centerOn( 0, 0 );
+	}
+
+	actionRemove_page->setEnabled( m_tw->count() );
+
+	m_dquery->setQueries( m_report->queries() );
+	m_dui->setUis( m_report->uis() );
+	m_pe->setObject( m_report );
+	m_nameValidator->setRootObject( m_report );
+	m_objectModel.setRootObject( m_report );
+	zoomWYSIWYG();
+	m_undoStack->clear();
+	m_lastUndoIndex=m_undoStack->index();
 }
 
 void mainWindow::openReport( const QString & report )
@@ -559,36 +604,9 @@ void mainWindow::openReport( const QString & report )
 		return;
 	}
 
-	QGraphicsView * gw = 0;
+	setupReport();
 
-	for ( int p = 0; p < m_report->children().size();p++ )
-	{
-		if ( !dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) )
-			continue;
-
-		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
-		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
-		m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
-		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
-		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
-	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
-		foreach (QObject * obj, m_report->children()[p]->children())
-			connectItem( obj );
-		setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
-		gw->centerOn( 0, 0 );
-	}
-
-	actionRemove_page->setEnabled( m_tw->count() );
-
-	m_dquery->setQueries( m_report->queries() );
-	m_dui->setUis( m_report->uis() );
 	m_saveFile = report;
-	m_pe->setObject( m_report );
-	m_nameValidator->setRootObject( m_report );
-	m_objectModel.setRootObject( m_report );
-	zoomWYSIWYG();
-	m_undoStack->clear();
-	m_lastUndoIndex=m_undoStack->index();
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
 }
 

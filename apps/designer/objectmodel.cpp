@@ -39,8 +39,9 @@ ObjectModel::ObjectStruct * ObjectModel::addr(QObject * object)
 {
 	ObjectStruct * os = new ObjectStruct;
 	os->object=object;
-	foreach(QObject * ob, object->children())
-		os->children.push_back(addr(ob));
+	if (object)
+		foreach(QObject * ob, object->children())
+			os->children.push_back(addr(ob));
 	return os;
 }
 
@@ -79,8 +80,10 @@ QModelIndex ObjectModel::parent( const QModelIndex & index ) const
 
 int ObjectModel::rowCount ( const QModelIndex & parent ) const
 {
+	if (!m_rootObject->object)
+		return 0;
 	if (parent.isValid())
-		return reinterpret_cast<ObjectStruct *>(parent.internalPointer())->object->children().size();
+			return reinterpret_cast<ObjectStruct *>(parent.internalPointer())->object->children().size();
 	return 1;
 }
 

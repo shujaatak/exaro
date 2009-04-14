@@ -5,19 +5,25 @@ add_subdirectory(plugins)
 
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_INCLUDE_DIR})
 
-set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.cpp
+set(exaro_SRCS  aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.cpp
 		designerpage.cpp         main.cpp              scriptsyntaxhighlighter.cpp
 		designerquerywidget.cpp  mainwindow.cpp        sqldatabasedialog.cpp
 		designeruitype.cpp       objectmodel.cpp       sqlsyntaxhighlighter.cpp
 		designeruiwidget.cpp     queryeditdialog.cpp	optionsdialog.cpp 
-		namevalidator.cpp command.cpp)
-QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h  queryeditdialog.h          sqlsyntaxhighlighter.h
-			designerpage.h         exaroapplication.h  scripteditdialog.h
-			designerquerywidget.h  mainwindow.h        scriptsyntaxhighlighter.h
-			designeruitype.h       objectmodel.h       sqldatabasedialog.h	optionsdialog.h
-			namevalidator.h)
-QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.ui
-			designerquerywidget.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui)
+		namevalidator.cpp 	 command.cpp 		reportwizard.cpp
+		querywizardpage.cpp 	 pagewizardpage.cpp)
+
+QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          	designeruiwidget.h  	queryeditdialog.h
+			sqlsyntaxhighlighter.h	designerpage.h         	exaroapplication.h
+			scripteditdialog.h	designerquerywidget.h  	mainwindow.h
+			designeruitype.h       	objectmodel.h       	sqldatabasedialog.h
+			namevalidator.h 	optionsdialog.h 	scriptsyntaxhighlighter.h
+			reportwizard.h		querywizardpage.h 	pagewizardpage.h)
+
+QT4_WRAP_UI(exaro_SRCS 	aboutdialog.ui          designeruitype.ui    	mainwindow.ui
+			designerquerywidget.ui  designeruiwidget.ui  	sqldatabasedialog.ui
+			optionsdialog.ui 	querywizardpage.ui 	pagewizardpage.ui)
+
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
 if(WIN32)
@@ -44,7 +50,3 @@ install(FILES application-bdrt.png DESTINATION "${ICON_INSTALL_DIR}")
 install(FILES bdrt.desktop DESTINATION "${MIME_INSTALL_DIR}/application")
 install(FILES bdrt.xml DESTINATION "${XDG_MIME_INSTALL_DIR}/packages")
 install(FILES exaro.desktop DESTINATION "${XDG_APPS_INSTALL_DIR}")
-
-#if (UNIX)
-#    install(CODE "update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})")
-#endif(UNIX)
