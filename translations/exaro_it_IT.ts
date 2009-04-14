@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ro">
+<TS version="2.0" language="it">
 <context>
     <name>Arc</name>
     <message>
         <location filename="../plugins/report/items/arc/arc.cpp" line="101"/>
         <source>Arc</source>
-        <translation>Arc</translation>
+        <translation>Arco</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/arc/arc.cpp" line="106"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -19,12 +19,12 @@
     <message>
         <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="227"/>
         <source>Bar chart</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafico a barre</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="232"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafici</translation>
     </message>
 </context>
 <context>
@@ -32,30 +32,12 @@
     <message>
         <location filename="../plugins/report/items/barcode/barcode.cpp" line="313"/>
         <source>Barcode</source>
-        <translation>Cod de bare</translation>
+        <translation>Codice a barre</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/barcode/barcode.cpp" line="318"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
-    </message>
-</context>
-<context>
-    <name>ChangeColor</name>
-    <message>
-        <source>Change color</source>
-        <translation type="obsolete">Schimba culoare</translation>
-    </message>
-</context>
-<context>
-    <name>ChangeFont</name>
-    <message>
-        <source>Change font</source>
-        <translation type="obsolete">Schimba fontul</translation>
-    </message>
-    <message>
-        <source>Choose a font</source>
-        <translation type="obsolete">Alege un font</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -64,12 +46,12 @@
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="70"/>
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="81"/>
         <source>Chart container</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenitore grafico</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="86"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafici</translation>
     </message>
 </context>
 <context>
@@ -77,12 +59,12 @@
     <message>
         <location filename="../plugins/report/items/chord/chord.cpp" line="102"/>
         <source>Chord</source>
-        <translation>Coarda</translation>
+        <translation>Corda</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/chord/chord.cpp" line="107"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -90,22 +72,22 @@
     <message>
         <location filename="../plugins/report/export/csvTxt/csvtxt.cpp" line="44"/>
         <source>Csv file *.csv</source>
-        <translation>Fisier CSV *.csv</translation>
+        <translation>File CSV *.csv</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/csvtxt.cpp" line="58"/>
         <source>Folder to export to</source>
-        <translation>Folderul pentru export</translation>
+        <translation>Cartella dove esportare</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/csvtxt.cpp" line="122"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation>Esportazione</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/csvtxt.cpp" line="122"/>
         <source>Export done</source>
-        <translation>Export incheiat</translation>
+        <translation>Esportazione completata</translation>
     </message>
 </context>
 <context>
@@ -114,12 +96,12 @@
         <location filename="../plugins/report/bands/detail/detail.cpp" line="73"/>
         <location filename="../plugins/report/bands/detail/detail.cpp" line="98"/>
         <source>Detail</source>
-        <translation>Detaliu</translation>
+        <translation>Dettaglio</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/detail/detail.cpp" line="103"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -128,12 +110,12 @@
         <location filename="../plugins/report/bands/detailContainer/detailcontainer.cpp" line="69"/>
         <location filename="../plugins/report/bands/detailContainer/detailcontainer.cpp" line="80"/>
         <source>DetailContainer</source>
-        <translation>Container de detalii</translation>
+        <translation>Contenitore dettaglio</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/detailContainer/detailcontainer.cpp" line="85"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -142,12 +124,12 @@
         <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="74"/>
         <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="99"/>
         <source>Detail footer</source>
-        <translation>Subsol detaliu</translation>
+        <translation>Piè di pagina dettaglio</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/detailFooter/detailfooter.cpp" line="104"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -156,120 +138,56 @@
         <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="75"/>
         <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="100"/>
         <source>Detail header</source>
-        <translation>Antet detaliu</translation>
+        <translation>Intestazione dettaglio</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/detailHeader/detailheader.cpp" line="105"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
     <name>Dialog</name>
     <message>
-        <source>Flags</source>
-        <translation type="obsolete">Bife</translation>
-    </message>
-    <message>
-        <source>C&amp;heck all</source>
-        <translation type="obsolete">&amp;Bifeaza tot</translation>
-    </message>
-    <message>
-        <source>&amp;Uncheck all</source>
-        <translation type="obsolete">&amp;Debifeaza tot</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="obsolete">&amp;Accepta</translation>
-    </message>
-    <message>
-        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="158"/>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Renunta</translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation type="obsolete">Alege</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="obsolete">Sterge</translation>
-    </message>
-    <message>
-        <source>StringList</source>
-        <translation type="obsolete">Lista de siruri</translation>
-    </message>
-    <message>
-        <source>New String</source>
-        <translation type="obsolete">Sir nou</translation>
-    </message>
-    <message>
-        <source>&amp;New</source>
-        <translation type="obsolete">&amp;Nou</translation>
-    </message>
-    <message>
-        <source>Delete String</source>
-        <translation type="obsolete">Sterge sirul</translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="obsolete">&amp;Sterge</translation>
-    </message>
-    <message>
-        <source>&amp;Value:</source>
-        <translation type="obsolete">&amp;Valoare:</translation>
-    </message>
-    <message>
-        <source>Move String Up</source>
-        <translation type="obsolete">Muta in sus sirul</translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation type="obsolete">Sus</translation>
-    </message>
-    <message>
-        <source>Move String Down</source>
-        <translation type="obsolete">Muta in jos sirul</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation type="obsolete">Jos</translation>
+        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="13"/>
+        <source>CSV settings</source>
+        <translation>Impostazioni CSV</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="19"/>
         <source>Delimiter</source>
-        <translation>Delimitator</translation>
+        <translation>Delimitatore</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="27"/>
         <source>C&amp;omma (,)</source>
-        <translation>&amp;Virgula(,)</translation>
+        <translation>&amp;Virgola (,)</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="34"/>
         <source>&amp;Tabulator {tab}</source>
-        <translation>Carater &amp;tab {tab}</translation>
+        <translation>&amp;Tabulatore {tab}</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="48"/>
         <source>&amp;Semicolon (;)</source>
-        <translation>&amp;Punct si virgula (;)</translation>
+        <translation>&amp;Punto e virgola (;)</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="55"/>
         <source>S&amp;pace</source>
-        <translation>Spat&amp;iu</translation>
+        <translation>&amp;Spazio</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="66"/>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="117"/>
         <source>Other</source>
-        <translation>Altceva</translation>
+        <translation>Altro</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="85"/>
         <source>Cell quotes</source>
-        <translation>Incadrare text</translation>
+        <translation>Virgolette</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="93"/>
@@ -284,24 +202,12 @@
     <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="151"/>
         <source>&amp;Ok</source>
-        <translation>&amp;Accepta</translation>
+        <translation>&amp;Ok</translation>
     </message>
     <message>
-        <source>Pixmap</source>
-        <translation type="obsolete">Imagina</translation>
-    </message>
-    <message>
-        <source>StringList editor</source>
-        <translation type="obsolete">Editor de siruri</translation>
-    </message>
-    <message>
-        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="13"/>
-        <source>CSV settings</source>
-        <translation>Setari fisier CSV</translation>
-    </message>
-    <message>
-        <source>File...</source>
-        <translation type="obsolete">Fisier</translation>
+        <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="158"/>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Annulla</translation>
     </message>
 </context>
 <context>
@@ -309,12 +215,12 @@
     <message>
         <location filename="../plugins/report/items/ellipse/ellipse.cpp" line="79"/>
         <source>Ellipse</source>
-        <translation>Elipsa</translation>
+        <translation>Ellisse</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/ellipse/ellipse.cpp" line="84"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -323,12 +229,12 @@
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unhandle exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione non gestita</translation>
     </message>
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unknown exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione sconosciuta</translation>
     </message>
 </context>
 <context>
@@ -336,33 +242,22 @@
     <message>
         <location filename="../plugins/report/items/field/field.cpp" line="42"/>
         <source>field</source>
-        <translation>camp</translation>
+        <translation>campo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/field/field.cpp" line="42"/>
         <source>query</source>
-        <translation>interogare</translation>
+        <translation>query</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/field/field.cpp" line="140"/>
         <source>Field</source>
-        <translation>Camp baza de date</translation>
+        <translation>Campo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/field/field.cpp" line="145"/>
         <source>Text</source>
-        <translation>Text</translation>
-    </message>
-</context>
-<context>
-    <name>Flags</name>
-    <message>
-        <source>Change flags</source>
-        <translation type="obsolete">Schimba bifele</translation>
-    </message>
-    <message>
-        <source> flags</source>
-        <translation type="obsolete">bife</translation>
+        <translation>Testo</translation>
     </message>
 </context>
 <context>
@@ -378,12 +273,12 @@
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="46"/>
         <source>field</source>
-        <translation type="unfinished">camp</translation>
+        <translation type="unfinished">campo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="47"/>
         <source>query</source>
-        <translation type="unfinished">interogare</translation>
+        <translation type="unfinished">query</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="214"/>
@@ -393,7 +288,7 @@
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="219"/>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation type="unfinished">Testo</translation>
     </message>
 </context>
 <context>
@@ -401,23 +296,23 @@
     <message>
         <location filename="../plugins/report/export/html/html.cpp" line="50"/>
         <source>Html *.html</source>
-        <translation></translation>
+        <translation>Html *.html</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/html/html.cpp" line="55"/>
         <location filename="../plugins/report/export/html/html.cpp" line="109"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation>Esportazione</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/html/html.cpp" line="55"/>
         <source>HTML (*.html)</source>
-        <translation></translation>
+        <translation>HTML (*.html)</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/html/html.cpp" line="109"/>
         <source>Export done</source>
-        <translation>Export incheiat</translation>
+        <translation>Esportazione completata</translation>
     </message>
 </context>
 <context>
@@ -430,12 +325,12 @@
     <message>
         <location filename="../plugins/report/items/htmlscript/htmlscript.cpp" line="147"/>
         <source>HtmlScript</source>
-        <translation>Script Html</translation>
+        <translation>HtmlScript</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/htmlscript/htmlscript.cpp" line="152"/>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Testo</translation>
     </message>
 </context>
 <context>
@@ -443,12 +338,12 @@
     <message>
         <location filename="../libs/report/iteminterface.cpp" line="488"/>
         <source>Query &apos;%1&apos; not found</source>
-        <translation>Interogarea &apos;%1&apos; nu a fost gasita</translation>
+        <translation>Query &apos;%1&apos; non trovata</translation>
     </message>
     <message>
         <location filename="../libs/report/iteminterface.cpp" line="491"/>
         <source>Field &apos;%1&apos; not found</source>
-        <translation>Campul &apos;%1&apos; nu a fost gasit</translation>
+        <translation>Campo &apos;%1&apos; non trovato</translation>
     </message>
 </context>
 <context>
@@ -456,23 +351,12 @@
     <message>
         <location filename="../plugins/report/items/charts/legend/legend.cpp" line="88"/>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Legenda</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/legend/legend.cpp" line="93"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Line</name>
-    <message>
-        <source>Line</source>
-        <translation type="obsolete">Linie</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <translation type="obsolete">Figuri</translation>
+        <translation>Grafici</translation>
     </message>
 </context>
 <context>
@@ -480,12 +364,12 @@
     <message>
         <location filename="../plugins/report/items/line/line.cpp" line="101"/>
         <source>LineItem</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/line/line.cpp" line="106"/>
         <source>Shapes</source>
-        <translation type="unfinished">Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -493,13 +377,13 @@
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="53"/>
         <source>OASIS Spreadsheet *.ods</source>
-        <translation>Foaie de calcul OASIS *.ods</translation>
+        <translation>Foglio di calcolo OASIS *.ods</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="58"/>
         <location filename="../plugins/report/export/ods/ods.cpp" line="190"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation>Esportazione</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="58"/>
@@ -519,67 +403,67 @@
         <location filename="../plugins/report/export/ods/ods.cpp" line="180"/>
         <location filename="../plugins/report/export/ods/ods.cpp" line="186"/>
         <source>ODS Export</source>
-        <translation>Export ODS</translation>
+        <translation>Esportazione ODS</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="126"/>
         <source>Can&apos;t create %1 error no: %2</source>
-        <translation>Nu pot creea %1 .Eroarea: %2</translation>
-    </message>
-    <message>
-        <location filename="../plugins/report/export/ods/ods.cpp" line="186"/>
-        <source>Can&apos;t close %1 error no: %2</source>
-        <translation>Nu pot inchide  %1,  erroare: %2</translation>
-    </message>
-    <message>
-        <location filename="../plugins/report/export/ods/ods.cpp" line="190"/>
-        <source>Export done</source>
-        <translation>Export incheiat</translation>
+        <translation>Impossibile creare %1 errore n.: %2</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="132"/>
         <source>Can&apos;t create meta.xml, error no: %1</source>
-        <translation>Nu pot creea meta.xml, eroare: %1</translation>
+        <translation>Impossibile creare meta.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="138"/>
         <source>Can&apos;t write data to meta.xml, error no: %1</source>
-        <translation>Nu pot scrie in meta.xml, eroarea: %1</translation>
+        <translation>Impossibile scrivere dati su meta.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="144"/>
         <source>Can&apos;t close meta.xml, error no: %1</source>
-        <translation>Nu pot inchide meta.xml, eroarea: %1</translation>
+        <translation>Impossibile chiudere meta.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="150"/>
         <source>Can&apos;t create META-INF/manifest.xml, error no: %1</source>
-        <translation>Nu pot creea META-INF/manifest.xml, eroarea: %1</translation>
+        <translation>Impossibile creare META-INF/manifest.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="156"/>
         <source>Can&apos;t write data to META-INF/manifest.xml, error no: %1</source>
-        <translation>Nu pot scrie in META-INF/manifest.xml, eroarea: %1</translation>
+        <translation>Impossibile scrivere dati su META-INF/manifest.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="162"/>
         <source>Can&apos;t close META-INF/manifest.xml, error no: %1</source>
-        <translation>Nu pot inchide META-INF/manifest.xml, eroarea: %1</translation>
+        <translation>Impossibile chiudere META-INF/manifest.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="168"/>
         <source>Can&apos;t create content.xml, error no: %1</source>
-        <translation>Nu pot creea content.xml, eroare: %1</translation>
+        <translation>Impossibile creare content.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="174"/>
         <source>Can&apos;t write data to content.xml, error no: %1</source>
-        <translation>Nu pot scrie in content.xml, eroarea: %1</translation>
+        <translation>Impossibile scrivere dati su content.xml, errore n.: %1</translation>
     </message>
     <message>
         <location filename="../plugins/report/export/ods/ods.cpp" line="180"/>
         <source>Can&apos;t close content.xml, error no: %1</source>
-        <translation>Nu pot inchide content.xml, eroarea: %1</translation>
+        <translation>Impossibile chiudere content.xml, errore n.: %1</translation>
+    </message>
+    <message>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="186"/>
+        <source>Can&apos;t close %1 error no: %2</source>
+        <translation>Impossibile chiudere %1 errore n.: %2</translation>
+    </message>
+    <message>
+        <location filename="../plugins/report/export/ods/ods.cpp" line="190"/>
+        <source>Export done</source>
+        <translation>Esportazione completata</translation>
     </message>
 </context>
 <context>
@@ -587,62 +471,66 @@
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="13"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="19"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Percorso</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="25"/>
         <source>designer:</source>
-        <translation type="unfinished"></translation>
+        <translation>designer:</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="35"/>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfoglia...</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="45"/>
         <source>Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Interfaccia</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="53"/>
         <source>Icon size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensioni icone:</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="64"/>
         <source>12 x 12</source>
-        <translation type="unfinished"></translation>
+        <translation>12 x 12</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="69"/>
         <source>16 x 16</source>
-        <translation type="unfinished"></translation>
+        <translation>16 x 16</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="74"/>
         <source>24 x 24</source>
-        <translation type="unfinished"></translation>
+        <translation>24 x 24</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="79"/>
         <source>32 x 32</source>
-        <translation type="unfinished"></translation>
+        <translation>32 x 32</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="84"/>
         <source>48 x 48</source>
-        <translation type="unfinished"></translation>
+        <translation>48 x 48</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="100"/>
         <source>Draw selection border around items</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>font Size:</source>
+        <translation type="obsolete">Dimensione font:</translation>
     </message>
 </context>
 <context>
@@ -651,12 +539,12 @@
         <location filename="../plugins/report/bands/overlay/overlay.cpp" line="78"/>
         <location filename="../plugins/report/bands/overlay/overlay.cpp" line="103"/>
         <source>Overlay</source>
-        <translation>Suprapunere (Overlay)</translation>
+        <translation>Sovrapposizione</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/overlay/overlay.cpp" line="108"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -665,12 +553,12 @@
         <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="75"/>
         <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="100"/>
         <source>Page footer</source>
-        <translation>Subsol pagina</translation>
+        <translation>Piè di pagina</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/pageFooter/pagefooter.cpp" line="105"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -679,12 +567,12 @@
         <location filename="../plugins/report/bands/pageHeader/pageheader.cpp" line="76"/>
         <location filename="../plugins/report/bands/pageHeader/pageheader.cpp" line="101"/>
         <source>Page header</source>
-        <translation>Antet pagina</translation>
+        <translation>Intestazione pagina</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/pageHeader/pageheader.cpp" line="106"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -692,12 +580,12 @@
     <message>
         <location filename="../plugins/report/items/picture/picture.cpp" line="244"/>
         <source>Picture</source>
-        <translation>Imagina</translation>
+        <translation>Immagine</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/picture/picture.cpp" line="249"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -705,12 +593,12 @@
     <message>
         <location filename="../plugins/report/items/pie/pie.cpp" line="99"/>
         <source>Pie</source>
-        <translation>Placinta</translation>
+        <translation>Torta</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/pie/pie.cpp" line="104"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -718,41 +606,12 @@
     <message>
         <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="392"/>
         <source>PieChart</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafico a torta</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="397"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Pixmap</name>
-    <message>
-        <source>Choose a image</source>
-        <translation type="obsolete">Alege o imagina</translation>
-    </message>
-</context>
-<context>
-    <name>PixmapDialog</name>
-    <message>
-        <source>Open Image</source>
-        <translation type="obsolete">Deschide imaginea</translation>
-    </message>
-    <message>
-        <source>Image Files (*.png *.jpg *.bmp)</source>
-        <translation type="obsolete">Fisiere imagini (*.png *.jpg *.bmp)</translation>
-    </message>
-</context>
-<context>
-    <name>PropertyEditor::PropertyModel</name>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Proprietare</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation type="obsolete">Valoare</translation>
+        <translation>Grafici</translation>
     </message>
 </context>
 <context>
@@ -760,62 +619,55 @@
     <message>
         <location filename="../apps/designer/command.cpp" line="28"/>
         <source>Add %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi %1</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="116"/>
         <source>Open item</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri oggetto</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="212"/>
         <source>Open item %1(%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri oggetto %1(%2)</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="277"/>
         <source>Move %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta %1</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="320"/>
         <source>Delete %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella %1</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="422"/>
         <location filename="../apps/designer/command.cpp" line="478"/>
         <source>&apos;%1&apos; property &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; proprietà &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="490"/>
         <location filename="../apps/designer/command.cpp" line="548"/>
         <source>&apos;%1&apos; change size &apos;%2x%3&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; cambia dimensione &apos;%2x%3&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="562"/>
         <source>NewPage &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova pagina &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="589"/>
         <source>Remove Page &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Elimina pagina &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="607"/>
         <location filename="../apps/designer/command.cpp" line="614"/>
         <source>%1 at (%2, %3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QuaZipFile</name>
-    <message>
-        <source>ZIP/UNZIP API error %1</source>
-        <translation type="obsolete">Eroare AIP ZIP/UNZIP %1</translation>
+        <translation>%1 a (%2, %3)</translation>
     </message>
 </context>
 <context>
@@ -823,52 +675,52 @@
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="29"/>
         <source>Query editor</source>
-        <translation>Editor de interogari</translation>
+        <translation>Editor di query</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="43"/>
         <source>&amp;OK</source>
-        <translation>&amp;Accepta</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="44"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Renunta</translation>
+        <translation>&amp;Annulla</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="48"/>
         <source>Copy</source>
-        <translation>Copiaza</translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="49"/>
         <source>Cut</source>
-        <translation>Taie</translation>
+        <translation>Taglia</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="50"/>
         <source>Paste</source>
-        <translation>Lipeste</translation>
+        <translation>Incolla</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="52"/>
         <source>Undo</source>
-        <translation>Reface</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="53"/>
         <source>Redo</source>
-        <translation>Desface</translation>
+        <translation>Ripeti</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="55"/>
         <source>Test query</source>
-        <translation>Testeaza interogarea</translation>
+        <translation>Prova query</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="96"/>
         <source>Can&apos;t exec query</source>
-        <translation>Nu pot executa interogarea</translation>
+        <translation>Impossibile eseguire la query</translation>
     </message>
 </context>
 <context>
@@ -876,12 +728,12 @@
     <message>
         <location filename="../plugins/report/items/rectangle/rectangle.cpp" line="100"/>
         <source>Rectangle</source>
-        <translation>Dreptunghi</translation>
+        <translation>Rettangolo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/rectangle/rectangle.cpp" line="105"/>
         <source>Shapes</source>
-        <translation>Figuri</translation>
+        <translation>Forme</translation>
     </message>
 </context>
 <context>
@@ -889,7 +741,7 @@
     <message>
         <location filename="../plugins/report/items/charts/chartinterface/chartdatacollector.cpp" line="43"/>
         <source>Other</source>
-        <translation type="unfinished">Altceva</translation>
+        <translation>Altro</translation>
     </message>
 </context>
 <context>
@@ -897,32 +749,32 @@
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="55"/>
         <source>Query object</source>
-        <translation>Object interogare</translation>
+        <translation>Oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="55"/>
         <source>query name:</source>
-        <translation>nume interogare:</translation>
+        <translation>nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source>Create an query object</source>
-        <translation>Creaza un obiect interogare</translation>
+        <translation>Crea un oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source> query name:</source>
-        <translation>nume interogare:</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
-        <source>Delete current query ?</source>
-        <translation>Sterg interogarea curenta ?</translation>
+        <translation>nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
         <source>eXaro</source>
         <translation>eXaro</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
+        <source>Delete current query ?</source>
+        <translation>Cancellare la query corrente?</translation>
     </message>
 </context>
 <context>
@@ -930,38 +782,38 @@
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="75"/>
         <source>Can&apos;t create process :</source>
-        <translation>Nu pot crea procesul:</translation>
+        <translation>Impossibile creare il processo:</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="85"/>
         <source>Can&apos;t open temp file</source>
-        <translation>Nu pot deschide fisierul temporara</translation>
+        <translation>Impossibile aprire il file temporaneo</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="96"/>
         <source>Ui wigdet</source>
-        <translation>Widget interfata</translation>
+        <translation>Widget UI</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="96"/>
         <location filename="../apps/designer/designeruiwidget.cpp" line="117"/>
         <source>ui name:</source>
-        <translation>denumire interfata:</translation>
+        <translation>nome ui:</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="117"/>
         <source>Create an ui widget</source>
-        <translation>Creez un widget de interfata</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
-        <source>Delete current ui ?</source>
-        <translation>Sterg interfata curenta ?</translation>
+        <translation>Crea un widget ui</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
         <source>eXaro</source>
         <translation>eXaro</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
+        <source>Delete current ui ?</source>
+        <translation>Cancellare il widget ui corrente?</translation>
     </message>
 </context>
 <context>
@@ -969,7 +821,7 @@
     <message>
         <location filename="../libs/report/pageinterface.cpp" line="136"/>
         <source>Press Ctrl key to ingore magnets when drag the object</source>
-        <translation>Apasati tasta Ctrl pentru a ignora magnetii</translation>
+        <translation>Premi il tasto Ctrl per ignorare i magneti durante il trascinamento dell&apos;oggetto</translation>
     </message>
 </context>
 <context>
@@ -977,12 +829,12 @@
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="123"/>
         <source>Zoom in</source>
-        <translation>Mareste</translation>
+        <translation>Zoom in</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="138"/>
         <source>Zoom out</source>
-        <translation>Micsoreaza</translation>
+        <translation>Zoom out</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="144"/>
@@ -992,12 +844,12 @@
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="148"/>
         <source>Read previous</source>
-        <translation>Citeste inapoi</translation>
+        <translation>Precedente</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="152"/>
         <source>Read next</source>
-        <translation>Citeste inainte</translation>
+        <translation>Successiva</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="156"/>
@@ -1007,57 +859,57 @@
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="162"/>
         <source>Export</source>
-        <translation>Export</translation>
+        <translation>Esporta</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="168"/>
         <source>Search</source>
-        <translation>Cauta</translation>
+        <translation>Cerca</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="179"/>
         <source>Print</source>
-        <translation>Tipareste</translation>
+        <translation>Stampa</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="186"/>
         <source>Switch painting system</source>
-        <translation>Comuta sistemul de desenare</translation>
+        <translation>Cambia sistema di disegno</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="194"/>
         <source>Quit</source>
-        <translation>Inchide</translation>
+        <translation>Esci</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="224"/>
         <source>Please select an export format</source>
-        <translation>Selectati un format de export</translation>
+        <translation>Per favore seleziona un formato di esportazione</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="229"/>
         <source>&amp;Ok</source>
-        <translation>&amp;Accepta</translation>
+        <translation>&amp;Ok</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="233"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Renunta</translation>
+        <translation>&amp;Annulla</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="239"/>
         <source>Export format</source>
-        <translation>Format export</translation>
+        <translation>Formato esportazione</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
         <source>Quit ?</source>
-        <translation>Inchid ?</translation>
+        <translation>Uscita ?</translation>
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
         <source>Realy quit?</source>
-        <translation>Chiar inchid ?</translation>
+        <translation>Confermi l&apos;uscita?</translation>
     </message>
 </context>
 <context>
@@ -1065,7 +917,7 @@
     <message>
         <location filename="../libs/report/reportengine.cpp" line="327"/>
         <source>Can&apos;t find %1</source>
-        <translation>Nu pot gasi %1</translation>
+        <translation>Non trovo %1</translation>
     </message>
 </context>
 <context>
@@ -1073,23 +925,23 @@
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="292"/>
         <source>Prepare page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Preparazione pagina: %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="426"/>
         <location filename="../libs/report/reportinterface.cpp" line="476"/>
         <source>Uncaught exception at line %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione non gestita alla linea %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="440"/>
         <source>Importing extension: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Importazione estensione: %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="486"/>
         <source>Can&apos;t create temporary files</source>
-        <translation type="unfinished"></translation>
+        <translation>Non riesco a creare i file temporanei</translation>
     </message>
 </context>
 <context>
@@ -1097,17 +949,17 @@
     <message>
         <location filename="../libs/report/searchwidget.cpp" line="41"/>
         <source>&amp;Close</source>
-        <translation>&amp;Inchide</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
     <message>
         <location filename="../libs/report/searchwidget.cpp" line="47"/>
         <source>&amp;Previous</source>
-        <translation>&amp;Inapoi</translation>
+        <translation>&amp;Precedente</translation>
     </message>
     <message>
         <location filename="../libs/report/searchwidget.cpp" line="51"/>
         <source>&amp;Next</source>
-        <translation>I&amp;nainte</translation>
+        <translation>&amp;Successivo</translation>
     </message>
 </context>
 <context>
@@ -1115,12 +967,12 @@
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="30"/>
         <source>Queries</source>
-        <translation>Interogari</translation>
+        <translation>Query</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="39"/>
         <source>Uis</source>
-        <translation>Interfete</translation>
+        <translation>UI</translation>
     </message>
 </context>
 <context>
@@ -1138,7 +990,7 @@
     <message>
         <location filename="../plugins/report/items/script/script.cpp" line="138"/>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Testo</translation>
     </message>
 </context>
 <context>
@@ -1146,69 +998,69 @@
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="27"/>
         <source>Script editor</source>
-        <translation>Editor de scripturi</translation>
+        <translation>Editor di script</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="41"/>
         <source>&amp;OK</source>
-        <translation>&amp;Accepta</translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="42"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Renunta</translation>
+        <translation>&amp;Annulla</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="46"/>
         <source>Copy</source>
-        <translation>Copiaza</translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="47"/>
         <source>Cut</source>
-        <translation>Taie</translation>
+        <translation>Taglia</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="48"/>
         <source>Paste</source>
-        <translation>Lipeste</translation>
+        <translation>Incolla</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="50"/>
         <source>Undo</source>
-        <translation>Reface</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="51"/>
         <source>Redo</source>
-        <translation>Desface</translation>
+        <translation>Ripeti</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="53"/>
         <source>Validate</source>
-        <translation>Valideaza</translation>
+        <translation>Convalida</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="103"/>
         <location filename="../apps/designer/scripteditdialog.cpp" line="111"/>
         <source>Error</source>
-        <translation>Eroare</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="103"/>
         <location filename="../apps/designer/scripteditdialog.cpp" line="111"/>
         <source>the script is invalid</source>
-        <translation>scriptl este invalid</translation>
+        <translation>lo script non è valido</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
         <source>Ok</source>
-        <translation>Accepta</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
         <source>the script it&apos;s ok</source>
-        <translation>Scriptul este valid</translation>
+        <translation>lo script è ok</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1068,7 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="56"/>
         <source>Connection error</source>
-        <translation>Eroare la conectare</translation>
+        <translation>Errore connessione</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="56"/>
@@ -1227,12 +1079,12 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
         <source>Open SQLite Database</source>
-        <translation>Deschie o baza de date SQLite</translation>
+        <translation>Apri database SQLite</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
         <source>SQLite Database (*.db *.db3 *.sqlite *.sqlite3);;All files (*.*)</source>
-        <translation>Baza de date SQLite  (*.db *.db3 *.sqlite *.sqlite3);;Toate fisierele (*.*)</translation>
+        <translation>Database SQLite (*.db *.db3 *.sqlite *.sqlite3);;Tutti i file (*.*)</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
@@ -1247,31 +1099,17 @@ Please enter name</source>
     </message>
 </context>
 <context>
-    <name>StringList</name>
-    <message>
-        <source>Change stringlist</source>
-        <translation type="obsolete">Schimba lista de siruri</translation>
-    </message>
-</context>
-<context>
-    <name>StringListEditor</name>
-    <message>
-        <source>Choose a data file</source>
-        <translation type="obsolete">Alegeti un fisier de date</translation>
-    </message>
-</context>
-<context>
     <name>Summary</name>
     <message>
         <location filename="../plugins/report/bands/summary/summary.cpp" line="73"/>
         <location filename="../plugins/report/bands/summary/summary.cpp" line="98"/>
         <source>Summary</source>
-        <translation>Sumar</translation>
+        <translation>Sommario</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/summary/summary.cpp" line="103"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -1279,13 +1117,13 @@ Please enter name</source>
     <message>
         <location filename="../plugins/report/items/text/text.cpp" line="42"/>
         <source>text item</source>
-        <translation>element text</translation>
+        <translation>oggetto testo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/text/text.cpp" line="129"/>
         <location filename="../plugins/report/items/text/text.cpp" line="134"/>
         <source>Text</source>
-        <translation type="unfinished">Text</translation>
+        <translation>Testo</translation>
     </message>
 </context>
 <context>
@@ -1294,19 +1132,12 @@ Please enter name</source>
         <location filename="../plugins/report/bands/title/title.cpp" line="77"/>
         <location filename="../plugins/report/bands/title/title.cpp" line="102"/>
         <source>Title</source>
-        <translation>Titlu</translation>
+        <translation>Titolo</translation>
     </message>
     <message>
         <location filename="../plugins/report/bands/title/title.cpp" line="107"/>
         <source>Bands</source>
-        <translation>Benzi</translation>
-    </message>
-</context>
-<context>
-    <name>Ui</name>
-    <message>
-        <source>Any</source>
-        <translation type="obsolete">Oricare</translation>
+        <translation>Bande</translation>
     </message>
 </context>
 <context>
@@ -1314,17 +1145,17 @@ Please enter name</source>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="13"/>
         <source>About eXaro</source>
-        <translation>Despre eXaro</translation>
+        <translation>Informazioni su eXaro</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="23"/>
         <source>About</source>
-        <translation>Despre</translation>
+        <translation>Informazioni su</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="43"/>
         <source>License</source>
-        <translation>Licenta</translation>
+        <translation>Licenza</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="49"/>
@@ -1449,7 +1280,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="188"/>
         <source>&amp;Close</source>
-        <translation>&amp;Inchide</translation>
+        <translation>&amp;Chiudi</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1288,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="14"/>
         <source>Setup database</source>
-        <translation>Setari baza de date</translation>
+        <translation>Imposta database</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="20"/>
@@ -1467,27 +1298,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="39"/>
         <source>Database driver:</source>
-        <translation>Driver baza de date:</translation>
+        <translation>Driver di database:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="71"/>
         <source>UserName :</source>
-        <translation>Utilizator:</translation>
+        <translation>Nome utente:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="81"/>
         <source>Password:</source>
-        <translation>Parola:</translation>
+        <translation>Password:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="126"/>
         <source>HostName:</source>
-        <translation>Gazda:</translation>
+        <translation>Nome server:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="136"/>
         <source>Port:</source>
-        <translation>Port:</translation>
+        <translation>Porta:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="153"/>
@@ -1497,12 +1328,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="184"/>
         <source>DatabaseName:</source>
-        <translation>Baza de date:</translation>
+        <translation>Nome database:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="194"/>
         <source>ConnectOptions:</source>
-        <translation>Optiuni de conectare:</translation>
+        <translation>Opzioni connessione:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="217"/>
@@ -1517,12 +1348,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="270"/>
         <source>&amp;Ok</source>
-        <translation>&amp;Accepta</translation>
+        <translation>&amp;Ok</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="277"/>
         <source>&amp;Cancel</source>
-        <translation>&amp;Renunta</translation>
+        <translation>&amp;Annulla</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="288"/>
@@ -1533,37 +1364,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>designerQueryWidget</name>
     <message>
+        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
+        <source>Querys</source>
+        <translation>Query</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="30"/>
         <source>Create</source>
-        <translation>Creaza</translation>
+        <translation>Crea</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="50"/>
         <source>Edit query</source>
-        <translation>Editeaza interogarea</translation>
+        <translation>Modifica query</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="70"/>
         <source>Edit name</source>
-        <translation>Modifica numele</translation>
+        <translation>Modifica nome</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="90"/>
         <source>Delete</source>
-        <translation>Sterge</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
-        <source>Querys</source>
-        <translation>Interogari</translation>
+        <translation>Cancella</translation>
     </message>
 </context>
 <context>
     <name>designerUiType</name>
     <message>
+        <location filename="../apps/designer/designeruitype.ui" line="13"/>
+        <source>Ui</source>
+        <translation>UI</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/designeruitype.ui" line="19"/>
         <source>[ Ui base class ]</source>
-        <translation>[ Clasa de baza pentru interfata ]</translation>
+        <translation>[ classe base UI ]</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruitype.ui" line="25"/>
@@ -1576,51 +1412,106 @@ p, li { white-space: pre-wrap; }
         <translation>Q&amp;Dialog</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designeruitype.ui" line="52"/>
-        <source>&amp;Ok</source>
-        <translation>&amp;Accepta</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designeruitype.ui" line="13"/>
-        <source>Ui</source>
-        <translation>Interfata</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/designeruitype.ui" line="42"/>
         <source>&amp;Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Personalizzata</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/designeruitype.ui" line="52"/>
+        <source>&amp;Ok</source>
+        <translation>&amp;Ok</translation>
     </message>
 </context>
 <context>
     <name>designerUiWidget</name>
     <message>
+        <location filename="../apps/designer/designeruiwidget.ui" line="19"/>
+        <source>Uis</source>
+        <translation>UI</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/designeruiwidget.ui" line="30"/>
         <source>Create</source>
-        <translation>Creaza</translation>
+        <translation>Crea</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.ui" line="50"/>
         <source>Edit ui</source>
-        <translation>Editeaza interfata</translation>
+        <translation>Modifica UI</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.ui" line="70"/>
         <source>Edit name</source>
-        <translation>Modifica numele</translation>
+        <translation>Modifica nome</translation>
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.ui" line="90"/>
         <source>Delete</source>
-        <translation>Sterge</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designeruiwidget.ui" line="19"/>
-        <source>Uis</source>
-        <translation>Interfete</translation>
+        <translation>Cancella</translation>
     </message>
 </context>
 <context>
     <name>mainWindow</name>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="60"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="518"/>
+        <source>eXaro v%1 unsaved report</source>
+        <translation>eXaro v%1 report non salvato</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="68"/>
+        <source>Tool Box</source>
+        <translation>Strumenti</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="74"/>
+        <source>Property Editor</source>
+        <translation>Editor di proprietà</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="82"/>
+        <source>Query Editor</source>
+        <translation>Editor di query</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="89"/>
+        <source>Ui Editor</source>
+        <translation>Editor UI</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="103"/>
+        <source>Object Inspector</source>
+        <translation>Oggetti</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="111"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="115"/>
+        <source>Command List</source>
+        <translation>Lista comandi</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="206"/>
+        <source>report name</source>
+        <translation>nome report</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="284"/>
+        <source>Save item</source>
+        <translation>Salva oggetto</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="285"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="307"/>
+        <source>Item (*.bdrti)</source>
+        <translation>Oggetto (*.bdrti)</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="306"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="620"/>
+        <location filename="../apps/designer/mainwindow.ui" line="219"/>
+        <source>Open report</source>
+        <translation>Apri report</translation>
+    </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="357"/>
         <source>eXaro</source>
@@ -1629,88 +1520,92 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="357"/>
         <source>Save changes ?</source>
-        <translation>Salvez modificarile ?</translation>
+        <translation>Salvare i cambiamenti?</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="511"/>
         <source>Report name</source>
-        <translation>Nume raport</translation>
+        <translation>Nome report</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="306"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="620"/>
-        <location filename="../apps/designer/mainwindow.ui" line="219"/>
-        <source>Open report</source>
-        <translation>Deschide raport</translation>
+        <location filename="../apps/designer/mainwindow.cpp" line="610"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="728"/>
+        <source>eXaro v%1 (%2)</source>
+        <translation>eXaro v%1 (%2)</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="621"/>
         <source>Report (*.bdrt)</source>
-        <translation>Raport (*.bdrt)</translation>
+        <translation>Report (*.bdrt)</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="635"/>
+        <location filename="../apps/designer/mainwindow.ui" line="483"/>
+        <source>Open template</source>
+        <translation>Apri modello</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.cpp" line="636"/>
+        <source>Exaro Template (*.extt)</source>
+        <translation>Modello eXaro (*.extt)</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="717"/>
         <location filename="../apps/designer/mainwindow.ui" line="231"/>
         <source>Save report</source>
-        <translation>Salveaza raport</translation>
+        <translation>Salva report</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="68"/>
-        <source>Tool Box</source>
-        <translation>Unelte</translation>
+        <location filename="../apps/designer/mainwindow.cpp" line="718"/>
+        <source>Report (*.bdrt);;Template (*.extt)</source>
+        <translation>Report (*.bdrt);;Modello (*.extt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="74"/>
-        <source>Property Editor</source>
-        <translation>Editor proprietati</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="82"/>
-        <source>Query Editor</source>
-        <translation>Editor interogari</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="89"/>
-        <source>Ui Editor</source>
-        <translation>Editor interfete</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="103"/>
-        <source>Object Inspector</source>
-        <translation>Inspector obiecte</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="206"/>
-        <source>report name</source>
-        <translation>nume raport</translation>
+        <location filename="../apps/designer/mainwindow.ui" line="14"/>
+        <source>eXaro v1.0.1</source>
+        <translation>eXaro v1.0.1</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="38"/>
         <source>&amp;File</source>
-        <translation>&amp;Fisier</translation>
+        <translation>&amp;File</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="42"/>
+        <source>Open last temlate</source>
+        <translation>Apri ultimo modello</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="47"/>
+        <source>Open last report</source>
+        <translation>Apri ultimo report</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="63"/>
         <source>&amp;Report</source>
-        <translation>&amp;Raport</translation>
+        <translation>&amp;Report</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="77"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Editeaza</translation>
+        <translation>&amp;Modifica</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation type="obsolete">&amp;Unelte</translation>
+        <translation type="obsolete">&amp;Strumenti</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="105"/>
         <source>&amp;Help</source>
-        <translation>&amp;Ajutor</translation>
+        <translation>&amp;Aiuto</translation>
     </message>
     <message>
         <source>Tool Bar</source>
-        <translation type="obsolete">Bara de unelte</translation>
+        <translation type="obsolete">Tool Bar</translation>
+    </message>
+    <message>
+        <source>toolBar_2</source>
+        <translation type="obsolete">toolBar_2</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
@@ -1746,7 +1641,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="198"/>
         <source>&amp;Remove page</source>
-        <translation>&amp;Sterge Pagina</translation>
+        <translation>&amp;Elimina pagina</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="201"/>
@@ -1756,7 +1651,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="210"/>
         <source>New report</source>
-        <translation>Raport nou</translation>
+        <translation>Nuovo report</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="222"/>
@@ -1771,7 +1666,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="243"/>
         <source>Quit</source>
-        <translation>Inchide</translation>
+        <translation>Esci</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="246"/>
@@ -1781,12 +1676,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="255"/>
         <source>New page</source>
-        <translation>Pagina noua</translation>
+        <translation>Nuova pagina</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="264"/>
         <source>Zoom in</source>
-        <translation>Mareste</translation>
+        <translation>Zoom in</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="267"/>
@@ -1796,7 +1691,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="276"/>
         <source>Zoom out</source>
-        <translation>Micsoreaza</translation>
+        <translation>Zoom out</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="279"/>
@@ -1806,12 +1701,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="288"/>
         <source>Zoom original</source>
-        <translation>Dimensiune originala</translation>
+        <translation>Zoom originale</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="291"/>
+        <source>Ctrl+0</source>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="300"/>
         <source>Edit script</source>
-        <translation>Editeaza scriptul</translation>
+        <translation>Modifica script</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="303"/>
@@ -1821,7 +1721,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="312"/>
         <source>Save report as ...</source>
-        <translation>Salveaza raportul ca ...</translation>
+        <translation>Salva report con nome ...</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="315"/>
@@ -1831,7 +1731,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="324"/>
         <source>Execute</source>
-        <translation>Ruleza</translation>
+        <translation>Esegui</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="327"/>
@@ -1841,12 +1741,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="336"/>
         <source>Setup a database</source>
-        <translation>Seteaza o baza de date</translation>
+        <translation>Imposta database</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="345"/>
         <source>Copy</source>
-        <translation>Copiaza</translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="348"/>
@@ -1856,7 +1756,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="357"/>
         <source>Cut</source>
-        <translation>Taie</translation>
+        <translation>Taglia</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="360"/>
@@ -1866,7 +1766,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="369"/>
         <source>Paste</source>
-        <translation>Lipeste</translation>
+        <translation>Incolla</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="372"/>
@@ -1876,7 +1776,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="381"/>
         <source>Delete</source>
-        <translation>Sterge</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="384"/>
@@ -1886,201 +1786,93 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="396"/>
         <source>Left magnet</source>
-        <translation>Magnet stanga</translation>
+        <translation>Magnete sinistro</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="408"/>
         <source>Right magnet</source>
-        <translation>Magnet dreapta</translation>
+        <translation>Magnete destro</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="420"/>
         <source>Top magnet</source>
-        <translation>Magnet sus</translation>
+        <translation>Magnete superiore</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="432"/>
         <source>Bottom magnet</source>
-        <translation>Magnet jos</translation>
+        <translation>Magnete inferiore</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="444"/>
         <source>Vertical magnet</source>
-        <translation>Magnet centru vertical</translation>
+        <translation>Magnete verticale</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="456"/>
         <source>Horizontal magnet</source>
-        <translation>Magnet centru orizontal</translation>
+        <translation>Magnete orizzontale</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="461"/>
         <source>Set designer path</source>
-        <translation>Seteaza calea pentru designer</translation>
+        <translation>Imposta percorso designer</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="466"/>
         <source>&amp;About eXaro</source>
-        <translation>&amp;Despre eXaro</translation>
+        <translation>&amp;Informazioni su eXaro</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="475"/>
         <source>Zoom WYSIWYG</source>
-        <translation>Dimensiune exacta</translation>
+        <translation>Zoom WYSIWYG</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="478"/>
+        <source>Ctrl+1</source>
+        <translation>Ctrl+1</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="488"/>
+        <source>Options...</source>
+        <translation>Opzioni...</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="497"/>
+        <source>&amp;Save item as ...</source>
+        <translation>&amp;Salva oggetto con nome ...</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="506"/>
+        <source>Open item from ...</source>
+        <translation>Apri oggetto da ...</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="515"/>
+        <source>Undo</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="518"/>
+        <source>Ctrl+Z</source>
+        <translation>Ctrl+Z</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="527"/>
+        <source>Redo</source>
+        <translation>Ripeti</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="530"/>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="540"/>
         <location filename="../apps/designer/mainwindow.ui" line="545"/>
         <source>a</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="60"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="518"/>
-        <source>eXaro v%1 unsaved report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="111"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="115"/>
-        <source>Command List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="284"/>
-        <source>Save item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="285"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="307"/>
-        <source>Item (*.bdrti)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="610"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="728"/>
-        <source>eXaro v%1 (%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="635"/>
-        <location filename="../apps/designer/mainwindow.ui" line="483"/>
-        <source>Open template</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="636"/>
-        <source>Exaro Template (*.extt)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="718"/>
-        <source>Report (*.bdrt);;Template (*.extt)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="14"/>
-        <source>eXaro v1.0.1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="42"/>
-        <source>Open last temlate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="47"/>
-        <source>Open last report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="291"/>
-        <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="478"/>
-        <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="488"/>
-        <source>Options...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="497"/>
-        <source>&amp;Save item as ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="506"/>
-        <source>Open item from ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="515"/>
-        <source>Undo</source>
-        <translation type="unfinished">Reface</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="518"/>
-        <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="527"/>
-        <source>Redo</source>
-        <translation type="unfinished">Desface</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/mainwindow.ui" line="530"/>
-        <source>Ctrl+R</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>metricFontDialog</name>
-    <message>
-        <source>Writing systems:</source>
-        <translation type="obsolete">Sistem de scriere:</translation>
-    </message>
-    <message>
-        <source>Font families</source>
-        <translation type="obsolete">Familie font</translation>
-    </message>
-    <message>
-        <source>Font style</source>
-        <translation type="obsolete">Stil font</translation>
-    </message>
-    <message>
-        <source>Font size (mm)</source>
-        <translation type="obsolete">Marime font (mm)</translation>
-    </message>
-    <message>
-        <source>Font effects</source>
-        <translation type="obsolete">Efecte font</translation>
-    </message>
-    <message>
-        <source>Strikeout</source>
-        <translation type="obsolete">Taiat</translation>
-    </message>
-    <message>
-        <source>Underline</source>
-        <translation type="obsolete">Subliniat</translation>
-    </message>
-    <message>
-        <source>Font sample</source>
-        <translation type="obsolete">Monstra font</translation>
-    </message>
-    <message>
-        <source>Font writing systems:</source>
-        <translation type="obsolete">Stil de scriere a fontului:</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation type="obsolete">Font</translation>
     </message>
 </context>
 <context>
@@ -2136,12 +1928,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="42"/>
         <source>Create an query object</source>
-        <translation type="unfinished">Creaza un obiect interogare</translation>
+        <translation type="unfinished">Crea un oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="42"/>
         <source> query name:</source>
-        <translation type="unfinished">nume interogare:</translation>
+        <translation type="unfinished">nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="54"/>
@@ -2167,12 +1959,12 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="76"/>
         <source>Query object</source>
-        <translation type="unfinished">Object interogare</translation>
+        <translation type="unfinished">Oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="76"/>
         <source>query name:</source>
-        <translation type="unfinished">nume interogare:</translation>
+        <translation type="unfinished">nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="14"/>
@@ -2225,7 +2017,7 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="27"/>
         <source>Report name</source>
-        <translation type="unfinished">Nume raport</translation>
+        <translation type="unfinished">Nome report</translation>
     </message>
 </context>
 </TS>

@@ -1,5 +1,5 @@
 #!/bin/sh
 
 lrelease translations.pro
-mkdir -p `qmake -query EXARO_INSTALL_TRANSLATIONS`
-cp *.qm `qmake -query EXARO_INSTALL_TRANSLATIONS`
+mkdir -p /usr/local/share/eXaro/translations
+cp *.qm /usr/local/share/eXaro/translations
