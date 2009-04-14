@@ -63,3 +63,8 @@ ADD_CUSTOM_TARGET(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
 install(FILES cmake/modules/FindExaro.cmake DESTINATION ${CMAKE_ROOT}/Modules COMPONENT Devel)
+
+#file (GLOB TRANSLATIONS_FILES translations/*.ts)
+#qt4_add_translation(QM_FILES ${TRANSLATIONS_FILES})
+
+#install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")

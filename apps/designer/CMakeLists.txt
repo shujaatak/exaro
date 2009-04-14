@@ -40,12 +40,16 @@ if(WIN32)
   endif(MINGW)
 endif(WIN32)
 
-add_executable(exaro ${exaro_SRCS})
+file(GLOB TRANSLATIONS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
+qt4_add_translation(QM_FILES ${TRANSLATIONS_FILES})
+
+add_executable(exaro ${exaro_SRCS} ${QM_FILES})
 add_dependencies(exaro Report)
 link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(exaro Report ${QT_LIBRARIES} ${PROPERTYEDITOR_LIBRARY})
 
 install(TARGETS exaro RUNTIME DESTINATION bin)
+install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")
 install(FILES application-bdrt.png DESTINATION "${ICON_INSTALL_DIR}")
 install(FILES bdrt.desktop DESTINATION "${MIME_INSTALL_DIR}/application")
 install(FILES bdrt.xml DESTINATION "${XDG_MIME_INSTALL_DIR}/packages")
