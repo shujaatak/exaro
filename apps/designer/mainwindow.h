@@ -23,7 +23,6 @@
 
 #include "reportengine.h"
 
-
 #include "ui_mainwindow.h"
 #include "propertyeditor.h"
 #include "designerquerywidget.h"
@@ -87,6 +86,7 @@ private:
 	QUndoStack *m_undoStack;
 	QUndoView *m_undoView;
 	int m_lastUndoIndex;
+
 public slots:
 	void selectLastObject();
 
@@ -135,7 +135,6 @@ signals:
 	friend class NewPageCommand;
 	friend class RemovePageCommand;
 	friend class AddDomObject;
-//friend class ChangePageCommand;
 };
 
 #endif

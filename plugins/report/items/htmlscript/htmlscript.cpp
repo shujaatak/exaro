@@ -97,7 +97,7 @@ void HtmlScript::prepare(QPainter * painter)
 	if (m_sizeFlags&AutoSizeHorizontally && pageSize.width()*2.54>rect.width())
 		setWidth(pageSize.width()*2.54);
 	if (m_sizeFlags&AutoSizeVertically && pageSize.height()*2.54>rect.height())
-		setStretch(pageSize.height()*2.54-rect.height());
+		setStretch(pageSize.height()*2.54);
 #endif
 }
 

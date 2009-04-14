@@ -29,10 +29,10 @@
 #include <QUndoView>
 
 #include <QPluginLoader>
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QDebug>
 
 #include "mainwindow.h"
 #include "designerpage.h"
