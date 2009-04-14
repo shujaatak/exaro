@@ -18,8 +18,11 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMetaObject>
+#include <QMetaProperty>
 
 #include "pagewizardpage.h"
+#include "pageinterface.h"
 
 pageWizardPage::pageWizardPage(Report::ReportEngine* reportEngine, Report::ReportInterface* reportInterface, QWidget* parent):
 		QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
@@ -30,18 +33,64 @@ pageWizardPage::pageWizardPage(Report::ReportEngine* reportEngine, Report::Repor
 
 void pageWizardPage::on_addPage_clicked()
 {
+	Report::PageInterface* page=reinterpret_cast<Report::PageInterface*>(m_reportEngine->pages()[0]->createInstance( m_report ));
+	page->setObjectName(tr("page_%1").arg(m_report->findChildren<Report::PageInterface*>().size()));
+	QListWidgetItem * i = new QListWidgetItem();
+	i->setText(page->objectName());
+	pagesList->addItem(i);
+	pagesList->setCurrentItem(i);
+	removePage->setEnabled(pagesList->count());
+	if (pagesList->count()==1)
+	{
+		pageSize->clear();
+		for (int en = 0;en < page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("pageSize")).typeName())).keyCount();en++)
+			pageSize->insertItem(en, page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("pageSize")).typeName())).key(en), page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("pageSize")).typeName())).value(en));
+		pageSize->findData(page->pageSize());
+
+		pageOrientation->clear();
+		for (int en = 0;en < page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("orientation")).typeName())).keyCount();en++)
+			pageOrientation->insertItem(en, page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("orientation")).typeName())).key(en), page->metaObject()->enumerator(page->metaObject()->indexOfEnumerator(page->metaObject()->property(page->metaObject()->indexOfProperty("orientation")).typeName())).value(en));
+		pageOrientation->findData(page->orientation());
+	}
 }
 
 void pageWizardPage::on_removePage_clicked()
 {
-/*
-	if (QMessageBox::Yes != QMessageBox::question(this, tr("eXaro"), tr("Do you want to remove '%1'").arg(pagesList->currentItem()->text()), QMessageBox::Yes|QMessageBox::No))
-		return;
+	delete m_report->findChildren<Report::PageInterface*>()[pagesList->currentRow()];
 	delete pagesList->currentItem();
-*/
+	removePage->setEnabled(pagesList->count());
 }
+
+void pageWizardPage::on_pagesList_currentRowChanged(int row)
+{
+	if (row<0 || row>=m_report->findChildren<Report::PageInterface*>().size())
+		return;
+	Report::PageInterface* page=m_report->findChildren<Report::PageInterface*>()[row];
+	pageSize->setCurrentIndex(pageSize->findData(page->pageSize()));
+	pageOrientation->setCurrentIndex(pageOrientation->findData(page->orientation()));
+}
+
+void pageWizardPage::on_pageSize_currentIndexChanged(int item)
+{
+	int row=pagesList->currentRow();
+	if (row<0 || row>=m_report->findChildren<Report::PageInterface*>().size())
+		return;
+	Report::PageInterface* page=m_report->findChildren<Report::PageInterface*>()[row];
+	page->setPageSize((Report::PageInterface::PageSize)pageSize->itemData(item).toInt());
+}
+
+void pageWizardPage::on_pageOrientation_currentIndexChanged(int item)
+{
+	int row=pagesList->currentRow();
+	if (row<0 || row>=m_report->findChildren<Report::PageInterface*>().size())
+		return;
+	Report::PageInterface* page=m_report->findChildren<Report::PageInterface*>()[row];
+	page->setOrientation((Report::PageInterface::Orientation)pageOrientation->itemData(item).toInt());
+}
+
 
 bool pageWizardPage::validatePage()
 {
-//	m_report->setQueries(m_queries);
+	return pagesList->count();
 }
+

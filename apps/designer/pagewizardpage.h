@@ -32,6 +32,9 @@ public:
 private slots:
 	void on_addPage_clicked();
 	void on_removePage_clicked();
+	void on_pagesList_currentRowChanged(int row);
+	void on_pageSize_currentIndexChanged(int item);
+	void on_pageOrientation_currentIndexChanged(int item);
 
 private:
 	Report::ReportEngine* m_reportEngine;
