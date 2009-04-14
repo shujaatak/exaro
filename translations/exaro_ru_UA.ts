@@ -1678,6 +1678,49 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>groupWizardPage</name>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="14"/>
+        <source>WizardPage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="17"/>
+        <source>Setup groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="20"/>
+        <source>Here you can setup the groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="26"/>
+        <source>Select a page and a query to use for groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="32"/>
+        <source>Page:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="45"/>
+        <source>Query:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="66"/>
+        <source>&amp;Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/groupwizardpage.ui" line="86"/>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="357"/>

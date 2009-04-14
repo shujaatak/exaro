@@ -14,7 +14,7 @@
 #  ICON_INSTALL_DIR         - the icon install dir (default prefix/share/icons/)
 #  INFO_INSTALL_DIR         - the kde info install dir (default prefix/info)
 #  KCFG_INSTALL_DIR         - the install dir for kconfig files
-#  LOCALE_INSTALL_DIR       - the install dir for translations
+#  TRANSLATIONS_INSTALL_DIR       - the install dir for translations
 #  MAN_INSTALL_DIR          - the kde man page install dir (default prefix/man/)
 #  MIME_INSTALL_DIR         - the install dir for the mimetype desktop files
 #  PLUGIN_INSTALL_DIR       - the subdirectory relative to the install prefix where plugins will be installed (default is ${KDE4_LIB_INSTALL_DIR}/kde4)
@@ -86,7 +86,7 @@ if (WIN32)
    set(HTML_INSTALL_DIR         "share/doc/HTML"          ) # The HTML install dir for documentation
    set(ICON_INSTALL_DIR         "share/icons"             ) # The icon install dir (default ${SHARE_INSTALL_PREFIX}/share/icons/)
    set(KCFG_INSTALL_DIR         "share/config.kcfg"       ) # The install dir for kconfig files
-   set(LOCALE_INSTALL_DIR       "share/locale"            ) # The install dir for translations
+   set(TRANSLATIONS_INSTALL_DIR       "bin/translations"            ) # The install dir for translations
    set(MIME_INSTALL_DIR         "share/mimelnk"           ) # The install dir for the mimetype desktop files
    set(SERVICES_INSTALL_DIR     "share/kde4/services"     ) # The install dir for service (desktop, protocol, ...) files
    set(SERVICETYPES_INSTALL_DIR "share/kde4/servicetypes" ) # The install dir for servicestypes desktop files
@@ -155,7 +155,7 @@ else (WIN32)
    _set_fancy(HTML_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/doc/HTML"       "The HTML install dir for documentation")
    _set_fancy(ICON_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/icons"          "The icon install dir (default ${SHARE_INSTALL_PREFIX}/share/icons/)")
    _set_fancy(KCFG_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/config.kcfg"    "The install dir for kconfig files")
-   _set_fancy(LOCALE_INSTALL_DIR       "${SHARE_INSTALL_PREFIX}/locale"         "The install dir for translations")
+   _set_fancy(TRANSLATIONS_INSTALL_DIR       "${SHARE_INSTALL_PREFIX}/eXaro/translations"         "The install dir for translations")
    _set_fancy(MIME_INSTALL_DIR         "${SHARE_INSTALL_PREFIX}/mimelnk"        "The install dir for the mimetype desktop files")
    _set_fancy(SERVICES_INSTALL_DIR     "${SHARE_INSTALL_PREFIX}/kde4/services"  "The install dir for service (desktop, protocol, ...) files")
    _set_fancy(SERVICETYPES_INSTALL_DIR "${SHARE_INSTALL_PREFIX}/kde4/servicetypes" "The install dir for servicestypes desktop files")
