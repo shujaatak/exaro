@@ -52,7 +52,7 @@ protected:
 	void pasteItem(QObject * item);
 	void setMagnetActions(Report::PageInterface* page);
 	bool askToSaveReport();
-
+	void setupReport();
 private:
 	bool selectObject(QObject * object, QModelIndex index);
 	int _createNewPage_(Report::PageInterface* page = 0, int afterIndex = -1, QString pageName = QString());

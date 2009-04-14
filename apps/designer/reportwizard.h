@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by BogDan Vatra                                    *
+ *   Copyright (C) 2009 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
@@ -14,29 +14,29 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SQLDATABASEDIALOG_H
-#define SQLDATABASEDIALOG_H
+#ifndef REPORTWIZARD_H
+#define REPORTWIZARD_H
 
-#include <QDialog>
-#include "ui_sqldatabasedialog.h"
+#include <QWizard>
+#include "reportengine.h"
+#include "reportinterface.h"
 
-class SqlDatabaseDialog : public QDialog, private Ui::databaseDialog
+class reportWizard : public QWizard
 {
-	Q_OBJECT
+Q_OBJECT
+public:
+	enum {Page_Query, Page_Page, Page_Group, Page_Field};
 
 public:
-	SqlDatabaseDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
-	~SqlDatabaseDialog();
+	reportWizard(Report::ReportEngine * reportEngine, QWidget *parent = 0);
+	~reportWizard();
+	void accept();
+	Report::ReportInterface * report();
 
-protected slots:
-	virtual void	accept();
-	void on_openButton_clicked();
-	void on_drivers_currentIndexChanged(int index);
-	void on_pbSave_clicked();
-	void on_cbConnections_activated(QString text);
 private:
-	QMap<QString, QVariant> m_connList;
+	Report::ReportEngine * m_reportEngine;
+	Report::ReportInterface * m_report;
+	bool m_finished;
 };
 
-#endif
-
+#endif // REPORTWIZARD_H

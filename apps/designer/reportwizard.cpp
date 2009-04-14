@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by BogDan Vatra                                    *
+ *   Copyright (C) 2009 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
@@ -13,30 +13,41 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
+#include "reportwizard.h"
+#include "querywizardpage.h"
+#include "pagewizardpage.h"
 
-#ifndef SQLDATABASEDIALOG_H
-#define SQLDATABASEDIALOG_H
-
-#include <QDialog>
-#include "ui_sqldatabasedialog.h"
-
-class SqlDatabaseDialog : public QDialog, private Ui::databaseDialog
+reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
 {
-	Q_OBJECT
+	setOption(QWizard::HaveFinishButtonOnEarlyPages);
+	setWindowTitle(tr("Report wizard"));
+	m_report=0;
+	m_report= m_reportEngine->reports()[0]->createInstance(0);
+	m_report->setObjectName( "report" );
+	m_report->setName( tr( "Report name" ) );
+	m_report->setAuthor( "(c) 2009 BogDan" );
+	addPage(new queryWizardPage(m_reportEngine,m_report));
+	addPage(new pageWizardPage(m_reportEngine,m_report));
+//	setPage(Page_Query, new queryWizardPage(m_reportEngine,m_report));
+}
 
-public:
-	SqlDatabaseDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
-	~SqlDatabaseDialog();
+reportWizard::~reportWizard()
+{
+	if (!m_finished)
+		delete m_report;
+}
 
-protected slots:
-	virtual void	accept();
-	void on_openButton_clicked();
-	void on_drivers_currentIndexChanged(int index);
-	void on_pbSave_clicked();
-	void on_cbConnections_activated(QString text);
-private:
-	QMap<QString, QVariant> m_connList;
-};
+Report::ReportInterface* reportWizard::report() 
+{
+	if (m_finished)
+		return m_report;
+	else
+		return 0;
+}
 
-#endif
+void reportWizard::accept()
+{
+	m_finished=true;
+	QDialog::accept();
+}
 

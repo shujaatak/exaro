@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by BogDan Vatra                                    *
+ *   Copyright (C) 2009 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
@@ -14,29 +14,34 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SQLDATABASEDIALOG_H
-#define SQLDATABASEDIALOG_H
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QSqlQuery>
+#include <QSqlError>
 
-#include <QDialog>
-#include "ui_sqldatabasedialog.h"
+#include "pagewizardpage.h"
 
-class SqlDatabaseDialog : public QDialog, private Ui::databaseDialog
+pageWizardPage::pageWizardPage(Report::ReportEngine* reportEngine, Report::ReportInterface* reportInterface, QWidget* parent):
+		QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
 {
-	Q_OBJECT
+	setupUi(this);
+	removePage->setEnabled(pagesList->count());
+}
 
-public:
-	SqlDatabaseDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
-	~SqlDatabaseDialog();
+void pageWizardPage::on_addPage_clicked()
+{
+}
 
-protected slots:
-	virtual void	accept();
-	void on_openButton_clicked();
-	void on_drivers_currentIndexChanged(int index);
-	void on_pbSave_clicked();
-	void on_cbConnections_activated(QString text);
-private:
-	QMap<QString, QVariant> m_connList;
-};
+void pageWizardPage::on_removePage_clicked()
+{
+/*
+	if (QMessageBox::Yes != QMessageBox::question(this, tr("eXaro"), tr("Do you want to remove '%1'").arg(pagesList->currentItem()->text()), QMessageBox::Yes|QMessageBox::No))
+		return;
+	delete pagesList->currentItem();
+*/
+}
 
-#endif
-
+bool pageWizardPage::validatePage()
+{
+//	m_report->setQueries(m_queries);
+}
