@@ -114,8 +114,10 @@ bool groupWizardPage::validatePage()
 	{
 		if (!m_groups[page_query].size())
 			continue;
+
 		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
 		int fontHeight=10*page->font().pointSizeF();
+
 		if (!page->findChildren<Report::BandInterface*>().size())
 		{
 			Report::ItemInterface* title=addItem("Title", page);
@@ -134,12 +136,30 @@ bool groupWizardPage::validatePage()
 			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
 			return false;
 		}
+
 		QString query=page_query.split("~")[1];
 		detailContainer->setObjectName(QString("DetailContainer_%1").arg(query));
 		detailContainer->setProperty("query", query);
-		detailContainer->setHeight((2+m_groups[page_query].size())*(2*fontMargin+fontHeight));
+		detailContainer->setHeight(((int)(!detailOnFirstGroup->isChecked())+(int)generateDetailFooters->isChecked()*m_groups[page_query].size()+2+m_groups[page_query].size())*(2*fontMargin+fontHeight));
 		detailContainer->setProperty("order", 0);
+
 		int order=0;
+
+		if (!detailOnFirstGroup->isChecked())
+		{
+			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
+			if (!detailHeader)
+			{
+				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+				return false;
+			}
+			detailHeader->setObjectName("DetailHeader");
+			detailHeader->setHeight(2*fontMargin+fontHeight);
+			detailHeader->setProperty("reprintOnNewPage", true);
+			detailHeader->setProperty("order", order++);
+			detailHeader->setProperty("order", -1);
+		}
+
 		foreach(QString groupField, m_groups[page_query])
 		{
 			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
@@ -151,20 +171,26 @@ bool groupWizardPage::validatePage()
 			detailHeader->setObjectName(QString("DetailHeader_%1").arg(groupField));
 			detailHeader->setProperty("groupField",groupField);
 			detailHeader->setHeight(2*fontMargin+fontHeight);
+			if (!order && detailOnFirstGroup->isChecked())
+				detailHeader->setProperty("reprintOnNewPage", true);
 			detailHeader->setProperty("order", order++);
 
-// 			Report::ItemInterface* detailFooter=addItem("DetailFooter", detailContainer);
-// 			if (!detailFooter)
-// 			{
-// 				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
-// 				return false;
-// 			}
-// 			detailFooter->setObjectName(QString("DetailFooter_%1").arg(groupField));
-// 			detailFooter->setProperty("groupField",groupField);
-// 			detailFooter->setHeight(200);
-// 			detailFooter->setProperty("order", m_groups[page_query].size()-order);
-
+			if (generateDetailFooters->isChecked())
+			{
+				Report::ItemInterface* detailFooter=addItem("DetailFooter", detailContainer);
+				if (!detailFooter)
+				{
+					QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+					return false;
+				}
+				detailFooter->setObjectName(QString("DetailFooter_%1").arg(groupField));
+				detailFooter->setProperty("groupField",groupField);
+				detailFooter->setHeight(2*fontMargin+fontHeight);
+				detailFooter->setProperty("order", m_groups[page_query].size());
+				detailFooter->setProperty("order", -1);
+			}
 		}
+
 		Report::ItemInterface* detail=addItem("Detail", detailContainer);
 		if (!detail)
 		{
