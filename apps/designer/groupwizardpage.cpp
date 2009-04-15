@@ -129,12 +129,18 @@ bool groupWizardPage::validatePage()
 			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
 			return false;
 		}
+
 		QString query=page_query.split("~")[1];
 		detailContainer->setObjectName(QString("DetailContainer_%1").arg(query));
+		detailContainer->setProperty("query", query);
 		foreach(QString groupField, m_groups[page_query])
 		{
-			
+			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
+			detailHeader->setObjectName(QString("DetailHeader_%1").arg(groupField));
+			detailHeader->setProperty("groupField",groupField);
 		}
+		Report::ItemInterface* detail=addItem("DetaiDetail", detailContainer);
+		detail->setObjectName("Detail");
 	}
 	return true;
 }
