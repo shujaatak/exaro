@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QFont>
 #include <QSqlRecord>
 #include <QSqlField>
 
@@ -108,39 +109,71 @@ Report::ItemInterface* groupWizardPage::addItem(const QString& className, QObjec
 
 bool groupWizardPage::validatePage()
 {
+	const int fontMargin=20; //2mm
 	foreach (QString page_query, m_groups.keys())
 	{
 		if (!m_groups[page_query].size())
 			continue;
 		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
+		int fontHeight=10*page->font().pointSizeF();
 		if (!page->findChildren<Report::BandInterface*>().size())
 		{
-			Report::ItemInterface* item=addItem("Title", page);
-			if (item)
+			Report::ItemInterface* title=addItem("Title", page);
+			if (title)
 			{
-				item->setObjectName(QString("titile_%1").arg(page_query.split("~")[0]));
+				title->setObjectName(QString("titile_%1").arg(page_query.split("~")[0]));
+				title->setHeight(150);
+				title->setProperty("order", 0);
 #warning TODO: here we can add more item to this band, like a text item, and maybe 2 lines !!!
 			}
 		}
-	
+
 		Report::ItemInterface* detailContainer=addItem("DetailContainer", page);
 		if (!detailContainer)
 		{
 			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
 			return false;
 		}
-
 		QString query=page_query.split("~")[1];
 		detailContainer->setObjectName(QString("DetailContainer_%1").arg(query));
 		detailContainer->setProperty("query", query);
+		detailContainer->setHeight((2+m_groups[page_query].size())*(2*fontMargin+fontHeight));
+		detailContainer->setProperty("order", 0);
+		int order=0;
 		foreach(QString groupField, m_groups[page_query])
 		{
 			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
+			if (!detailHeader)
+			{
+				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+				return false;
+			}
 			detailHeader->setObjectName(QString("DetailHeader_%1").arg(groupField));
 			detailHeader->setProperty("groupField",groupField);
+			detailHeader->setHeight(2*fontMargin+fontHeight);
+			detailHeader->setProperty("order", order++);
+
+// 			Report::ItemInterface* detailFooter=addItem("DetailFooter", detailContainer);
+// 			if (!detailFooter)
+// 			{
+// 				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+// 				return false;
+// 			}
+// 			detailFooter->setObjectName(QString("DetailFooter_%1").arg(groupField));
+// 			detailFooter->setProperty("groupField",groupField);
+// 			detailFooter->setHeight(200);
+// 			detailFooter->setProperty("order", m_groups[page_query].size()-order);
+
 		}
-		Report::ItemInterface* detail=addItem("DetaiDetail", detailContainer);
+		Report::ItemInterface* detail=addItem("Detail", detailContainer);
+		if (!detail)
+		{
+			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+			return false;
+		}
 		detail->setObjectName("Detail");
+		detail->setHeight(2*fontMargin+fontHeight);
+		detail->setProperty("order", 0);
 	}
 	return true;
 }
