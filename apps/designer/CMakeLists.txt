@@ -11,18 +11,20 @@ set(exaro_SRCS  aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.
 		designeruitype.cpp       objectmodel.cpp       sqlsyntaxhighlighter.cpp
 		designeruiwidget.cpp     queryeditdialog.cpp	optionsdialog.cpp 
 		namevalidator.cpp 	 command.cpp 		reportwizard.cpp
-		querywizardpage.cpp 	 pagewizardpage.cpp)
+		querywizardpage.cpp 	 pagewizardpage.cpp	groupwizardpage.cpp)
 
 QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          	designeruiwidget.h  	queryeditdialog.h
 			sqlsyntaxhighlighter.h	designerpage.h         	exaroapplication.h
 			scripteditdialog.h	designerquerywidget.h  	mainwindow.h
 			designeruitype.h       	objectmodel.h       	sqldatabasedialog.h
 			namevalidator.h 	optionsdialog.h 	scriptsyntaxhighlighter.h
-			reportwizard.h		querywizardpage.h 	pagewizardpage.h)
+			reportwizard.h		querywizardpage.h 	pagewizardpage.h
+			groupwizardpage.h)
 
 QT4_WRAP_UI(exaro_SRCS 	aboutdialog.ui          designeruitype.ui    	mainwindow.ui
 			designerquerywidget.ui  designeruiwidget.ui  	sqldatabasedialog.ui
-			optionsdialog.ui 	querywizardpage.ui 	pagewizardpage.ui)
+			optionsdialog.ui 	querywizardpage.ui 	pagewizardpage.ui
+			groupwizardpage.ui)
 
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
@@ -49,7 +51,7 @@ link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(exaro Report ${QT_LIBRARIES} ${PROPERTYEDITOR_LIBRARY})
 
 install(TARGETS exaro RUNTIME DESTINATION bin)
-install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")
+#install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")
 install(FILES application-bdrt.png DESTINATION "${ICON_INSTALL_DIR}")
 install(FILES bdrt.desktop DESTINATION "${MIME_INSTALL_DIR}/application")
 install(FILES bdrt.xml DESTINATION "${XDG_MIME_INSTALL_DIR}/packages")
