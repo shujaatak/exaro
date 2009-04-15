@@ -151,7 +151,7 @@ const QMap<QString, ItemInterface*> & ReportEngine::items() const
 	return m_items;
 }
 
-/*const*/ ItemInterface * ReportEngine::findItemByClassName(const char * name)
+ItemInterface * ReportEngine::findItemByClassName(const QString & name)
 {
     foreach (ItemInterface * item, m_items)
     {
@@ -208,7 +208,6 @@ QString ReportEngine::uniqueName(const QString & className, QObject * rootObject
 
 	forever
 	{
-
 		if (isUniqueName(rootObject, name + "_" + QString::number(number, 10)))
 			return name + "_" + QString::number(number, 10);
 
