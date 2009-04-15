@@ -16,6 +16,7 @@
 #include "reportwizard.h"
 #include "querywizardpage.h"
 #include "pagewizardpage.h"
+#include "groupwizardpage.h"
 
 reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
 {
@@ -28,6 +29,7 @@ reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent)
 	m_report->setAuthor( "(c) 2009 BogDan" );
 	addPage(new queryWizardPage(m_reportEngine,m_report));
 	addPage(new pageWizardPage(m_reportEngine,m_report));
+	addPage(new groupWizardPage(m_reportEngine,m_report));
 //	setPage(Page_Query, new queryWizardPage(m_reportEngine,m_report));
 }
 

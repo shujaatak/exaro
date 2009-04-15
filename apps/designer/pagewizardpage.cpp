@@ -14,10 +14,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include <QInputDialog>
-#include <QMessageBox>
-#include <QSqlQuery>
-#include <QSqlError>
 #include <QMetaObject>
 #include <QMetaProperty>
 
