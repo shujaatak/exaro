@@ -30,14 +30,14 @@ class mainWindow;
 class AddCommand: public QUndoCommand
 {
 public:
-	AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw );
+	AddCommand( Report::PageInterface* page, const QString & itemClassName, QPointF pos, mainWindow* mw );
 
 	void undo();
 	void redo();
 
 private:
 	QString m_pageName;
-	const char* m_itemClassName;
+	QString m_itemClassName;
 	QPointF m_pos;
 	mainWindow * m_mainWindow;
 	QString m_itemName;
@@ -179,7 +179,7 @@ private:
 };
 
 QString createCommandString( Report::ItemInterface *item, const QPointF &pos );
-QString createCommandString( const char* name, const QPointF &pos );
+QString createCommandString( const QString & name, const QPointF &pos );
 
 QObject* findObject( Report::PageInterface * page, QString name );
 QWidget * findObjectByTabName( QTabWidget * tw, QString tabName );

@@ -19,7 +19,7 @@
 #include <QGraphicsView>
 #include <QTimer>
 
-AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
+AddCommand::AddCommand( Report::PageInterface* page, const QString & itemClassName, QPointF pos, mainWindow* mw )
 {
 	m_mainWindow = mw;
 	m_pos = pos;
@@ -609,7 +609,7 @@ QString createCommandString( Report::ItemInterface  *item, const QPointF &pos )
 	                .arg( pos.x() ).arg( pos.y() );
 }
 
-QString createCommandString( const char* name, const QPointF &pos )
+QString createCommandString( const QString& name, const QPointF& pos )
 {
 	return QObject::tr( "%1 at (%2, %3)" )
 	                .arg( name )
