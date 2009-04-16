@@ -70,7 +70,7 @@
        <item>
         <widget class="QPushButton" name="editName">
          <property name="text">
-          <string>Edit &amp;name</string>
+          <string>Edit na&amp;me</string>
          </property>
         </widget>
        </item>
