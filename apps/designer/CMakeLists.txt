@@ -1,8 +1,6 @@
-
 project(exaro)
 
 add_subdirectory(plugins)
-
 include_directories(BEFORE "${CMAKE_SOURCE_DIR}/libs/report" ${PROPERTYEDITOR_INCLUDE_DIR})
 
 set(exaro_SRCS  aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.cpp
@@ -11,7 +9,8 @@ set(exaro_SRCS  aboutdialog.cpp          exaroapplication.cpp  scripteditdialog.
 		designeruitype.cpp       objectmodel.cpp       sqlsyntaxhighlighter.cpp
 		designeruiwidget.cpp     queryeditdialog.cpp	optionsdialog.cpp 
 		namevalidator.cpp 	 command.cpp 		reportwizard.cpp
-		querywizardpage.cpp 	 pagewizardpage.cpp	groupwizardpage.cpp)
+		querywizardpage.cpp 	 pagewizardpage.cpp	groupwizardpage.cpp
+		fieldswizardpage.cpp)
 
 QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          	designeruiwidget.h  	queryeditdialog.h
 			sqlsyntaxhighlighter.h	designerpage.h         	exaroapplication.h
@@ -19,12 +18,12 @@ QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          	designeruiwidget.h  	queryeditdi
 			designeruitype.h       	objectmodel.h       	sqldatabasedialog.h
 			namevalidator.h 	optionsdialog.h 	scriptsyntaxhighlighter.h
 			reportwizard.h		querywizardpage.h 	pagewizardpage.h
-			groupwizardpage.h)
+			groupwizardpage.h	fieldswizardpage.h)
 
 QT4_WRAP_UI(exaro_SRCS 	aboutdialog.ui          designeruitype.ui    	mainwindow.ui
 			designerquerywidget.ui  designeruiwidget.ui  	sqldatabasedialog.ui
 			optionsdialog.ui 	querywizardpage.ui 	pagewizardpage.ui
-			groupwizardpage.ui)
+			groupwizardpage.ui	fieldswizardpage.ui)
 
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 

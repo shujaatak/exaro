@@ -13,45 +13,45 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
-#include "reportwizard.h"
-#include "querywizardpage.h"
-#include "pagewizardpage.h"
-#include "groupwizardpage.h"
-#include "fieldswizardpage.h"
 
-reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
+#ifndef FIELDSWIZARDPAGE_H
+#define FIELDSWIZARDPAGE_H
+
+#include <QWizardPage>
+#include <QStringList>
+
+#include "ui_fieldswizardpage.h"
+#include "reportengine.h"
+#include "iteminterface.h"
+
+
+class fieldsWizardPage:public QWizardPage, private Ui::fieldsWizardPage
 {
-	setOption(QWizard::HaveFinishButtonOnEarlyPages);
-	setWindowTitle(tr("Report wizard"));
-	m_report=0;
-	m_report= m_reportEngine->reports()[0]->createInstance(0);
-	m_report->setObjectName( "report" );
-	m_report->setName( tr( "Report name" ) );
-	m_report->setAuthor( "(c) 2009 BogDan" );
-	addPage(new queryWizardPage(m_reportEngine,m_report));
-	addPage(new pageWizardPage(m_reportEngine,m_report));
-	addPage(new groupWizardPage(m_reportEngine,m_report));
-	addPage(new fieldsWizardPage(m_reportEngine,m_report));
-//	setPage(Page_Query, new queryWizardPage(m_reportEngine,m_report));
-}
+Q_OBJECT
+public:
+	fieldsWizardPage(Report::ReportEngine* reportEngine, Report::ReportInterface* reportInterface, QWidget *parent = 0);
+	void initializePage();
+	Report::ItemInterface * addItem(const QString &className, QObject * parent);
+	bool validatePage();
 
-reportWizard::~reportWizard()
-{
-	if (!m_finished)
-		delete m_report;
-}
+private:
+	void setButtonsStartus();
 
-Report::ReportInterface* reportWizard::report() 
-{
-	if (m_finished)
-		return m_report;
-	else
-		return 0;
-}
+private slots:
+	void on_addAll_clicked();
+	void on_add_clicked();
+	void on_remove_clicked();
+	void on_removeAll_clicked();
+	void on_moveUp_clicked();
+	void on_moveDown_clicked();
+	void on_pages_currentIndexChanged(const QString & page);
+	void on_details_currentIndexChanged(const QString & page);
 
-void reportWizard::accept()
-{
-	m_finished=true;
-	QDialog::accept();
-}
+	void updateGroupList();
+private:
+	Report::ReportEngine* m_reportEngine;
+	Report::ReportInterface* m_report;
+	QMap<QString, QStringList > m_fields;
+};
 
+#endif
