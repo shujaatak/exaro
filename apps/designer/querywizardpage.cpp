@@ -98,5 +98,9 @@ bool queryWizardPage::validatePage()
 	if (!m_queries.keys().size())
 		return false;
 	m_report->setQueries(m_queries);
+	QString script;
+	foreach(QString qry, m_queries.keys())
+		script+=QString("%1.exec();\n").arg(qry);
+	m_report->setScript(script);
 	return true;
 }

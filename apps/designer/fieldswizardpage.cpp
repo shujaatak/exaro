@@ -51,23 +51,6 @@ void fieldsWizardPage::setButtonsStartus()
 	moveDown->setEnabled(onDetail->count());
 }
 
-
-void fieldsWizardPage::updateGroupList()
-{
-/*	groupsList->clear();
-	QListWidgetItem * i=0;
-	foreach(QString group, m_groups[QString("%1~%2").arg(pages->currentText()).arg(queries->currentText())])
-	{
-		i = new QListWidgetItem();
-		i->setText(group);
-		groupsList->addItem(i);
-		groupsList->setCurrentItem(i);
-	}
-	if (i)
-		i->setSelected(true);
-	removeGroup->setEnabled(groupsList->count());*/
-}
-
 void fieldsWizardPage::on_pages_currentIndexChanged(const QString& pageName)
 {
 	fields->clear();
@@ -95,10 +78,27 @@ void fieldsWizardPage::on_details_currentIndexChanged(const QString& detail)
 		QMessageBox::critical(this, tr("SQL Error"), tr("%1").arg(q.lastError().text()));
 		return;
 	}
+
+	Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(pages->currentText());
+	if (!page)
+		return;
+
+	Report::BandInterface* container=page->findChild<Report::BandInterface*>(detail);
+	if (!container)
+		return;
+
+	QStringList groupFields; 
+	foreach(Report::BandInterface* band, container->findChildren<Report::BandInterface*>())
+	{
+		if (!band->objectName().startsWith("DetailHeader_"))
+			continue;
+		groupFields.push_back(band->property("groupField").toString());
+	}
+	
 	QStringList queryFields;
 	QSqlRecord rec=q.record();
 	for (int i=0;i<rec.count();i++)
-		if (!m_fields[QString("%1~%2").arg(pages->currentText()).arg(detail)].contains(rec.field(i).name()))
+		if (!groupFields.contains(rec.field(i).name()) && !m_fields[QString("%1~%2").arg(pages->currentText()).arg(detail)].contains(rec.field(i).name()))
 			queryFields.push_back(rec.field(i).name());
 
 	foreach(QString field, queryFields)
@@ -181,47 +181,29 @@ void fieldsWizardPage::on_removeAll_clicked()
 
 void fieldsWizardPage::on_moveUp_clicked()
 {
-//insertItem
+	int row=onDetail->currentRow();
+	if (row<=0)
+		return;
+	QListWidgetItem * it=onDetail->takeItem( row );
+	onDetail->insertItem(row-1, it);
+	onDetail->setCurrentItem(it);
+	m_fields[QString("%1~%2").arg(pages->currentText()).arg(details->currentText())].swap(row,row-1);
 }
 
 void fieldsWizardPage::on_moveDown_clicked()
 {
-
-}
-
-/*
-void fieldsWizardPage::on_addGroup_clicked()
-{
-	QSqlQuery q;
-	if (!q.exec(m_report->queries()[queries->currentText()].toString()))
-	{
-		QMessageBox::critical(this, tr("SQL Error"), tr("%1").arg(q.lastError().text()));
+	int row=onDetail->currentRow();
+	if (row>=onDetail->count()-1)
 		return;
-	}
-	QStringList fields;
-	QSqlRecord rec=q.record();
-	for (int i=0;i<rec.count();i++)
-		if (!m_groups[QString("%1~%2").arg(pages->currentText()).arg(queries->currentText())].contains(rec.field(i).name()))
-			fields.push_back(rec.field(i).name());
-	if (!fields.size())
-		return;
-	bool ok;
-	QString field=QInputDialog::getItem(this, tr("Choose a field"), tr("Group field"), fields, 0, false, &ok);
-	if (ok)
-		m_groups[QString("%1~%2").arg(pages->currentText()).arg(queries->currentText())].push_back(field);
-	updateGroupList();
+	QListWidgetItem * it=onDetail->takeItem(row);
+	onDetail->insertItem(row+1, it);
+	onDetail->setCurrentItem(it);
+	m_fields[QString("%1~%2").arg(pages->currentText()).arg(details->currentText())].swap(row,row+1);
 }
-
-void fieldsWizardPage::on_removeGroup_clicked()
-{
-	m_groups[QString("%1~%2").arg(pages->currentText()).arg(queries->currentText())].removeAt ( m_groups[QString("%1~%2").arg(pages->currentText()).arg(queries->currentText())].indexOf(groupsList->currentItem()->text()));
-	updateGroupList();
-}
-*/
 
 Report::ItemInterface* fieldsWizardPage::addItem(const QString& className, QObject* parent)
 {
-/*	Report::ItemInterface* itemExample = m_reportEngine->findItemByClassName( className );
+	Report::ItemInterface* itemExample = m_reportEngine->findItemByClassName( className );
 
 	Report::ItemInterface *m_item = 0;
 
@@ -233,103 +215,80 @@ Report::ItemInterface* fieldsWizardPage::addItem(const QString& className, QObje
 	else
 		if ( dynamic_cast<Report::PageInterface*>( parent )->canContain( itemExample ) )
 			dynamic_cast<Report::PageInterface*>( parent )->addItem( m_item = dynamic_cast<Report::ItemInterface*>( itemExample->createInstance( 0, parent ) ) );
-	return m_item;*/
+	return m_item;
 }
 
 
 bool fieldsWizardPage::validatePage()
 {
-/*	const int fontMargin=20; //2mm
-	foreach (QString page_query, m_groups.keys())
+	const int fontMargin=20; //2mm
+	foreach (QString page_query, m_fields.keys())
 	{
-		if (!m_groups[page_query].size())
+		if (!m_fields[page_query].size())
 			continue;
 
 		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
-		int fontHeight=10*page->font().pointSizeF();
+		int fontHeight=15*page->font().pointSizeF();
 
-		if (!page->findChildren<Report::BandInterface*>().size())
+		Report::BandInterface* container=page->findChild<Report::BandInterface*>(page_query.split("~")[1]);
+		QString query=container->property("query").toString();
+
+		bool initHeader=false;
+		foreach(Report::BandInterface* band, container->findChildren<Report::BandInterface*>())
 		{
-			Report::ItemInterface* title=addItem("Title", page);
-			if (title)
-			{
-				title->setObjectName(QString("titile_%1").arg(page_query.split("~")[0]));
-				title->setHeight(150);
-				title->setProperty("order", 0);
-//#warning TODO: here we can add more item to this band, like a text item, and maybe 2 lines !!!
-			}
-		}
+			if (!band->objectName().startsWith("DetailHeader") && band->objectName()!="Detail")
+				continue;
+			qreal bandWidth=band->width();
+			qreal ypos=fontMargin;
+			qreal xpos=20+fontMargin;
+			qreal xstep=(bandWidth-20-(20+fontMargin)*m_fields[page_query].size())/m_fields[page_query].size();
 
-		Report::ItemInterface* detailContainer=addItem("DetailContainer", page);
-		if (!detailContainer)
-		{
-			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
-			return false;
-		}
-
-		QString query=page_query.split("~")[1];
-		detailContainer->setObjectName(QString("DetailContainer_%1").arg(query));
-		detailContainer->setProperty("query", query);
-		detailContainer->setHeight(((int)(!detailOnFirstGroup->isChecked())+(int)generateDetailFooters->isChecked()*m_groups[page_query].size()+2+m_groups[page_query].size())*(2*fontMargin+fontHeight));
-		detailContainer->setProperty("order", 0);
-
-		int order=0;
-
-		if (!detailOnFirstGroup->isChecked())
-		{
-			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
-			if (!detailHeader)
-			{
-				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
-				return false;
-			}
-			detailHeader->setObjectName("DetailHeader");
-			detailHeader->setHeight(2*fontMargin+fontHeight);
-			detailHeader->setProperty("reprintOnNewPage", true);
-			detailHeader->setProperty("order", order++);
-			detailHeader->setProperty("order", -1);
-		}
-
-		foreach(QString groupField, m_groups[page_query])
-		{
-			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
-			if (!detailHeader)
-			{
-				QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
-				return false;
-			}
-			detailHeader->setObjectName(QString("DetailHeader_%1").arg(groupField));
-			detailHeader->setProperty("groupField",groupField);
-			detailHeader->setHeight(2*fontMargin+fontHeight);
-			if (!order && detailOnFirstGroup->isChecked())
-				detailHeader->setProperty("reprintOnNewPage", true);
-			detailHeader->setProperty("order", order++);
-
-			if (generateDetailFooters->isChecked())
-			{
-				Report::ItemInterface* detailFooter=addItem("DetailFooter", detailContainer);
-				if (!detailFooter)
+			if (band->objectName()!="Detail" && band->property("groupField").toString().length())
+			{// detail o first group
+				Report::ItemInterface* script=addItem("Script", band);
+				if (!script)
 				{
 					QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
 					return false;
 				}
-				detailFooter->setObjectName(QString("DetailFooter_%1").arg(groupField));
-				detailFooter->setProperty("groupField",groupField);
-				detailFooter->setHeight(2*fontMargin+fontHeight);
-				detailFooter->setProperty("order", m_groups[page_query].size());
-				detailFooter->setProperty("order", -1);
+				script->setObjectName(QString("script_%1_%2").arg(query).arg(band->property("groupField").toString()));
+				script->setPos(fontMargin,ypos);
+				script->setHeight(fontHeight);
+				script->setWidth(bandWidth-fontMargin*2);
+				script->setProperty("script", QString("\"%1 :\"+%2.value('%1')").arg(band->property("groupField").toString()).arg(query));
+				ypos+=fontMargin+fontHeight;
+			}
+
+			if (!initHeader || band->objectName()=="Detail")
+			{
+				qDebug()<<band->objectName()<<initHeader;
+				foreach(QString field, m_fields[page_query])
+				{
+					Report::ItemInterface* item=addItem(!initHeader?"Text":"Field", band);
+					if (!item)
+					{
+						QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+						return false;
+					}
+					if (!initHeader)
+					{
+						item->setObjectName(QString("%1_%2_text").arg(field).arg(query));
+						item->setProperty("text", field);
+					}
+					else
+					{
+						item->setObjectName(QString("%1_%2_field").arg(field).arg(query));
+						item->setProperty("queryName", query);
+						item->setProperty("fieldName", field);
+					}
+					item->setPos(xpos,ypos);
+					item->setHeight(fontHeight);
+					item->setWidth(xstep);
+					xpos+=(20+fontMargin)+xstep;
+				}
+				initHeader=true;
 			}
 		}
-
-		Report::ItemInterface* detail=addItem("Detail", detailContainer);
-		if (!detail)
-		{
-			QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
-			return false;
-		}
-		detail->setObjectName("Detail");
-		detail->setHeight(2*fontMargin+fontHeight);
-		detail->setProperty("order", 0);
-	}*/
+	}
 	return true;
 }
