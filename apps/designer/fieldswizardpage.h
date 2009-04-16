@@ -46,8 +46,6 @@ private slots:
 	void on_moveDown_clicked();
 	void on_pages_currentIndexChanged(const QString & page);
 	void on_details_currentIndexChanged(const QString & page);
-
-	void updateGroupList();
 private:
 	Report::ReportEngine* m_reportEngine;
 	Report::ReportInterface* m_report;

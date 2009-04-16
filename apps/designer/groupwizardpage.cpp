@@ -116,7 +116,7 @@ bool groupWizardPage::validatePage()
 			continue;
 
 		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
-		int fontHeight=10*page->font().pointSizeF();
+		int fontHeight=15*page->font().pointSizeF();
 
 		if (!page->findChildren<Report::BandInterface*>().size())
 		{
