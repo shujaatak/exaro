@@ -32,6 +32,8 @@ public:
 	~reportWizard();
 	void accept();
 	Report::ReportInterface * report();
+	QWizardPage * createIntroPage();
+	QWizardPage * createFinalPage();
 
 private:
 	Report::ReportEngine * m_reportEngine;
