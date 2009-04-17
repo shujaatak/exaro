@@ -418,22 +418,29 @@ PropertyChangeCommand::PropertyChangeCommand( QObject * obj, const QString & pro
 	m_oldValue = old_value;
 	m_newValue = new_value;
 	m_itemName = obj->objectName();
-	m_pageName = mw->m_tw->tabText( mw->m_tw->currentIndex() );
+	m_pageName = mw->m_tw->count()?mw->m_tw->tabText(mw->m_tw->currentIndex()):QString("Report");
 	setText( QObject::tr( "'%1' property '%2'" ).arg( m_itemName ).arg( propertyName ) );
+#warning FIXME reportobject is not handled properly
 }
 
 void PropertyChangeCommand::redo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
-	Q_ASSERT( m_page );
+#warning FIXME reportobject is not handled properly
+	Report::PageInterface* page=0;
+	QWidget * tab=findObjectByTabName( m_mainWindow->m_tw, m_pageName );
+	if (tab)
+		page = reinterpret_cast< Report::PageInterface*>(dynamic_cast<QGraphicsView *>( tab )->scene());
 
-	QObject *item;
-
-	if ( m_page->objectName() == m_itemName )
-		item = m_page;
+	QObject *item=0;
+	if (!page)
+		item=m_mainWindow->m_report;
 	else
-		item = findObject( m_page, m_itemName );
-
+	{
+		if ( page->objectName() == m_itemName )
+			item = page;
+		else
+			item = findObject( page, m_itemName );
+	}
 	if ( !item )
 		return;
 	if ( m_propertyName == "objectName" )
@@ -444,15 +451,22 @@ void PropertyChangeCommand::redo()
 
 void PropertyChangeCommand::undo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
-	Q_ASSERT( m_page );
+#warning FIXME reportobject is not handled properly
+	Report::PageInterface* page=0;
+	QWidget * tab=findObjectByTabName( m_mainWindow->m_tw, m_pageName );
+	if (tab)
+		page = reinterpret_cast< Report::PageInterface*>(dynamic_cast<QGraphicsView *>( tab )->scene());
 
-	QObject *item;
-	if ( m_page->objectName() == m_itemName )
-		item = m_page;
+	QObject *item=0;
+	if (!page)
+		item=m_mainWindow->m_report;
 	else
-		item = findObject( m_page, m_itemName );
-
+	{
+		if ( page->objectName() == m_itemName )
+			item = page;
+		else
+			item = findObject( page, m_itemName );
+	}
 	if ( !item )
 		return;
 

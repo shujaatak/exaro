@@ -21,8 +21,18 @@
 
 reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
 {
+#ifndef Q_OS_WIN
+	setWizardStyle(MacStyle);
+#endif
+
+#warning "FIXME <Back> button is disabled for the moment, enable it when all pages are properly initializated" 
+	QList<QWizard::WizardButton> layout;
+	layout << QWizard::Stretch << QWizard::CancelButton << QWizard::NextButton << QWizard::FinishButton;
+	setButtonLayout(layout);
+
 	setOption(QWizard::HaveFinishButtonOnEarlyPages);
 	setWindowTitle(tr("Report wizard"));
+
 	m_report=0;
 	m_report= m_reportEngine->reports()[0]->createInstance(0);
 	m_report->setObjectName( "report" );
@@ -32,7 +42,6 @@ reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent)
 	addPage(new pageWizardPage(m_reportEngine,m_report));
 	addPage(new groupWizardPage(m_reportEngine,m_report));
 	addPage(new fieldsWizardPage(m_reportEngine,m_report));
-//	setPage(Page_Query, new queryWizardPage(m_reportEngine,m_report));
 }
 
 reportWizard::~reportWizard()
