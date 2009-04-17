@@ -43,7 +43,7 @@ void queryWizardPage::on_addQuery_clicked()
 	if (!ok || text.isEmpty())
 		return;
 	QueryEditDialog d;
-	d.setQuery("SELECT * FROM activitate");
+	d.setQuery("SELECT * FROM ");
 	do
 	{
 		if (QDialog::Accepted != d.exec())

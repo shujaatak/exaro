@@ -106,8 +106,8 @@ void fieldsWizardPage::on_details_currentIndexChanged(const QString& detail)
 		QListWidgetItem * i = new QListWidgetItem();
 		i->setText(field);
 		fields->addItem(i);
-		fields->setCurrentItem(i);
 	}
+	fields->setCurrentRow(0);
 
 	foreach(QString field, m_fields[QString("%1~%2").arg(pages->currentText()).arg(detail)])
 	{
@@ -116,6 +116,7 @@ void fieldsWizardPage::on_details_currentIndexChanged(const QString& detail)
 		onDetail->addItem(i);
 		onDetail->setCurrentItem(i);
 	}
+	onDetail->setCurrentRow(0);
 	setButtonsStartus();
 }
 
@@ -135,6 +136,7 @@ void fieldsWizardPage::on_add_clicked()
 
 void fieldsWizardPage::on_addAll_clicked()
 {
+	fields->setCurrentRow(0);
 	while(fields->currentItem())
 	{
 		QListWidgetItem * it = fields->currentItem();
@@ -261,7 +263,6 @@ bool fieldsWizardPage::validatePage()
 
 			if (!initHeader || band->objectName()=="Detail")
 			{
-				qDebug()<<band->objectName()<<initHeader;
 				foreach(QString field, m_fields[page_query])
 				{
 					Report::ItemInterface* item=addItem(!initHeader?"Text":"Field", band);
