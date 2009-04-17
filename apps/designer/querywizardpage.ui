@@ -17,7 +17,7 @@
    <string>Setup queries</string>
   </property>
   <property name="subTitle">
-   <string>Please add one or more queies</string>
+   <string>Please add one or more queies. To continue you have to add at least one query. </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

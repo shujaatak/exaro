@@ -14,10 +14,10 @@
    <string>WizardPage</string>
   </property>
   <property name="title">
-   <string>Setup groups</string>
+   <string>Fields to detail</string>
   </property>
   <property name="subTitle">
-   <string>Here you can setup the groups</string>
+   <string>Here you have to add fileds to report</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0" colspan="4">

@@ -17,7 +17,7 @@
    <string>Setup groups</string>
   </property>
   <property name="subTitle">
-   <string>Here you can setup the groups</string>
+   <string>Here you can setup the groups. You don't have to add any group if you don't need.</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0" colspan="2">

@@ -112,10 +112,12 @@ bool groupWizardPage::validatePage()
 	const int fontMargin=20; //2mm
 	foreach (QString page_query, m_groups.keys())
 	{
-		if (!m_groups[page_query].size())
+		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
+		QString query=page_query.split("~")[1];
+
+		if (!page || !query.length())
 			continue;
 
-		Report::PageInterface* page=m_report->findChild<Report::PageInterface*>(page_query.split("~")[0]);
 		int fontHeight=15*page->font().pointSizeF();
 
 		if (!page->findChildren<Report::BandInterface*>().size())
@@ -126,6 +128,21 @@ bool groupWizardPage::validatePage()
 				title->setObjectName(QString("titile_%1").arg(page_query.split("~")[0]));
 				title->setHeight(150);
 				title->setProperty("order", 0);
+				Report::ItemInterface* item=addItem("Text",title);
+				if (!item)
+				{
+					QMessageBox::critical(this, tr("Error"), tr("Can't find needed plugins"));
+					return false;
+				}
+				item->setObjectName("title_caption");
+				item->setProperty("text", tr("Report title"));
+				item->setPos(50,50);
+				item->setProperty("textFlags", Qt::AlignCenter);
+				item->setHeight(50);
+				QFont font=item->font();
+				font.setPointSizeF(4.5);
+				item->setFont(font);
+				item->setWidth(title->width()-100);
 #warning TODO: here we can add more item to this band, like a text item, and maybe 2 lines !!!
 			}
 		}
@@ -137,7 +154,6 @@ bool groupWizardPage::validatePage()
 			return false;
 		}
 
-		QString query=page_query.split("~")[1];
 		detailContainer->setObjectName(QString("DetailContainer_%1").arg(query));
 		detailContainer->setProperty("query", query);
 		detailContainer->setHeight(((int)(!detailOnFirstGroup->isChecked())+(int)generateDetailFooters->isChecked()*m_groups[page_query].size()+2+m_groups[page_query].size())*(2*fontMargin+fontHeight));
@@ -162,6 +178,8 @@ bool groupWizardPage::validatePage()
 
 		foreach(QString groupField, m_groups[page_query])
 		{
+			if (!groupField.length())
+				continue;
 			Report::ItemInterface* detailHeader=addItem("DetailHeader", detailContainer);
 			if (!detailHeader)
 			{
@@ -172,7 +190,10 @@ bool groupWizardPage::validatePage()
 			detailHeader->setProperty("groupField",groupField);
 			detailHeader->setHeight(2*fontMargin+fontHeight);
 			if (!order && detailOnFirstGroup->isChecked())
+			{
 				detailHeader->setProperty("reprintOnNewPage", true);
+				detailHeader->setHeight((2*fontMargin+fontHeight)*2);
+			}
 			detailHeader->setProperty("order", order++);
 
 			if (generateDetailFooters->isChecked())
