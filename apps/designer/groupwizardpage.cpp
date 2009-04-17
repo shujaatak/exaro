@@ -22,8 +22,6 @@
 #include <QSqlRecord>
 #include <QSqlField>
 
-#include <QDebug>
-
 #include "groupwizardpage.h"
 #include "pageinterface.h"
 
