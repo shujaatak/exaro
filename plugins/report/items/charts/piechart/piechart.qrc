@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/" >
-        <file>piechart.png</file>
-        <file>qtdata.cht</file>
+        <file>piechart.png</file>        
     </qresource>
 </RCC>

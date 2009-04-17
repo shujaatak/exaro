@@ -32,9 +32,6 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QLinearGradient>
-#include <QDebug>
-//#include <QGLPixelBuffer>
-
 #include "piechart.h"
 
 inline void initMyResource()
@@ -117,8 +114,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 				painter->drawChord(QRectF(x_curent,y_curent,10,10),0,360*16);
 				painter->drawLine(x_curent,y_curent,x_curent+100,y_curent);
 				painter->setPen(Qt::black);
-				painter->drawText (QPointF( x_curent+100,y_curent),QString("%1").arg(cv.value));
-				//painter->drawText (QRectF( x_curent+100,y_curent,100,0),Qt::AlignRight|Qt::AlignVCenter,QString("%1").arg(cv.value));
+				painter->drawText (QPointF( x_curent+100,y_curent),QString("%1").arg(cv.value));			
 			}
 			else
 			{
