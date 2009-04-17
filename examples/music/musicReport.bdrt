@@ -33,10 +33,12 @@
                     <texture type="QPixmap" ></texture>
                 </foregroundBrush>
                 <itemIndexMethod type="" />
-                <sceneRect type="QRectF" >0,0,2099.35,2971.03</sceneRect>
+                <sceneRect type="QRectF" >0,0,2099.39,2970.24</sceneRect>
                 <bspTreeDepth type="int" >0</bspTreeDepth>
                 <palette type="QPalette" />
-                <font type="QFont" >Serif,5,-1,0,50,0,0,0,0,0</font>
+                <font type="QFont" >DejaVu Serif,5,-1,0,50,0,0,0,0,0</font>
+                <sortCacheEnabled type="bool" >false</sortCacheEnabled>
+                <stickyFocus type="bool" >false</stickyFocus>
                 <pageSize type="int" >0</pageSize>
                 <orientation type="int" >0</orientation>
                 <geometry type="QRectF" >150,100,1798,2771</geometry>
@@ -75,7 +77,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
-                        <font type="QFont" >Serif,5,-1,5,50,0,0,0,0,0</font>
+                        <font type="QFont" >DejaVu Serif,5,-1,5,50,0,0,0,0,0</font>
                         <bandType type="int" >1</bandType>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
@@ -608,7 +610,7 @@
                 <Summary>
                     <properties>
                         <objectName type="QString" >summary</objectName>
-                        <geometry type="QRectF" >150,616,1798,500</geometry>
+                        <geometry type="QRectF" >150,616,1798,1365</geometry>
                         <pen type="QPen" >
                             <brush type="QBrush" >
                                 <color type="QColor" >0,0,0,255</color>
@@ -635,7 +637,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
-                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <bandType type="int" >6</bandType>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
@@ -645,7 +647,7 @@
                         <ChartContainer>
                             <properties>
                                 <objectName type="QString" >chartcontainer</objectName>
-                                <geometry type="QRectF" >77.2901,27.5,1664.67,453</geometry>
+                                <geometry type="QRectF" >43.29,19.2959,1664.67,1148</geometry>
                                 <pen type="QPen" >
                                     <brush type="QBrush" >
                                         <color type="QColor" >0,0,0,255</color>
@@ -672,7 +674,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
-                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
                                 <chartColorOpacity type="int" >100</chartColorOpacity>
                                 <chartDataSource type="int" >1</chartDataSource>
                                 <staticData type="QStringList" />
@@ -692,7 +694,7 @@
                                 <Legend>
                                     <properties>
                                         <objectName type="QString" >legend</objectName>
-                                        <geometry type="QRectF" >1262.37,15.5606,366,411</geometry>
+                                        <geometry type="QRectF" >1259.37,28.5606,366,411</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -719,14 +721,14 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
-                                        <font type="QFont" >Serif,3,-1,5,50,0,0,0,0,0</font>
+                                        <font type="QFont" >DejaVu Serif,3,-1,5,50,0,0,0,0,0</font>
                                         <legendColorRectWidth type="int" >50</legendColorRectWidth>
                                     </properties>
                                 </Legend>
                                 <BarChart>
                                     <properties>
                                         <objectName type="QString" >barchart</objectName>
-                                        <geometry type="QRectF" >18.1298,18.3182,1193,405</geometry>
+                                        <geometry type="QRectF" >28.1298,31.3182,1193,405</geometry>
                                         <pen type="QPen" >
                                             <brush type="QBrush" >
                                                 <color type="QColor" >0,0,0,255</color>
@@ -753,7 +755,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
-                                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
                                         <showLabels type="bool" >true</showLabels>
                                         <showGrid type="bool" >true</showGrid>
                                         <drawBorder type="bool" >false</drawBorder>
@@ -761,6 +763,44 @@
                                         <toColorFactor type="double" >0.7</toColorFactor>
                                     </properties>
                                 </BarChart>
+                                <PieChart>
+                                    <properties>
+                                        <objectName type="QString" >piechart</objectName>
+                                        <geometry type="QRectF" >472.934,505.684,768,466</geometry>
+                                        <pen type="QPen" >
+                                            <brush type="QBrush" >
+                                                <color type="QColor" >0,0,0,255</color>
+                                                <style type="int" >1</style>
+                                                <texture type="QPixmap" ></texture>
+                                            </brush>
+                                            <capStyle type="int" >16</capStyle>
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <isCosmetic type="bool" >true</isCosmetic>
+                                            <joinStyle type="int" >64</joinStyle>
+                                            <miterLimit type="double" >2</miterLimit>
+                                            <style type="int" >1</style>
+                                            <width type="int" >0</width>
+                                        </pen>
+                                        <brush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush" >
+                                            <color type="QColor" >0,0,0,255</color>
+                                            <style type="int" >0</style>
+                                            <texture type="QPixmap" ></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int" >0</backgroundMode>
+                                        <opacity type="int" >100</opacity>
+                                        <font type="QFont" >DejaVu Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <showLabels type="bool" >true</showLabels>
+                                        <showGrid type="bool" >false</showGrid>
+                                        <drawBorder type="bool" >false</drawBorder>
+                                        <barsIdentation type="int" >10</barsIdentation>
+                                        <toColorFactor type="double" >1</toColorFactor>
+                                    </properties>
+                                </PieChart>
                             </children>
                         </ChartContainer>
                     </children>
