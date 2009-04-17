@@ -1,4 +1,4 @@
-# (c) 2008 by BogDan Vatra < bogdan@licentia.eu >
+# (c) 2009 by Florina Nacu 
 
 project(Piechart)
 
