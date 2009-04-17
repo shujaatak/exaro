@@ -277,7 +277,7 @@ void Page::render(QPainter * p, const QRectF & exposeRect)
 				drawRect(p);
 				break;
 			default:
-				qDebug()<<"Huston we have a problem";
+				qDebug()<<"Houston, we have a problem";
 				break;
 
 		}
@@ -382,7 +382,7 @@ bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, 
 				drawRect(p);
 				break;
 			default:
-				qDebug()<<"Huston we have a problem";
+				qDebug()<<"Houston, we have a problem";
 				break;
 		}
 	}

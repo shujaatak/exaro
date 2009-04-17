@@ -499,13 +499,11 @@ void mainWindow::newReport()
 	reportWizard rw(&m_reportEngine);
 	if (QDialog::Accepted==rw.exec())
 	{
-		qDebug()<<"ioi";
 		m_report=rw.report();
 		setupReport();
 	}
 	else
 	{
-		qDebug()<<"cuc";
 		m_report = m_reportEngine.reports()[0]->createInstance( 0 );
 		m_report->setObjectName( "report" );
 		m_report->setName( tr( "Report name" ) );
