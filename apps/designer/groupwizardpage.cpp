@@ -141,7 +141,6 @@ bool groupWizardPage::validatePage()
 				font.setPointSizeF(4.5);
 				item->setFont(font);
 				item->setWidth(title->width()-100);
-#warning TODO: here we can add more item to this band, like a text item, and maybe 2 lines !!!
 			}
 		}
 
@@ -170,6 +169,13 @@ bool groupWizardPage::validatePage()
 			detailHeader->setObjectName("DetailHeader");
 			detailHeader->setHeight(2*fontMargin+fontHeight);
 			detailHeader->setProperty("reprintOnNewPage", true);
+			QBrush br=detailHeader->property("brush").value<QBrush>();
+			br.setColor(QColor(153,153,153));
+			br.setStyle(Qt::SolidPattern);
+			QPen pen=detailHeader->property("pen").value<QPen>();
+			pen.setColor(QColor(255,255,255));
+			detailHeader->setProperty("brush", br);
+			detailHeader->setProperty("pen", pen);
 			detailHeader->setProperty("order", order++);
 			detailHeader->setProperty("order", -1);
 		}
@@ -191,6 +197,23 @@ bool groupWizardPage::validatePage()
 			{
 				detailHeader->setProperty("reprintOnNewPage", true);
 				detailHeader->setHeight((2*fontMargin+fontHeight)*2);
+				QBrush br=detailHeader->property("brush").value<QBrush>();
+				br.setColor(QColor(153,153,153));
+				br.setStyle(Qt::SolidPattern);
+				QPen pen=detailHeader->property("pen").value<QPen>();
+				pen.setColor(QColor(255,255,255));
+				detailHeader->setProperty("brush", br);
+				detailHeader->setProperty("pen", pen);
+			}
+			else
+			{
+				QBrush br=detailHeader->property("brush").value<QBrush>();
+				br.setColor(QColor(50,50,50));
+				br.setStyle(Qt::SolidPattern);
+				QPen pen=detailHeader->property("pen").value<QPen>();
+				pen.setColor(QColor(255,255,255));
+				detailHeader->setProperty("brush", br);
+				detailHeader->setProperty("pen", pen);
 			}
 			detailHeader->setProperty("order", order++);
 

@@ -21,16 +21,13 @@
 
 reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
 {
-#ifndef Q_OS_WIN
 	setWizardStyle(MacStyle);
-#endif
 
 #warning "FIXME <Back> button is disabled for the moment, enable it when all pages are properly initializated" 
 	QList<QWizard::WizardButton> layout;
-	layout << QWizard::Stretch << QWizard::CancelButton << QWizard::NextButton << QWizard::FinishButton;
+//	layout << QWizard::HelpButton << QWizard::Stretch << QWizard::CancelButton << QWizard::NextButton<< QWizard::FinishButton;
+	layout << QWizard::Stretch << QWizard::CancelButton << QWizard::NextButton<< QWizard::FinishButton;
 	setButtonLayout(layout);
-
-	setOption(QWizard::HaveFinishButtonOnEarlyPages);
 	setWindowTitle(tr("Report wizard"));
 
 	m_report=0;
@@ -38,10 +35,44 @@ reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent)
 	m_report->setObjectName( "report" );
 	m_report->setName( tr( "Report name" ) );
 	m_report->setAuthor( "(c) 2009 BogDan" );
+	addPage(createIntroPage());
 	addPage(new queryWizardPage(m_reportEngine,m_report));
 	addPage(new pageWizardPage(m_reportEngine,m_report));
 	addPage(new groupWizardPage(m_reportEngine,m_report));
 	addPage(new fieldsWizardPage(m_reportEngine,m_report));
+	addPage(createFinalPage());
+}
+
+QWizardPage * reportWizard::createIntroPage()
+{
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(tr("Welcome to eXaro report wizard"));
+	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/designer2.png"));//.scaled(width(),height()));
+
+	QLabel *label = new QLabel(tr("This wizard will help you create reports fast and easy.<br>If you want only an empty report, press <b>cancel</b> button."));
+	label->setWordWrap(true);
+	label->setTextFormat(Qt::RichText);
+
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->addWidget(label);
+	page->setLayout(layout);
+	return page;
+}
+
+QWizardPage * reportWizard::createFinalPage()
+{
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(tr("Congratulations"));
+	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/designer2.png"));//.scaled(width(),height()));
+
+	QLabel *label = new QLabel(tr("Congratulations you have complete the wizard.<br>Press <b>done</b> button to enjoy you report !"));
+	label->setWordWrap(true);
+	label->setTextFormat(Qt::RichText);
+
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->addWidget(label);
+	page->setLayout(layout);
+	return page;
 }
 
 reportWizard::~reportWizard()
