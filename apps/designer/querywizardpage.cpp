@@ -27,7 +27,8 @@
 queryWizardPage::queryWizardPage(Report::ReportEngine* reportEngine, Report::ReportInterface* reportInterface, QWidget* parent):QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
 {
 	setupUi(this);
-	removeQuery->setEnabled(queriesList->count());
+	setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/queryWizard.png"));
+	removeQuery->setEnabled(false);
 }
 
 void queryWizardPage::on_setupDatabase_clicked()

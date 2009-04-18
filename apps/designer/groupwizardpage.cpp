@@ -29,6 +29,7 @@ groupWizardPage::groupWizardPage(Report::ReportEngine* reportEngine, Report::Rep
 		QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
 {
 	setupUi(this);
+	setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/groupWizard.png"));
 	connect(pages, SIGNAL(currentIndexChanged(int)), SLOT(updateGroupList()));
 	connect(queries, SIGNAL(currentIndexChanged(int)), SLOT(updateGroupList()));
 }

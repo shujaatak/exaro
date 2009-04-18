@@ -24,6 +24,7 @@ pageWizardPage::pageWizardPage(Report::ReportEngine* reportEngine, Report::Repor
 		QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
 {
 	setupUi(this);
+	setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/pageWizard.png"));
 	removePage->setEnabled(pagesList->count());
 }
 

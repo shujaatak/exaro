@@ -47,7 +47,7 @@ QWizardPage * reportWizard::createIntroPage()
 {
 	QWizardPage *page = new QWizardPage;
 	page->setTitle(tr("Welcome to eXaro report wizard"));
-	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/designer2.png"));//.scaled(width(),height()));
+	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/startWizard.png"));//.scaled(width(),height()));
 
 	QLabel *label = new QLabel(tr("This wizard will help you create reports fast and easy.<br>If you want only an empty report, press <b>cancel</b> button."));
 	label->setWordWrap(true);
@@ -63,7 +63,7 @@ QWizardPage * reportWizard::createFinalPage()
 {
 	QWizardPage *page = new QWizardPage;
 	page->setTitle(tr("Congratulations"));
-	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/designer2.png"));//.scaled(width(),height()));
+	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/finishWizard.png"));//.scaled(width(),height()));
 
 	QLabel *label = new QLabel(tr("Congratulations you have complete the wizard.<br>Press <b>done</b> button to enjoy you report !"));
 	label->setWordWrap(true);
