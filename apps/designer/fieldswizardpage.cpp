@@ -29,6 +29,7 @@ fieldsWizardPage::fieldsWizardPage(Report::ReportEngine* reportEngine, Report::R
 		QWizardPage(parent), m_reportEngine(reportEngine), m_report(reportInterface)
 {
 	setupUi(this);
+	setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/fieldsWizard.png"));
 }
 
 void fieldsWizardPage::initializePage()

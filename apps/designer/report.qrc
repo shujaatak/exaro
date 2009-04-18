@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/" >
         <file>syntax/script.txt</file>
+        <file>syntax/sql.txt</file>
         <file>images/application_exit.png</file>
         <file>images/background.png</file>
         <file>images/border_bottom.png</file>
@@ -35,7 +36,6 @@
         <file>images/exaro.png</file>
         <file>images/exaro_splash.png</file>
         <file>images/wait_animation.gif</file>
-        <file>syntax/sql.txt</file>
         <file>images/button_sql.png</file>
         <file>images/button_tool.png</file>
         <file>images/button_objects.png</file>
@@ -44,5 +44,11 @@
         <file>images/save-item-template.png</file>
         <file>images/open-item-template.png</file>
         <file>images/button_commands.png</file>
+        <file>images/startWizard.png</file>
+        <file>images/queryWizard.png</file>
+        <file>images/pageWizard.png</file>
+        <file>images/groupWizard.png</file>
+        <file>images/fieldsWizard.png</file>
+        <file>images/finishWizard.png</file>
     </qresource>
 </RCC>
