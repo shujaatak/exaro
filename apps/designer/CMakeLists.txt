@@ -50,7 +50,7 @@ link_directories( "${CMAKE_BINARY_DIR}/libs/report" )
 target_link_libraries(exaro Report ${QT_LIBRARIES} ${PROPERTYEDITOR_LIBRARY})
 
 install(TARGETS exaro RUNTIME DESTINATION bin)
-#install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")
+install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_INSTALL_DIR}")
 install(FILES application-bdrt.png DESTINATION "${ICON_INSTALL_DIR}")
 install(FILES bdrt.desktop DESTINATION "${MIME_INSTALL_DIR}/application")
 install(FILES bdrt.xml DESTINATION "${XDG_MIME_INSTALL_DIR}/packages")
