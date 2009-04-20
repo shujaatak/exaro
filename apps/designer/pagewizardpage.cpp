@@ -31,7 +31,7 @@ pageWizardPage::pageWizardPage(Report::ReportEngine* reportEngine, Report::Repor
 void pageWizardPage::on_addPage_clicked()
 {
 	Report::PageInterface* page=reinterpret_cast<Report::PageInterface*>(m_reportEngine->pages()[0]->createInstance( m_report ));
-	page->setObjectName(tr("page_%1").arg(m_report->findChildren<Report::PageInterface*>().size()));
+	page->setObjectName(QString("page_%1").arg(m_report->findChildren<Report::PageInterface*>().size()));
 	QListWidgetItem * i = new QListWidgetItem();
 	i->setText(page->objectName());
 	pagesList->addItem(i);

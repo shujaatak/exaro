@@ -74,7 +74,7 @@ void fieldsWizardPage::on_details_currentIndexChanged(const QString& detail)
 	QSqlQuery q;
 	if (!q.exec(m_report->queries()[query].toString()))
 	{
-		QMessageBox::critical(this, tr("SQL Error"), tr("%1").arg(q.lastError().text()));
+		QMessageBox::critical(this, tr("SQL Error"), tr("Error:\n%1").arg(q.lastError().text()));
 		return;
 	}
 

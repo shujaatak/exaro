@@ -41,24 +41,6 @@
     </message>
 </context>
 <context>
-    <name>ChangeColor</name>
-    <message>
-        <source>Change color</source>
-        <translation type="obsolete">Изменить цвет</translation>
-    </message>
-</context>
-<context>
-    <name>ChangeFont</name>
-    <message>
-        <source>Change font</source>
-        <translation type="obsolete">Сменить шрифт</translation>
-    </message>
-    <message>
-        <source>Choose a font</source>
-        <translation type="obsolete">Выбрать шрифт</translation>
-    </message>
-</context>
-<context>
     <name>ChartContainer</name>
     <message>
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="70"/>
@@ -167,74 +149,6 @@
 <context>
     <name>Dialog</name>
     <message>
-        <source>Flags</source>
-        <translation type="obsolete">флаги</translation>
-    </message>
-    <message>
-        <source>Check all</source>
-        <translation type="obsolete">Отменить выбор всего</translation>
-    </message>
-    <message>
-        <source>Uncheck all</source>
-        <translation type="obsolete">Снять выбор всего</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
-    </message>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Диалог</translation>
-    </message>
-    <message>
-        <source>Choose</source>
-        <translation type="obsolete">Выбрать</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="obsolete">Очистить</translation>
-    </message>
-    <message>
-        <source>StringList</source>
-        <translation type="obsolete">Список</translation>
-    </message>
-    <message>
-        <source>New String</source>
-        <translation type="obsolete">Новая строка</translation>
-    </message>
-    <message>
-        <source>&amp;New</source>
-        <translation type="obsolete">Новая</translation>
-    </message>
-    <message>
-        <source>Delete String</source>
-        <translation type="obsolete">Удалить строку</translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="obsolete">Удалить</translation>
-    </message>
-    <message>
-        <source>&amp;Value:</source>
-        <translation type="obsolete">Значение:</translation>
-    </message>
-    <message>
-        <source>Move String Up</source>
-        <translation type="obsolete">Двигать строку вверх</translation>
-    </message>
-    <message>
-        <source>Up</source>
-        <translation type="obsolete">Вверх</translation>
-    </message>
-    <message>
-        <source>Move String Down</source>
-        <translation type="obsolete">Двигать строку вниз</translation>
-    </message>
-    <message>
-        <source>Down</source>
-        <translation type="obsolete">Вниз</translation>
-    </message>
-    <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="19"/>
         <source>Delimiter</source>
         <translation>Разделитель</translation>
@@ -291,25 +205,9 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <source>C&amp;heck all</source>
-        <translation type="obsolete">Выбрать все</translation>
-    </message>
-    <message>
-        <source>&amp;Uncheck all</source>
-        <translation type="obsolete">Снять выбор всего</translation>
-    </message>
-    <message>
-        <source>StringList editor</source>
-        <translation type="obsolete">Редактор списка</translation>
-    </message>
-    <message>
         <location filename="../plugins/report/export/csvTxt/exportSettingsDialog.ui" line="13"/>
         <source>CSV settings</source>
         <translation>Настройки CSV</translation>
-    </message>
-    <message>
-        <source>File...</source>
-        <translation type="obsolete">Файл...</translation>
     </message>
 </context>
 <context>
@@ -360,17 +258,6 @@
         <location filename="../plugins/report/items/field/field.cpp" line="145"/>
         <source>Text</source>
         <translation>Текст</translation>
-    </message>
-</context>
-<context>
-    <name>Flags</name>
-    <message>
-        <source>Change flags</source>
-        <translation type="obsolete">Изменить флаги</translation>
-    </message>
-    <message>
-        <source> flags</source>
-        <translation type="obsolete">флаги</translation>
     </message>
 </context>
 <context>
@@ -470,17 +357,6 @@
         <location filename="../plugins/report/items/charts/legend/legend.cpp" line="93"/>
         <source>Charts</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Line</name>
-    <message>
-        <source>Line</source>
-        <translation type="obsolete">Линия</translation>
-    </message>
-    <message>
-        <source>Shapes</source>
-        <translation type="obsolete">Фигуры</translation>
     </message>
 </context>
 <context>
@@ -735,35 +611,6 @@
     </message>
 </context>
 <context>
-    <name>Pixmap</name>
-    <message>
-        <source>Choose a image</source>
-        <translation type="obsolete">Выбрать картинку</translation>
-    </message>
-</context>
-<context>
-    <name>PixmapDialog</name>
-    <message>
-        <source>Open Image</source>
-        <translation type="obsolete">Открыть картинку</translation>
-    </message>
-    <message>
-        <source>Image Files (*.png *.jpg *.bmp)</source>
-        <translation type="obsolete">Графические файлы (*.png *.jpg *.bmp)</translation>
-    </message>
-</context>
-<context>
-    <name>PropertyEditor::PropertyModel</name>
-    <message>
-        <source>Property</source>
-        <translation type="obsolete">Свойство</translation>
-    </message>
-    <message>
-        <source>Value</source>
-        <translation type="obsolete">Значение</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <location filename="../apps/designer/command.cpp" line="28"/>
@@ -825,10 +672,6 @@
         <location filename="../apps/designer/queryeditdialog.cpp" line="29"/>
         <source>Query editor</source>
         <translation>Редактор запросов</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
     </message>
     <message>
         <location filename="../apps/designer/queryeditdialog.cpp" line="48"/>
@@ -920,10 +763,6 @@
         <translation>Имя запроса:</translation>
     </message>
     <message>
-        <source>Report</source>
-        <translation type="obsolete">Отчет</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
         <source>Delete current query ?</source>
         <translation>Удалить текущий запрос?</translation>
@@ -963,10 +802,6 @@
         <translation>Создать форму</translation>
     </message>
     <message>
-        <source>Report</source>
-        <translation type="obsolete">Отчет</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
         <source>Delete current ui ?</source>
         <translation>Удалить текущую форму?</translation>
@@ -980,12 +815,7 @@
 <context>
     <name>Report::PageInterface</name>
     <message>
-        <location filename="../libs/report/pageinterface.cpp" line="125"/>
-        <source>Can&apos;t create the printer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/report/pageinterface.cpp" line="139"/>
+        <location filename="../libs/report/pageinterface.cpp" line="137"/>
         <source>Press Ctrl key to ingore magnets when drag the object</source>
         <translation>Нажмите клавишу Ctrl для игнорирования магнитов
 при перемещении объекта</translation>
@@ -1173,10 +1003,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="46"/>
         <source>Copy</source>
         <translation>Копировать</translation>
@@ -1265,22 +1091,8 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
         <source>Connection name field is empty.
-Please enter name</source>
+Please enter a name</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StringList</name>
-    <message>
-        <source>Change stringlist</source>
-        <translation type="obsolete">Изменить список</translation>
-    </message>
-</context>
-<context>
-    <name>StringListEditor</name>
-    <message>
-        <source>Choose a data file</source>
-        <translation type="obsolete">Выбрать файл с данными</translation>
     </message>
 </context>
 <context>
@@ -1323,45 +1135,6 @@ Please enter name</source>
         <location filename="../plugins/report/bands/title/title.cpp" line="107"/>
         <source>Bands</source>
         <translation>Контейнеры</translation>
-    </message>
-</context>
-<context>
-    <name>Ui</name>
-    <message>
-        <source>Tool Box</source>
-        <translation type="obsolete">Инструменты</translation>
-    </message>
-    <message>
-        <source>Property Editor</source>
-        <translation type="obsolete">Свойства</translation>
-    </message>
-    <message>
-        <source>Query Editor</source>
-        <translation type="obsolete">Запросы</translation>
-    </message>
-    <message>
-        <source>Ui Editor</source>
-        <translation type="obsolete">Формы</translation>
-    </message>
-    <message>
-        <source>Object Inspector</source>
-        <translation type="obsolete">Объекты</translation>
-    </message>
-    <message>
-        <source>report name</source>
-        <translation type="obsolete">Имя отчета</translation>
-    </message>
-    <message>
-        <source>Any</source>
-        <translation type="obsolete">Любой</translation>
-    </message>
-    <message>
-        <source>test2</source>
-        <translation type="obsolete">тест2</translation>
-    </message>
-    <message>
-        <source>test3</source>
-        <translation type="obsolete">тест3</translation>
     </message>
 </context>
 <context>
@@ -1626,10 +1399,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="270"/>
         <source>&amp;Ok</source>
         <translation></translation>
@@ -1670,10 +1439,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>designerUiType</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Диалог</translation>
-    </message>
     <message>
         <location filename="../apps/designer/designeruitype.ui" line="19"/>
         <source>[ Ui base class ]</source>
@@ -1742,7 +1507,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
-        <source>%1</source>
+        <source>Error:
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1887,7 +1653,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
-        <source>%1</source>
+        <source>Error:
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1962,46 +1729,6 @@ p, li { white-space: pre-wrap; }
         <translation>Сохранить отчет</translation>
     </message>
     <message>
-        <source>Type:</source>
-        <translation type="obsolete">Тип:</translation>
-    </message>
-    <message>
-        <source>Height:</source>
-        <translation type="obsolete">Высота:</translation>
-    </message>
-    <message>
-        <source>Width (pdf471):</source>
-        <translation type="obsolete">Ширина (pdf471):</translation>
-    </message>
-    <message>
-        <source>Security level:</source>
-        <translation type="obsolete">Уровень безопасности:</translation>
-    </message>
-    <message>
-        <source>Whitespace width:</source>
-        <translation type="obsolete">Ширина пробела:</translation>
-    </message>
-    <message>
-        <source>Border width:</source>
-        <translation type="obsolete">Ширина границы:</translation>
-    </message>
-    <message>
-        <source>Border type:</source>
-        <translation type="obsolete">Тип границы</translation>
-    </message>
-    <message>
-        <source>No border</source>
-        <translation type="obsolete">Без границы</translation>
-    </message>
-    <message>
-        <source>&amp;Generate</source>
-        <translation type="obsolete">Генерировать</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Закрыть</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.cpp" line="68"/>
         <source>Tool Box</source>
         <translation>Инструменты</translation>
@@ -2047,17 +1774,9 @@ p, li { white-space: pre-wrap; }
         <translation>Правка</translation>
     </message>
     <message>
-        <source>&amp;Tools</source>
-        <translation type="obsolete">Инструменты</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.ui" line="105"/>
         <source>&amp;Help</source>
         <translation>Справка</translation>
-    </message>
-    <message>
-        <source>Tool Bar</source>
-        <translation type="obsolete">Инструменты</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
@@ -2282,18 +2001,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Item Width:</source>
-        <translation type="obsolete">Ширина элемента:</translation>
-    </message>
-    <message>
-        <source>Item Height:</source>
-        <translation type="obsolete">Высота элемента:</translation>
-    </message>
-    <message>
-        <source>Scale factor:</source>
-        <translation type="obsolete">Коэф. масштабирования:</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.cpp" line="60"/>
         <location filename="../apps/designer/mainwindow.cpp" line="516"/>
         <source>eXaro v%1 unsaved report</source>
@@ -2400,55 +2107,7 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>metricFontDialog</name>
-    <message>
-        <source>Font</source>
-        <translation type="obsolete">Шрифт</translation>
-    </message>
-    <message>
-        <source>Writing systems:</source>
-        <translation type="obsolete">Система печати:</translation>
-    </message>
-    <message>
-        <source>Font families</source>
-        <translation type="obsolete">Семейства шрифтов</translation>
-    </message>
-    <message>
-        <source>Font style</source>
-        <translation type="obsolete">Стили шрифтов</translation>
-    </message>
-    <message>
-        <source>Font size (mm)</source>
-        <translation type="obsolete">Размеры шрифтов (мм)</translation>
-    </message>
-    <message>
-        <source>Font effects</source>
-        <translation type="obsolete">Эффекты шрифтов</translation>
-    </message>
-    <message>
-        <source>Strikeout</source>
-        <translation type="obsolete">Перечеркнуть</translation>
-    </message>
-    <message>
-        <source>Underline</source>
-        <translation type="obsolete">Подчеркнуть</translation>
-    </message>
-    <message>
-        <source>Font sample</source>
-        <translation type="obsolete">Образец</translation>
-    </message>
-    <message>
-        <source>Font writing systems:</source>
-        <translation type="obsolete">Система написания шрифта:</translation>
-    </message>
-</context>
-<context>
     <name>pageWizardPage</name>
-    <message>
-        <location filename="../apps/designer/pagewizardpage.cpp" line="34"/>
-        <source>page_%1</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="14"/>
         <source>WizardPage</source>
