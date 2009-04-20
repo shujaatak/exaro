@@ -122,7 +122,11 @@ void Page::drawRect(QPainter * p)
 	while(rects)
 	{
 		QRectF rc=readRect();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //		if (!m_exposeRect.intersects(rc))
 		if(!m_search)
 			p->drawRect(rc);
@@ -137,7 +141,11 @@ void Page::drawLine(QPainter * p)
 	{
 		QPointF p1=readPoint();
 		QPointF p2=readPoint();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //		if (!m_exposeRect.intersects(QRectF(p1,p2)))
 		if(!m_search)
 			p->drawLine(p1,p2);
@@ -148,7 +156,11 @@ void Page::drawLine(QPainter * p)
 void Page::drawEllipse(QPainter * p)
 {
 	QRectF rc=readRect();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if (m_exposeRect.intersects(rc))
 		if(!m_search)
 			p->drawEllipse(rc);
@@ -157,7 +169,11 @@ void Page::drawEllipse(QPainter * p)
 void Page::drawPath(QPainter * p)
 {
 	QPainterPath pt=readPath();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if(pt.intersects(m_exposeRect))
 		if(!m_search)
 			p->drawPath(pt);
@@ -175,7 +191,11 @@ void Page::drawPixmap(QPainter * p)
 	r=readRect();
 	sr=readRect();
 	QPixmap px=QPixmap::fromImage(readImage());
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if (m_exposeRect.intersects(r))
 	if(!m_search)
 		p->drawPixmap(r, px, sr);
@@ -192,7 +212,11 @@ void Page::drawTextItem(QPainter * p)
 	ascent=readDouble();
 	descent=readDouble();
 	QString st=readString();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if (QRectF(pt.x(), pt.y(), width, ascent+descent).intersects(m_exposeRect)) 
 	p->drawText(pt, st);
 }
@@ -202,7 +226,11 @@ void Page::drawTiledPixmap(QPainter * p)
 	QRectF rt=readRect();
 	QPointF pt=readPoint();
 	QPixmap px=QPixmap::fromImage(readImage());
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if (m_exposeRect.intersects(rt))
 	if(!m_search)
 		p->drawTiledPixmap(rt, px, pt);
@@ -214,7 +242,11 @@ void Page::drawImage(QPainter * p)
 	QRectF sr=readRect();
 	int flags=readInt();
 	QImage img=readImage();
+#ifdef __GNUC__
 #warning I dont know way but this is not working 
+#else
+#pragma WARNING( I dont know way but this is not working  )
+#endif
 //	if (m_exposeRect.intersects(r))
 	if(!m_search)
 		p->drawImage(r, img, sr, (Qt::ImageConversionFlags)flags);

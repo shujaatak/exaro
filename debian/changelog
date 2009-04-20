@@ -1,5 +1,12 @@
-exaro (1.65.0) unstable; urgency=low
+exaro (1.80.0) unstable; urgency=low
 
-  * Initial release
+  * Debian sid packages
+  * Items selection is more pretty
+  * + formula item.
+  * + Italian translation
+  * + pie chart item
+  * + wizard. Now report can be generated very fast and easy.
+  * + bug fixes (windows crash, segfaults, etc.)
+  * + eXaro designer can now load helper toolbar plugins. eXaro now came with a font toolbar, which help you to set fonts more easy.
 
- -- BogDan Vatra <bogdan@licentia.eu>  Sun, 12 Apr 2009 01:11:58 +0300
+ -- BogDan Vatra <bogdan@licentia.eu>  Sun, 19 Apr 2009 01:39:31 +0300

@@ -126,7 +126,7 @@ void Formula::setScript(QString script)
 
 bool Formula::resetAfterPrint() 
 {
-	m_resetAfterPrint;
+	return m_resetAfterPrint;
 }
 
 void Formula::setResetAfterPrint(bool resetAfterPrint) 
@@ -283,6 +283,7 @@ QString Formula::formatDesignerString()
 		case Average:
 			return QString("average(%1)").arg(val);
 	}
+	return "";
 }
 
 void Formula::afterNext()
