@@ -74,8 +74,7 @@ void SqlDatabaseDialog::on_pbSave_clicked()
 {
     if (leConnName->text().isEmpty())
 	 QMessageBox::warning(this, tr("Connection adding"),
-				tr("Connection name field is empty.\n"
-				   "Please enter name"),
+				tr("Connection name field is empty.\nPlease enter a name"),
 				QMessageBox::Ok);
     else
     {

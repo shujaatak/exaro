@@ -16,6 +16,6 @@ for x in `find ../ -name *.ui`; do
     echo "FORMS += $x" >> $PRO_FILE
 done;
 
-lupdate $PRO_FILE
+lupdate -no-obsolete $PRO_FILE
 
 rm $PRO_FILE

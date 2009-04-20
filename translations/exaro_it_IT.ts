@@ -528,10 +528,6 @@
         <source>Draw selection border around items</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>font Size:</source>
-        <translation type="obsolete">Dimensione font:</translation>
-    </message>
 </context>
 <context>
     <name>Overlay</name>
@@ -603,10 +599,6 @@
 </context>
 <context>
     <name>PieChart</name>
-    <message>
-        <source>PieChart</source>
-        <translation type="obsolete">Grafico a torta</translation>
-    </message>
     <message>
         <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="152"/>
         <source>Pie chart</source>
@@ -823,12 +815,7 @@
 <context>
     <name>Report::PageInterface</name>
     <message>
-        <location filename="../libs/report/pageinterface.cpp" line="125"/>
-        <source>Can&apos;t create the printer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../libs/report/pageinterface.cpp" line="139"/>
+        <location filename="../libs/report/pageinterface.cpp" line="137"/>
         <source>Press Ctrl key to ingore magnets when drag the object</source>
         <translation>Premi il tasto Ctrl per ignorare i magneti durante il trascinamento dell&apos;oggetto</translation>
     </message>
@@ -1103,7 +1090,7 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
         <source>Connection name field is empty.
-Please enter name</source>
+Please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1519,7 +1506,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
-        <source>%1</source>
+        <source>Error:
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1664,7 +1652,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
-        <source>%1</source>
+        <source>Error:
+%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1844,21 +1833,9 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Modifica</translation>
     </message>
     <message>
-        <source>&amp;Tools</source>
-        <translation type="obsolete">&amp;Strumenti</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.ui" line="105"/>
         <source>&amp;Help</source>
         <translation>&amp;Aiuto</translation>
-    </message>
-    <message>
-        <source>Tool Bar</source>
-        <translation type="obsolete">Tool Bar</translation>
-    </message>
-    <message>
-        <source>toolBar_2</source>
-        <translation type="obsolete">toolBar_2</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
@@ -2130,11 +2107,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>pageWizardPage</name>
-    <message>
-        <location filename="../apps/designer/pagewizardpage.cpp" line="34"/>
-        <source>page_%1</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="14"/>
         <source>WizardPage</source>
