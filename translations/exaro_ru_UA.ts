@@ -17,12 +17,12 @@
 <context>
     <name>BarChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="227"/>
+        <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="231"/>
         <source>Bar chart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="232"/>
+        <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="236"/>
         <source>Charts</source>
         <translation type="unfinished"></translation>
     </message>
