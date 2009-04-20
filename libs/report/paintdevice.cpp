@@ -39,6 +39,7 @@ namespace Report
 PaintDevice::PaintDevice(QIODevice * doc)
 		: QPaintDevice(), m_doc(doc),m_allowEmptyPages(false),m_pagePos(0)
 {
+	m_printer.setOutputFormat(QPrinter::PdfFormat);
 	m_printer.setOrientation(QPrinter::Portrait);
 	m_printer.setPaperSize(QPrinter::A4);
 

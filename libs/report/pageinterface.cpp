@@ -118,8 +118,11 @@ void PageInterface::setMagnetArea(int magnetArea)
 void PageInterface::updatePageRect()
 {
 	QPrinter p;
+	p.setOutputFormat(QPrinter::PdfFormat);
 	p.setOrientation((QPrinter::Orientation)orientation());
 	p.setPageSize((QPrinter::PageSize)pageSize());
+	if (!p.isValid())
+		throw tr("Can't create the printer");
 	setSceneRect(0, 0, p.paperRect(QPrinter::Millimeter).width()/UNIT, p.paperRect(QPrinter::Millimeter).height()/UNIT);
 }
 

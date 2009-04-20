@@ -82,7 +82,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	}
 
 	qreal absMaxVal=maxpv-minnv;
-	qreal powVal=(absMaxVal<1)?pow(10,QString::number(absMaxVal).right(QString::number(absMaxVal).indexOf('.')).length()+1):1;
+	qreal powVal=(absMaxVal<1)?pow(10.0,QString::number(absMaxVal).right(QString::number(absMaxVal).indexOf('.')).length()+1):1;
 	maxpv*=powVal;
 	minnv*=powVal;
 
@@ -100,7 +100,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
 	qreal f=2;
 
-	qreal chartStep=pow(10,(QString::number(absMaxVal).left(QString::number(absMaxVal).indexOf('.')).length())-1)/f;
+	qreal chartStep=pow(10.0,(QString::number(absMaxVal).left(QString::number(absMaxVal).indexOf('.')).length())-1)/f;
 	qreal powStep=(chartStep<1)?10:1;
 	chartStep*=powStep;
 	maxpv*=powStep;
@@ -122,7 +122,11 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
 	if (m_showLabels)
 	{
+#ifdef __GNUC__
 #warning FIXME ensure max positive and max negative is visible
+#else
+#pragma WARNING( FIXME ensure max positive and max negative is visible )
+#endif
 		qreal maxLabelWidth=0;
 		for(int i=0;i<maxVal/chartStep+1+((quint64)maxVal%(quint64)chartStep?1:0);i++)
 			if (maxLabelWidth<painter->fontMetrics().width(QString::number((maxVal*i-chartStep*i)/powVal)))
