@@ -50,5 +50,11 @@
         <file>images/groupWizard.png</file>
         <file>images/fieldsWizard.png</file>
         <file>images/finishWizard.png</file>
+        <file>images/arrow-down.png</file>
+        <file>images/arrow-left.png</file>
+        <file>images/arrow-right.png</file>
+        <file>images/arrow-left-double.png</file>
+        <file>images/arrow-right-double.png</file>
+        <file>images/arrow-up.png</file>
     </qresource>
 </RCC>

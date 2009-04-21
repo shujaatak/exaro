@@ -511,8 +511,8 @@ void mainWindow::newReport()
 		m_pe->setObject( m_report );
 		m_saveFile = "";
 		m_undoStack->clear();
-		m_lastUndoIndex=m_undoStack->index();
 	}
+	m_lastUndoIndex=-1;
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 }
 
