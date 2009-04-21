@@ -65,6 +65,10 @@ void CsvDatasetEditor::setDataset(Report::DataSet* dtst)
     // restore to form
     m_ui->leDelimeter->setText(dynamic_cast<CsvDataset*> (dtst)->delimeter());
     m_ui->leFileName->setText( dynamic_cast<CsvDataset*> (dtst)->fileName());
+    if (dynamic_cast<CsvDataset*> (dtst)->list().count())
+	m_ui->l_injected->show();
+    else
+	m_ui->l_injected->hide();
 }
 
 void CsvDatasetEditor::sync()
@@ -98,7 +102,7 @@ void CsvDatasetEditor::on_bInject_clicked()
     }
 
     QStringList list;
-    QFile data(m_ui->leFileName);
+    QFile data(m_ui->leFileName->text());
     if (data.open(QFile::ReadOnly | QFile::Text)) {
 	QTextStream in(&data);
 	do {
@@ -108,5 +112,7 @@ void CsvDatasetEditor::on_bInject_clicked()
 
     dynamic_cast<CsvDataset*> (m_dataset)->setList(list);
     m_ui->leFileName->clear();
-    dynamic_cast<CsvDataset*> (m_dataset)->setFileName("");
+    m_ui->l_injected->show();
+    qDebug("injected %i rows", list.count());
+//    dynamic_cast<CsvDataset*> (m_dataset)->setFileName("");
 }

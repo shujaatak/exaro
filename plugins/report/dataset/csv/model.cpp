@@ -81,6 +81,7 @@ Qt::ItemFlags Model::flags(const QModelIndex &index) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
+/*
 QVariant Model::headerData(int section, Qt::Orientation orientation,
                               int role) const
 {
@@ -101,7 +102,7 @@ QVariant Model::headerData(int section, Qt::Orientation orientation,
 
     return QVariant();
 }
-
+*/
 /*
 QModelIndex Model::index(int row, int column, const QModelIndex &parent)
             const

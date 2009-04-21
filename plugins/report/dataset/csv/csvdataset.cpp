@@ -114,10 +114,39 @@ QAbstractTableModel * CsvDataset::model()
 
 bool CsvDataset::populate()
 {
+    qDebug("m_list count = %i", m_list.count());
+
+    QStringList list = m_list;
+    if (!list.count())			//** data not injected direct to report as strinlist
+    {
+	if (m_fileName.isEmpty())
+	{
+	    m_error = tr("filename is empty. Please enter filename first");
+	    return false;
+	}
+
+	QFile data(m_fileName);
+	if (data.open(QFile::ReadOnly | QFile::Text)) {
+	    QTextStream in(&data);
+	    do {
+		list.append(in.readLine());
+	    } while (!in.atEnd() );
+	}
+	else
+	{
+	    m_error = tr("Can't open filename %1").arg(m_fileName);
+	    return false;
+	}
+    }
+
     Array array;
-    for (int i=0; i<m_list.count(); i++)
-	array.append(m_list.at(i).split(m_delimeter));
+    for (int i=0; i<list.count(); i++)
+	array.append(list.at(i).split(m_delimeter));
     m_model.setArray(array);
+
+    //** header generator
+    for (int i=0; i<m_model.columnCount(); i++)
+	m_model.setHeaderData(i, Qt::Horizontal, QString("field_%1").arg(i));
 
     m_isPopulated = true;
     return true;

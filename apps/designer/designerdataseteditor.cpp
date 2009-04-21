@@ -171,6 +171,7 @@ void DesignerDatasetEditor::on_tablesList_currentItemChanged ( QListWidgetItem *
 
 void DesignerDatasetEditor::on_bDatasetExec_clicked()
 {
+    qDebug("DesignerDatasetEditor::on_bDatasetExec_clicked()");
     if (!currentEditor)
 	return;
 
@@ -181,12 +182,15 @@ void DesignerDatasetEditor::on_bDatasetExec_clicked()
 
     if (!dtst->populate())
     {
+	qWarning("Error while populate dataset");
 	datasetTable->hide();
 	datasetResultText->show();
 	datasetResultText->setPlainText(dtst->lastError());
 	return;
     }
 
+    qDebug("size of dataset = %i", dtst->size());
+    datasetTable->setModel(0);			// don't know why but view not update without this
     datasetTable->setModel(dtst->model());
     datasetResultText->hide();
     datasetTable->show();
@@ -220,8 +224,14 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
 	    currentEditor->show();
 	}
     }
+
     if (currentEditor)
+    {
 	currentEditor->setDataset(dtst);
+	datasetTable->setModel(dtst->model());
+	datasetTable->resizeColumnsToContents();
+	datasetTable->resizeRowsToContents();
+    }
 }
 
 
