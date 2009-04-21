@@ -38,8 +38,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(piechart);
 }
 
-PieChart::PieChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), 
-	m_barsIdentation(1/UNIT), 
+PieChart::PieChart(QGraphicsItem* parent, QObject* parentObject) : ChartInterface(parent, parentObject), 	
 	m_showLabels(false),
 	m_toColorFactor(1),
 	m_drawBorder(false)/*,
@@ -158,11 +157,6 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	}			
 }
 
-int PieChart::distanta(QPointF from,QPointF to)
-{
-	return  static_cast<int>(sqrt( (from.x()-to.x())* (from.x()-to.x()) + (from.y()-to.y())*(from.y()-to.y()) ));
-}
-
 QIcon PieChart::toolBoxIcon()
 {
 	return QIcon(":/piechart.png");
@@ -181,19 +175,6 @@ QString PieChart::toolBoxGroup()
 QObject * PieChart::createInstance(QGraphicsItem* parent, QObject* parentObject)
 {
 	return new PieChart(parent, parentObject);
-}
-
-int PieChart::barsIdentation()
-{
-	return m_barsIdentation;
-}
-
-void PieChart::setBarsIdentation(int barsIdentation)
-{
-	if (barsIdentation<1)
-		barsIdentation=1;
-	m_barsIdentation=barsIdentation;
-	update();
 }
 
 /*
