@@ -33,7 +33,6 @@
 #include <QStyleOptionGraphicsItem>
 #include <QLinearGradient>
 #include "piechart.h"
-
 inline void initMyResource()
 {
 	Q_INIT_RESOURCE(piechart);
@@ -91,6 +90,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	int b=rect.height()/2;
 	int a=rect.width()/2;
 	int circumferinta=0,contor=0;
+	int x_line,y_line;
 	foreach(ChartInterface::_chartValue cv, val)
 	{	
 		contor++;
@@ -109,21 +109,42 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 			x_curent=a*cos(((2*3.14)/360)*(circumferinta+unghi_deschidere/2)) + x_centru;
 			y_curent=-b*sin(((2*3.14)/360)*(circumferinta+unghi_deschidere/2)) + y_centru;
 			if(x_curent >=x_centru)
-			{									
+			{	
+				qDebug()<<"y_curemt="<<y_curent<<" y_line="<<y_line;
+				if((x_line>x_centru) && ((y_curent+50) >(y_line-50)) && (y_line>0))				
+					y_line=y_curent-50;										
+				else
+					y_line=y_curent;								
+				x_line=x_curent+( (rect.x()+rect.width())-x_curent )+100;				
 				painter->setPen(cv.color);
 				painter->drawChord(QRectF(x_curent,y_curent,10,10),0,360*16);
-				painter->drawLine(x_curent,y_curent,x_curent+100,y_curent);
+				painter->drawLine(x_curent,y_curent,x_line,y_line);
+				x_curent=x_line;
+				y_curent=y_line;
+				y_line=y_line+50;
+				painter->drawLine(x_curent,y_curent,x_line,y_line);
+				painter->drawChord(QRectF(x_line,y_line,10,10),0,360*16);
 				painter->setPen(Qt::black);
-				painter->drawText (QPointF( x_curent+100,y_curent),QString("%1").arg(cv.value));			
+				painter->drawText (QPointF( x_line,y_line),QString("%1").arg(cv.value));			
 			}
 			else
 			{
+				
+				if((x_line<x_centru) && ((y_curent+50) <(y_line+50)) && (y_line>0))				
+					y_line=y_curent+50;										
+				else
+					y_line=y_curent;	
+				x_line=x_curent-(x_curent-rect.x() )-100;				
 				painter->setPen(cv.color);
 				painter->drawChord(QRectF(x_curent,y_curent,10,10),0,360*16);
-				painter->drawLine(x_curent,y_curent,x_curent-100,y_curent);
-				painter->setPen(Qt::black);	
-				painter->drawText (QPointF( x_curent-100,y_curent),QString("%1").arg(cv.value),0,1);					
-				//painter->drawText (QRectF( x_curent-100,y_curent,100,0),Qt::AlignRight|Qt::AlignVCenter,QString("%1").arg(cv.value));
+				painter->drawLine(x_curent,y_curent,x_line,y_line);
+				x_curent=x_line;
+				y_curent=y_line;
+				y_line=y_line+50;
+				painter->drawLine(x_curent,y_curent,x_line,y_line);
+				painter->drawChord(QRectF(x_line,y_line,10,10),0,360*16);
+				painter->setPen(Qt::black);									
+				painter->drawText (QPointF( x_line-painter->fontMetrics().width(QString("%1").arg(cv.value)),y_line),QString("%1").arg(cv.value));
 			}
 		}
 		if(val.size() == contor)		
