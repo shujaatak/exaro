@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
+    <width>301</width>
     <height>300</height>
    </rect>
   </property>
@@ -68,7 +68,14 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="2" column="0" colspan="2">
+    <widget class="QLabel" name="l_injected">
+     <property name="text">
+      <string>Dataset has injected values</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -81,7 +88,7 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -94,7 +101,7 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="2">
+   <item row="4" column="2">
     <widget class="QPushButton" name="bInject">
      <property name="toolTip">
       <string>Inject data from file inside report file</string>
