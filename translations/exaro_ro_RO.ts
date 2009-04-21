@@ -496,7 +496,7 @@
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="53"/>
         <source>Icon size:</source>
-        <translation>Marime iconite</translation>
+        <translation>Marime iconita:</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="64"/>
@@ -921,7 +921,7 @@
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="292"/>
         <source>Prepare page: %1</source>
-        <translation>Prepar pagina %1</translation>
+        <translation>Pregatesc pagina %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="426"/>
@@ -1466,7 +1466,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/designeruitype.ui" line="42"/>
         <source>&amp;Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Particularizat</translation>
     </message>
 </context>
 <context>
