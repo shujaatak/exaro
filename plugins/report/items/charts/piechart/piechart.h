@@ -41,7 +41,6 @@ class PieChart : public Report::ChartInterface
 	Q_PROPERTY(bool showLabels READ showLabels WRITE setShowLabels)
 	Q_PROPERTY(bool showGrid READ showGrid WRITE setShowGrid)
 	Q_PROPERTY(bool drawBorder READ drawBorder WRITE setDrawBorder)
-	Q_PROPERTY(int barsIdentation READ barsIdentation WRITE setBarsIdentation)
 	Q_PROPERTY(qreal toColorFactor READ toColorFactor WRITE setToColorFactor)
 
 public:
@@ -56,9 +55,6 @@ public:
 
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
-	int barsIdentation();
-	void setBarsIdentation(int barsIdentation);	
-	int distanta(QPointF x,QPointF y);
 //	bool show3d();
 //	void setShow3d(bool show3d);
 
@@ -74,8 +70,7 @@ public:
 	qreal toColorFactor();
 	void setToColorFactor(qreal toColorFactor);
 
-private:
-	int m_barsIdentation;
+private:	
 //	bool m_show3d;
 	bool m_showLabels;
 	qreal m_toColorFactor;
