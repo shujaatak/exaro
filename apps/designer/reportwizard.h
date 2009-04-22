@@ -31,6 +31,7 @@ public:
 	reportWizard(Report::ReportEngine * reportEngine, QWidget *parent = 0);
 	~reportWizard();
 	void accept();
+	void reject();
 	Report::ReportInterface * report();
 	QWizardPage * createIntroPage();
 	QWizardPage * createFinalPage();

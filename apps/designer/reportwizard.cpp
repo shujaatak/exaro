@@ -18,6 +18,7 @@
 #include "pagewizardpage.h"
 #include "groupwizardpage.h"
 #include "fieldswizardpage.h"
+#include <QMessageBox>
 
 reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent):QWizard(parent), m_reportEngine(reportEngine), m_finished(false)
 {
@@ -99,3 +100,8 @@ void reportWizard::accept()
 	QDialog::accept();
 }
 
+void reportWizard::reject()
+{
+	if (QMessageBox::question(this, tr("Close wizard?"), tr("Do you want to close the wizard?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+		QDialog::reject();
+}
