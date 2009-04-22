@@ -2252,7 +2252,7 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="52"/>
         <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation>Acest ajutor va a facilita crearea rapoartelor usor si repede. &lt;br&gt;Daca doriti doar un raport gol, apasati butonul &lt;b&gt;renunta&lt;/b&gt;.</translation>
+        <translation>Acest ajutor va va facilita crearea rapoartelor usor si repede. &lt;br&gt;Daca doriti doar un raport gol, apasati butonul &lt;b&gt;renunta&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="65"/>
@@ -2262,7 +2262,7 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="68"/>
         <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation>Felicitari, ati compelata toate etapele ajutorului. Apasati gata pentru a va bucura de raportul creat.</translation>
+        <translation>Felicitari, ati compelata toate etapele ajutorului. Apasati gata pentru a va bucura de raportul creat.!</translation>
     </message>
 </context>
 </TS>
