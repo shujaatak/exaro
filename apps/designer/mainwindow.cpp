@@ -132,7 +132,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	int h, w;
 	h = iSize.section( "x", 0, 0 ).toInt();
 	w = iSize.section( "x", 1, 1 ).toInt();
-	if ( h == 0 or w == 0 )
+	if ( h == 0 || w == 0 )
 		toolBar->setIconSize( QSize( 16, 16 ) );
 	else
 		toolBar->setIconSize( QSize( w, h ) );

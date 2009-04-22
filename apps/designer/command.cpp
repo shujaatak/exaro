@@ -420,12 +420,20 @@ PropertyChangeCommand::PropertyChangeCommand( QObject * obj, const QString & pro
 	m_itemName = obj->objectName();
 	m_pageName = mw->m_tw->count()?mw->m_tw->tabText(mw->m_tw->currentIndex()):QString("Report");
 	setText( QObject::tr( "'%1' property '%2'" ).arg( m_itemName ).arg( propertyName ) );
+#ifdef __GNUC__
 #warning FIXME reportobject is not handled properly
+#else
+#pragma WARNING( FIXME reportobject is not handled properly )
+#endif
 }
 
 void PropertyChangeCommand::redo()
 {
+#ifdef __GNUC__
 #warning FIXME reportobject is not handled properly
+#else
+#pragma WARNING( FIXME reportobject is not handled properly )
+#endif
 	Report::PageInterface* page=0;
 	QWidget * tab=findObjectByTabName( m_mainWindow->m_tw, m_pageName );
 	if (tab)
@@ -451,7 +459,11 @@ void PropertyChangeCommand::redo()
 
 void PropertyChangeCommand::undo()
 {
+#ifdef __GNUC__
 #warning FIXME reportobject is not handled properly
+#else
+#pragma WARNING( FIXME reportobject is not handled properly )
+#endif
 	Report::PageInterface* page=0;
 	QWidget * tab=findObjectByTabName( m_mainWindow->m_tw, m_pageName );
 	if (tab)
