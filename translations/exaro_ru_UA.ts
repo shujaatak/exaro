@@ -19,12 +19,12 @@
     <message>
         <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="231"/>
         <source>Bar chart</source>
-        <translation type="unfinished"></translation>
+        <translation>Гистограмма</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/barchart/barchart.cpp" line="236"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Диаграммы</translation>
     </message>
 </context>
 <context>
@@ -46,12 +46,12 @@
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="70"/>
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="81"/>
         <source>Chart container</source>
-        <translation type="unfinished"></translation>
+        <translation>Контейнер диаграмм</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/chartcontainer/chartcontainer.cpp" line="86"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Диаграммы</translation>
     </message>
 </context>
 <context>
@@ -229,12 +229,12 @@
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unhandle exception</source>
-        <translation type="unfinished"></translation>
+        <translation>неопределенное исключение</translation>
     </message>
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unknown exception</source>
-        <translation type="unfinished"></translation>
+        <translation>неизвестное исключение</translation>
     </message>
 </context>
 <context>
@@ -265,7 +265,7 @@
     <message>
         <location filename="../apps/designer/plugins/toolbars/font/fonttoolbar.cpp" line="44"/>
         <source>Font toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Панель шрифтов</translation>
     </message>
 </context>
 <context>
@@ -273,22 +273,22 @@
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="46"/>
         <source>field</source>
-        <translation type="unfinished">поле</translation>
+        <translation>поле</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="47"/>
         <source>query</source>
-        <translation type="unfinished">запрос</translation>
+        <translation>запрос</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="214"/>
         <source>Formula</source>
-        <translation type="unfinished"></translation>
+        <translation>Формула</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="219"/>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
 </context>
 <context>
@@ -351,12 +351,12 @@
     <message>
         <location filename="../plugins/report/items/charts/legend/legend.cpp" line="88"/>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Легенда</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/legend/legend.cpp" line="93"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Диаграммы</translation>
     </message>
 </context>
 <context>
@@ -364,12 +364,12 @@
     <message>
         <location filename="../plugins/report/items/line/line.cpp" line="101"/>
         <source>LineItem</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../plugins/report/items/line/line.cpp" line="106"/>
         <source>Shapes</source>
-        <translation type="unfinished">Фигуры</translation>
+        <translation>Фигуры</translation>
     </message>
 </context>
 <context>
@@ -471,62 +471,62 @@
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="13"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="19"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="25"/>
         <source>designer:</source>
-        <translation type="unfinished"></translation>
+        <translation>дизайнер:</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="35"/>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать...</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="45"/>
         <source>Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Интерфейс</translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="53"/>
         <source>Icon size:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="64"/>
         <source>12 x 12</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="69"/>
         <source>16 x 16</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="74"/>
         <source>24 x 24</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="79"/>
         <source>32 x 32</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="84"/>
         <source>48 x 48</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="100"/>
         <source>Draw selection border around items</source>
-        <translation type="unfinished"></translation>
+        <translation>Рисовать рамку для выделения</translation>
     </message>
 </context>
 <context>
@@ -600,14 +600,14 @@
 <context>
     <name>PieChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="152"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="167"/>
         <source>Pie chart</source>
-        <translation type="unfinished"></translation>
+        <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="157"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="172"/>
         <source>Charts</source>
-        <translation type="unfinished"></translation>
+        <translation>Диаграммы</translation>
     </message>
 </context>
 <context>
@@ -615,55 +615,55 @@
     <message>
         <location filename="../apps/designer/command.cpp" line="28"/>
         <source>Add %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="116"/>
         <source>Open item</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="212"/>
         <source>Open item %1(%2)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="277"/>
         <source>Move %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="320"/>
         <source>Delete %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="422"/>
-        <location filename="../apps/designer/command.cpp" line="492"/>
-        <source>&apos;%1&apos; property &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../apps/designer/command.cpp" line="504"/>
-        <location filename="../apps/designer/command.cpp" line="562"/>
+        <source>&apos;%1&apos; property &apos;%2&apos;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/command.cpp" line="516"/>
+        <location filename="../apps/designer/command.cpp" line="574"/>
         <source>&apos;%1&apos; change size &apos;%2x%3&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="576"/>
+        <location filename="../apps/designer/command.cpp" line="588"/>
         <source>NewPage &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="603"/>
+        <location filename="../apps/designer/command.cpp" line="615"/>
         <source>Remove Page &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="621"/>
-        <location filename="../apps/designer/command.cpp" line="628"/>
+        <location filename="../apps/designer/command.cpp" line="633"/>
+        <location filename="../apps/designer/command.cpp" line="640"/>
         <source>%1 at (%2, %3)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -737,7 +737,7 @@
     <message>
         <location filename="../plugins/report/items/charts/chartinterface/chartdatacollector.cpp" line="43"/>
         <source>Other</source>
-        <translation type="unfinished">Другое</translation>
+        <translation>Другое</translation>
     </message>
 </context>
 <context>
@@ -922,23 +922,23 @@
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="292"/>
         <source>Prepare page: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Подготовка страницы: %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="426"/>
         <location filename="../libs/report/reportinterface.cpp" line="476"/>
         <source>Uncaught exception at line %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Неопределенное прерывание на строке %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="440"/>
         <source>Importing extension: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт расширений: %1</translation>
     </message>
     <message>
         <location filename="../libs/report/reportinterface.cpp" line="486"/>
         <source>Can&apos;t create temporary files</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно создать временный файл</translation>
     </message>
 </context>
 <context>
@@ -1071,7 +1071,8 @@
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="56"/>
         <source>Can&apos;t open database
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть базу данных
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
@@ -1086,13 +1087,14 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
         <source>Connection adding</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить соединение</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
         <source>Connection name field is empty.
 Please enter a name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя соединения пусто
+Пожалуйста, введите имя</translation>
     </message>
 </context>
 <context>
@@ -1158,12 +1160,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;eXaro report designer&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright 2008-2009 The eXaro developers&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://exaro.sf.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://exaro.sf.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="94"/>
         <source>A&amp;uthors</source>
-        <translation type="unfinished"></translation>
+        <translation>Авторы</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="100"/>
@@ -1182,12 +1184,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Florina Nacu&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;nacuflorina@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="148"/>
         <source>Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>Благодарности</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="154"/>
@@ -1197,8 +1199,8 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Italian translation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Italian translation, MSVC compilation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="194"/>
@@ -1323,7 +1325,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;section17&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;1&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;7. Interpretation of Sections 15 and 16. &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee. &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;END OF TERMS AND CONDITIONS &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="33"/>
@@ -1341,7 +1343,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="20"/>
         <source>Predefined connections:</source>
-        <translation type="unfinished"></translation>
+        <translation>Предопределенные соединения:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="39"/>
@@ -1391,12 +1393,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="248"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохраниеть</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="288"/>
         <source>Connection name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя соединения:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="270"/>
@@ -1467,7 +1469,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/designeruitype.ui" line="42"/>
         <source>&amp;Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Текущее</translation>
     </message>
 </context>
 <context>
@@ -1503,95 +1505,96 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка SQL</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
         <source>Error:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка:
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
         <source>Can&apos;t find needed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Не найдены нужные модули</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="17"/>
         <source>Fields to detail</source>
-        <translation type="unfinished"></translation>
+        <translation>Поле для detail</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="20"/>
         <source>Here you have to add fileds to report</source>
-        <translation type="unfinished"></translation>
+        <translation>Здесь вы должны ввести поля для отчета</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="26"/>
         <source>Select a page and a detail for fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите страницу и detail для полей</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="32"/>
         <source>Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Страница:</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="45"/>
         <source>Detail:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="61"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Возможные</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="71"/>
         <source>On detail</source>
-        <translation type="unfinished"></translation>
+        <translation>На detail</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="84"/>
         <source>&gt;&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="94"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="104"/>
         <source>/\</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="107"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="127"/>
         <source>&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="146"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="176"/>
         <source>&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="153"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="193"/>
         <source>&lt;&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="160"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="210"/>
         <source>\/</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1599,73 +1602,74 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="17"/>
         <source>Setup groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки групп</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="20"/>
         <source>Here you can setup the groups. You don&apos;t have to add any group if you don&apos;t need.</source>
-        <translation type="unfinished"></translation>
+        <translation>Здесь вы можете настроить группы. Вы можете не добавлять группы, если вы в них не нуждаетесь.</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="26"/>
         <source>Select a page and a query to use for groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите страницу и запрос для использования в группе</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="32"/>
         <source>Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Страница:</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="45"/>
         <source>Query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос:</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="66"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="86"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="95"/>
         <source>generate detail footer(s) for every group</source>
-        <translation type="unfinished"></translation>
+        <translation>сгенерировать заголовок для каждой группы</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
         <source>the detail header on first group</source>
-        <translation type="unfinished"></translation>
+        <translation>заголовок для первой группы</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка SQL</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
         <source>Error:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка:
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="79"/>
         <source>Choose a field</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите поле</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="79"/>
         <source>Group field</source>
-        <translation type="unfinished"></translation>
+        <translation>поле для группы</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="133"/>
@@ -1675,7 +1679,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/groupwizardpage.cpp" line="226"/>
         <location filename="../apps/designer/groupwizardpage.cpp" line="240"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="133"/>
@@ -1685,12 +1689,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/groupwizardpage.cpp" line="226"/>
         <location filename="../apps/designer/groupwizardpage.cpp" line="240"/>
         <source>Can&apos;t find needed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Не найдены нужные модули</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="137"/>
         <source>Report title</source>
-        <translation type="unfinished"></translation>
+        <translation>Заголовок отчета</translation>
     </message>
 </context>
 <context>
@@ -1781,33 +1785,33 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="111"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>Вид</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="115"/>
         <location filename="../apps/designer/mainwindow.ui" line="535"/>
         <source>Toolbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Панели инструментов</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="120"/>
         <source>Toolboxes</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="141"/>
         <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Главаня панель инструментов</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="177"/>
         <source>Tools toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="198"/>
@@ -1998,112 +2002,112 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/mainwindow.ui" line="540"/>
         <location filename="../apps/designer/mainwindow.ui" line="545"/>
         <source>a</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="60"/>
         <location filename="../apps/designer/mainwindow.cpp" line="516"/>
         <source>eXaro v%1 unsaved report</source>
-        <translation type="unfinished"></translation>
+        <translation>eXaro v%1 несохраненный отчет</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="111"/>
         <location filename="../apps/designer/mainwindow.cpp" line="115"/>
         <source>Command List</source>
-        <translation type="unfinished"></translation>
+        <translation>Список комманд</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="284"/>
         <source>Save item</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить элемент</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="285"/>
         <location filename="../apps/designer/mainwindow.cpp" line="307"/>
         <source>Item (*.bdrti)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="608"/>
         <location filename="../apps/designer/mainwindow.cpp" line="726"/>
         <source>eXaro v%1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="633"/>
         <location filename="../apps/designer/mainwindow.ui" line="483"/>
         <source>Open template</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть шаблон</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="634"/>
         <source>Exaro Template (*.extt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаблон eXaro (*.extt)</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="716"/>
         <source>Report (*.bdrt);;Template (*.extt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Отчет (*.bdrt);;Шаблон (*.extt)</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="14"/>
         <source>eXaro v1.0.1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="42"/>
         <source>Open last temlate</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть последний шаблон</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="47"/>
         <source>Open last report</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть последний отчет</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="291"/>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="478"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="488"/>
         <source>Options...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="497"/>
         <source>&amp;Save item as ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить элемент как...</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="506"/>
         <source>Open item from ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть элемент из...</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="515"/>
         <source>Undo</source>
-        <translation type="unfinished">Отменить</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="518"/>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="527"/>
         <source>Redo</source>
-        <translation type="unfinished">Повторить</translation>
+        <translation>Повторить</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="530"/>
         <source>Ctrl+R</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2111,42 +2115,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="17"/>
         <source>Setup pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка страницы</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="20"/>
         <source>Please add one or more pages. To continue you have to add at least one page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста добавте одну или несколько страниц. Для продолжения вы должны ввести хотя бы одну.</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="31"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="51"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="60"/>
         <source>Page properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры страницы</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="66"/>
         <source>Page size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер страницы:</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="79"/>
         <source>Page orientation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ориентация:</translation>
     </message>
 </context>
 <context>
@@ -2154,116 +2158,127 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source>Create an query object</source>
-        <translation type="unfinished">Создать запрос</translation>
+        <translation>Создать объект запроса</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source> query name:</source>
-        <translation type="unfinished">Имя запроса:</translation>
+        <translation>Имя запроса:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
         <source>%1
 Do you want to edit your sql again?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+Вы желаете отредактировать ваш запрос снова?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
         <source>eXaro</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
         <source>Do you want to remove &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Желаете удалить &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
         <source>Query object</source>
-        <translation type="unfinished">Объект-запрос</translation>
+        <translation>Объект-запрос</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
         <source>query name:</source>
-        <translation type="unfinished">Имя запроса:</translation>
+        <translation>Имя запроса:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="17"/>
         <source>Setup queries</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки запросов</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="20"/>
         <source>Please add one or more queies. To continue you have to add at least one query. </source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста добавьте один или несколько запросов. Для продолжения вы должны ввести хотя бы один.</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="73"/>
         <source>Edit na&amp;me</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="26"/>
         <source>Setup &amp;database</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор базы данных</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="53"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="93"/>
         <source>Edit &amp;query</source>
-        <translation type="unfinished"></translation>
+        <translation>Ред .запрос</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="113"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
     <name>reportWizard</name>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="31"/>
-        <source>Report wizard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../apps/designer/reportwizard.cpp" line="36"/>
+        <source>Report wizard</source>
+        <translation>Мастер отчета</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="41"/>
         <source>Report name</source>
-        <translation type="unfinished">Имя отчета</translation>
+        <translation>Имя отчета</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="49"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="54"/>
         <source>Welcome to eXaro report wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Добро подаловать в мастер отчетов</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="52"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="57"/>
         <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер поможет вам создать отчет быстро и легко.&lt;br&gt;Если выходтите начать с пустого отчета, нажмите клавишу&lt;b&gt;Отмена&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="65"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="70"/>
         <source>Congratulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Поздравляем</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="68"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
         <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation type="unfinished"></translation>
+        <translation>Поздравляем с окончанием формирования отчета.&lt;br&gt;Нажмите &lt;b&gt;Готово&lt;/b&gt; и наслаждайтесь отчетом !</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="105"/>
+        <source>Close wizard?</source>
+        <translation>Закрыть мастер?</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="105"/>
+        <source>Do you want to close the wizard?</source>
+        <translation>Вы желаете закрыть мастер?</translation>
     </message>
 </context>
 </TS>
