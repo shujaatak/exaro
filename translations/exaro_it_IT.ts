@@ -265,7 +265,7 @@
     <message>
         <location filename="../apps/designer/plugins/toolbars/font/fonttoolbar.cpp" line="44"/>
         <source>Font toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra degli strumenti Font</translation>
     </message>
 </context>
 <context>
@@ -273,22 +273,22 @@
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="46"/>
         <source>field</source>
-        <translation type="unfinished">campo</translation>
+        <translation>campo</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="47"/>
         <source>query</source>
-        <translation type="unfinished">query</translation>
+        <translation>query</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="214"/>
         <source>Formula</source>
-        <translation type="unfinished"></translation>
+        <translation>Formula</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/formula/formula.cpp" line="219"/>
         <source>Text</source>
-        <translation type="unfinished">Testo</translation>
+        <translation>Testo</translation>
     </message>
 </context>
 <context>
@@ -526,7 +526,7 @@
     <message>
         <location filename="../apps/designer/optionsdialog.ui" line="100"/>
         <source>Draw selection border around items</source>
-        <translation type="unfinished"></translation>
+        <translation>Disegna il bordo di selezione intorno agli oggetti</translation>
     </message>
 </context>
 <context>
@@ -602,7 +602,7 @@
     <message>
         <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="152"/>
         <source>Pie chart</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafico a torta</translation>
     </message>
     <message>
         <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="157"/>
@@ -1070,7 +1070,8 @@
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="56"/>
         <source>Can&apos;t open database
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Non riesco ad aprire il database
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="63"/>
@@ -1085,13 +1086,14 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
         <source>Connection adding</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova connessione</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
         <source>Connection name field is empty.
 Please enter a name</source>
-        <translation type="unfinished"></translation>
+        <translation>Il nome della connessione è vuoto.
+Per favore inserisci un nome</translation>
     </message>
 </context>
 <context>
@@ -1162,7 +1164,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="94"/>
         <source>A&amp;uthors</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;utori</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="100"/>
@@ -1186,7 +1188,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="148"/>
         <source>Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>Si ringraziano</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="154"/>
@@ -1340,7 +1342,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="20"/>
         <source>Predefined connections:</source>
-        <translation type="unfinished"></translation>
+        <translation>Connessioni predefinite:</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="39"/>
@@ -1390,7 +1392,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="248"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="270"/>
@@ -1405,7 +1407,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="288"/>
         <source>Connection name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome connessione:</translation>
     </message>
 </context>
 <context>
@@ -1502,25 +1504,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore SQL</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
         <source>Error:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore:
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
         <source>Can&apos;t find needed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Non trovo i plugin necessari</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="14"/>
@@ -1530,37 +1533,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="17"/>
         <source>Fields to detail</source>
-        <translation type="unfinished"></translation>
+        <translation>Campi dettaglio</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="20"/>
         <source>Here you have to add fileds to report</source>
-        <translation type="unfinished"></translation>
+        <translation>Qui devi aggiungere i campi al report</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="26"/>
         <source>Select a page and a detail for fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona una pagina e un dettaglio per i campi</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="32"/>
         <source>Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina:</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="45"/>
         <source>Detail:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dettaglio:</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="61"/>
         <source>Available</source>
-        <translation type="unfinished"></translation>
+        <translation>Disponibili</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="71"/>
         <source>On detail</source>
-        <translation type="unfinished"></translation>
+        <translation>Sul dettaglio</translation>
     </message>
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="84"/>
@@ -1603,68 +1606,69 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="17"/>
         <source>Setup groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Impostazione gruppi</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="20"/>
         <source>Here you can setup the groups. You don&apos;t have to add any group if you don&apos;t need.</source>
-        <translation type="unfinished"></translation>
+        <translation>Qui puoi impostare i gruppi. Non sei obbligato ad aggiungere nessun gruppo se non ne hai bisogno.</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="26"/>
         <source>Select a page and a query to use for groups</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona una pagina e una query da usare per i gruppi</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="32"/>
         <source>Page:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pagina:</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="45"/>
         <source>Query:</source>
-        <translation type="unfinished"></translation>
+        <translation>Query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="66"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aggiungi</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="86"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rimuovi</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="95"/>
         <source>generate detail footer(s) for every group</source>
-        <translation type="unfinished"></translation>
+        <translation>genera piè di pagina dettaglio per ogni gruppo</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
         <source>the detail header on first group</source>
-        <translation type="unfinished"></translation>
+        <translation>intestazione dettaglio sul primo gruppo</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore SQL</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
         <source>Error:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore:
+%1</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="79"/>
         <source>Choose a field</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli un campo</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="79"/>
         <source>Group field</source>
-        <translation type="unfinished"></translation>
+        <translation>Campo raggruppamento</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="133"/>
@@ -1674,7 +1678,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/groupwizardpage.cpp" line="226"/>
         <location filename="../apps/designer/groupwizardpage.cpp" line="240"/>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="133"/>
@@ -1684,12 +1688,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/groupwizardpage.cpp" line="226"/>
         <location filename="../apps/designer/groupwizardpage.cpp" line="240"/>
         <source>Can&apos;t find needed plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Non trovo i plugin necessari</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="137"/>
         <source>Report title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titolo report</translation>
     </message>
 </context>
 <context>
@@ -1805,7 +1809,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="14"/>
         <source>eXaro v1.0.1</source>
-        <translation>eXaro v1.0.1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="38"/>
@@ -1840,33 +1844,33 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="111"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Visualizza</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="115"/>
         <location filename="../apps/designer/mainwindow.ui" line="535"/>
         <source>Toolbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Barre degli strumenti</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="120"/>
         <source>Toolboxes</source>
-        <translation type="unfinished"></translation>
+        <translation>Riquadri degli strumenti</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="141"/>
         <source>Main toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra degli strumenti principale</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="177"/>
         <source>Tools toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra degli strumenti laterale</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="198"/>
@@ -1936,7 +1940,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="291"/>
         <source>Ctrl+0</source>
-        <translation>Ctrl+0</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="300"/>
@@ -2061,7 +2065,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="478"/>
         <source>Ctrl+1</source>
-        <translation>Ctrl+1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="488"/>
@@ -2086,7 +2090,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="518"/>
         <source>Ctrl+Z</source>
-        <translation>Ctrl+Z</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="527"/>
@@ -2096,7 +2100,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="530"/>
         <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="540"/>
@@ -2115,37 +2119,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="17"/>
         <source>Setup pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Impostazione pagine</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="20"/>
         <source>Please add one or more pages. To continue you have to add at least one page.</source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore aggiungi una o più pagine. Per continuare devi aggiungere almeno una pagina.</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="31"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aggiungi</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="51"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rimuovi</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="60"/>
         <source>Page properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietà della pagina</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="66"/>
         <source>Page size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione della pagina:</translation>
     </message>
     <message>
         <location filename="../apps/designer/pagewizardpage.ui" line="79"/>
         <source>Page orientation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Orientamento della pagina:</translation>
     </message>
 </context>
 <context>
@@ -2153,43 +2157,44 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source>Create an query object</source>
-        <translation type="unfinished">Crea un oggetto query</translation>
+        <translation>Crea un oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source> query name:</source>
-        <translation type="unfinished">nome query:</translation>
+        <translation>nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
         <source>SQL Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Errore SQL</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
         <source>%1
 Do you want to edit your sql again?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+Vuoi modificare di nuovo il tuo SQL?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
         <source>eXaro</source>
-        <translation type="unfinished">eXaro</translation>
+        <translation>eXaro</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
         <source>Do you want to remove &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuoi rimuovere &apos;%1&apos;?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
         <source>Query object</source>
-        <translation type="unfinished">Oggetto query</translation>
+        <translation>Oggetto query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
         <source>query name:</source>
-        <translation type="unfinished">nome query:</translation>
+        <translation>nome query:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="14"/>
@@ -2199,37 +2204,37 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="17"/>
         <source>Setup queries</source>
-        <translation type="unfinished"></translation>
+        <translation>Importazione query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="20"/>
         <source>Please add one or more queies. To continue you have to add at least one query. </source>
-        <translation type="unfinished"></translation>
+        <translation>Per favore aggiungi una o più query. Per continuare devi aggiungere almeno una query.</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="73"/>
         <source>Edit na&amp;me</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica no&amp;me</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="26"/>
         <source>Setup &amp;database</source>
-        <translation type="unfinished"></translation>
+        <translation>Impostazione &amp;database</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="53"/>
         <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aggiungi</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="93"/>
         <source>Edit &amp;query</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifica &amp;query</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.ui" line="113"/>
         <source>&amp;Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rimuovi</translation>
     </message>
 </context>
 <context>
@@ -2237,32 +2242,32 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="31"/>
         <source>Report wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Wizard nuovo report</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="36"/>
         <source>Report name</source>
-        <translation type="unfinished">Nome report</translation>
+        <translation>Nome report</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="49"/>
         <source>Welcome to eXaro report wizard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Benvenuto al wizard di creazione nuovo report in eXaro</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="52"/>
         <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Questo wizard ti aiuterà a creare un nuovo report in maniera facile e veloce.&lt;br&gt;Se vuoi soltanto creare un report vuoto, premi il pulsante &lt;b&gt;Annulla&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="65"/>
         <source>Congratulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Congratulazioni</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="68"/>
         <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation type="unfinished"></translation>
+        <translation>Congratulazioni, hai completato il wizard.&lt;br&gt;Premi il pulsante &lt;b&gt;Fine&lt;/b&gt; per iniziare a lavorare con il report!</translation>
     </message>
 </context>
 </TS>
