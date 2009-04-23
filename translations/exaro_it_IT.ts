@@ -600,12 +600,12 @@
 <context>
     <name>PieChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="152"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="166"/>
         <source>Pie chart</source>
         <translation>Grafico a torta</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="157"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="171"/>
         <source>Charts</source>
         <translation>Grafici</translation>
     </message>
@@ -639,29 +639,29 @@
     </message>
     <message>
         <location filename="../apps/designer/command.cpp" line="422"/>
-        <location filename="../apps/designer/command.cpp" line="492"/>
+        <location filename="../apps/designer/command.cpp" line="504"/>
         <source>&apos;%1&apos; property &apos;%2&apos;</source>
         <translation>&apos;%1&apos; proprietà &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="504"/>
-        <location filename="../apps/designer/command.cpp" line="562"/>
+        <location filename="../apps/designer/command.cpp" line="516"/>
+        <location filename="../apps/designer/command.cpp" line="574"/>
         <source>&apos;%1&apos; change size &apos;%2x%3&apos;</source>
         <translation>&apos;%1&apos; cambia dimensione &apos;%2x%3&apos;</translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="576"/>
+        <location filename="../apps/designer/command.cpp" line="588"/>
         <source>NewPage &apos;%1&apos;</source>
         <translation>Nuova pagina &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="603"/>
+        <location filename="../apps/designer/command.cpp" line="615"/>
         <source>Remove Page &apos;%1&apos;</source>
         <translation>Elimina pagina &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../apps/designer/command.cpp" line="621"/>
-        <location filename="../apps/designer/command.cpp" line="628"/>
+        <location filename="../apps/designer/command.cpp" line="633"/>
+        <location filename="../apps/designer/command.cpp" line="640"/>
         <source>%1 at (%2, %3)</source>
         <translation>%1 a (%2, %3)</translation>
     </message>
@@ -1198,7 +1198,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Italian translation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Italian translation, MSVC compilation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1514,14 +1514,14 @@ p, li { white-space: pre-wrap; }
 %1</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
         <source>Can&apos;t find needed plugins</source>
         <translation>Non trovo i plugin necessari</translation>
     </message>
@@ -1541,58 +1541,63 @@ p, li { white-space: pre-wrap; }
         <translation>Qui devi aggiungere i campi al report</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="26"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="28"/>
         <source>Select a page and a detail for fields</source>
         <translation>Seleziona una pagina e un dettaglio per i campi</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="32"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="34"/>
         <source>Page:</source>
         <translation>Pagina:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="45"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="47"/>
         <source>Detail:</source>
         <translation>Dettaglio:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="61"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="63"/>
         <source>Available</source>
         <translation>Disponibili</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="71"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="73"/>
         <source>On detail</source>
         <translation>Sul dettaglio</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="84"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="86"/>
         <source>&gt;&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="94"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="106"/>
         <source>/\</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="107"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="129"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="146"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="178"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="153"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="195"/>
         <source>&lt;&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="160"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="212"/>
         <source>\/</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="246"/>
+        <source>Add lines between fields</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2240,34 +2245,44 @@ Vuoi modificare di nuovo il tuo SQL?</translation>
 <context>
     <name>reportWizard</name>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="31"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="36"/>
         <source>Report wizard</source>
         <translation>Wizard nuovo report</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="36"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="41"/>
         <source>Report name</source>
         <translation>Nome report</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="49"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="54"/>
         <source>Welcome to eXaro report wizard</source>
         <translation type="unfinished">Benvenuto al wizard di creazione nuovo report in eXaro</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="52"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="57"/>
         <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
         <translation>Questo wizard ti aiuterà a creare un nuovo report in maniera facile e veloce.&lt;br&gt;Se vuoi soltanto creare un report vuoto, premi il pulsante &lt;b&gt;Annulla&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="65"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="70"/>
         <source>Congratulations</source>
         <translation>Congratulazioni</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="68"/>
+        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
         <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
         <translation>Congratulazioni, hai completato il wizard.&lt;br&gt;Premi il pulsante &lt;b&gt;Fine&lt;/b&gt; per iniziare a lavorare con il report!</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="105"/>
+        <source>Close wizard?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="105"/>
+        <source>Do you want to close the wizard?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
