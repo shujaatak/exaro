@@ -33,6 +33,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QLinearGradient>
 #include "piechart.h"
+
 inline void initMyResource()
 {
 	Q_INIT_RESOURCE(piechart);
@@ -58,7 +59,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
 		//drawSelection(painter, boundingRect());
-		painter->drawEllipse(boundingRect());		
+		painter->drawEllipse(boundingRect());
 	setupPainter(painter);
 	adjustRect(rect);
 
@@ -74,7 +75,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	{
 		
 			suma +=cv.value;
-	}			
+	}
 	painter->setBrush(brush());
 	painter->fillRect(rect,brush());	
 	int unghi_dela=0;
@@ -102,19 +103,18 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		int pondere;
 		pondere=static_cast<int>((100*cv.value)/suma+0.5);
 		int unghi_deschidere;
-		unghi_deschidere=static_cast<int>((pondere*360)/100 +0.5);										
+		unghi_deschidere=static_cast<int>((pondere*360)/100 +0.5);
 		if(m_showLabels)
 		{
 			x_curent=a*cos(((2*3.14)/360)*(circumferinta+unghi_deschidere/2)) + x_centru;
 			y_curent=-b*sin(((2*3.14)/360)*(circumferinta+unghi_deschidere/2)) + y_centru;
 			if(x_curent >=x_centru)
-			{	
-				qDebug()<<"y_curemt="<<y_curent<<" y_line="<<y_line;
-				if((x_line>x_centru) && ((y_curent+50) >(y_line-50)) && (y_line>0))				
-					y_line=y_curent-50;										
+			{
+				if((x_line>x_centru) && ((y_curent+50) >(y_line-50)) && (y_line>0))
+					y_line=y_curent-50;
 				else
-					y_line=y_curent;								
-				x_line=x_curent+( (rect.x()+rect.width())-x_curent )+100;				
+					y_line=y_curent;
+				x_line=x_curent+( (rect.x()+rect.width())-x_curent )+100;
 				painter->setPen(cv.color);
 				painter->drawChord(QRectF(x_curent,y_curent,10,10),0,360*16);
 				painter->drawLine(x_curent,y_curent,x_line,y_line);
@@ -124,16 +124,15 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 				painter->drawLine(x_curent,y_curent,x_line,y_line);
 				painter->drawChord(QRectF(x_line,y_line,10,10),0,360*16);
 				painter->setPen(Qt::black);
-				painter->drawText (QPointF( x_line,y_line),QString("%1").arg(cv.value));			
+				painter->drawText (QPointF( x_line,y_line),QString("%1").arg(cv.value));
 			}
 			else
 			{
-				
-				if((x_line<x_centru) && ((y_curent+50) <(y_line+50)) && (y_line>0))				
-					y_line=y_curent+50;										
+				if((x_line<x_centru) && ((y_curent+50) <(y_line+50)) && (y_line>0))
+					y_line=y_curent+50;
 				else
-					y_line=y_curent;	
-				x_line=x_curent-(x_curent-rect.x() )-100;				
+					y_line=y_curent;
+				x_line=x_curent-(x_curent-rect.x() )-100;
 				painter->setPen(cv.color);
 				painter->drawChord(QRectF(x_curent,y_curent,10,10),0,360*16);
 				painter->drawLine(x_curent,y_curent,x_line,y_line);
@@ -142,19 +141,19 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 				y_line=y_line+50;
 				painter->drawLine(x_curent,y_curent,x_line,y_line);
 				painter->drawChord(QRectF(x_line,y_line,10,10),0,360*16);
-				painter->setPen(Qt::black);									
+				painter->setPen(Qt::black);
 				painter->drawText (QPointF( x_line-painter->fontMetrics().width(QString("%1").arg(cv.value)),y_line),QString("%1").arg(cv.value));
 			}
 		}
-		if(val.size() == contor)		
-			unghi_deschidere = 360-circumferinta;					
-		else		
+		if(val.size() == contor)
+			unghi_deschidere = 360-circumferinta;
+		else
 			circumferinta +=unghi_deschidere;
-		QRectF rectPie(rect.x(),rect.y(),rect.width(),rect.height());		
-		painter->drawPie(rectPie,unghi_dela*16,(unghi_deschidere)*16);						
+		QRectF rectPie(rect.x(),rect.y(),rect.width(),rect.height());
+		painter->drawPie(rectPie,unghi_dela*16,(unghi_deschidere)*16)
 		unghi_dela +=unghi_deschidere;
 		
-	}			
+	}
 }
 
 QIcon PieChart::toolBoxIcon()
