@@ -97,9 +97,11 @@ void fieldsWizardPage::on_details_currentIndexChanged(const QString& detail)
 	QStringList queryFields;
 	QSqlRecord rec=q.record();
 	for (int i=0;i<rec.count();i++)
+	{
 		if (!groupFields.contains(rec.field(i).name()) && !m_fields[QString("%1~%2").arg(pages->currentText()).arg(detail)].contains(rec.field(i).name()))
 			queryFields.push_back(rec.field(i).name());
-
+		m_fieldsType[rec.fieldName(i)]=(int)rec.field(i).type();	
+	}
 	foreach(QString field, queryFields)
 	{
 		QListWidgetItem * i = new QListWidgetItem();
@@ -259,6 +261,16 @@ bool fieldsWizardPage::validatePage()
 				script->setProperty("script", QString("\"%1 :\"+%2.value('%1')").arg(band->property("groupField").toString()).arg(query));
 				ypos+=fontMargin+fontHeight;
 			}
+			
+			if((band->objectName()=="DetailHeader") && drawLine->isChecked())
+			{
+				band->setProperty("frame","{1,2,8}");
+			}
+			else
+				if((band->objectName()=="Detail") && drawLine->isChecked())
+				{
+					band->setProperty("frame","{1,4,2,8}");
+				}
 
 			if (!initHeader || band->objectName()=="Detail")
 			{
@@ -284,6 +296,19 @@ bool fieldsWizardPage::validatePage()
 					item->setPos(xpos,ypos);
 					item->setHeight(fontHeight);
 					item->setWidth(xstep);
+					if(m_fieldsType[field] == QVariant::Double || m_fieldsType[field] == QVariant::Int)
+						item->setProperty("textFlags",(int)Qt::AlignRight|Qt::AlignVCenter);
+					else
+						item->setProperty("textFlags",(int)Qt::AlignLeft|Qt::AlignVCenter);
+
+					if(((xpos+xstep) <  (band->width() -20)) && (drawLine->isChecked()))
+					{
+						Report::ItemInterface* itemLine=addItem("LineItem", band);
+						itemLine->setPos(xpos+xstep,0);
+						itemLine->setProperty("lineStyle",0);
+						itemLine->setWidth(20);
+						itemLine->setHeight(band->height());
+					}
 					xpos+=(20+fontMargin)+xstep;
 				}
 				initHeader=true;

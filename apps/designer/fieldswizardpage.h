@@ -24,7 +24,6 @@
 #include "reportengine.h"
 #include "iteminterface.h"
 
-
 class fieldsWizardPage:public QWizardPage, private Ui::fieldsWizardPage
 {
 Q_OBJECT
@@ -46,10 +45,12 @@ private slots:
 	void on_moveDown_clicked();
 	void on_pages_currentIndexChanged(const QString & page);
 	void on_details_currentIndexChanged(const QString & page);
+
 private:
 	Report::ReportEngine* m_reportEngine;
 	Report::ReportInterface* m_report;
 	QMap<QString, QStringList > m_fields;
+	QMap<QString, int> m_fieldsType;
 };
 
 #endif
