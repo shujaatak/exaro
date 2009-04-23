@@ -600,12 +600,12 @@
 <context>
     <name>PieChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="167"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="166"/>
         <source>Pie chart</source>
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="172"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="171"/>
         <source>Charts</source>
         <translation>Диаграммы</translation>
     </message>
@@ -1515,14 +1515,14 @@ p, li { white-space: pre-wrap; }
 %1</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="252"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="270"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
         <source>Can&apos;t find needed plugins</source>
         <translation>Не найдены нужные модули</translation>
     </message>
@@ -1542,59 +1542,64 @@ p, li { white-space: pre-wrap; }
         <translation>Здесь вы должны ввести поля для отчета</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="26"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="28"/>
         <source>Select a page and a detail for fields</source>
         <translation>Выберите страницу и detail для полей</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="32"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="34"/>
         <source>Page:</source>
         <translation>Страница:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="45"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="47"/>
         <source>Detail:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="61"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="63"/>
         <source>Available</source>
         <translation>Возможные</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="71"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="73"/>
         <source>On detail</source>
         <translation>На detail</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="84"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="86"/>
         <source>&gt;&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="104"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="106"/>
         <source>/\</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="127"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="129"/>
         <source>&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="176"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="178"/>
         <source>&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="193"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="195"/>
         <source>&lt;&lt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.ui" line="210"/>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="212"/>
         <source>\/</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/fieldswizardpage.ui" line="246"/>
+        <source>Add lines between fields</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
