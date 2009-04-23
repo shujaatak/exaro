@@ -73,7 +73,7 @@ void DesignerQueryWidget::refreshButtons()
 void DesignerQueryWidget::createItem()
 {
 	bool ok;
-	QString text = QInputDialog::getText(this, tr("Create an query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(m_listWidget->count()), &ok);
+	QString text = QInputDialog::getText(this, tr("Create a query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(m_listWidget->count()), &ok);
 
 	if (!ok || text.isEmpty())
 		return;

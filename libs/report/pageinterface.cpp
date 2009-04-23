@@ -134,7 +134,7 @@ void PageInterface::drawMagnets(ItemInterface* item)
 	if (!m_magnets)
 		return;
 
-	item->setToolTip(tr("Press Ctrl key to ingore magnets when drag the object"));
+	item->setToolTip(tr("Press Ctrl key to ignore magnets when dragging the object"));
 
 	QPen p;
 	p.setWidth(3);

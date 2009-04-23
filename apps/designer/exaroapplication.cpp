@@ -36,11 +36,11 @@ bool ExaroApplication::notify(QObject * receiver, QEvent * event)
         }
         catch (const QString & error)
         {
-                QMessageBox::critical( 0,tr("Unhandle exception"),error);
+                QMessageBox::critical( 0,tr("Unhandled exception"),error);
         }
         catch(...)
         {
-                QMessageBox::critical( 0,tr("Unhandle exception"),tr("Unknown exception"));
+                QMessageBox::critical( 0,tr("Unhandled exception"),tr("Unknown exception"));
         }
         return res;
 }

@@ -73,7 +73,7 @@ void SqlDatabaseDialog::on_drivers_currentIndexChanged ( int /*index*/ )
 void SqlDatabaseDialog::on_pbSave_clicked()
 {
     if (leConnName->text().isEmpty())
-	 QMessageBox::warning(this, tr("Connection adding"),
+	 QMessageBox::warning(this, tr("Adding connection"),
 				tr("Connection name field is empty.\nPlease enter a name"),
 				QMessageBox::Ok);
     else

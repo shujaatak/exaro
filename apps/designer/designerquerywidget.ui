@@ -16,7 +16,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle" >
-   <string>Querys</string>
+   <string>Queries</string>
   </property>
   <layout class="QGridLayout" >
    <item row="0" column="0" colspan="2" >

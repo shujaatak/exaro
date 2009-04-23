@@ -106,7 +106,7 @@ void ScriptEditDialog::accept()
 void ScriptEditDialog::validate()
 {
 	if (isValid())
-		QMessageBox::information(this, tr("Ok"), tr("the script it's ok"), QMessageBox::Ok);
+		QMessageBox::information(this, tr("Ok"), tr("the script is ok"), QMessageBox::Ok);
 	else
 		QMessageBox::critical(this, tr("Error"), tr("the script is invalid"), QMessageBox::Ok);
 

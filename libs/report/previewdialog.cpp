@@ -513,7 +513,7 @@ void PreviewDialog::accept()
 
 void PreviewDialog::reject()
 {
-	if (QMessageBox::question(this, tr("Quit ?"), tr("Realy quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, tr("Quit ?"), tr("Really quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		QDialog::reject();
 }
 
