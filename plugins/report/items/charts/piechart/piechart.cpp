@@ -150,7 +150,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		else
 			circumferinta +=unghi_deschidere;
 		QRectF rectPie(rect.x(),rect.y(),rect.width(),rect.height());
-		painter->drawPie(rectPie,unghi_dela*16,(unghi_deschidere)*16)
+		painter->drawPie(rectPie,unghi_dela*16,(unghi_deschidere)*16);
 		unghi_dela +=unghi_deschidere;
 		
 	}
