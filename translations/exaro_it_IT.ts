@@ -2271,7 +2271,7 @@ Vuoi modificare di nuovo il tuo SQL?</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="73"/>
-        <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
+        <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy your report !</source>
         <translation>Congratulazioni, hai completato il wizard.&lt;br&gt;Premi il pulsante &lt;b&gt;Fine&lt;/b&gt; per iniziare a lavorare con il report!</translation>
     </message>
     <message>

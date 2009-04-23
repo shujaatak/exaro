@@ -70,7 +70,7 @@ QWizardPage * reportWizard::createFinalPage()
 	page->setTitle(tr("Congratulations"));
 	page->setPixmap(QWizard::BackgroundPixmap,QPixmap(":/images/finishWizard.png"));//.scaled(width(),height()));
 
-	QLabel *label = new QLabel(tr("Congratulations you have completed the wizard.<br>Press <b>done</b> button to enjoy you report !"));
+	QLabel *label = new QLabel(tr("Congratulations you have completed the wizard.<br>Press <b>done</b> button to enjoy your report !"));
 	label->setWordWrap(true);
 	label->setTextFormat(Qt::RichText);
 
