@@ -228,7 +228,7 @@
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
-        <source>Unhandle exception</source>
+        <source>Unhandled exception</source>
         <translation>Eccezione non gestita</translation>
     </message>
     <message>
@@ -754,7 +754,7 @@
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
-        <source>Create an query object</source>
+        <source>Create a query object</source>
         <translation>Crea un oggetto query</translation>
     </message>
     <message>
@@ -816,7 +816,7 @@
     <name>Report::PageInterface</name>
     <message>
         <location filename="../libs/report/pageinterface.cpp" line="137"/>
-        <source>Press Ctrl key to ingore magnets when drag the object</source>
+        <source>Press Ctrl key to ignore magnets when dragging the object</source>
         <translation>Premi il tasto Ctrl per ignorare i magneti durante il trascinamento dell&apos;oggetto</translation>
     </message>
 </context>
@@ -904,7 +904,7 @@
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
-        <source>Realy quit?</source>
+        <source>Really quit?</source>
         <translation>Confermi l&apos;uscita?</translation>
     </message>
 </context>
@@ -1055,7 +1055,7 @@
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
-        <source>the script it&apos;s ok</source>
+        <source>the script is ok</source>
         <translation>lo script è ok</translation>
     </message>
 </context>
@@ -1085,7 +1085,7 @@
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
-        <source>Connection adding</source>
+        <source>Adding connection</source>
         <translation>Nuova connessione</translation>
     </message>
     <message>
@@ -1414,7 +1414,7 @@ p, li { white-space: pre-wrap; }
     <name>designerQueryWidget</name>
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
-        <source>Querys</source>
+        <source>Queries</source>
         <translation>Query</translation>
     </message>
     <message>
@@ -1598,7 +1598,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="246"/>
         <source>Add lines between fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungi linee fra i campi</translation>
     </message>
 </context>
 <context>
@@ -1650,7 +1650,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
-        <source>the detail header on first group</source>
+        <source>detail header on first group</source>
         <translation>intestazione dettaglio sul primo gruppo</translation>
     </message>
     <message>
@@ -1823,7 +1823,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="42"/>
-        <source>Open last temlate</source>
+        <source>Open last template</source>
         <translation>Apri ultimo modello</translation>
     </message>
     <message>
@@ -2161,7 +2161,7 @@ p, li { white-space: pre-wrap; }
     <name>queryWizardPage</name>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
-        <source>Create an query object</source>
+        <source>Create a query object</source>
         <translation>Crea un oggetto query</translation>
     </message>
     <message>
@@ -2188,7 +2188,7 @@ Vuoi modificare di nuovo il tuo SQL?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
-        <source>Do you want to remove &apos;%1&apos;</source>
+        <source>Do you want to remove &apos;%1&apos;?</source>
         <translation>Vuoi rimuovere &apos;%1&apos;?</translation>
     </message>
     <message>
@@ -2257,11 +2257,11 @@ Vuoi modificare di nuovo il tuo SQL?</translation>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="54"/>
         <source>Welcome to eXaro report wizard</source>
-        <translation type="unfinished">Benvenuto al wizard di creazione nuovo report in eXaro</translation>
+        <translation>Benvenuto al wizard di creazione nuovo report in eXaro</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="57"/>
-        <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
+        <source>This wizard will help you create reports fast and easily.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
         <translation>Questo wizard ti aiuterà a creare un nuovo report in maniera facile e veloce.&lt;br&gt;Se vuoi soltanto creare un report vuoto, premi il pulsante &lt;b&gt;Annulla&lt;/b&gt;.</translation>
     </message>
     <message>
@@ -2271,18 +2271,18 @@ Vuoi modificare di nuovo il tuo SQL?</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="73"/>
-        <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
+        <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
         <translation>Congratulazioni, hai completato il wizard.&lt;br&gt;Premi il pulsante &lt;b&gt;Fine&lt;/b&gt; per iniziare a lavorare con il report!</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="105"/>
         <source>Close wizard?</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiusura wizard?</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="105"/>
         <source>Do you want to close the wizard?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuoi chiudere il wizard?</translation>
     </message>
 </context>
 </TS>

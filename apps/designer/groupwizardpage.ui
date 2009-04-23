@@ -99,7 +99,7 @@
    <item row="3" column="0" colspan="2">
     <widget class="QCheckBox" name="detailOnFirstGroup">
      <property name="text">
-      <string>the detail header on first group</string>
+      <string>detail header on first group</string>
      </property>
     </widget>
    </item>

@@ -40,7 +40,7 @@ void queryWizardPage::on_setupDatabase_clicked()
 void queryWizardPage::on_addQuery_clicked()
 {
 	bool ok;
-	QString text = QInputDialog::getText(this, tr("Create an query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(queriesList->count()), &ok);
+	QString text = QInputDialog::getText(this, tr("Create a query object"), tr(" query name:"), QLineEdit::Normal, QString("query_%1").arg(queriesList->count()), &ok);
 	if (!ok || text.isEmpty())
 		return;
 	QueryEditDialog d;
@@ -65,7 +65,7 @@ void queryWizardPage::on_addQuery_clicked()
 
 void queryWizardPage::on_removeQuery_clicked()
 {
-	if (QMessageBox::Yes != QMessageBox::question(this, tr("eXaro"), tr("Do you want to remove '%1'").arg(queriesList->currentItem()->text()), QMessageBox::Yes|QMessageBox::No))
+	if (QMessageBox::Yes != QMessageBox::question(this, tr("eXaro"), tr("Do you want to remove '%1'?").arg(queriesList->currentItem()->text()), QMessageBox::Yes|QMessageBox::No))
 		return;
 	m_queries.remove(queriesList->currentItem()->text());
 	delete queriesList->currentItem();
