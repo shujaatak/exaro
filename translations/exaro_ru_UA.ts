@@ -226,10 +226,14 @@
 <context>
     <name>ExaroApplication</name>
     <message>
+        <source>Unhandle exception</source>
+        <translation type="obsolete">неопределенное исключение</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
-        <source>Unhandle exception</source>
-        <translation>неопределенное исключение</translation>
+        <source>Unhandled exception</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
@@ -753,14 +757,18 @@
         <translation>Имя запроса:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source>Create an query object</source>
-        <translation>Создать запрос</translation>
+        <translation type="obsolete">Создать запрос</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source> query name:</source>
         <translation>Имя запроса:</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
+        <source>Create a query object</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
@@ -815,10 +823,14 @@
 <context>
     <name>Report::PageInterface</name>
     <message>
-        <location filename="../libs/report/pageinterface.cpp" line="137"/>
         <source>Press Ctrl key to ingore magnets when drag the object</source>
-        <translation>Нажмите клавишу Ctrl для игнорирования магнитов
+        <translation type="obsolete">Нажмите клавишу Ctrl для игнорирования магнитов
 при перемещении объекта</translation>
+    </message>
+    <message>
+        <location filename="../libs/report/pageinterface.cpp" line="137"/>
+        <source>Press Ctrl key to ignore magnets when dragging the object</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -905,8 +917,12 @@
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
+        <source>Really quit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Realy quit?</source>
-        <translation>Действительно выйти?</translation>
+        <translation type="obsolete">Действительно выйти?</translation>
     </message>
 </context>
 <context>
@@ -1051,8 +1067,12 @@
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
+        <source>the script is ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>the script it&apos;s ok</source>
-        <translation>Скрипт верен</translation>
+        <translation type="obsolete">Скрипт верен</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="42"/>
@@ -1086,8 +1106,12 @@
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
+        <source>Adding connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Connection adding</source>
-        <translation>Добавить соединение</translation>
+        <translation type="obsolete">Добавить соединение</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
@@ -1414,6 +1438,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>designerQueryWidget</name>
     <message>
+        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
+        <source>Queries</source>
+        <translation type="unfinished">Запросы</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="30"/>
         <source>Create</source>
         <translation>Создать</translation>
@@ -1434,9 +1463,8 @@ p, li { white-space: pre-wrap; }
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
         <source>Querys</source>
-        <translation>Запросы</translation>
+        <translation type="obsolete">Запросы</translation>
     </message>
 </context>
 <context>
@@ -1651,8 +1679,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
+        <source>detail header on first group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>the detail header on first group</source>
-        <translation>заголовок для первой группы</translation>
+        <translation type="obsolete">заголовок для первой группы</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
@@ -1791,6 +1823,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
         <source>&amp;Settings</source>
         <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="42"/>
+        <source>Open last template</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="111"/>
@@ -2060,9 +2097,8 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="42"/>
         <source>Open last temlate</source>
-        <translation>Открыть последний шаблон</translation>
+        <translation type="obsolete">Открыть последний шаблон</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="47"/>
@@ -2161,14 +2197,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>queryWizardPage</name>
     <message>
-        <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source>Create an query object</source>
-        <translation>Создать объект запроса</translation>
+        <translation type="obsolete">Создать объект запроса</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source> query name:</source>
         <translation>Имя запроса:</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
+        <source>Create a query object</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
@@ -2189,8 +2229,12 @@ Do you want to edit your sql again?</source>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
+        <source>Do you want to remove &apos;%1&apos;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Do you want to remove &apos;%1&apos;</source>
-        <translation>Желаете удалить &apos;%1&apos;</translation>
+        <translation type="obsolete">Желаете удалить &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
@@ -2262,8 +2306,17 @@ Do you want to edit your sql again?</source>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="57"/>
+        <source>This wizard will help you create reports fast and easily.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
+        <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy your report !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation>Мастер поможет вам создать отчет быстро и легко.&lt;br&gt;Если выходтите начать с пустого отчета, нажмите клавишу&lt;b&gt;Отмена&lt;/b&gt;.</translation>
+        <translation type="obsolete">Мастер поможет вам создать отчет быстро и легко.&lt;br&gt;Если выходтите начать с пустого отчета, нажмите клавишу&lt;b&gt;Отмена&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="70"/>
@@ -2271,9 +2324,8 @@ Do you want to edit your sql again?</source>
         <translation>Поздравляем</translation>
     </message>
     <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
         <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation>Поздравляем с окончанием формирования отчета.&lt;br&gt;Нажмите &lt;b&gt;Готово&lt;/b&gt; и наслаждайтесь отчетом !</translation>
+        <translation type="obsolete">Поздравляем с окончанием формирования отчета.&lt;br&gt;Нажмите &lt;b&gt;Готово&lt;/b&gt; и наслаждайтесь отчетом !</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="105"/>

@@ -228,7 +228,7 @@
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
-        <source>Unhandle exception</source>
+        <source>Unhandled exception</source>
         <translation>Exceptie netratata</translation>
     </message>
     <message>
@@ -754,13 +754,13 @@
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
-        <source>Create an query object</source>
-        <translation>Creaza un obiect interogare</translation>
+        <source> query name:</source>
+        <translation>nume interogare:</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
-        <source> query name:</source>
-        <translation>nume interogare:</translation>
+        <source>Create a query object</source>
+        <translation>Creaza un obiect interogare</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
@@ -816,7 +816,7 @@
     <name>Report::PageInterface</name>
     <message>
         <location filename="../libs/report/pageinterface.cpp" line="137"/>
-        <source>Press Ctrl key to ingore magnets when drag the object</source>
+        <source>Press Ctrl key to ignore magnets when dragging the object</source>
         <translation>Apasati tasta Ctrl pentru a ignora magnetii</translation>
     </message>
 </context>
@@ -904,7 +904,7 @@
     </message>
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
-        <source>Realy quit?</source>
+        <source>Really quit?</source>
         <translation>Chiar inchid ?</translation>
     </message>
 </context>
@@ -1055,7 +1055,7 @@
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
-        <source>the script it&apos;s ok</source>
+        <source>the script is ok</source>
         <translation>Scriptul este valid</translation>
     </message>
 </context>
@@ -1084,7 +1084,7 @@
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
-        <source>Connection adding</source>
+        <source>Adding connection</source>
         <translation>Adaugare conexiune</translation>
     </message>
     <message>
@@ -1411,6 +1411,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>designerQueryWidget</name>
     <message>
+        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
+        <source>Queries</source>
+        <translation>Interogari</translation>
+    </message>
+    <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="30"/>
         <source>Create</source>
         <translation>Creaza</translation>
@@ -1429,11 +1434,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/designerquerywidget.ui" line="90"/>
         <source>Delete</source>
         <translation>Sterge</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
-        <source>Querys</source>
-        <translation>Interogari</translation>
     </message>
 </context>
 <context>
@@ -1647,7 +1647,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
-        <source>the detail header on first group</source>
+        <source>detail header on first group</source>
         <translation>Antetul de detalii pe primul grup</translation>
     </message>
     <message>
@@ -1786,6 +1786,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/mainwindow.ui" line="99"/>
         <source>&amp;Settings</source>
         <translation>&amp;Setari</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/mainwindow.ui" line="42"/>
+        <source>Open last template</source>
+        <translation>Deschide ultimele sabloane</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="111"/>
@@ -2055,11 +2060,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.ui" line="42"/>
-        <source>Open last temlate</source>
-        <translation>Deschide ultimele sabloane</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.ui" line="47"/>
         <source>Open last report</source>
         <translation>Deschide ultimele rapoarte</translation>
@@ -2157,13 +2157,13 @@ p, li { white-space: pre-wrap; }
     <name>queryWizardPage</name>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
-        <source>Create an query object</source>
-        <translation>Creaza un obiect interogare</translation>
+        <source> query name:</source>
+        <translation>nume interogare:</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
-        <source> query name:</source>
-        <translation>nume interogare:</translation>
+        <source>Create a query object</source>
+        <translation>Creaza un obiect interogare</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
@@ -2183,8 +2183,8 @@ Do you want to edit your sql again?</source>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
-        <source>Do you want to remove &apos;%1&apos;</source>
-        <translation>Doriti sa stergeti &apos;%1&apos;</translation>
+        <source>Do you want to remove &apos;%1&apos;?</source>
+        <translation>Doriti sa stergeti &apos;%1&apos; ?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
@@ -2256,18 +2256,18 @@ Do you want to edit your sql again?</source>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="57"/>
-        <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
+        <source>This wizard will help you create reports fast and easily.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
         <translation>Acest ajutor va va facilita crearea rapoartelor usor si repede. &lt;br&gt;Daca doriti doar un raport gol, apasati butonul &lt;b&gt;renunta&lt;/b&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
+        <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy your report !</source>
+        <translation>Felicitari, ati compelata toate etapele ajutorului. Apasati gata pentru a va bucura de raportul creat.!</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="70"/>
         <source>Congratulations</source>
         <translation>Felicitari</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/reportwizard.cpp" line="73"/>
-        <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation>Felicitari, ati compelata toate etapele ajutorului. Apasati gata pentru a va bucura de raportul creat.!</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="105"/>
