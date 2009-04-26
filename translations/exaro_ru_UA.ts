@@ -226,14 +226,10 @@
 <context>
     <name>ExaroApplication</name>
     <message>
-        <source>Unhandle exception</source>
-        <translation type="obsolete">неопределенное исключение</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
         <source>Unhandled exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Неопределенное прерывание</translation>
     </message>
     <message>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
@@ -757,10 +753,6 @@
         <translation>Имя запроса:</translation>
     </message>
     <message>
-        <source>Create an query object</source>
-        <translation type="obsolete">Создать запрос</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source> query name:</source>
         <translation>Имя запроса:</translation>
@@ -768,7 +760,7 @@
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
         <source>Create a query object</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать обект-запрос</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
@@ -823,14 +815,9 @@
 <context>
     <name>Report::PageInterface</name>
     <message>
-        <source>Press Ctrl key to ingore magnets when drag the object</source>
-        <translation type="obsolete">Нажмите клавишу Ctrl для игнорирования магнитов
-при перемещении объекта</translation>
-    </message>
-    <message>
         <location filename="../libs/report/pageinterface.cpp" line="137"/>
         <source>Press Ctrl key to ignore magnets when dragging the object</source>
-        <translation type="unfinished"></translation>
+        <translation>Нажмите Ctrl чтобы игнорировать магниты при переносе объектов</translation>
     </message>
 </context>
 <context>
@@ -918,11 +905,7 @@
     <message>
         <location filename="../libs/report/previewdialog.cpp" line="516"/>
         <source>Really quit?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Realy quit?</source>
-        <translation type="obsolete">Действительно выйти?</translation>
+        <translation>Уверены что желаете выйти?</translation>
     </message>
 </context>
 <context>
@@ -1068,11 +1051,7 @@
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="109"/>
         <source>the script is ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the script it&apos;s ok</source>
-        <translation type="obsolete">Скрипт верен</translation>
+        <translation>Скрипт верен</translation>
     </message>
     <message>
         <location filename="../apps/designer/scripteditdialog.cpp" line="42"/>
@@ -1107,11 +1086,7 @@
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="76"/>
         <source>Adding connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection adding</source>
-        <translation type="obsolete">Добавить соединение</translation>
+        <translation>Добавление подключения</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.cpp" line="77"/>
@@ -1231,7 +1206,7 @@ p, li { white-space: pre-wrap; }
         <source>License</source>
         <translation>Лицензионное соглашение</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../apps/designer/aboutdialog.ui" line="200"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1440,7 +1415,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="19"/>
         <source>Queries</source>
-        <translation type="unfinished">Запросы</translation>
+        <translation>Запросы</translation>
     </message>
     <message>
         <location filename="../apps/designer/designerquerywidget.ui" line="30"/>
@@ -1461,10 +1436,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../apps/designer/designerquerywidget.ui" line="90"/>
         <source>Delete</source>
         <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>Querys</source>
-        <translation type="obsolete">Запросы</translation>
     </message>
 </context>
 <context>
@@ -1627,7 +1598,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/fieldswizardpage.ui" line="246"/>
         <source>Add lines between fields</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить линию между полями</translation>
     </message>
 </context>
 <context>
@@ -1680,11 +1651,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/groupwizardpage.ui" line="102"/>
         <source>detail header on first group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>the detail header on first group</source>
-        <translation type="obsolete">заголовок для первой группы</translation>
+        <translation>Заголовок в первой группе</translation>
     </message>
     <message>
         <location filename="../apps/designer/groupwizardpage.cpp" line="68"/>
@@ -1827,7 +1794,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="42"/>
         <source>Open last template</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть последный шаблон</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.ui" line="111"/>
@@ -2097,10 +2064,6 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <source>Open last temlate</source>
-        <translation type="obsolete">Открыть последний шаблон</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/mainwindow.ui" line="47"/>
         <source>Open last report</source>
         <translation>Открыть последний отчет</translation>
@@ -2197,10 +2160,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>queryWizardPage</name>
     <message>
-        <source>Create an query object</source>
-        <translation type="obsolete">Создать объект запроса</translation>
-    </message>
-    <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source> query name:</source>
         <translation>Имя запроса:</translation>
@@ -2208,7 +2167,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="43"/>
         <source>Create a query object</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать обект-запрос</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="55"/>
@@ -2230,11 +2189,7 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="68"/>
         <source>Do you want to remove &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to remove &apos;%1&apos;</source>
-        <translation type="obsolete">Желаете удалить &apos;%1&apos;</translation>
+        <translation>Вы действительно желаете удалить &apos;%1&apos;?</translation>
     </message>
     <message>
         <location filename="../apps/designer/querywizardpage.cpp" line="77"/>
@@ -2307,25 +2262,17 @@ Do you want to edit your sql again?</source>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="57"/>
         <source>This wizard will help you create reports fast and easily.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот мастер должен помочь вам создать отчет быстро и просто.&lt;br&gt;Если вы желаете получить пустой отчет - нажмите кнопку &lt;b&gt;Отмена&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="73"/>
         <source>Congratulations you have completed the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy your report !</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This wizard will help you create reports fast and easy.&lt;br&gt;If you want only an empty report, press &lt;b&gt;cancel&lt;/b&gt; button.</source>
-        <translation type="obsolete">Мастер поможет вам создать отчет быстро и легко.&lt;br&gt;Если выходтите начать с пустого отчета, нажмите клавишу&lt;b&gt;Отмена&lt;/b&gt;.</translation>
+        <translation>Поздравляем вас с завершением формирования отчета.&lt;br&gt;Нажмите &lt;b&gt;Готово&lt;/b&gt; и наслаждайтесь вашим отчетом!</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="70"/>
         <source>Congratulations</source>
         <translation>Поздравляем</translation>
-    </message>
-    <message>
-        <source>Congratulations you have complete the wizard.&lt;br&gt;Press &lt;b&gt;done&lt;/b&gt; button to enjoy you report !</source>
-        <translation type="obsolete">Поздравляем с окончанием формирования отчета.&lt;br&gt;Нажмите &lt;b&gt;Готово&lt;/b&gt; и наслаждайтесь отчетом !</translation>
     </message>
     <message>
         <location filename="../apps/designer/reportwizard.cpp" line="105"/>
