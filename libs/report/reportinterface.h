@@ -71,6 +71,12 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QString script READ script WRITE setScript DESIGNABLE false)
 	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
+	Q_PROPERTY(QString printerName READ printerName WRITE setPrinterName DESIGNABLE false)
+	Q_PROPERTY(bool showPrintDialog READ showPrintDialog WRITE setShowPrintDialog DESIGNABLE false)
+	Q_PROPERTY(bool showPrintPreview READ showPrintPreview WRITE setShowPrintPreview DESIGNABLE false)
+	Q_PROPERTY(bool showSplashScreen READ showSplashScreen WRITE setShowSplashScreen DESIGNABLE false)
+	Q_PROPERTY(QPixmap splashScreenPixmap READ splashScreenPixmap WRITE setSplashScreenPixmap DESIGNABLE false)
+	Q_PROPERTY(bool showExitConfirm READ showExitConfirm WRITE setShowExitConfirm DESIGNABLE false)
 public:
 	struct FunctionValue
 	{
@@ -221,6 +227,79 @@ public:
 	 */
 	void setUiPluginsPaths(const QStringList & uiPluginsPaths);
 
+	/**
+	 * Returns the name of the default printer to be used to print the report
+	 * @return default printer name
+	 */
+	QString printerName();
+
+	/**
+	 * Sets the name of the default printer to be used to print the report
+	 * @param name default printer name
+	 */
+	void setPrinterName(const QString & name);
+
+	/**
+	 * Tells if print dialog should be shown or not before printing
+	 * @return bool true if print dialog should be shown before printing
+	 */
+	bool showPrintDialog();
+
+	/**
+	 * Sets if print dialog should be shown or not before printing
+	 * @param show true if print dialog should be shown before printing
+	 */
+	void setShowPrintDialog(bool show);
+
+	/**
+	 * Tells if print preview should be shown or not before printing
+	 * @return bool true if print preview should be shown before printing
+	 */
+	bool showPrintPreview();
+
+	/**
+	 * Sets if print preview should be shown or not before printing
+	 * @param show true if print preview should be shown before printing
+	 */
+	void setShowPrintPreview(bool show);
+
+	/**
+	 * Tells if splash screen should be shown while rendering the report
+	 * @return bool true if splash screen should be shown while rendering the report
+	 */
+	bool showSplashScreen();
+
+	/**
+	 * Sets if splash screen should be shown while rendering the report
+	 * @param show true if splash screen should be shown while rendering the report
+	 */
+	void setShowSplashScreen(bool show);
+
+	/**
+	 * Returns the custom splash screen image.
+	 * If it is a null QPixmap, default eXaro images will be used.
+	 * @return custom splash screen image
+	 */
+	QPixmap splashScreenPixmap();
+
+	/**
+	 * Sets the custom splash screen image.
+	 * If it is a null QPixmap, default eXaro images will be used.
+	 * @param pixmap custom splash screen image
+	 */
+	void setSplashScreenPixmap(const QPixmap & pixmap);
+
+	/**
+	 * Tells if exit confirm should be shown or not when closing the print preview
+	 * @return bool true if exit confirm should be shown when closing the print preview
+	 */
+	bool showExitConfirm();
+
+	/**
+	 * Sets if exit confirm should be shown or not when closing the print preview
+	 * @param show true if exit confirm should be shown when closing the print preview
+	 */
+	void setShowExitConfirm(bool show);
 
 public slots:
 	/**
@@ -289,6 +368,12 @@ private:
 	QSplashScreen m_splashScreen;
 	QSqlDatabase m_sqlDatabase;
 	QStringList m_uiPluginsPaths;
+	QString m_printerName;
+	bool m_showPrintDialog;
+	bool m_showPrintPreview;
+	bool m_showSplashScreen;
+	QPixmap m_splashScreenPixmap;
+	bool m_showExitConfirm;
 };
 }
 Q_DECLARE_INTERFACE(Report::ReportInterface, "ro.bigendian.ReportDesigner.ReportInterface/1.0");

@@ -60,6 +60,9 @@ public:
 	void setDocument(QIODevice * docNode);
 	void setVisible(bool visible);
 	void setSpaceBetweenPages(int spaceBetweenPages=50);
+	void setPrinterName(const QString & name);
+	void setShowPrintDialog(bool show);
+	void setShowExitConfirm(bool show);
 
 protected:
 	void accept();
@@ -100,6 +103,9 @@ private:
 	QList <pageStruct> m_pages;
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
+	QString m_printerName;
+	bool m_showPrintDialog;
+	bool m_showExitConfirm;
 };
 
 }

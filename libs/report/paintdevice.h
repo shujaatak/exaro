@@ -63,6 +63,7 @@ public:
 	void allowEmptyPages(bool allow);
 	QPaintEngine * paintEngine() const;
 	int metric(QPaintDevice::PaintDeviceMetric metric) const;
+	void setPrinterName(const QString & name);
 
 private:
 	bool m_allowEmptyPages;
