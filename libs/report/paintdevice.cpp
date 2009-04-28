@@ -98,4 +98,8 @@ int PaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
 	return m_printer.printEngine()->metric(metric);
 }
 
+void PaintDevice::setPrinterName(const QString & name)
+{
+	m_printer.setPrinterName(name);
+}
 }

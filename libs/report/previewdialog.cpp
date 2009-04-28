@@ -70,6 +70,9 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	initMyResource();
 
 
+	m_showPrintDialog = true;
+	m_showExitConfirm = true;
+
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
 
@@ -253,9 +256,14 @@ void PreviewDialog::setVisible(bool visible)
 void PreviewDialog::print()
 {
 	QPrinter printer;
-	QPrintDialog d(&printer, this);
-	if (d.exec() == QDialog::Rejected)
-		return;
+	if (!m_printerName.isEmpty())
+		printer.setPrinterName(m_printerName);
+	if (m_showPrintDialog)
+	{
+		QPrintDialog d(&printer, this);
+		if (d.exec() == QDialog::Rejected)
+			return;
+	}
 	QPainter painter;
 	painter.begin(&printer);
 	for (int i = 0;i < m_doc->numPages();i++)
@@ -513,8 +521,22 @@ void PreviewDialog::accept()
 
 void PreviewDialog::reject()
 {
-	if (QMessageBox::question(this, tr("Quit ?"), tr("Really quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+	if (!m_showExitConfirm || QMessageBox::question(this, tr("Quit ?"), tr("Really quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		QDialog::reject();
 }
 
+void PreviewDialog::setPrinterName(const QString & name)
+{
+	m_printerName = name;
+}
+
+void PreviewDialog::setShowPrintDialog(bool show)
+{
+	m_showPrintDialog = show;
+}
+
+void PreviewDialog::setShowExitConfirm(bool show)
+{
+	m_showExitConfirm = show;
+}
 }

@@ -65,6 +65,10 @@ ReportInterface::ReportInterface(QObject *parent)
 		: QObject(parent), m_printer(0), m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
 {
 	m_reportCanceled = false;
+	m_showPrintDialog = true;
+	m_showPrintPreview = true;
+	m_showSplashScreen = true;
+	m_showExitConfirm = true;
 }
 
 ReportInterface::~ReportInterface()
@@ -289,7 +293,8 @@ void ReportInterface::paintPage(PageInterface * page)
 void ReportInterface::newPage()
 {
 	int pageNo=m_scriptEngine->globalObject().property("_pageNumber_").toInteger() +1;
-	m_splashScreen.showMessage(tr("Prepare page: %1").arg(pageNo));
+	if (m_showSplashScreen)
+		m_splashScreen.showMessage(tr("Prepare page: %1").arg(pageNo));
 	paintOverlays();
 	m_scriptEngine->globalObject().setProperty("_pageNumber_", QScriptValue(m_scriptEngine, pageNo), QScriptValue::ReadOnly);
 	m_scriptEngine->globalObject().setProperty("_reportPageNumber_", QScriptValue(m_scriptEngine, m_scriptEngine->globalObject().property("_reportPageNumber_").toInteger() + 1), QScriptValue::ReadOnly);
@@ -429,15 +434,22 @@ void ReportInterface::scriptException(const QScriptValue & exception )
 bool ReportInterface::exec()
 {
 	m_reportCanceled=false;
-	m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 5)));
-	m_splashScreen.show();
+	if (m_showSplashScreen)
+	{
+		if (m_splashScreenPixmap.isNull())
+			m_splashScreen.setPixmap(QPixmap(QString(":/images/designer%1.png").arg(1 + qrand() % 5)));
+		else
+			m_splashScreen.setPixmap(m_splashScreenPixmap);
+		m_splashScreen.show();
+	}
 	qApp->processEvents();
 	m_scriptEngine = new QScriptEngine(this);
 	setReportFunction("dateFormat", ::getSetDateFormat,2);
 	foreach(QString extention, m_scriptEngine->availableExtensions())
 		if (!m_scriptEngine->importedExtensions().contains(extention))
 		{
-			m_splashScreen.showMessage(tr("Importing extension: %1").arg(extention));
+			if (m_showSplashScreen)
+				m_splashScreen.showMessage(tr("Importing extension: %1").arg(extention));
 			m_scriptEngine->importExtension(extention);
 		}
 
@@ -487,6 +499,8 @@ bool ReportInterface::exec()
 	if (!m_reportCanceled)
 	{
 		m_printer = new PaintDevice(&pdf_file);
+		if (!m_printerName.isEmpty())
+			m_printer->setPrinterName(m_printerName);
 		m_exportNode = m_doc.createElement("export");
 		m_painter.begin(m_printer);
 		m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
@@ -512,12 +526,19 @@ bool ReportInterface::exec()
 	if (!m_reportCanceled)
 	{
 		PreviewDialog d;
+		d.setPrinterName(m_printerName);
+		d.setShowPrintDialog(m_showPrintDialog);
+		d.setShowExitConfirm(m_showExitConfirm);
 		d.setDocument(&pdf_file);
 		d.setExportDocument(m_exportNode);
-		m_splashScreen.finish(&d);
-		d.exec();
+		if (m_showSplashScreen)
+			m_splashScreen.finish(&d);
+		if (m_showPrintPreview)
+			d.exec();
+		else
+			d.print();
 	}
-	else
+	else if (m_showSplashScreen)
 		m_splashScreen.finish(0);
 	m_doc.clear();
 	delete m_scriptEngine;
@@ -636,4 +657,65 @@ void ReportInterface::setReportFunction(const QString & name, const QScriptEngin
 	m_functionValues[name]=fv;
 }
 
+QString ReportInterface::printerName()
+{
+	return m_printerName;
+}
+
+void ReportInterface::setPrinterName(const QString & name)
+{
+	m_printerName = name;
+}
+
+bool ReportInterface::showPrintDialog()
+{
+	return m_showPrintDialog;
+}
+
+void ReportInterface::setShowPrintDialog(bool show)
+{
+	m_showPrintDialog = show;
+}
+
+bool ReportInterface::showPrintPreview()
+{
+	return m_showPrintPreview;
+}
+
+void ReportInterface::setShowPrintPreview(bool show)
+{
+	m_showPrintPreview = show;
+}
+
+bool ReportInterface::showSplashScreen()
+{
+	return m_showSplashScreen;
+}
+
+void ReportInterface::setShowSplashScreen(bool show)
+{
+	m_showSplashScreen = show;
+}
+
+	QString m_splashScreenFileName;
+
+bool ReportInterface::showExitConfirm()
+{
+	return m_showExitConfirm;
+}
+
+void ReportInterface::setShowExitConfirm(bool show)
+{
+	m_showExitConfirm = show;
+}
+
+QPixmap ReportInterface::splashScreenPixmap()
+{
+	return m_splashScreenPixmap;
+}
+
+void ReportInterface::setSplashScreenPixmap(const QPixmap & pixmap)
+{
+	m_splashScreenPixmap = pixmap;
+}
 }
