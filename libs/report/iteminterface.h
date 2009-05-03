@@ -125,7 +125,7 @@ QObject * Rectangle::createInstance(QGraphicsItem* parent, QObject* parentObject
 Q_EXPORT_PLUGIN2(rectangle, Rectangle)
 
 * @endcode
-* Yes is that simple !!!
+* Yes it's that simple !!!
 */
 
 class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
