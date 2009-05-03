@@ -225,6 +225,7 @@ Report::ItemInterface* fieldsWizardPage::addItem(const QString& className, QObje
 bool fieldsWizardPage::validatePage()
 {
 	const int fontMargin=20; //2mm
+	int lineNo=0;
 	foreach (QString page_query, m_fields.keys())
 	{
 		if (!m_fields[page_query].size())
@@ -259,18 +260,25 @@ bool fieldsWizardPage::validatePage()
 				script->setHeight(fontHeight);
 				script->setWidth(bandWidth-fontMargin*2);
 				script->setProperty("script", QString("\"%1 :\"+%2.value('%1')").arg(band->property("groupField").toString()).arg(query));
-				ypos+=fontMargin+fontHeight;
+				ypos+=fontHeight;
+				if (!initHeader && drawLine->isChecked())
+				{
+					Report::ItemInterface* itemLine=addItem("LineItem", band);
+					itemLine->setObjectName(QString("line_%1").arg(lineNo++));
+					itemLine->setPos(0,ypos);
+					itemLine->setProperty("lineStyle",1);
+					itemLine->setWidth(band->width());
+					itemLine->setHeight(20);
+					ypos+=fontMargin;
+				}
+				ypos+=fontMargin;
 			}
 			
 			if((band->objectName()=="DetailHeader") && drawLine->isChecked())
-			{
 				band->setProperty("frame","{1,2,8}");
-			}
 			else
 				if((band->objectName()=="Detail") && drawLine->isChecked())
-				{
 					band->setProperty("frame","{1,4,2,8}");
-				}
 
 			if (!initHeader || band->objectName()=="Detail")
 			{
@@ -304,10 +312,19 @@ bool fieldsWizardPage::validatePage()
 					if(((xpos+xstep) <  (band->width() -20)) && (drawLine->isChecked()))
 					{
 						Report::ItemInterface* itemLine=addItem("LineItem", band);
-						itemLine->setPos(xpos+xstep,0);
+						itemLine->setObjectName(QString("line_%1").arg(lineNo++));
 						itemLine->setProperty("lineStyle",0);
 						itemLine->setWidth(20);
-						itemLine->setHeight(band->height());
+						if (band->objectName()!="Detail" && band->property("groupField").toString().length())
+						{
+							itemLine->setPos(xpos+xstep,band->height()/2);
+							itemLine->setHeight(band->height()/2);
+						}
+						else
+						{
+							itemLine->setPos(xpos+xstep,0);
+							itemLine->setHeight(band->height());
+						}
 					}
 					xpos+=(20+fontMargin)+xstep;
 				}
