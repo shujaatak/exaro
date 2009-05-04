@@ -21,6 +21,23 @@ set (EXARO_VERSION "${EXARO_VERSION_MAJOR}.${EXARO_VERSION_MINOR}.${EXARO_VERSIO
 
 add_definitions (-DEXARO_VERSION=\"${EXARO_VERSION}\")
 
+INCLUDE (CheckCXXCompilerFlag)
+
+check_cxx_compiler_flag("-Wall" CXX_COMPILER_FLAG_WALL)
+if (CXX_COMPILER_FLAG_WALL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif (CXX_COMPILER_FLAG_WALL)
+
+check_cxx_compiler_flag("-fexceptions" CXX_COMPILER_FLAG_FEXCEPTIONS)
+if (CXX_COMPILER_FLAG_FEXCEPTIONS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions")
+endif (CXX_COMPILER_FLAG_FEXCEPTIONS)
+
+check_cxx_compiler_flag("-fnon-call-exceptions" CXX_COMPILER_FLAG_FNON_CALL_EXCEPTIONS)
+if (CXX_COMPILER_FLAG_FNON_CALL_EXCEPTIONS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fnon-call-exceptions")
+endif (CXX_COMPILER_FLAG_FNON_CALL_EXCEPTIONS)
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" )
 
 include(SetPaths.cmake)

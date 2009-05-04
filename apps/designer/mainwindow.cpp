@@ -361,7 +361,7 @@ bool mainWindow::askToSaveReport()
 				if ( !m_saveFile.length() )
 					return false;
 				break;
-			case QMessageBox::Cancel:
+			default:
 				return false;
 		}
 	return true;
