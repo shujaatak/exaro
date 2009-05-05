@@ -270,6 +270,8 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		case  EXCODE39:
 			bc.setExcode39ExtraSymbology(m_exCode39_43Extension);
 			break;
+		default:
+			break;
 	}
 	bc.setPrimaryMessage(m_primaryMessage);
 	bc.setBorderType((Zint::QZint::BorderType)m_frameType);

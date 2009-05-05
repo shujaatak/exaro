@@ -183,16 +183,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	act->setShortcut(QKeySequence(QKeySequence::Print));
 	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
 
-#if 0 
-	toolbar->addSeparator();
-
-	act = toolbar->addAction(QIcon(":/images/switch-painting-system.png"), tr("Switch painting system"));
-	act->setCheckable(true);
-	QSettings s;
-	act->setChecked(s.value("eXaro/previewImage",true).toBool());
-	connect(act, SIGNAL(triggered(bool)), SLOT(switchPaintingSystem()));
-#endif
-
 	toolbar->addSeparator();
 	act = toolbar->addAction(QIcon(":/images/quit.png"), tr("Quit"));
 	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
@@ -434,11 +424,6 @@ void PreviewDialog::setDocument(QIODevice * doc)
 	m_docDevice=doc;
 	int y = m_spaceBetweenPages;
 	int w = 0;
-	bool useImage;
-#if 0
-	QSettings s;
-	useImage=s.value("eXaro/previewImage",true).toBool();
-#endif
 	foreach(pageStruct pag, m_pages)
 		delete pag.page;
 
@@ -459,25 +444,7 @@ void PreviewDialog::setDocument(QIODevice * doc)
 	{
 		pageStruct pag;
 		pag.page = m_doc->page(i);
-#if 0
-		if (useImage)
-		{
-			QSizeF sz=pag.page->pageSize();
-			sz.setWidth(sz.width()*(double)QDesktopWidget().screen()->width()/(screen_widthMM*10)+.5);
-			sz.setHeight(sz.height()*(double)QDesktopWidget().screen()->height()/(screen_heightMM*10)+.5);
-			QPixmap pm(sz.toSize());
-			QPainter pt;
-			pt.begin(&pm);
-			pt.fillRect(0, 0, pag.page->pageSize().width(), pag.page->pageSize().height(), QBrush(Qt::white));
-			pt.scale(((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)),((double)QDesktopWidget().screen()->height()/(screen_heightMM*10)));
-			pag.page->render(&pt, QRectF(0,0,sz.toSize().width(), sz.toSize().height()));
-			pt.end();
-			pag.previewItem = previewScene->addPixmap(pm);
-			pag.previewItem->setFlag(QGraphicsItem::ItemIsMovable);
-		}
-		else
-#endif
-			pag.previewItem= new PageGraphicsItem(pag.page);
+		pag.previewItem= new PageGraphicsItem(pag.page);
 
 		previewScene->addItem(pag.previewItem);
 		pag.previewItem->setPos(0, y);
@@ -490,33 +457,6 @@ void PreviewDialog::setDocument(QIODevice * doc)
 		y += m_spaceBetweenPages + pag.previewItem->boundingRect().height();
 	}
 	previewScene->setSceneRect(0,0,w,y);
-}
-#if 0
-void PreviewDialog::switchPaintingSystem()
-{
-	QSettings s;
-	s.setValue("eXaro/previewImage",!(s.value("eXaro/previewImage",true).toBool()));
-	int vscrollTo=0, hscrollTo=0 ;
-
-	if (m_previewWidget->verticalScrollBar())
-		vscrollTo=m_previewWidget->verticalScrollBar()->value();
-
-	if (m_previewWidget->horizontalScrollBar())
-		hscrollTo=m_previewWidget->horizontalScrollBar()->value();
-
-	setDocument(m_docDevice);
-	m_previewWidget->zoomTo(m_zoomSpinBox->value());
-
-	if (m_previewWidget->verticalScrollBar())
-		m_previewWidget->verticalScrollBar()->setValue(vscrollTo);
-
-	if (m_previewWidget->horizontalScrollBar())
-		m_previewWidget->horizontalScrollBar()->setValue(hscrollTo);
-}
-#endif
-
-void PreviewDialog::accept()
-{
 }
 
 void PreviewDialog::reject()

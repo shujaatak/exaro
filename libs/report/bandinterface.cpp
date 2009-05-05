@@ -50,11 +50,11 @@ class TitleItem : public QGraphicsItem
 		void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 	private:
+		BandInterface * m_parentBand;
 		QSizeF m_size;
 		QString m_text;
 		int m_textFlags;
 		BandInterface::TitlePosition m_position;
-		BandInterface * m_parentBand;
 };
 
 TitleItem::TitleItem(BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position, QGraphicsItem * parent):

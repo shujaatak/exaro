@@ -420,7 +420,7 @@ bool Page::search(const QString &text, QRectF &rect, SearchDirection direction, 
 	}
 	delete p;
 	foreach (stringStruct st, strings)
-		if (direction == NextResult && st.pos>m_searchPos || direction == PreviousResult && st.pos<m_searchPos)
+		if ((direction == NextResult && st.pos>m_searchPos) || (direction == PreviousResult && st.pos<m_searchPos))
 		{
 			rect=st.textRect;
 			m_searchPos=st.pos;
