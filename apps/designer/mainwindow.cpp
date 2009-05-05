@@ -355,11 +355,19 @@ bool mainWindow::askToSaveReport()
 {
 	if ( m_undoStack->index() != m_lastUndoIndex )
 	{
-		if( QMessageBox::Yes == QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
+		switch(QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
 		{
-			saveReport();
-			if ( !m_saveFile.length() )
+			case QMessageBox::Yes:
+				saveReport();
+				if ( !m_saveFile.length() )
+					return false;
+				break;
+
+			case QMessageBox::Cancel:
 				return false;
+
+			default:
+				return true;
 		}
 	}
 	return true;
