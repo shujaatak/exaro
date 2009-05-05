@@ -354,16 +354,14 @@ bool mainWindow::selectObject( QObject * object, QModelIndex index )
 bool mainWindow::askToSaveReport()
 {
 	if ( m_undoStack->index() != m_lastUndoIndex )
-		switch ( QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
+	{
+		if( QMessageBox::Yes == QMessageBox::question( this, tr( "eXaro" ), tr( "Save changes ?" ), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel ) )
 		{
-			case QMessageBox::Yes:
-				saveReport();
-				if ( !m_saveFile.length() )
-					return false;
-				break;
-			default:
+			saveReport();
+			if ( !m_saveFile.length() )
 				return false;
 		}
+	}
 	return true;
 }
 
