@@ -65,12 +65,8 @@ public:
 	void setShowExitConfirm(bool show);
 
 protected:
-	void accept();
 	void reject();
 	void drawSelection(QGraphicsItem * parent, QRectF & rect);
-#if 0
-	void switchPaintingSystem();
-#endif
 
 public slots:
 	void clearSelection();

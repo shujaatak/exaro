@@ -73,14 +73,13 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	
 	foreach(ChartInterface::_chartValue cv, val)
 	{
-		
-			suma +=cv.value;
+		suma +=cv.value;
 	}
 	painter->setBrush(brush());
 	painter->fillRect(rect,brush());	
 	int unghi_dela=0;
-	int x_curent,y_curent;	
-	qreal x_centru,y_centru,raza;
+	int x_curent,y_curent;
+	qreal x_centru,y_centru;
 
 	x_curent=rect.x()+rect.width();
 	y_curent=rect.y();
@@ -90,7 +89,7 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	int b=rect.height()/2;
 	int a=rect.width()/2;
 	int circumferinta=0,contor=0;
-	int x_line,y_line;
+	int x_line=0,y_line=0;
 	foreach(ChartInterface::_chartValue cv, val)
 	{	
 		contor++;

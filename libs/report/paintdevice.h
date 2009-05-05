@@ -45,7 +45,7 @@ class PaintDevice : public QPaintDevice
 public:
 	struct PageStruct
 	{
-		int size;
+		unsigned size;
 		qreal width,height;
 		QPrinter::Orientation orientation;
 	};
@@ -66,9 +66,9 @@ public:
 	void setPrinterName(const QString & name);
 
 private:
+	QIODevice * m_doc;
 	bool m_allowEmptyPages;
 	PaintEngine * m_paintEngine;
-	QIODevice * m_doc;
 	qint64 m_pagePos;
 	PageStruct m_currentPageStruct;
 	QPrinter m_printer;
