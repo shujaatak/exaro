@@ -43,6 +43,7 @@
 #include <QSqlRecord>
 #include <QSplashScreen>
 #include <QSqlDatabase>
+#include <QPrinter>
 
 
 #include "pageinterface.h"
@@ -77,6 +78,7 @@ class KONTAMABIL_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(bool showSplashScreen READ showSplashScreen WRITE setShowSplashScreen DESIGNABLE false)
 	Q_PROPERTY(QPixmap splashScreenPixmap READ splashScreenPixmap WRITE setSplashScreenPixmap DESIGNABLE false)
 	Q_PROPERTY(bool showExitConfirm READ showExitConfirm WRITE setShowExitConfirm DESIGNABLE false)
+	Q_PROPERTY(int printerOrientation READ printerOrientation WRITE setPrinterOrientation DESIGNABLE false)
 public:
 	struct FunctionValue
 	{
@@ -188,7 +190,7 @@ public:
 	QScriptEngine * scriptEngine();
 
 	/**
-	 * Retrun global objects
+	 * Return global objects
 	 * @return global objects
 	 */
 	const QObjectList & globalObjects();
@@ -301,6 +303,20 @@ public:
 	 */
 	void setShowExitConfirm(bool show);
 
+	/**
+	 * Returns the printer orientation for the report.
+	 * Default is -1 (use printer's default) and can be set to QPrinter::Portrait or QPrinter::Landscape
+	 * @return printer orientation
+	 */
+	int printerOrientation();
+
+	/**
+	 * Sets the printer orientation for the report.
+	 * Default is -1 (use printer's default) and can be set to QPrinter::Portrait or QPrinter::Landscape
+	 * @param orientation printer orientation for the report
+	 */
+	void setPrinterOrientation(int orientation);
+
 public slots:
 	/**
 	 * Call this slot to cancel the report execution
@@ -374,6 +390,7 @@ private:
 	bool m_showSplashScreen;
 	QPixmap m_splashScreenPixmap;
 	bool m_showExitConfirm;
+	int m_printerOrientation;
 };
 }
 Q_DECLARE_INTERFACE(Report::ReportInterface, "ro.bigendian.ReportDesigner.ReportInterface/1.0");

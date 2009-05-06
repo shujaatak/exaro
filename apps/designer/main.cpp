@@ -75,6 +75,27 @@ SIGNAL_HANDLER (catch_fpe)
 }
 #endif
 
+#ifdef WIN32
+#include <windows.h>
+
+static LONG CALLBACK
+win32_exception_handler (LPEXCEPTION_POINTERS e)
+{
+  if (e->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
+  {
+	QString nullp="Null pointer";
+	throw nullp;
+  }
+  else if (e->ExceptionRecord->ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)
+  {
+	QString arithexception="/ by zero";
+	throw arithexception;
+  }
+  else
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+#endif
+
 int main(int argc, char **argv)
 {
 	#ifdef HANDLE_SEGV
@@ -83,6 +104,10 @@ int main(int argc, char **argv)
 
 	#ifdef HANDLE_FPE
 	INIT_FPE;
+	#endif
+
+	#ifdef WIN32
+	SetUnhandledExceptionFilter( win32_exception_handler );
 	#endif
 
 	QApplication::setOrganizationName("licentia");

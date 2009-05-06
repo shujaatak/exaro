@@ -75,6 +75,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 	m_showPrintDialog = true;
 	m_showExitConfirm = true;
+	m_printerOrientation = -1;
 
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -251,6 +252,8 @@ void PreviewDialog::print()
 	QPrinter printer;
 	if (!m_printerName.isEmpty())
 		printer.setPrinterName(m_printerName);
+	if (m_printerOrientation >= 0)
+		printer.setOrientation((QPrinter::Orientation)m_printerOrientation);
 	if (m_showPrintDialog)
 	{
 		QPrintDialog d(&printer, this);
@@ -481,5 +484,10 @@ void PreviewDialog::setShowPrintDialog(bool show)
 void PreviewDialog::setShowExitConfirm(bool show)
 {
 	m_showExitConfirm = show;
+}
+
+void PreviewDialog::setPrinterOrientation(int orientation)
+{
+	m_printerOrientation = orientation;
 }
 }

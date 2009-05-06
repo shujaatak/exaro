@@ -27,7 +27,7 @@ reportWizard::reportWizard(Report::ReportEngine * reportEngine, QWidget* parent)
 #ifdef __GNUC__
 #warning "FIXME <Back> button is disabled for the moment, enable it when all pages are properly initializated" 
 #else
-#pragma WARNING( FIXME <Back> button is disabled for the moment, enable it when all pages are properly initializated )
+#pragma WARNING( FIXME <Back> button is disabled for the moment: enable it when all pages are properly initializated )
 #endif
 	QList<QWizard::WizardButton> layout;
 //	layout << QWizard::HelpButton << QWizard::Stretch << QWizard::CancelButton << QWizard::NextButton<< QWizard::FinishButton;
