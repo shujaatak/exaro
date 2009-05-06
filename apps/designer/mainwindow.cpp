@@ -934,7 +934,6 @@ void mainWindow::loadToolBars()
 		pluginsDir.cd("PlugIns");
 	}
 #else
-qDebug()<<LIB_INSTALL_DIR;
 	pluginsDir.cd(LIB_INSTALL_DIR);
 #endif
 	pluginsDir.cd("exaro");
