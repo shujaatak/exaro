@@ -259,11 +259,10 @@ newOrientation:
 
 	delete printer;
 	printer = new QPrinter();
-	printer->setOrientation(m_pages[i].page->paperOrientation());
-	printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
-
 	if (!m_printerName.isEmpty())
 		printer->setPrinterName(m_printerName);
+	printer->setOrientation(m_pages[i].page->paperOrientation());
+	printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
 
 	if (showPrintDialog)
 	{
