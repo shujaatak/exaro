@@ -36,10 +36,11 @@
 
 #if defined (HANDLE_SEGV) || defined(HANDLE_FPE)
 
+#include <execinfo.h>
+
 /* Unblock a signal.  Unless we do this, the signal may only be sent
    once.  */
-static void
-unblock_signal (int signum __attribute__ ((__unused__)))
+static void unblock_signal (int signum __attribute__ ((__unused__)))
 {
 #ifdef _POSIX_VERSION
 	sigset_t sigs;
@@ -56,7 +57,17 @@ SIGNAL_HANDLER (catch_segv)
 {
 	unblock_signal (SIGSEGV);
 	MAKE_THROW_FRAME (nullp);
-	QString nullp="Null pointer";
+	QString nullp="Segmentation violation\n";
+	void *array[100];
+	size_t size;
+	char **strings;
+	size_t i;
+	size = backtrace(array, 100);
+	strings = backtrace_symbols(array, size);
+	nullp+=QString("Obtained %1 stack frames.\n").arg(size);
+	for (i = 0; i < size; i++)
+		nullp+=QString("%1\n").arg(strings[i]);
+	free(strings);
 	throw nullp;
 }
 #endif
@@ -70,7 +81,17 @@ SIGNAL_HANDLER (catch_fpe)
 #else
 	MAKE_THROW_FRAME (arithexception);
 #endif
-	QString arithexception="/ by zero";
+	QString arithexception="Floating-point exception\n";
+	void *array[100];
+	size_t size;
+	char **strings;
+	size_t i;
+	size = backtrace(array, 100);
+	strings = backtrace_symbols(array, size);
+	arithexception+=QString("Obtained %1 stack frames.\n").arg(size);
+	for (i = 0; i < size; i++)
+		arithexception+=QString("%1\n").arg(strings[i]);
+	free(strings);
 	throw arithexception;
 }
 #endif
@@ -78,37 +99,36 @@ SIGNAL_HANDLER (catch_fpe)
 #ifdef WIN32
 #include <windows.h>
 
-static LONG CALLBACK
-win32_exception_handler (LPEXCEPTION_POINTERS e)
+static LONG CALLBACK win32_exception_handler (LPEXCEPTION_POINTERS e)
 {
-  if (e->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
-  {
-	QString nullp="Null pointer";
-	throw nullp;
-  }
-  else if (e->ExceptionRecord->ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)
-  {
-	QString arithexception="/ by zero";
-	throw arithexception;
-  }
-  else
-    return EXCEPTION_CONTINUE_SEARCH;
+	if (e->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
+	{
+		QString nullp="Segmentation violation";
+		throw nullp;
+	}
+	else if (e->ExceptionRecord->ExceptionCode == EXCEPTION_INT_DIVIDE_BY_ZERO)
+	{
+		QString arithexception="Floating-point exception";
+		throw arithexception;
+	}
+	else
+		return EXCEPTION_CONTINUE_SEARCH;
 }
 #endif
 
 int main(int argc, char **argv)
 {
-	#ifdef HANDLE_SEGV
+#ifdef HANDLE_SEGV
 	INIT_SEGV;
-	#endif
+#endif
 
-	#ifdef HANDLE_FPE
+#ifdef HANDLE_FPE
 	INIT_FPE;
-	#endif
+#endif
 
-	#ifdef WIN32
+#ifdef WIN32
 	SetUnhandledExceptionFilter( win32_exception_handler );
-	#endif
+#endif
 
 	QApplication::setOrganizationName("licentia");
 	QApplication::setOrganizationDomain("licentia.eu");
