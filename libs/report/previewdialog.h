@@ -34,7 +34,6 @@
 #include <QIODevice>
 #include <QGraphicsPixmapItem>
 #include <QSpinBox>
-#include <QPrinter>
 
 #include "exportinterface.h"
 
@@ -64,7 +63,6 @@ public:
 	void setPrinterName(const QString & name);
 	void setShowPrintDialog(bool show);
 	void setShowExitConfirm(bool show);
-	void setPrinterOrientation(int orientation);
 
 protected:
 	void reject();
@@ -104,7 +102,6 @@ private:
 	QString m_printerName;
 	bool m_showPrintDialog;
 	bool m_showExitConfirm;
-	int m_printerOrientation;
 };
 
 }

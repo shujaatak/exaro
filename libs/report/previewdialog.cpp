@@ -75,7 +75,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 	m_showPrintDialog = true;
 	m_showExitConfirm = true;
-	m_printerOrientation = -1;
 
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -249,37 +248,58 @@ void PreviewDialog::setVisible(bool visible)
 
 void PreviewDialog::print()
 {
-	QPrinter printer;
+	if (!m_doc->numPages())
+		return;
+	bool showPrintDialog=m_showPrintDialog;
+	int i=0;
+	QPrinter * printer=0;
+	QPainter painter;
+
+newOrientation:
+
+	delete printer;
+	printer = new QPrinter();
+	printer->setOrientation(m_pages[i].page->paperOrientation());
+	printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
+
 	if (!m_printerName.isEmpty())
-		printer.setPrinterName(m_printerName);
-	if (m_printerOrientation >= 0)
-		printer.setOrientation((QPrinter::Orientation)m_printerOrientation);
-	if (m_showPrintDialog)
+		printer->setPrinterName(m_printerName);
+
+	if (showPrintDialog)
 	{
-		QPrintDialog d(&printer, this);
+		QPrintDialog d(printer, this);
 		if (d.exec() == QDialog::Rejected)
 			return;
 	}
-	QPainter painter;
-	painter.begin(&printer);
-	for (int i = 0;i < m_doc->numPages();i++)
+	showPrintDialog=false;
+
+	painter.begin(printer);
+	for (;i < m_doc->numPages();i++)
 	{
 		Page * p = m_pages[i].page;
+		if (p->paperOrientation()!=printer->orientation())
+		{
+			painter.end();
+			goto newOrientation;
+		}
+
 		if (i)
-			printer.newPage();
+			printer->newPage();
 		else
 		{
-			printer.setPaperSize(p->pageSize()*UNIT,QPrinter::Millimeter);
-			printer.setFullPage(true);
+			printer->setPaperSize(p->pageSize()*UNIT,QPrinter::Millimeter);
+			printer->setFullPage(true);
 		}
+
 		painter.resetTransform();
-		painter.scale((double)printer.paperSize(QPrinter::DevicePixel).width()/p->pageSize().width(),(double)printer.paperSize(QPrinter::DevicePixel).height()/p->pageSize().height());
-		p->render(&painter, QRectF(printer.pageRect(QPrinter::Millimeter).x()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).y()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).width()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).height()/UNIT));
+		painter.scale((double)printer->paperSize(QPrinter::DevicePixel).width()/p->pageSize().width(),(double)printer->paperSize(QPrinter::DevicePixel).height()/p->pageSize().height());
+		p->render(&painter, QRectF(printer->pageRect(QPrinter::Millimeter).x()/UNIT,
+					printer->pageRect(QPrinter::Millimeter).y()/UNIT,
+					printer->pageRect(QPrinter::Millimeter).width()/UNIT,
+					printer->pageRect(QPrinter::Millimeter).height()/UNIT));
 	}
 	painter.end();
+	delete printer;
 }
 
 void PreviewDialog::clearSelection()
@@ -484,10 +504,5 @@ void PreviewDialog::setShowPrintDialog(bool show)
 void PreviewDialog::setShowExitConfirm(bool show)
 {
 	m_showExitConfirm = show;
-}
-
-void PreviewDialog::setPrinterOrientation(int orientation)
-{
-	m_printerOrientation = orientation;
 }
 }

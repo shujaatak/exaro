@@ -69,7 +69,6 @@ ReportInterface::ReportInterface(QObject *parent)
 	m_showPrintPreview = true;
 	m_showSplashScreen = true;
 	m_showExitConfirm = true;
-	m_printerOrientation = -1;
 }
 
 ReportInterface::~ReportInterface()
@@ -528,7 +527,6 @@ bool ReportInterface::exec()
 	{
 		PreviewDialog d;
 		d.setPrinterName(m_printerName);
-		d.setPrinterOrientation(m_printerOrientation);
 		d.setShowPrintDialog(m_showPrintDialog);
 		d.setShowExitConfirm(m_showExitConfirm);
 		d.setDocument(&pdf_file);
@@ -719,15 +717,5 @@ QPixmap ReportInterface::splashScreenPixmap()
 void ReportInterface::setSplashScreenPixmap(const QPixmap & pixmap)
 {
 	m_splashScreenPixmap = pixmap;
-}
-
-int ReportInterface::printerOrientation()
-{
-	return m_printerOrientation;
-}
-
-void ReportInterface::setPrinterOrientation(int orientation)
-{
-	m_printerOrientation = orientation;
 }
 }

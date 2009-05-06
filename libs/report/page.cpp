@@ -317,6 +317,11 @@ void Page::render(QPainter * p, const QRectF & exposeRect)
 	m_worldTransform=p->worldTransform();
 }
 
+QPrinter::Orientation Page::paperOrientation() const
+{
+	return m_pageStruct.orientation;
+}
+
 QSize Page::pageSize() const
 {
 	return QSize(m_pageStruct.width, m_pageStruct.height);
