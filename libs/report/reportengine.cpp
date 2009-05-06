@@ -43,6 +43,10 @@
 #include "reportengine.h"
 #include "globals.h"
 
+#ifndef LIB_INSTALL_DIR
+    #define LIB_INSTALL_DIR "../lib"
+#endif
+
 namespace Report
 {
 
@@ -61,7 +65,7 @@ ReportEngine::ReportEngine(QObject *parent)
 		pluginsDir.cd("PlugIns");
 	}
 #else
-	pluginsDir.cd("../lib");
+	pluginsDir.cd(LIB_INSTALL_DIR);
 #endif
 	pluginsDir.cd("report");
 	QStringList paths=qApp->libraryPaths();
