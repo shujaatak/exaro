@@ -53,6 +53,10 @@
 	#define EXARO_VERSION "0.0.0"
 #endif
 
+#ifndef LIB_INSTALL_DIR
+	#define LIB_INSTALL_DIR "../lib"
+#endif
+
 mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 		: QMainWindow( parent, fl ), m_report( 0 )
 {
@@ -930,7 +934,8 @@ void mainWindow::loadToolBars()
 		pluginsDir.cd("PlugIns");
 	}
 #else
-	pluginsDir.cd("../lib");
+qDebug()<<LIB_INSTALL_DIR;
+	pluginsDir.cd(LIB_INSTALL_DIR);
 #endif
 	pluginsDir.cd("exaro");
 	pluginsDir.cd("toolbars");

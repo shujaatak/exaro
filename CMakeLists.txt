@@ -61,6 +61,9 @@ include_directories(
         ${QT_INCLUDE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
         )
+
+add_definitions (-DLIB_INSTALL_DIR=\"${LIB_INSTALL_DIR}\")
+
 add_subdirectory(libs)
 add_subdirectory(plugins)
 
