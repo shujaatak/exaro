@@ -285,13 +285,11 @@ newOrientation:
 		if (i)
 			printer->newPage();
 		else
-		{
-			printer->setPaperSize(p->pageSize()*UNIT,QPrinter::Millimeter);
 			printer->setFullPage(true);
-		}
 
 		painter.resetTransform();
-		painter.scale((double)printer->paperSize(QPrinter::DevicePixel).width()/p->pageSize().width(),(double)printer->paperSize(QPrinter::DevicePixel).height()/p->pageSize().height());
+		painter.scale((double)printer->paperSize(QPrinter::DevicePixel).width()*UNIT/(double)printer->paperSize(QPrinter::Millimeter).width(),
+			(double)printer->paperSize(QPrinter::DevicePixel).height()*UNIT/(double)printer->paperSize(QPrinter::Millimeter).height());
 		p->render(&painter, QRectF(printer->pageRect(QPrinter::Millimeter).x()/UNIT,
 					printer->pageRect(QPrinter::Millimeter).y()/UNIT,
 					printer->pageRect(QPrinter::Millimeter).width()/UNIT,
