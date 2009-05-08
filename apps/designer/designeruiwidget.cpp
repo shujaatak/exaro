@@ -108,6 +108,7 @@ void DesignerUiWidget::refreshButtons()
 {
 	m_deleteButton->setEnabled(m_listWidget->count());
 	m_editButton->setEnabled(m_listWidget->count());
+	m_editName->setEnabled(m_listWidget->count());
 }
 
 
