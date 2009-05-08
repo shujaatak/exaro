@@ -1392,7 +1392,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="248"/>
         <source>Save</source>
-        <translation>Сохраниеть</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="../apps/designer/sqldatabasedialog.ui" line="288"/>
