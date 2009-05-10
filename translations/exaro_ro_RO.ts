@@ -30,12 +30,12 @@
 <context>
     <name>Barcode</name>
     <message>
-        <location filename="../plugins/report/items/barcode/barcode.cpp" line="313"/>
+        <location filename="../plugins/report/items/barcode/barcode.cpp" line="315"/>
         <source>Barcode</source>
         <translation>Cod de bare</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/barcode/barcode.cpp" line="318"/>
+        <location filename="../plugins/report/items/barcode/barcode.cpp" line="320"/>
         <source>Shapes</source>
         <translation>Figuri</translation>
     </message>
@@ -226,13 +226,13 @@
 <context>
     <name>ExaroApplication</name>
     <message>
-        <location filename="../apps/designer/exaroapplication.cpp" line="39"/>
         <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
+        <location filename="../apps/designer/exaroapplication.cpp" line="49"/>
         <source>Unhandled exception</source>
         <translation>Exceptie netratata</translation>
     </message>
     <message>
-        <location filename="../apps/designer/exaroapplication.cpp" line="43"/>
+        <location filename="../apps/designer/exaroapplication.cpp" line="49"/>
         <source>Unknown exception</source>
         <translation>Eroare necunoscuta</translation>
     </message>
@@ -600,12 +600,12 @@
 <context>
     <name>PieChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="166"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="165"/>
         <source>Pie chart</source>
         <translation>Grafic placinta</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="171"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="170"/>
         <source>Charts</source>
         <translation>Grafice</translation>
     </message>
@@ -753,22 +753,22 @@
         <translation>nume interogare:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="77"/>
         <source> query name:</source>
         <translation>nume interogare:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="76"/>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="77"/>
         <source>Create a query object</source>
         <translation>Creaza un obiect interogare</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="114"/>
         <source>Delete current query ?</source>
         <translation>Sterg interogarea curenta ?</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designerquerywidget.cpp" line="113"/>
+        <location filename="../apps/designer/designerquerywidget.cpp" line="114"/>
         <source>eXaro</source>
         <translation>eXaro</translation>
     </message>
@@ -792,22 +792,22 @@
     </message>
     <message>
         <location filename="../apps/designer/designeruiwidget.cpp" line="96"/>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="117"/>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="118"/>
         <source>ui name:</source>
         <translation>denumire interfata:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="117"/>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="118"/>
         <source>Create an ui widget</source>
         <translation>Creez un widget de interfata</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="162"/>
         <source>Delete current ui ?</source>
         <translation>Sterg interfata curenta ?</translation>
     </message>
     <message>
-        <location filename="../apps/designer/designeruiwidget.cpp" line="161"/>
+        <location filename="../apps/designer/designeruiwidget.cpp" line="162"/>
         <source>eXaro</source>
         <translation>eXaro</translation>
     </message>
@@ -823,87 +823,82 @@
 <context>
     <name>Report::PreviewDialog</name>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="123"/>
+        <location filename="../libs/report/previewdialog.cpp" line="129"/>
         <source>Zoom in</source>
         <translation>Mareste</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="138"/>
+        <location filename="../libs/report/previewdialog.cpp" line="144"/>
         <source>Zoom out</source>
         <translation>Micsoreaza</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="144"/>
+        <location filename="../libs/report/previewdialog.cpp" line="150"/>
         <source>First page</source>
         <translation>Prima pagina</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="148"/>
+        <location filename="../libs/report/previewdialog.cpp" line="154"/>
         <source>Read previous</source>
         <translation>Citeste inapoi</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="152"/>
+        <location filename="../libs/report/previewdialog.cpp" line="158"/>
         <source>Read next</source>
         <translation>Citeste inainte</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="156"/>
+        <location filename="../libs/report/previewdialog.cpp" line="162"/>
         <source>Last page</source>
         <translation>Ultima pagina</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="162"/>
+        <location filename="../libs/report/previewdialog.cpp" line="168"/>
         <source>Export</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="168"/>
+        <location filename="../libs/report/previewdialog.cpp" line="174"/>
         <source>Search</source>
         <translation>Cauta</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="179"/>
+        <location filename="../libs/report/previewdialog.cpp" line="185"/>
         <source>Print</source>
         <translation>Tipareste</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="186"/>
-        <source>Switch painting system</source>
-        <translation>Comuta sistemul de desenare</translation>
-    </message>
-    <message>
-        <location filename="../libs/report/previewdialog.cpp" line="194"/>
+        <location filename="../libs/report/previewdialog.cpp" line="190"/>
         <source>Quit</source>
         <translation>Inchide</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="224"/>
+        <location filename="../libs/report/previewdialog.cpp" line="220"/>
         <source>Please select an export format</source>
         <translation>Selectati un format de export</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="229"/>
+        <location filename="../libs/report/previewdialog.cpp" line="225"/>
         <source>&amp;Ok</source>
         <translation>&amp;Accepta</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="233"/>
+        <location filename="../libs/report/previewdialog.cpp" line="229"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Renunta</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="239"/>
+        <location filename="../libs/report/previewdialog.cpp" line="235"/>
         <source>Export format</source>
         <translation>Format export</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="516"/>
+        <location filename="../libs/report/previewdialog.cpp" line="488"/>
         <source>Quit ?</source>
         <translation>Inchid ?</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="516"/>
+        <location filename="../libs/report/previewdialog.cpp" line="488"/>
         <source>Really quit?</source>
         <translation>Chiar inchid ?</translation>
     </message>
@@ -911,7 +906,7 @@
 <context>
     <name>Report::ReportEngine</name>
     <message>
-        <location filename="../libs/report/reportengine.cpp" line="326"/>
+        <location filename="../libs/report/reportengine.cpp" line="330"/>
         <source>Can&apos;t find %1</source>
         <translation>Nu pot gasi %1</translation>
     </message>
@@ -919,23 +914,23 @@
 <context>
     <name>Report::ReportInterface</name>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="292"/>
+        <location filename="../libs/report/reportinterface.cpp" line="297"/>
         <source>Prepare page: %1</source>
         <translation>Pregatesc pagina %1</translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="426"/>
-        <location filename="../libs/report/reportinterface.cpp" line="476"/>
+        <location filename="../libs/report/reportinterface.cpp" line="431"/>
+        <location filename="../libs/report/reportinterface.cpp" line="488"/>
         <source>Uncaught exception at line %1</source>
         <translation>Exceptie netratata la linia %1</translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="440"/>
+        <location filename="../libs/report/reportinterface.cpp" line="452"/>
         <source>Importing extension: %1</source>
         <translation>Import extensia: %1</translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="486"/>
+        <location filename="../libs/report/reportinterface.cpp" line="498"/>
         <source>Can&apos;t create temporary files</source>
         <translation>Nu pot crea fisiere temporare</translation>
     </message>
@@ -1180,32 +1175,20 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Florina Nacu&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;nacuflorina@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="148"/>
-        <source>Thanks to</source>
-        <translation>Multumiri</translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="154"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Italian translation, MSVC compilation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="194"/>
+        <location filename="../apps/designer/aboutdialog.ui" line="152"/>
         <source>License</source>
         <translation>Licenta</translation>
     </message>
-    <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="200"/>
+    <message utf8="true">
+        <location filename="../apps/designer/aboutdialog.ui" line="158"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1498,6 +1481,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>exceptionDialog</name>
+    <message>
+        <location filename="../apps/designer/exceptiondialog.ui" line="14"/>
+        <source>Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/exceptiondialog.ui" line="32"/>
+        <source>&amp;Copy</source>
+        <translation>&amp;Copiaza</translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/exceptiondialog.ui" line="52"/>
+        <source>C&amp;lose</source>
+        <translation>&amp;Inchide</translation>
+    </message>
+</context>
+<context>
     <name>fieldsWizardPage</name>
     <message>
         <location filename="../apps/designer/fieldswizardpage.cpp" line="77"/>
@@ -1511,14 +1512,14 @@ p, li { white-space: pre-wrap; }
         <translation>Eroare:\n%1</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="255"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="290"/>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
     <message>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="254"/>
-        <location filename="../apps/designer/fieldswizardpage.cpp" line="282"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="255"/>
+        <location filename="../apps/designer/fieldswizardpage.cpp" line="290"/>
         <source>Can&apos;t find needed plugins</source>
         <translation>Nu pot gasi modulele necesare</translation>
     </message>
@@ -1700,65 +1701,65 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>mainWindow</name>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="357"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="362"/>
         <source>eXaro</source>
         <translation>eXaro</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="357"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="362"/>
         <source>Save changes ?</source>
         <translation>Salvez modificarile ?</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="509"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="519"/>
         <source>Report name</source>
         <translation>Nume raport</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="306"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="618"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="310"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="628"/>
         <location filename="../apps/designer/mainwindow.ui" line="219"/>
         <source>Open report</source>
         <translation>Deschide raport</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="619"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="629"/>
         <source>Report (*.bdrt)</source>
         <translation>Raport (*.bdrt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="715"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="725"/>
         <location filename="../apps/designer/mainwindow.ui" line="231"/>
         <source>Save report</source>
         <translation>Salveaza raport</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="68"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="72"/>
         <source>Tool Box</source>
         <translation>Unelte</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="74"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="78"/>
         <source>Property Editor</source>
         <translation>Editor proprietati</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="82"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="86"/>
         <source>Query Editor</source>
         <translation>Editor interogari</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="89"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="93"/>
         <source>Ui Editor</source>
         <translation>Editor interfete</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="103"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="107"/>
         <source>Object Inspector</source>
         <translation>Inspector obiecte</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="206"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="210"/>
         <source>report name</source>
         <translation>nume raport</translation>
     </message>
@@ -2010,47 +2011,47 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="60"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="516"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="64"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="526"/>
         <source>eXaro v%1 unsaved report</source>
         <translation>eXaro v%1 raport nesalvat</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="111"/>
         <location filename="../apps/designer/mainwindow.cpp" line="115"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="119"/>
         <source>Command List</source>
         <translation>Lista de comenzi</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="284"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="288"/>
         <source>Save item</source>
         <translation>Salveaza element</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="285"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="307"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="289"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="311"/>
         <source>Item (*.bdrti)</source>
         <translation>Element (*.bdrti)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="608"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="726"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="618"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="736"/>
         <source>eXaro v%1 (%2)</source>
         <translation>eXaro vv%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="633"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="643"/>
         <location filename="../apps/designer/mainwindow.ui" line="483"/>
         <source>Open template</source>
         <translation>Deschide sablon</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="634"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="644"/>
         <source>Exaro Template (*.extt)</source>
         <translation>Sablon eXaro (*.extt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="716"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="726"/>
         <source>Report (*.bdrt);;Template (*.extt)</source>
         <translation>Raport (*.bdrt);;Sablon (*.extt)</translation>
     </message>
