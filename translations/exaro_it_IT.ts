@@ -1487,17 +1487,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="14"/>
         <source>Exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione</translation>
     </message>
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="32"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Copia</translation>
     </message>
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="52"/>
         <source>C&amp;lose</source>
-        <translation type="unfinished"></translation>
+        <translation>C&amp;hiudi</translation>
     </message>
 </context>
 <context>
