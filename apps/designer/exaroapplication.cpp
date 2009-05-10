@@ -15,6 +15,7 @@
  ***************************************************************************/
 #include <QMessageBox>
 #include "exaroapplication.h"
+#include "ui_exceptiondialog.h"
 
 ExaroApplication::ExaroApplication(int & argc, char ** argv)
  : QApplication(argc, argv)
@@ -34,13 +35,18 @@ bool ExaroApplication::notify(QObject * receiver, QEvent * event)
         {
                 res=QApplication::notify(receiver, event);
         }
-        catch (const QString & error)
-        {
-                QMessageBox::critical( 0,tr("Unhandled exception"),error);
-        }
+	catch(const QString & error)
+	{
+		QDialog d;
+ 		Ui::exceptionDialog ed;
+		ed.setupUi(&d);
+		d.setWindowTitle(tr("Unhandled exception"));
+		ed.exceptionTextEdit->setText(error);
+		d.exec();
+	}
         catch(...)
         {
-                QMessageBox::critical( 0,tr("Unhandled exception"),tr("Unknown exception"));
+		QMessageBox::critical( 0,tr("Unhandled exception"),tr("Unknown exception"));
         }
         return res;
 }

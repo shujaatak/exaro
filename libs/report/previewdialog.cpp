@@ -271,7 +271,7 @@ newOrientation:
 			return;
 	}
 	showPrintDialog=false;
-
+	bool firstPage=true;
 	painter.begin(printer);
 	for (;i < m_doc->numPages();i++)
 	{
@@ -282,10 +282,11 @@ newOrientation:
 			goto newOrientation;
 		}
 
-		if (i)
+		if (!firstPage)
 			printer->newPage();
-		else
-			printer->setFullPage(true);
+
+		printer->setFullPage(true);
+		firstPage=false;
 
 		painter.resetTransform();
 		painter.scale((double)printer->paperSize(QPrinter::DevicePixel).width()*UNIT/(double)printer->paperSize(QPrinter::Millimeter).width(),

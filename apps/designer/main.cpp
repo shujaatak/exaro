@@ -57,18 +57,18 @@ SIGNAL_HANDLER (catch_segv)
 {
 	unblock_signal (SIGSEGV);
 	MAKE_THROW_FRAME (nullp);
-	QString nullp="Segmentation violation\n";
+	QString exception="Segmentation violation.\n";
 	void *array[100];
 	size_t size;
 	char **strings;
 	size_t i;
 	size = backtrace(array, 100);
 	strings = backtrace_symbols(array, size);
-	nullp+=QString("Obtained %1 stack frames.\n").arg(size);
+	exception+=QString("This is a serious error.\nPlease save your report and restart eXaro.\nYou can help us to fix this issue if you send us a report with the backtrace.\nObtained %1 stack frames.\n").arg(size);
 	for (i = 0; i < size; i++)
-		nullp+=QString("%1\n").arg(strings[i]);
+		exception+=QString("%1\n").arg(strings[i]);
 	free(strings);
-	throw nullp;
+	throw exception;
 }
 #endif
 
@@ -81,18 +81,18 @@ SIGNAL_HANDLER (catch_fpe)
 #else
 	MAKE_THROW_FRAME (arithexception);
 #endif
-	QString arithexception="Floating-point exception\n";
+	QString exception="Floating-point exception.\n";
 	void *array[100];
 	size_t size;
 	char **strings;
 	size_t i;
 	size = backtrace(array, 100);
 	strings = backtrace_symbols(array, size);
-	arithexception+=QString("Obtained %1 stack frames.\n").arg(size);
+	exception+=QString("This is a serious error.\nPlease save your report and restart eXaro.\nYou can help us to fix this issue if you send us a report with the backtrace.\nObtained %1 stack frames.\n").arg(size);
 	for (i = 0; i < size; i++)
-		arithexception+=QString("%1\n").arg(strings[i]);
+		exception+=QString("%1\n").arg(strings[i]);
 	free(strings);
-	throw arithexception;
+	throw exception;
 }
 #endif
 
