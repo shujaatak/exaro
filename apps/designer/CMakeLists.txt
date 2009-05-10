@@ -23,7 +23,7 @@ QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          	designeruiwidget.h  	queryeditdi
 QT4_WRAP_UI(exaro_SRCS 	aboutdialog.ui          designeruitype.ui    	mainwindow.ui
 			designerquerywidget.ui  designeruiwidget.ui  	sqldatabasedialog.ui
 			optionsdialog.ui 	querywizardpage.ui 	pagewizardpage.ui
-			groupwizardpage.ui	fieldswizardpage.ui)
+			groupwizardpage.ui	fieldswizardpage.ui	exceptiondialog.ui)
 
 QT4_ADD_RESOURCES(exaro_SRCS report.qrc)
 
