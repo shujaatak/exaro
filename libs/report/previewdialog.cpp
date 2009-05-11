@@ -261,6 +261,7 @@ newOrientation:
 	printer = new QPrinter();
 	if (!m_printerName.isEmpty())
 		printer->setPrinterName(m_printerName);
+	printer->setPaperSize(m_pages[i].page->pageSize()*UNIT,QPrinter::Millimeter);
 	printer->setOrientation(m_pages[i].page->paperOrientation());
 	printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
 
