@@ -79,9 +79,10 @@ void HtmlScript::setSizeFlags(SizeFlags sizeFlags)
 	m_sizeFlags=sizeFlags;
 }
 
+/*
 void HtmlScript::prePaint(QPainter * painter)
 {
-	ItemInterface::prePaint(painter);
+//	ItemInterface::prePaint(painter);
 	if (!m_sizeFlags)
 		return;
 
@@ -100,6 +101,7 @@ void HtmlScript::prePaint(QPainter * painter)
 		setStretch(pageSize.height()*2.54-rect.height());
 #endif
 }
+*/
 
 void HtmlScript::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {

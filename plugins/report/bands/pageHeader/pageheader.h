@@ -46,6 +46,8 @@ public:
 	int layoutPriority(){ return 100;}
 	Report::BandInterface::AccomodationType accommodationType() {return AccomodationEveryPage;}
 
+	bool prNewPage();
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);

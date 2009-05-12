@@ -37,7 +37,6 @@
 
 #include "iteminterface.h"
 #include "reportinterface.h"
-//#include "sqlquery.h"
 
 using namespace Report;
 
@@ -490,25 +489,75 @@ void ItemInterface::raise()
 	setZValue(1);
 }
 
-bool ItemInterface::init(PaintInterface * paintInterface)
+bool ItemInterface::prInit(PaintInterface * paintInterface)
 {
     m_paintInterface = paintInterface;
     return true;
 }
 
+bool ItemInterface::prData(){return false;}
 
-bool ItemInterface::prePaint(QPainter * painter, PaintInterface::PrintMode pMode)
+bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
+//bool ItemInterface::prPaint(QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
-	unstretch();
-	setupPainter(painter);
-	return true;
+    emit beforePrint(this);
+
+    QStyleOptionGraphicsItem option;
+    option.type = 31;
+    option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
+    painter->save();
+    option.exposedRect.translate(translate);
+    painter->setClipRect(clipRect);
+
+    paint(painter, &option);
+
+    painter->restore();
+    translate += option.exposedRect.topLeft();
+    foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
+	childItem->prPaint(painter, translate, option.exposedRect);
+
+    emit afterPrint(this);
+
+    /// version 2
+    /*
+    QRectF clipRect = QRectF(0, 0, geometry().width(), geometry().height());
+    QStyleOptionGraphicsItem t_option;
+//    QPointF translate;
+    t_option.type = 31;
+    //t_option.exposedRect = QRectF(0, 0, geometry().width(), geometry().height());
+    t_option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
+    t_option.exposedRect.translate(t_option.exposedRect.topLeft());
+    painter->setClipRect(clipRect);
+
+
+    paint(painter,option);
+
+	QPointF translate = geometry().topLeft();
+
+    foreach(ItemInterface * item, findChildren<ItemInterface *>())
+	item->prPaint(painter, &t_option);
+*/
+
+/// version 1
+/*
+    //QPointF translate = option->exposedRect.topLeft();
+    QPointF translate = geometry().topLeft();
+
+    foreach(ItemInterface * item, findChildren<ItemInterface *>())
+    {
+	QRectF clipRect = item->geometry();
+	t_option.exposedRect = item->geometry();
+	painter->save();
+	t_option.exposedRect.translate(translate);
+	painter->setClipRect(clipRect);
+	item->prPaint(painter, &t_option);
+	painter->restore();
+    }
+*/
 }
 
+bool ItemInterface::prReset(){return false;}
 
-bool ItemInterface::postPaint()
-{
-    return true;
-}
 
 QString ItemInterface::lastError()
 {

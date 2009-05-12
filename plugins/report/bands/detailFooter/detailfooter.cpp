@@ -51,14 +51,42 @@ DetailFooter::~DetailFooter()
 {
 }
 
-bool DetailFooter::init(Report::PaintInterface * paintInterface)
+bool DetailFooter::prInit(Report::PaintInterface * paintInterface)
 {
     m_groupValue = "";
     m_agregateCounter = 0;
     needResetAgregateValues = true;
-    return ItemInterface::init(paintInterface);
+//    return ItemInterface::init(paintInterface);
 }
 
+bool DetailFooter::prData()
+{
+    bool need_print = false;
+    if (needResetAgregateValues)
+	resetAgregateValues();
+
+    accumulateAgregateValues();
+
+    if (!m_condition.isEmpty() && !dataset().isEmpty())
+    {
+	m_groupValue = processString(m_condition);
+	findDataset(dataset())->next();		    // query lookahead
+	if (m_groupValue != processString(m_condition))
+	    need_print = true;
+	else
+	    need_print = false;
+	findDataset(dataset())->previous();		    //back
+    }
+    else
+	need_print = true;
+
+    if (need_print)
+	needResetAgregateValues = true;
+    else
+	needResetAgregateValues = false;
+}
+
+/*
 bool DetailFooter::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 {
     ItemInterface::prePaint(painter);
@@ -104,7 +132,7 @@ bool DetailFooter::prePaint(QPainter * painter, Report::PaintInterface::PrintMod
 
     return false;
 }
-
+*/
 
 bool DetailFooter::canContain(QObject * object)
 {
@@ -118,9 +146,6 @@ QRectF DetailFooter::boundingRect() const
 
 void DetailFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	setupPainter(painter);
@@ -145,9 +170,6 @@ void DetailFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * op
 
 	if (frame()&DrawBottom)
 		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon DetailFooter::toolBoxIcon()

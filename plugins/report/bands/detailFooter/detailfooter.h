@@ -44,8 +44,8 @@ public:
 
 	~DetailFooter();
 
-	bool init(Report::PaintInterface * paintInterface);
-	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode);
+	bool prInit(Report::PaintInterface * paintInterface);
+	bool prData();
 
 	int layoutPriority() {return 50;}
 

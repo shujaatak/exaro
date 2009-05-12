@@ -42,7 +42,6 @@ inline void initMyResource()
 PageFooter::PageFooter(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-//	setBandType(Report::BandInterface::PageFooter);
 	setResizeFlags(FixedPos | ResizeTop);
 }
 
@@ -51,6 +50,10 @@ PageFooter::~PageFooter()
 {
 }
 
+bool PageFooter::prNewPage()
+{
+    return true;
+}
 
 bool PageFooter::canContain(QObject * object)
 {
@@ -64,9 +67,6 @@ QRectF PageFooter::boundingRect() const
 
 void PageFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	setupPainter(painter);
@@ -93,8 +93,6 @@ void PageFooter::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 	if (frame()&DrawBottom)
 		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon PageFooter::toolBoxIcon()

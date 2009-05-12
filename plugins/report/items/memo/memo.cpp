@@ -82,12 +82,13 @@ QRectF Memo::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-bool Memo::init(Report::PaintInterface * paintInterface)
+bool Memo::prInit(Report::PaintInterface * paintInterface)
 {
-    ItemInterface::init(paintInterface);
+//    ItemInterface::init(paintInterface);
     storeAgregateValuesFromString(m_text);  // lookup for agragate functions
 }
 
+/*
 void Memo::prePaint(QPainter * painter)
 {
 	ItemInterface::prePaint(painter);
@@ -111,7 +112,7 @@ void Memo::prePaint(QPainter * painter)
 			setStretch(rc.height()-rect.height());
 	}
 }
-
+*/
 void Memo::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
 	if (option->type != QStyleOption::SO_GraphicsItem)

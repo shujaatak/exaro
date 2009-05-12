@@ -29,11 +29,24 @@ void PaintInterface::run()
     if (!m_report->pdf_file->open())
 	throw QString(tr("Can't create temporary files"));
 
-
     m_printer = new PaintDevice(m_report->pdf_file);
     m_report->m_exportNode = m_report->m_doc.createElement("export");
     m_painter.begin(m_printer);
     m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+
+
+    bool first=true;
+    foreach (PageInterface* page, m_report->findChildren<PageInterface *>())
+    {
+	if (!first)
+	    m_printer->newPage();
+	m_printer->setPaperSize(page->paperRect().size());
+	m_printer->setPaperOrientation((QPrinter::Orientation)page->orientation());
+	m_currentPage = page;
+	processPage();
+    }
+
+    /*
     bool first=true;
     foreach(QObject * obj, m_report->children())
     {
@@ -48,10 +61,10 @@ void PaintInterface::run()
 	    processPage();
 	}
     }
+    */
     m_painter.end();
     delete m_printer;
     m_printer = 0;
-
 }
 
 void PaintInterface::processPage()
@@ -64,21 +77,41 @@ void PaintInterface::processPage()
 
     initBands();
 
-    freeSpace = m_currentPage->geometry();
-    this->m_currentPageNumber = 1;
+    m_currentPageNumber = 1;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, 1), QScriptValue::ReadOnly);
 
     prepareCurrentPage();
 
     bandDone.clear();
 
+    for (int i = listBottom.count()-1; i>=0 ;i--)
+    {
+	BandInterface * band = listBottom.at(i);
+	if (band->prData())
+	    processBand(band);
+    }
+    foreach(BandInterface * band, listTop)
+	if (!bandDone.contains(band))
+	{
+	    if (band->dataset().isEmpty())
+	    {
+		if ( band->prData() )
+		    processBand(band);
+	    }
+	    else
+		processDataset(band->dataset(), band);
+	}
+
+/*
     foreach(BandInterface * band, listTop)
 	if (band->accommodationType() == band->AccomodationOnce && !bandDone.contains(band))
 	    if (band->dataset().isEmpty())
 		processBand(band, pmNormal);
     else
 	processDataset(band->dataset(), band);
+*/
 
+    postprocessCurrentPage();
 }
 
 void PaintInterface::finish(QString error)
@@ -93,26 +126,25 @@ void PaintInterface::initBands()
 //    qDebug("PaintInterface::initBands()");
 
     foreach(BandInterface * band, listTop)
-	if (!band->init(this))
+	if (!band->prInit(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
-	else
-	    foreach(QObject * obj, band->QObject::children())
-		if (dynamic_cast<Report::ItemInterface*>(obj))
-		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
+    	else
+	    foreach (Report::ItemInterface* item , band->findChildren<ItemInterface *>())
+		item->prInit(this);
+
     foreach(BandInterface * band, listBottom)
-	if (!band->init(this))
+	if (!band->prInit(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
     	else
-	    foreach(QObject * obj, band->QObject::children())
-		if (dynamic_cast<Report::ItemInterface*>(obj))
-		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
+	    foreach (Report::ItemInterface* item , band->findChildren<ItemInterface *>())
+		item->prInit(this);
+
     foreach(BandInterface * band, listFree)
-	if (!band->init(this))
+	if (!band->prInit(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
     	else
-	    foreach(QObject * obj, band->QObject::children())
-		if (dynamic_cast<Report::ItemInterface*>(obj))
-		    dynamic_cast<Report::ItemInterface*>(obj)->init(this);
+	    foreach (Report::ItemInterface* item , band->findChildren<ItemInterface *>())
+		item->prInit(this);
 }
 
 
@@ -121,7 +153,7 @@ void PaintInterface::showError(QString err)
     qDebug("Error:\n %s", qPrintable(err));
 }
 
-void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
+void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 {
 	if (!band /*|| m_reportCanceled*/)
 		return;
@@ -129,59 +161,34 @@ void PaintInterface::processBand(BandInterface * band, PrintMode pMode)
 	if (!band->isEnabled())
 	    return;
 
-	m_painter.save();
-
-	#warning    "FIXME - need optimization and proceed child item only if band be paint"
-	foreach(QObject * obj, ((QObject*)band)->children())		//preProcess all child items
-	{
-//	    qDebug("process child name=%s",qPrintable(obj->objectName()));
-	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
-	    if (item)
-		if (!item->prePaint(&m_painter, pMode))
-		    finish(item->lastError());
-	}
-
-	if (!band->prePaint(&m_painter, pMode))				//preProcess band
-	{
-	    m_painter.restore();
-	    return;
-	}
+	m_painter.save();	
 
 	if (!canPaint(band) )
 	    newPage();
 
 	if (band->layoutType() == BandInterface::LayoutBottom)
-		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
+	    m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
 	else
 	    if (band->layoutType() == BandInterface::LayoutTop)
 		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.top());
-	    else
-		if (band->layoutType() == BandInterface::LayoutFree)
-		    m_painter.translate(band->geometry().x(), band->geometry().y());
+	else
+	    if (band->layoutType() == BandInterface::LayoutFree)
+		m_painter.translate(band->geometry().x(), band->geometry().y());
+/*
+	QRectF clipRect = QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height());
+	QStyleOptionGraphicsItem option;
+	option.type = 31;
+	option.exposedRect = QRectF(0, 0, band->geometry().width(), band->geometry().height());
+	m_painter.setClipRect(clipRect);
+*/
 
-//	m_report->m_currentHeight = 0;
-//	m_currentSize = QSize(0,0);
-
-	    ///NEED CHECK FOR GROUP
-
-	paintObjects(band, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
-
-	foreach(QObject * obj, ((QObject*)band)->children())		//postProcess all child items
-	{
-	    ItemInterface * item = dynamic_cast<ItemInterface *>(obj);
-	    if (item)
-		item->postPaint();
-	}
-
-	band->postPaint();				//postProcess band
-
-//	m_report->m_currentHeight += band->indentation();
+	band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
 
 	if (band->layoutType()== BandInterface::LayoutBottom)
-		freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() -  band->indentation());
+	    freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() -  band->indentation());
 	else
-		freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
-//	band->unstretch();
+	    freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
+
 	m_painter.restore();
 }
 
@@ -196,7 +203,6 @@ void PaintInterface::newPage()
     m_printer->newPage();
     freeSpace = m_currentPage->geometry();
     prepareCurrentPage();
-
 }
 
 
@@ -209,6 +215,26 @@ bool PaintInterface::canPaint(BandInterface * band)
 void PaintInterface::prepareCurrentPage()
 {
     emit showProcess(tr("Prepare page: %1").arg(m_currentPageNumber));
+
+    freeSpace = m_currentPage->geometry();
+//    freeSpace.setTop( m_currentPage->geometry().y() );
+//    freeSpace.setBottom( m_currentPage->geometry().bottom() );
+
+    foreach(BandInterface * band, listFree)	    //process listFree first if it want paint on background
+	if (band->prNewPage())
+	    processBand(band);
+
+    foreach(BandInterface * band, listTop)
+	if (band->prNewPage())
+	    processBand(band);
+
+    for (int i = listBottom.count()-1; i>=0 ;i--)
+    {
+	BandInterface * band = listBottom.at(i);
+	if (band->prNewPage())
+	    processBand(band);
+    }
+   /*
     m_report->m_currentTop = m_currentPage->geometry().y();
     m_report->m_currentBottom = m_currentPage->geometry().bottom();
 
@@ -228,18 +254,37 @@ void PaintInterface::prepareCurrentPage()
     if (!currentGroup.isEmpty())
 	foreach (BandInterface * band, currentGroup)
 		processBand(band, pmNewPage);
+*/
 }
 
 void PaintInterface::postprocessCurrentPage()
 {
+    foreach(BandInterface * band, listTop)
+	if (band->prClosePage())
+	    processBand(band);
+
+    for (int i = listBottom.count()-1; i>=0 ;i--)
+    {
+	BandInterface * band = listBottom.at(i);
+	if (band->prClosePage())
+	    processBand(band);
+    }
+
+    foreach(BandInterface * band, listFree)  //process list free last if it paint on foreground
+	if (band->prClosePage())
+	    processBand(band);
+
+/*
     foreach(BandInterface * band, listFree)
 	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
 	    processBand(band);
+*/
 }
 
 
 void PaintInterface::paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect)
 {
+    /*
 	if (!item || !item->isEnabled())
 		return;
 
@@ -249,11 +294,12 @@ void PaintInterface::paintObjects(ItemInterface * item, QPointF translate, const
 	m_painter.save();
 	option.exposedRect.translate(translate);
 	m_painter.setClipRect(clipRect);
-	item->paint(&m_painter, &option);
-	m_painter.restore();
+	item->prPaint(&m_painter, &option);
+	m_painter.restore();	
 	translate += option.exposedRect.topLeft();
-	foreach(QObject * obj, ((QObject*)item)->children())
-		paintObjects(dynamic_cast<ItemInterface *>(obj), translate, option.exposedRect);
+	foreach(ItemInterface * childItem, item->findChildren<ItemInterface *>())
+		paintObjects(childItem, translate, option.exposedRect);
+		*/
 }
 
 
