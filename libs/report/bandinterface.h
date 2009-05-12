@@ -100,6 +100,9 @@ public:
 
 	virtual AccomodationType accommodationType();
 
+	virtual bool prNewPage();
+	virtual bool prClosePage();
+
 	/**
 	 * Set the band geometry.
 	 * @param rect the new geometry. The new geometry will be intersected with the page geometry.

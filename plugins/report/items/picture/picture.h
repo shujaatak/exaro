@@ -77,8 +77,8 @@ public:
 public:
 	Picture(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
-	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode = Report::PaintInterface::pmNormal);
-	bool postPaint();
+//	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode = Report::PaintInterface::pmNormal);
+//	bool postPaint();
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

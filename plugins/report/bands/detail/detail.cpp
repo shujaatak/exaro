@@ -42,7 +42,6 @@ inline void initMyResource()
 Detail::Detail(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-	//setBandType(Report::BandInterface::Detail);
 	setResizeFlags(FixedPos | ResizeBottom);
 	m_isZebra = true;
 	odd = false;
@@ -52,18 +51,15 @@ Detail::~Detail()
 {
 }
 
-bool Detail::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+bool Detail::prData()
 {
-    switch (pMode)
-    {
-	case Report::PaintInterface::pmNormal:
-	    accumulateAgregateValues();
-	    break;
-	default:
-	    return false;
-    }
+    accumulateAgregateValues();
+    return true;
+}
 
-    ItemInterface::prePaint(painter);
+bool Detail::prReset()
+{
+    resetAgregateValues();
     return true;
 }
 
@@ -90,9 +86,6 @@ QRectF Detail::boundingRect() const
 
 void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
 	setupPainter(painter);
@@ -123,9 +116,6 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	if (frame()&DrawBottom)
 		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Detail::toolBoxIcon()

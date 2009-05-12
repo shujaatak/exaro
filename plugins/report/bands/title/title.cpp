@@ -53,6 +53,11 @@ Title::~Title()
 {
 }
 
+bool Title::prData()
+{
+    return true;
+}
+
 bool Title::canContain(QObject * object)
 {
 	return (!dynamic_cast<Report::BandInterface*>(object) && dynamic_cast<Report::ItemInterface*>(object));

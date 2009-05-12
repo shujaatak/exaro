@@ -59,6 +59,7 @@ Picture::Picture(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
+/*
 bool Picture::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
 { 
     qDebug("Picture::prePaint(QPainter * painter)");
@@ -79,7 +80,7 @@ bool Picture::postPaint()
     if (stringIsField(m_datasetField))
 	m_image = QImage();
 }
-
+*/
 Picture::PaintTypes Picture::paintType()
 {
 	return m_paintType;

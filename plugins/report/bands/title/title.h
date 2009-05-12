@@ -42,6 +42,8 @@ public:
 	Title(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 	~Title();
 
+	bool prData();
+
 	Report::BandInterface::LayoutType layoutType(){ return LayoutTop;}
 	int layoutPriority(){ return 75;}
 	Report::BandInterface::AccomodationType accommodationType(){ return AccomodationFirstPage;}

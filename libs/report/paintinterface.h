@@ -21,7 +21,7 @@ class PaintInterface : public QThread
 {
     Q_OBJECT
 public:
-    enum PrintMode {pmNormal, pmNewPage, pmClosePage, pmReportEnd, pmCheckIteration};
+    //enum PrintMode {pmNormal, pmNewPage, pmClosePage, pmReportEnd, pmCheckIteration};
 public:
     PaintInterface(ReportInterface * report, QObject * parent = 0);
     ~PaintInterface();
@@ -45,7 +45,7 @@ signals:
 private:
     void run();
     void finish(QString error = "");
-    void processBand(BandInterface * band, PrintMode pMode = pmNormal);
+    void processBand(BandInterface * band);
     void initBands();
     void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
     void processDataset(QString datasetName, BandInterface * band = 0);
@@ -54,20 +54,20 @@ private:
 //    void exportRecord(const QSqlRecord & record, QDomElement & el);
 
 private:
-    BandList  listTop;
-    BandList  listBottom;
-    BandList  listFree;
-    BandList  currentGroup;
-    BandList  bandDone;
+    BandList  listTop;		    //top positioned bands
+    BandList  listBottom;	    //bottom positioned bands
+    BandList  listFree;		    //free positioned band
+    BandList  currentGroup;	    //current processing bands group - for example dataset grouped bands
+    BandList  bandDone;		    //list of bands what alrady processed
 
     ReportInterface * m_report;
-    int m_currentPageNumber;
+    int m_currentPageNumber;	    //absolute page number
 
     DataSet * m_currentDataset;
-    int m_currentDatasetRow;	    // can't be changed - use for positioning in query
+    int m_currentDatasetRow;	    // can't be changed - use for positioning in dataset
     int m_currentLineNumber;	    //can be changed by Bands or in user script
-    BandInterface * currentBand;
-    PageInterface * m_currentPage;
+    BandInterface * currentBand;    //current processed band
+    PageInterface * m_currentPage;  //current processed page
 
     PaintDevice * m_printer;
 
@@ -79,7 +79,7 @@ private:
     QScriptEngine * m_scriptEngine;
     QPainter * m_painter;
 */
-    QRectF freeSpace;
+    QRectF freeSpace;		    //current page free (unpainted) space - space usefull for bands
 
 friend class ReportInterface;
 };

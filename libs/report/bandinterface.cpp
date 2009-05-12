@@ -289,6 +289,10 @@ BandInterface::AccomodationType BandInterface::accommodationType()
     return AccomodationOnce;
 }
 
+bool BandInterface::prNewPage() {return false;}
+bool BandInterface::prClosePage() {return false;}
+
+
 QString BandInterface::dataset()
 {
 	return m_dataset;

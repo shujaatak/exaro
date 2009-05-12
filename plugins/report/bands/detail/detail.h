@@ -46,7 +46,9 @@ public:
 
 	int layoutPriority(){ return 50;}
 
-	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode = Report::PaintInterface::pmNormal);
+	bool prData();
+	bool prReset();
+
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);
