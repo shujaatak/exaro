@@ -88,8 +88,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	if (pluginsDir.dirName() == "MacOS")
 	{
 		pluginsDir.cdUp();
-		pluginsDir.cdUp();
-		pluginsDir.cdUp();
+		pluginsDir.cd("PlugIns");
 	}
 
 #else
