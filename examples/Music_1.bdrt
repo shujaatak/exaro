@@ -481,6 +481,45 @@
                         </Memo>
                     </children>
                 </DetailFooter>
+                <Detail>
+                    <properties>
+                        <objectName type="QString" >detail_1</objectName>
+                        <enabled type="bool" >true</enabled>
+                        <geometry type="QRectF" >150,669,1798,72</geometry>
+                        <opacity type="int" >100</opacity>
+                        <frame type="int" >0</frame>
+                        <pen type="QPen" >
+                            <brush type="QBrush" >
+                                <color type="QColor" >0,0,0,255</color>
+                                <style type="int" >1</style>
+                                <texture type="QPixmap" ></texture>
+                            </brush>
+                            <capStyle type="int" >16</capStyle>
+                            <color type="QColor" >0,0,0,255</color>
+                            <isCosmetic type="bool" >true</isCosmetic>
+                            <joinStyle type="int" >64</joinStyle>
+                            <miterLimit type="double" >2</miterLimit>
+                            <style type="int" >1</style>
+                            <width type="int" >0</width>
+                        </pen>
+                        <brush type="QBrush" >
+                            <color type="QColor" >255,0,0,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush" >
+                            <color type="QColor" >0,0,0,255</color>
+                            <style type="int" >1</style>
+                            <texture type="QPixmap" ></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int" >1</backgroundMode>
+                        <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <order type="int" >4</order>
+                        <indentation type="int" >0</indentation>
+                        <dataset type="QString" >ds_1</dataset>
+                        <zebra type="bool" >true</zebra>
+                    </properties>
+                </Detail>
                 <Title>
                     <properties>
                         <objectName type="QString" >title</objectName>
@@ -731,13 +770,13 @@
                                     <width type="int" >0</width>
                                 </pen>
                                 <brush type="QBrush" >
-                                    <color type="QColor" >0,0,0,255</color>
-                                    <style type="int" >0</style>
+                                    <color type="QColor" >6,249,249,255</color>
+                                    <style type="int" >1</style>
                                     <texture type="QPixmap" ></texture>
                                 </brush>
                                 <backgroundBrush type="QBrush" >
-                                    <color type="QColor" >0,0,0,255</color>
-                                    <style type="int" >0</style>
+                                    <color type="QColor" >4,249,253,255</color>
+                                    <style type="int" >1</style>
                                     <texture type="QPixmap" ></texture>
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
@@ -832,9 +871,21 @@
             <properties>
                 <objectName type="QString" >query_0</objectName>
                 <parentDataset type="QString" ></parentDataset>
-                <parentCondition type="QStringList" />
+                <filterCondition type="QString" ></filterCondition>
+                <filterColumn type="int" >-1</filterColumn>
                 <text type="QString" >select * from song;</text>
             </properties>
+            <children/>
+        </SqlDataset>
+        <SqlDataset>
+            <properties>
+                <objectName type="QString" >ds_1</objectName>
+                <parentDataset type="QString" >query_0</parentDataset>
+                <filterCondition type="QString" >$album</filterCondition>
+                <filterColumn type="int" >3</filterColumn>
+                <text type="QString" >select * from album</text>
+            </properties>
+            <children/>
         </SqlDataset>
     </children>
 </StdReport>

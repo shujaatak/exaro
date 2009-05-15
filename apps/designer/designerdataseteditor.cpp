@@ -93,6 +93,7 @@ void DesignerDatasetEditor::setReport(ReportInterface * report)
     {
 	QListWidgetItem * i = new QListWidgetItem();
 	i->setText(dtst->objectName());
+	i->setToolTip(QString ("%1 : %2").arg(dtst->metaObject()->className()).arg(dtst->objectName()));
 	m_listWidget->addItem(i);
 	m_listWidget->setCurrentItem(i);
 
@@ -205,10 +206,12 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
 	return;
 
     if (previous && currentEditor)
-	currentEditor->sync();
+	sync();
+//	currentEditor->sync();
 
     DataSet * dtst = m_report->findChild<DataSet *>(current->text());
     Q_ASSERT(dtst);
+
 
     if ( currentEditor != m_editors.value(dtst->metaObject()->className()) )
     {
@@ -231,6 +234,12 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
 	datasetTable->setModel(dtst->model());
 	datasetTable->resizeColumnsToContents();
 	datasetTable->resizeRowsToContents();
+	leParentDataset->setText( currentEditor->dataset()->parentDataset() );
+	leCondition->setText( currentEditor->dataset()->filterCondition() ) ;
+	sbFilterColumn->setValue( currentEditor->dataset()->filterColumn() );
+
+	datasetTable->show();
+	datasetResultText->hide();
     }
 }
 
@@ -291,6 +300,7 @@ void DesignerDatasetEditor::createItem()
     QListWidgetItem * i = new QListWidgetItem();
     //	i->setFlags (i->flags () | Qt::ItemIsEditable);
     i->setText(dtst->objectName());
+    i->setToolTip(QString ("%1 : %2").arg(dtst->metaObject()->className()).arg(dtst->objectName()));
     m_listWidget->addItem(i);
     m_listWidget->setCurrentItem(i);
     if (currentEditor)
@@ -323,8 +333,13 @@ void DesignerDatasetEditor::deleteItem()
 
 void DesignerDatasetEditor::sync()
 {
-    if (currentEditor)
-	currentEditor->sync();
+    if (!currentEditor)
+	return;
+
+    currentEditor->sync();
+    currentEditor->dataset()->setParentDataset( leParentDataset->text() );
+    currentEditor->dataset()->setFilterCondition( leCondition->text() );
+    currentEditor->dataset()->setFilterColumn( sbFilterColumn->value() ) ;
 }
 
 }

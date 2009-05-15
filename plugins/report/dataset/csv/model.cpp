@@ -47,6 +47,7 @@ void Model::setArray(Array array)
     foreach (QStringList record, m_array)
 	if (record.count() > m_columns)
 	    m_columns = record.count();
+    reset ();
 }
 
 int Model::columnCount(const QModelIndex &/*parent*/) const

@@ -5,13 +5,6 @@
         <name type="QString" >Имя отчета</name>
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
-        <queries type="QVariantMap" >
-            <query_0 type="QString" >select item_types.name as category, item.name, item.weight, item.type, item.img
-from item 
-inner join item_types on item.type = item_types.[id]
-where item.type &lt;> 1 and item.type &lt;> 2
-order by category</query_0>
-        </queries>
         <uis type="QVariantMap" />
         <version type="int" >3</version>
         <menuGroup type="int" >90</menuGroup>
@@ -91,7 +84,7 @@ order by category</query_0>
                         <reprintOnNewPage type="bool" >true</reprintOnNewPage>
                         <resetDetailNumber type="bool" >true</resetDetailNumber>
                         <forceNewPage type="bool" >false</forceNewPage>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" ></dataset>
                     </properties>
                     <children>
                         <Memo>
@@ -169,7 +162,7 @@ order by category</query_0>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >1</order>
                         <indentation type="int" >0</indentation>
-                        <query type="QString" >query_0</query>
+                        <dataset type="QString" ></dataset>
                         <zebra type="bool" >true</zebra>
                     </properties>
                     <children>

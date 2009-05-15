@@ -43,7 +43,8 @@ class DataSet : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString parentDataset READ parentDataset WRITE setParentDataset)
-    Q_PROPERTY(QStringList parentCondition READ parentCondition WRITE setParentCondition)
+    Q_PROPERTY(QString filterCondition READ filterCondition WRITE setFilterCondition)
+    Q_PROPERTY(int filterColumn READ filterColumn WRITE setFilterColumn)
 
 public:
 	DataSet(QObject *parent = 0);
@@ -65,15 +66,18 @@ public:
 	Q_INVOKABLE virtual QVariant lookbackValue(const QString & field) const;
 	virtual DataSet * createInstance(QObject* parent = 0);
 	virtual DataSetEditor * createEditor();
-	Q_INVOKABLE virtual QAbstractTableModel * model();
+	Q_INVOKABLE virtual QAbstractItemModel * model();
 	Q_INVOKABLE virtual QString name();
 	Q_INVOKABLE virtual QString lastError();
 	Q_INVOKABLE virtual QString fieldName(int column );
+	Q_INVOKABLE virtual void setFilter ( const int col, const QString & str, Qt::CaseSensitivity cs = Qt::CaseSensitive );
 
 	QString	    parentDataset();
 	void	    setParentDataset(QString pDataset);
-	QStringList parentCondition();
-	void	    setParentCondition(QStringList str);
+	QString	    filterCondition();
+	void	    setFilterCondition(QString str);
+	int	    filterColumn();
+	void	    setFilterColumn(int col);
 
 signals:
 	void beforeNext();
@@ -89,7 +93,8 @@ signals:
 
 private:
 	QString m_parentDataset;
-	QStringList m_parentCondition;
+	QString m_filterCondition;
+	int m_filterColumn;
 
 };
 }

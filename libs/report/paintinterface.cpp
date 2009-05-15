@@ -12,6 +12,7 @@ PaintInterface::PaintInterface(ReportInterface * report, QObject * parent)
 	:QThread(parent)
 {
     m_report = report;
+    m_currentDataset = 0;
 }
 
 PaintInterface::~PaintInterface()
@@ -46,22 +47,6 @@ void PaintInterface::run()
 	processPage();
     }
 
-    /*
-    bool first=true;
-    foreach(QObject * obj, m_report->children())
-    {
-	if (!first)
-	    m_printer->newPage();
-	if (dynamic_cast<PageInterface*>(obj))
-	{
-	    m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
-	    m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
-
-	    m_currentPage = dynamic_cast<PageInterface*>(obj);
-	    processPage();
-	}
-    }
-    */
     m_painter.end();
     delete m_printer;
     m_printer = 0;
@@ -90,7 +75,10 @@ void PaintInterface::processPage()
 	if (band->prData())
 	    processBand(band);
     }
+
     foreach(BandInterface * band, listTop)
+    {
+	qDebug ("turn process = %s", qPrintable(band->objectName()));
 	if (!bandDone.contains(band))
 	{
 	    if (band->dataset().isEmpty())
@@ -98,18 +86,16 @@ void PaintInterface::processPage()
 		if ( band->prData() )
 		    processBand(band);
 	    }
-	    else
-		processDataset(band->dataset(), band);
-	}
+	    else    /// process dataset
+	    {
+		DataSet * dtst = m_report->findChild<DataSet *>(band->dataset());
+		if (!dtst)
+		    finish(tr("Dataset named \'%1\' not found for band \'%2\'").arg(dtst->objectName()).arg(band->objectName()) );
 
-/*
-    foreach(BandInterface * band, listTop)
-	if (band->accommodationType() == band->AccomodationOnce && !bandDone.contains(band))
-	    if (band->dataset().isEmpty())
-		processBand(band, pmNormal);
-    else
-	processDataset(band->dataset(), band);
-*/
+		processDataset(dtst);
+	    }
+	}
+    }
 
     postprocessCurrentPage();
 }
@@ -123,8 +109,6 @@ void PaintInterface::finish(QString error)
 
 void PaintInterface::initBands()
 {
-//    qDebug("PaintInterface::initBands()");
-
     foreach(BandInterface * band, listTop)
 	if (!band->prInit(this))
 	    showError(QString("Error in item \'%1\' \n%2").arg(band->objectName()).arg(band->lastError()));
@@ -157,7 +141,7 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 {
 	if (!band /*|| m_reportCanceled*/)
 		return;
-//	qDebug("PaintInterface::processBand = %s", qPrintable(band->objectName()));
+	qDebug("PaintInterface::processBand = %s", qPrintable(band->objectName()));
 	if (!band->isEnabled())
 	    return;
 
@@ -174,13 +158,6 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 	else
 	    if (band->layoutType() == BandInterface::LayoutFree)
 		m_painter.translate(band->geometry().x(), band->geometry().y());
-/*
-	QRectF clipRect = QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height());
-	QStyleOptionGraphicsItem option;
-	option.type = 31;
-	option.exposedRect = QRectF(0, 0, band->geometry().width(), band->geometry().height());
-	m_painter.setClipRect(clipRect);
-*/
 
 	band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
 
@@ -214,47 +191,31 @@ bool PaintInterface::canPaint(BandInterface * band)
 
 void PaintInterface::prepareCurrentPage()
 {
+    qDebug("PaintInterface::prepareCurrentPage()");
     emit showProcess(tr("Prepare page: %1").arg(m_currentPageNumber));
 
     freeSpace = m_currentPage->geometry();
-//    freeSpace.setTop( m_currentPage->geometry().y() );
-//    freeSpace.setBottom( m_currentPage->geometry().bottom() );
 
     foreach(BandInterface * band, listFree)	    //process listFree first if it want paint on background
-	if (band->prNewPage())
-	    processBand(band);
-
-    foreach(BandInterface * band, listTop)
-	if (band->prNewPage())
-	    processBand(band);
-
-    for (int i = listBottom.count()-1; i>=0 ;i--)
     {
-	BandInterface * band = listBottom.at(i);
+	qDebug("new page for = %s", qPrintable(band->objectName()));
 	if (band->prNewPage())
 	    processBand(band);
     }
-   /*
-    m_report->m_currentTop = m_currentPage->geometry().y();
-    m_report->m_currentBottom = m_currentPage->geometry().bottom();
-
     foreach(BandInterface * band, listTop)
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
+    {
+	qDebug("new page for = %s", qPrintable(band->objectName()));
+	if (band->prNewPage())
 	    processBand(band);
-
+    }
     for (int i = listBottom.count()-1; i>=0 ;i--)
     {
 	BandInterface * band = listBottom.at(i);
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
+	qDebug("new page for = %s", qPrintable(band->objectName()));
+	if (band->prNewPage())
 	    processBand(band);
     }
 
-//    qDebug("size of  current group is %i", currentGroup.size());
-
-    if (!currentGroup.isEmpty())
-	foreach (BandInterface * band, currentGroup)
-		processBand(band, pmNewPage);
-*/
 }
 
 void PaintInterface::postprocessCurrentPage()
@@ -274,50 +235,59 @@ void PaintInterface::postprocessCurrentPage()
 	if (band->prClosePage())
 	    processBand(band);
 
-/*
-    foreach(BandInterface * band, listFree)
-	if (band->accommodationType() == band->AccomodationEveryPage || (band->accommodationType() == band->AccomodationFirstPage && m_currentPageNumber == 1))
-	    processBand(band);
-*/
 }
 
-
-void PaintInterface::paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect)
+void PaintInterface::processDataset(DataSet * dtst)
 {
-    /*
-	if (!item || !item->isEnabled())
-		return;
+    qDebug("PaintInterface::processDataset = %s", qPrintable(dtst->objectName()));
+//    DataSet * dtst = m_report->findChild<DataSet *>(datasetName);
+//    if (!dtst)
+//    {
+//	QString bandName = band ? band->objectName(): "Unknown";
+//	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(datasetName).arg(bandName) );
+//    }
 
-	QStyleOptionGraphicsItem option;
-	option.type = 31;
-	option.exposedRect = dynamic_cast<BandInterface *>(item) ? QRectF(0, 0, dynamic_cast<BandInterface *>(item)->geometry().width(), dynamic_cast<BandInterface *>(item)->geometry().height()) : item->geometry();
-	m_painter.save();
-	option.exposedRect.translate(translate);
-	m_painter.setClipRect(clipRect);
-	item->prPaint(&m_painter, &option);
-	m_painter.restore();	
-	translate += option.exposedRect.topLeft();
-	foreach(ItemInterface * childItem, item->findChildren<ItemInterface *>())
-		paintObjects(childItem, translate, option.exposedRect);
-		*/
-}
+    bool skipIteration = false;
 
+    ///  lookup for children datasets
+    QStringList childrenDatasets;
+    foreach (DataSet* child, m_report->findChildren<DataSet *>())
+	if (child->parentDataset() == dtst->objectName())
+	    childrenDatasets.append(child->objectName());
 
-void PaintInterface::processDataset(QString datasetName, BandInterface * band )
-{
-//    qDebug("PaintInterface::processDataset = %s", qPrintable(datasetName));
-    DataSet * dtst = m_report->findChild<DataSet *>(datasetName);
-    if (!dtst)
+    #warning //FIXME: check for already populated
+    if ( !dtst->populate() )
+	finish(tr("dataset \'%1\' execution error: %2").arg(dtst->objectName()).arg(dtst->lastError()));
+
+    if ( !dtst->parentDataset().isEmpty() )
     {
-	QString bandName = band ? band->objectName(): "Unknown";
-	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(datasetName).arg(bandName) );
+	QString filter = dtst->filterCondition();
+	DataSet* parentDataset = m_report->findChild<DataSet *>(dtst->parentDataset() );
+	if (parentDataset)
+	{
+
+	    /// changing all '$field' including to parent field value
+	    QString regExp ("\\$([\\w\\d]+)");
+	    QRegExp rxlen(regExp);
+	    int pos = 0;
+	    while ((pos = rxlen.indexIn(filter, pos)) != -1)
+	    {
+		QString _fieldName = rxlen.cap(0);
+		QString fieldName = rxlen.cap(1);
+		filter.replace(_fieldName, parentDataset->value(fieldName).toString());
+		pos += rxlen.matchedLength();
+	    }
+	    qDebug("filter = %s",qPrintable(filter));
+	    qDebug("size before filter = %i",dtst->size());
+	    if (filter.isEmpty())
+		skipIteration = true;
+	    else
+		dtst->setFilter(dtst->filterColumn(), filter);
+	    qDebug("size after filter = %i",dtst->size());
+	}
     }
 
-    //already exec()'d ?
-    if (!dtst->first())
-	if ( !(dtst->populate() && dtst->first()) )
-	    finish(tr("query \'%1\' execution error: %2").arg(datasetName).arg(dtst->lastError()));
-
+/*
     QDomElement dtstElement = m_report->m_doc.createElement("dataset");
     dtstElement.setAttribute("name", dtst->objectName());
     QDomElement rowElement = m_report->m_doc.createElement("row");
@@ -329,19 +299,23 @@ void PaintInterface::processDataset(QString datasetName, BandInterface * band )
 	rowElement.appendChild(field);
     }
     dtstElement.appendChild(rowElement);
-
+*/
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, 0), QScriptValue::ReadOnly);
 
     m_currentDataset = dtst;
     m_currentDatasetRow = 0;
     m_currentLineNumber = 0;
 
-    currentGroup.clear();
+//    currentGroup.clear();
 
+    /// making item group for dataset iteration
+    BandList  currentGroup;
     foreach(BandInterface * band, listTop)
-	if (band->dataset() == datasetName)
+	if (band->dataset() == dtst->objectName() || childrenDatasets.contains( band->dataset() ) )
 	    currentGroup.append(band);
 
+    dtst->first();
+    if (dtst->size() && !skipIteration)
     do
     {
 	m_currentDatasetRow++;
@@ -349,18 +323,40 @@ void PaintInterface::processDataset(QString datasetName, BandInterface * band )
 	m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 
 	foreach(BandInterface * band, currentGroup)
-	    processBand(band);
+	{
+	    qDebug("next in group = %s", qPrintable(band->objectName()));
+	    if (band->dataset() == dtst->objectName())
+	    {
+		if (band->prData())
+		    processBand(band);
+	    }
+	    else
+	    {
+		int currentDatasetRow = m_currentDatasetRow;
+		int currentLineNumber = m_currentLineNumber;
 
-#warning 'FIXMI: implement exportRecord'
+		processDataset (m_report->findChild<DataSet *>(band->dataset()));
+
+		m_currentDatasetRow = currentDatasetRow;
+		m_currentLineNumber = currentLineNumber;
+		m_currentDataset = dtst;
+
+	    }
+	}
+
 //	m_report->exportRecord(dtst->record(), dtstElement);
     }
     while (dtst->next());
 
-    m_report->m_exportNode.appendChild(dtstElement);
+
+//    m_report->m_exportNode.appendChild(dtstElement);
+
 
     foreach (BandInterface * band, currentGroup)
-	bandDone.append(band);
+	if (!bandDone.contains(band))
+	    bandDone.append(band);
     currentGroup.clear();
+
 }
 
 int PaintInterface::currentPageNumber()
@@ -379,3 +375,7 @@ void PaintInterface::setDetailNumber(int num)
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, m_currentLineNumber), QScriptValue::ReadOnly);
 }
 
+QString PaintInterface::currentDatasetName()
+{
+    return m_currentDataset ? m_currentDataset->name() : QString();
+}

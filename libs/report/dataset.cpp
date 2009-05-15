@@ -26,14 +26,14 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
-
+#include <QSortFilterProxyModel>
 #include "dataset.h"
 #include "dataseteditor.h"
 
 namespace Report
 {
 DataSet::DataSet(QObject *parent)
-		: QObject(parent)
+		: QObject(parent), m_parentDataset(), m_filterCondition(), m_filterColumn(-1)
 {
 }
 
@@ -53,16 +53,25 @@ void DataSet::setParentDataset(QString pDataset)
     m_parentDataset = pDataset;
 }
 
-void DataSet::setParentCondition(QStringList list)
+void DataSet::setFilterCondition(QString list)
 {
-    m_parentCondition = list;
+    m_filterCondition = list;
 }
 
-QStringList DataSet::parentCondition()
+QString DataSet::filterCondition()
 {
-    return m_parentCondition;
+    return m_filterCondition;
 }
 
+int DataSet::filterColumn()
+{
+    return m_filterColumn;
+}
+
+void DataSet::setFilterColumn(int col)
+{
+    m_filterColumn = col;
+}
 
 bool DataSet::first() {return false;}
 bool DataSet::last(){return false;}
@@ -80,9 +89,22 @@ QVariant DataSet::lookbackValue(int index) const{return QVariant();}
 QVariant DataSet::lookbackValue(const QString & field) const{return QVariant();}
 DataSet * DataSet::createInstance(QObject* parent){return new DataSet(parent);}
 DataSetEditor * DataSet::createEditor() {return 0;}
-QAbstractTableModel * DataSet::model() {return 0;}
+QAbstractItemModel * DataSet::model() {return 0;}
 QString DataSet::name() { return tr("Unknown"); }
 QString DataSet::lastError() {return QString();}
 QString DataSet::fieldName(int column ) {return tr("Unknown");}
+
+void DataSet::setFilter ( const int col, const QString & str, Qt::CaseSensitivity cs)
+{
+    QSortFilterProxyModel* _model = dynamic_cast<QSortFilterProxyModel*>( model() );
+    if (_model )
+    {
+//	_model->setFilterRegExp (regExp);
+	_model->setFilterFixedString(str);
+	_model->setFilterCaseSensitivity(cs);
+	_model->setFilterKeyColumn(col);
+    }
+   else qWarning("WARNING: please reimplement setFilter () in plugin \'%s\'", this->metaObject()->className());
+}
 
 }

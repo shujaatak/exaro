@@ -33,6 +33,7 @@
 #include <dataset.h>
 #include <dataseteditor.h>
 #include <QtSql>
+#include <QSortFilterProxyModel>
 
 class SqlDataset : public Report::DataSet
 {
@@ -46,7 +47,7 @@ public:
 
 	DataSet * createInstance(QObject* parent = 0);
 	DataSetEditor * createEditor();
-	QAbstractTableModel * model();
+	QAbstractItemModel * model();
 	QString name();
 	QString lastError();
 
@@ -73,7 +74,8 @@ private:
 	int m_currentRow;
 	bool m_isPopulated;
 	QString m_queryText;
-	QSqlQueryModel m_model;
+	QSqlQueryModel * m_model;
+	QSortFilterProxyModel * m_fmodel;
 	DataSetEditor ed;
 };
 

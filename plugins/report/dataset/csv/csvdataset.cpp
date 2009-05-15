@@ -37,6 +37,10 @@ CsvDataset::CsvDataset(QObject *parent)
     m_currentRow = 0;
     m_isPopulated = false;
     m_delimeter = ",";
+    m_model = new Model (this);
+    m_fmodel = new QSortFilterProxyModel(this);
+    m_fmodel->setSourceModel(m_model);
+    m_fmodel->setDynamicSortFilter ( true );
 }
 
 
@@ -106,9 +110,9 @@ QString CsvDataset::fieldName(int column )
 	*/
 }
 
-QAbstractTableModel * CsvDataset::model()
+QAbstractItemModel * CsvDataset::model()
 {
-    return &m_model;
+    return m_fmodel;
 }
 
 
@@ -142,11 +146,11 @@ bool CsvDataset::populate()
     Array array;
     for (int i=0; i<list.count(); i++)
 	array.append(list.at(i).split(m_delimeter));
-    m_model.setArray(array);
+    m_model->setArray(array);
 
     //** header generator
-    for (int i=0; i<m_model.columnCount(); i++)
-	m_model.setHeaderData(i, Qt::Horizontal, QString("field_%1").arg(i));
+    for (int i=0; i<m_model->columnCount(); i++)
+	m_model->setHeaderData(i, Qt::Horizontal, QString("field_%1").arg(i));
 
     m_isPopulated = true;
     return true;
@@ -169,8 +173,8 @@ bool CsvDataset::first()
 bool CsvDataset::last()
 {
 	emit(beforeLast());
-	m_currentRow = m_model.rowCount();
-	bool ret = m_currentRow < m_model.rowCount() ? true:false;
+	m_currentRow = m_fmodel->rowCount();
+	bool ret = m_currentRow < m_fmodel->rowCount() ? true:false;
 	emit(afterLast());
 	return ret;
 }
@@ -198,19 +202,19 @@ bool CsvDataset::seek(int index)
 {
 	emit(beforeSeek(index));
 	m_currentRow = index;
-	bool ret = (m_currentRow >=0 && m_currentRow < m_model.rowCount() ? true:false);
+	bool ret = (m_currentRow >=0 && m_currentRow < m_fmodel->rowCount() ? true:false);
 	emit(afterSeek(index));
 	return ret;
 }
 
 int CsvDataset::size()
 {
-	return m_model.rowCount();
+	return m_fmodel->rowCount();
 }
 
 QVariant CsvDataset::value(int index) const
 {
-    return m_model.data( m_model.index(m_currentRow,index) );
+    return m_fmodel->data( m_fmodel->index(m_currentRow,index) );
 }
 
 
