@@ -35,6 +35,10 @@ SqlDataset::SqlDataset(QObject *parent)
 {
     m_currentRow = 0;
     m_isPopulated = false;
+    m_model = new QSqlQueryModel  (this);
+    m_fmodel = new QSortFilterProxyModel(this);
+    m_fmodel->setSourceModel(m_model);
+    m_fmodel->setDynamicSortFilter ( true );
 }
 
 
@@ -60,20 +64,21 @@ QString SqlDataset::name()
 
 QString SqlDataset::lastError()
 {
-    return m_model.lastError().text();
+    return m_model->lastError().text();
 }
 
 QString SqlDataset::fieldName(int column )
 {
     if (m_isPopulated)
-	return m_model.record().fieldName(column);
+	m_model->headerData ( column, Qt::Horizontal);
+//	return m_model.record().fieldName(column);
     else
 	return QString();
 }
 
-QAbstractTableModel * SqlDataset::model()
+QAbstractItemModel * SqlDataset::model()
 {
-    return &m_model;
+    return m_fmodel;
 }
 
 QString SqlDataset::text()
@@ -88,11 +93,11 @@ void SqlDataset::setText(QString str)
 
 bool SqlDataset::populate()
 {
-    m_model.setQuery(m_queryText);
-    bool ret = !m_model.lastError().isValid();
+    m_model->setQuery(m_queryText);
+    bool ret = !m_model->lastError().isValid();
     if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
-	while (m_model.canFetchMore())
-	    m_model.fetchMore();
+	while (m_model->canFetchMore())
+	    m_model->fetchMore();
     m_isPopulated = ret;
     return ret;
 }
@@ -113,9 +118,10 @@ bool SqlDataset::first()
 
 bool SqlDataset::last()
 {
-	emit(beforeLast());
-	m_currentRow = m_model.rowCount();
-	bool ret = !m_model.record(m_currentRow).isEmpty();
+	emit(beforeLast());	
+	m_currentRow = m_fmodel->rowCount();
+//	bool ret = !m_fmodel.record(m_currentRow).isEmpty();
+	bool ret = m_fmodel->index(m_currentRow, 0).isValid();
 	emit(afterLast());
 	return ret;
 }
@@ -149,44 +155,47 @@ bool SqlDataset::seek(int index)
 {
 	emit(beforeSeek(index));
 	m_currentRow = index;
-	bool ret = !m_model.record(m_currentRow).isEmpty();
+//	bool ret = !m_model.record(m_currentRow).isEmpty();
+	bool ret = m_fmodel->index(m_currentRow, 0).isValid();
 	emit(afterSeek(index));
 	return ret;
 }
 
 int SqlDataset::size()
 {
-	return m_model.rowCount();
+	return m_fmodel->rowCount();
 }
 
 QVariant SqlDataset::value(int index) const
 {
-    return m_model.record(m_currentRow).value(index);
+    return m_fmodel->data( m_fmodel->index(m_currentRow,index) );
+//    return m_model.record(m_currentRow).value(index);
 }
 
 QVariant SqlDataset::value(const QString & field) const
 {
-    return m_model.record(m_currentRow).value(field);
+     return m_fmodel->data( m_fmodel->index(m_currentRow, m_model->record().indexOf(field) ) );
+//    return m_model.record(m_currentRow).value(field);
 }
 
 QVariant SqlDataset::lookaheadValue(int index) const
 {
-    return m_currentRow+1 < m_model.rowCount() && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
+    return m_currentRow+1 < m_fmodel->rowCount() && index < m_fmodel->columnCount() ?  m_fmodel->data( m_fmodel->index(m_currentRow + 1,index) ) : QVariant::Invalid;
 }
 
 QVariant SqlDataset::lookaheadValue(const QString & field) const
 {
-    return m_currentRow+1 < m_model.rowCount() ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
+    return m_currentRow+1 < m_fmodel->rowCount() ?  m_fmodel->data( m_fmodel->index(m_currentRow + 1, m_model->record().indexOf(field) ) ) : QVariant::Invalid;
 }
 
 QVariant SqlDataset::lookbackValue(int index) const
 {
-    return m_currentRow-1 < 0 && index < m_model.columnCount() ?  m_model.record(m_currentRow + 1).value(index) : QVariant::Invalid;
+    return m_currentRow-1 < 0 && index < m_fmodel->columnCount() ?  m_fmodel->data( m_fmodel->index(m_currentRow - 1,index) ) : QVariant::Invalid;
 }
 
 QVariant SqlDataset::lookbackValue(const QString & field) const
 {
-    return m_currentRow-1 < 0  ?  m_model.record(m_currentRow + 1).value(field) : QVariant::Invalid;
+    return m_currentRow-1 < 0  ?  m_fmodel->data( m_fmodel->index(m_currentRow - 1, m_model->record().indexOf(field) ) )  : QVariant::Invalid;
 }
 
 Q_EXPORT_PLUGIN2(sqlDataset, SqlDataset)

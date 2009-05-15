@@ -185,13 +185,13 @@ protected slots:
 private:
 	int m_order;
 	int m_indentation;
-	QString m_dataset;
 	bool m_deleting;
 	TitleItem * m_titleItem;
 
 protected:
 	QHash <QString, ValueStruct> m_agregateValues;
 	int m_agregateCounter;
+	QString m_dataset;
 };
 }
 Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");

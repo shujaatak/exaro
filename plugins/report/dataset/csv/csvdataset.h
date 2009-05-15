@@ -33,6 +33,7 @@
 #include <dataset.h>
 #include <dataseteditor.h>
 #include "model.h"
+#include <QSortFilterProxyModel>
 
 class CsvDataset : public Report::DataSet
 {
@@ -48,7 +49,7 @@ public:
 
 	DataSet * createInstance(QObject* parent = 0);
 	DataSetEditor * createEditor();
-	QAbstractTableModel * model();
+	QAbstractItemModel * model();
 	QString name();
 	QString lastError();
 
@@ -82,7 +83,8 @@ private:
 	QStringList m_list;
 	QString m_delimeter;
 	QString m_error;
-	Model m_model;
+	Model * m_model;
+	QSortFilterProxyModel * m_fmodel;
 	DataSetEditor ed;
 };
 

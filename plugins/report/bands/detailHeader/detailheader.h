@@ -52,6 +52,8 @@ public:
 	bool canContain(QObject * object);
 //	bool prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode);
 	bool prInit(Report::PaintInterface * paintInterface);
+	bool prData();
+	bool prNewPage();
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();

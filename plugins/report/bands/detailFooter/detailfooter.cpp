@@ -42,7 +42,6 @@ inline void initMyResource()
 DetailFooter::DetailFooter(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
 {
 	initMyResource();
-//	setBandType(Report::BandInterface::DetailFooter);
 	setResizeFlags(FixedPos | ResizeBottom);
 }
 
@@ -56,7 +55,7 @@ bool DetailFooter::prInit(Report::PaintInterface * paintInterface)
     m_groupValue = "";
     m_agregateCounter = 0;
     needResetAgregateValues = true;
-//    return ItemInterface::init(paintInterface);
+    return ItemInterface::prInit(paintInterface);
 }
 
 bool DetailFooter::prData()
@@ -84,55 +83,8 @@ bool DetailFooter::prData()
 	needResetAgregateValues = true;
     else
 	needResetAgregateValues = false;
+    return need_print;
 }
-
-/*
-bool DetailFooter::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
-{
-    ItemInterface::prePaint(painter);
-    bool ok = false;
-    switch (pMode)
-    {
-	case Report::PaintInterface::pmNormal:
-	    if (needResetAgregateValues)
-		resetAgregateValues();
-
-	    accumulateAgregateValues();
-
-	    if (!m_condition.isEmpty() && !dataset().isEmpty())
-	    {
-		m_groupValue = processString(m_condition);
-		findDataset(dataset())->next();		    // query lookahead
-		if (m_groupValue != processString(m_condition))
-		    ok = true;
-		else
-		    ok = false;
-		findDataset(dataset())->previous();		    //back
-	    }
-	    else
-		ok = true;
-
-	    if (ok)
-	    {
-		needResetAgregateValues = true;
-		return true;
-	    }
-	    else
-	    {
-		needResetAgregateValues = false;
-		return false;
-	    }
-	    break;
-	case Report::PaintInterface::pmNewPage:
-	    return false;
-	    break;
-	default:
-	    return false;
-    }
-
-    return false;
-}
-*/
 
 bool DetailFooter::canContain(QObject * object)
 {
