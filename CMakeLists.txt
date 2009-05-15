@@ -38,10 +38,6 @@ ENDIF(APPLE)
 
 INCLUDE (CheckCXXCompilerFlag)
 
-if (OPENMP_FOUND)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif (OPENMP_FOUND)
-
 if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
     check_cxx_compiler_flag("-Wall" CXX_COMPILER_FLAG_WALL)
     if (CXX_COMPILER_FLAG_WALL)
@@ -79,7 +75,7 @@ set( QT_USE_QTWEBKIT TRUE )
 
 include( ${QT_USE_FILE} )
 include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR} 
+        ${CMAKE_CURRENT_SOURCE_DIR}
         ${QT_INCLUDE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
         )
