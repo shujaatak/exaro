@@ -58,12 +58,9 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
 	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 	if (option->type == QStyleOption::SO_GraphicsItem)
-		//drawSelection(painter, boundingRect());
-		painter->drawEllipse(boundingRect());
+		drawSelection(painter, boundingRect());
 	setupPainter(painter);
 	adjustRect(rect);
-
-	
 
 	QList<ChartInterface::_chartValue> val=values();
 	if (!val.size())
@@ -151,7 +148,6 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		QRectF rectPie(rect.x(),rect.y(),rect.width(),rect.height());
 		painter->drawPie(rectPie,unghi_dela*16,(unghi_deschidere)*16);
 		unghi_dela +=unghi_deschidere;
-		
 	}
 }
 

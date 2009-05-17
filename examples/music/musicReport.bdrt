@@ -9,6 +9,12 @@
             <music type="QString" >select * from songs order by artist, year, title</music>
         </queries>
         <uis type="QVariantMap" />
+        <printerName type="QString" ></printerName>
+        <showPrintDialog type="bool" >true</showPrintDialog>
+        <showPrintPreview type="bool" >true</showPrintPreview>
+        <showSplashScreen type="bool" >true</showSplashScreen>
+        <splashScreenPixmap type="QPixmap" ></splashScreenPixmap>
+        <showExitConfirm type="bool" >true</showExitConfirm>
         <menuGroup type="int" >90</menuGroup>
         <order type="int" >90</order>
         <menus type="QStringList" >
@@ -33,7 +39,7 @@
                     <texture type="QPixmap" ></texture>
                 </foregroundBrush>
                 <itemIndexMethod type="" />
-                <sceneRect type="QRectF" >0,0,2099.39,2970.24</sceneRect>
+                <sceneRect type="QRectF" >0,0,2099.35,2971.03</sceneRect>
                 <bspTreeDepth type="int" >0</bspTreeDepth>
                 <palette type="QPalette" />
                 <font type="QFont" >DejaVu Serif,5,-1,0,50,0,0,0,0,0</font>
@@ -797,7 +803,6 @@
                                         <showLabels type="bool" >true</showLabels>
                                         <showGrid type="bool" >false</showGrid>
                                         <drawBorder type="bool" >false</drawBorder>
-                                        <barsIdentation type="int" >10</barsIdentation>
                                         <toColorFactor type="double" >1</toColorFactor>
                                     </properties>
                                 </PieChart>
