@@ -164,7 +164,7 @@ void BarChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 			lg.setSpread(QGradient::ReflectSpread);
 			lg.setColorAt(0, cv.color);
 			lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));
-			painter->fillRect(QRectF(rc.x()+x,rc.y()+py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),QBrush(lg));
+			painter->fillRect(QRectF(rc.x()+x,rc.y()+py*maxpv-py*cv.value*powVal,barWidth, py*cv.value*powVal),lg);
 			if (m_showLabels)
 				painter->drawText(QRectF(rc.x()+x-m_barsIdentation/2, rc.y()+py*maxpv-((cv.value>=0)?painter->fontMetrics().height():0), barWidth+m_barsIdentation, painter->fontMetrics().height()),Qt::AlignCenter,QString("%1").arg(cv.value));
 			x+=barWidth+m_barsIdentation;
