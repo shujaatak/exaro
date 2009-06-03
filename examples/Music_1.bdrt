@@ -880,7 +880,7 @@
         <SqlDataset>
             <properties>
                 <objectName type="QString" >ds_1</objectName>
-                <parentDataset type="QString" >query_0</parentDataset>
+                <parentDataset type="QString" ></parentDataset>
                 <filterCondition type="QString" >$album</filterCondition>
                 <filterColumn type="int" >3</filterColumn>
                 <text type="QString" >select * from album</text>
