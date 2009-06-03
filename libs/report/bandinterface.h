@@ -68,6 +68,8 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 	 * @see setIndentation()
 	*/
 	Q_PROPERTY(int indentation READ indentation WRITE setIndentation)
+
+	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo)
 public:
 	/**
 	* TitlePosition enum
@@ -159,6 +161,9 @@ public:
 	void resetAgregateValues();
 	int agregateCounter();
 
+	QString joinTo(); //return band to which current is joined
+	void setJoinTo(QString bandName);
+
 signals:
 	void bandDelete(int);
 
@@ -192,6 +197,7 @@ protected:
 	QHash <QString, ValueStruct> m_agregateValues;
 	int m_agregateCounter;
 	QString m_dataset;
+	QString m_joinTo;
 };
 }
 Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");

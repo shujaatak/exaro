@@ -167,6 +167,35 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 	    freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
 
 	m_painter.restore();
+
+	///* test block
+//	BandList joinedBands;
+//	foreach (BandInterface * tBand, m_report->findChild<BandInterface *>() )
+//	    if (tBand->joinTo() == band->objectName())
+//		joinedBands.append( tBand);
+	foreach(BandInterface * tBand, m_report->findChildren<BandInterface *>())
+	{
+	    if (tBand->joinTo() != band->objectName()) continue;
+	    //if (!bandDone.contains(tBand))
+	    {
+		if (tBand->dataset().isEmpty())
+		{
+		    if ( tBand->prData() )
+			processBand(tBand);
+		}
+		else    /// process dataset
+		{
+		    DataSet * dtst = m_report->findChild<DataSet *>(tBand->dataset());
+		    if (!dtst)
+			finish(tr("Dataset named \'%1\' not found for band \'%2\'").arg(dtst->objectName()).arg(tBand->objectName()) );
+
+		    processDataset(dtst);
+		}
+	    }
+	}
+	///* end test block
+
+
 }
 
 
