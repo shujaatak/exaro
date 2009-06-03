@@ -247,6 +247,12 @@ void PaintInterface::processDataset(DataSet * dtst)
 //	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(datasetName).arg(bandName) );
 //    }
 
+    /// store dynmic data
+    int currentDatasetRow = m_currentDatasetRow;
+    int currentLineNumber = m_currentLineNumber;
+    DataSet * currentDataset = m_currentDataset;
+
+
     bool skipIteration = false;
 
     ///  lookup for children datasets
@@ -332,15 +338,7 @@ void PaintInterface::processDataset(DataSet * dtst)
 	    }
 	    else
 	    {
-		int currentDatasetRow = m_currentDatasetRow;
-		int currentLineNumber = m_currentLineNumber;
-
 		processDataset (m_report->findChild<DataSet *>(band->dataset()));
-
-		m_currentDatasetRow = currentDatasetRow;
-		m_currentLineNumber = currentLineNumber;
-		m_currentDataset = dtst;
-
 	    }
 	}
 
@@ -356,6 +354,11 @@ void PaintInterface::processDataset(DataSet * dtst)
 	if (!bandDone.contains(band))
 	    bandDone.append(band);
     currentGroup.clear();
+
+    /// restore dynamic data
+    m_currentDatasetRow = currentDatasetRow;
+    m_currentLineNumber = currentLineNumber;
+    m_currentDataset = currentDataset;
 
 }
 
