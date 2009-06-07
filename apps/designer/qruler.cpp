@@ -113,7 +113,6 @@ QRectF HorizontalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPaint
 {
     //lengthInPixel = d->viewConverter->documentToViewX(d->rulerLength);
     lengthInPixel = d->rulerLength;
-    qDebug("length = %i",lengthInPixel);
     QRectF rectangle;
     rectangle.setX(qMax(0, d->offset));
     rectangle.setY(2);
