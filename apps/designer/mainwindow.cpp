@@ -36,12 +36,12 @@
 
 #include "mainwindow.h"
 #include "designerpage.h"
-//#include "scripteditdialog.h"
 #include "sqldatabasedialog.h"
 #include "iteminterface.h"
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 #include "namevalidator.h"
+#include "qruler.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -797,7 +797,8 @@ void mainWindow::currentChanged( int index )
 	return;
     }
     actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
-    m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
+    if (dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ))))
+	m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
 }
 
 void mainWindow::itemMoved( QObject *movedItem, QPointF movedFromPosition )
@@ -851,9 +852,39 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 	dynamic_cast<Report::PageInterface*>( gw->scene() )->setObjectName( nameOfPage );
 	dynamic_cast<Report::PageInterface*>( gw->scene() )->setContextMenu( &m_contextMenu );
 
+	QGridLayout *gridLayout = new QGridLayout(this);
+	gridLayout->setMargin(0);
+	gridLayout->setSpacing(0);
 
-	int m_index = m_tw->insertTab( afterIndex, ( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
-	m_tw->setCurrentWidget(( QWidget* ) gw );
+	qDebug("1");
+	// Ruler
+	QRuler * m_horizontalRuler = new QRuler(this, Qt::Horizontal);
+	m_horizontalRuler->setShowMousePosition(true);
+	m_horizontalRuler->setUnit(QUnit());
+	m_horizontalRuler->setRulerLength(gw->width());
+	QRuler * m_verticalRuler = new QRuler(this, Qt::Vertical);
+	m_verticalRuler->setShowMousePosition(true);
+	m_verticalRuler->setUnit(QUnit());
+	m_verticalRuler->setRulerLength(gw->height());
+
+	qDebug("2");
+	QFrame * frame = new QFrame(this);
+	frame->setLayout(gridLayout);
+
+	qDebug("3");
+//	gridLayout->addWidget(m_horizontalRuler->tabChooser(), 0, 0);
+	gridLayout->addWidget(m_horizontalRuler, 0, 1);
+	gridLayout->addWidget(m_verticalRuler, 1, 0);
+	gridLayout->addWidget(gw, 1, 1);
+
+	qDebug("4");
+	int m_index = m_tw->insertTab( afterIndex, frame, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
+	qDebug("4_5");
+	m_tw->setCurrentWidget( frame );
+
+	qDebug("5");
+//	int m_index = m_tw->insertTab( afterIndex, ( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
+//	m_tw->setCurrentWidget(( QWidget* ) gw );
 
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 
@@ -863,7 +894,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 	setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 
 	if ( (STATIC_TABS + 1) == m_tw->count() )
-		m_pe->setObject( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
+	    m_pe->setObject( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
 
 	m_objectModel.setRootObject( m_report );
 

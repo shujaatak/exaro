@@ -44,6 +44,7 @@ private:
     void processBand(BandInterface * band);
     void initBands();
 //    void processDataset(QString datasetName, BandInterface * band = 0);
+    void prepareDatasets();
     void processDataset(DataSet * dtst);
     bool canPaint(BandInterface * band);
     void processPage();

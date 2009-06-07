@@ -62,6 +62,13 @@ void PaintInterface::processPage()
 
     initBands();
 
+    /// populate datasets
+    foreach(Report::DataSet * dtst, m_report->datasets())
+    {
+	if (!dtst->isPopulated()) /// dataset can be already populated manualy in script
+	    dtst->populate();
+    }
+
     m_currentPageNumber = 1;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, 1), QScriptValue::ReadOnly);
 
@@ -266,6 +273,7 @@ void PaintInterface::postprocessCurrentPage()
 
 }
 
+
 void PaintInterface::processDataset(DataSet * dtst)
 {
     qDebug("PaintInterface::processDataset = %s", qPrintable(dtst->objectName()));
@@ -346,7 +354,7 @@ void PaintInterface::processDataset(DataSet * dtst)
     /// making item group for dataset iteration
     BandList  currentGroup;
     foreach(BandInterface * band, listTop)
-	if (band->dataset() == dtst->objectName() || childrenDatasets.contains( band->dataset() ) )
+	if (band->dataset() == dtst->objectName() /*|| childrenDatasets.contains( band->dataset() )*/ )
 	    currentGroup.append(band);
 
     dtst->first();
