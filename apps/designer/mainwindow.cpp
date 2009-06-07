@@ -17,7 +17,6 @@
 #include <QDockWidget>
 #include <QSettings>
 #include <QDir>
-#include <QGraphicsView>
 #include <QToolBox>
 #include <QDate>
 #include <QDateTime>
@@ -41,7 +40,7 @@
 #include "aboutdialog.h"
 #include "optionsdialog.h"
 #include "namevalidator.h"
-#include "qruler.h"
+#include "pageview.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -550,22 +549,22 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 	    return;
 	}
 
-	QGraphicsView * gw = 0;
+	PageView * pageView = 0;
 
 	for ( int p = 0; p < m_report->children().size();p++ )
 	{
 		if ( !dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) )
 			continue;
 		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
-		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
-		int lastTab = m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
+		pageView = new PageView ( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) , this);
+		int lastTab = m_tw->addTab(( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
 	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
 		foreach (QObject * obj, m_report->children()[p]->children())
 			connectItem( obj );
-		setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
-		gw->centerOn( 0, 0 );
+		setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
+		pageView->view()->centerOn( 0, 0 );
 		m_tw->setCurrentIndex(lastTab);
 		zoomWYSIWYG();
 	}
@@ -703,32 +702,32 @@ void mainWindow::saveReportAs()
 
 void mainWindow::zoomIn()
 {
-	if ( dynamic_cast<QGraphicsView*>( m_tw->currentWidget() ) )
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->scale( 1.1, 1.1 );
+	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale( 1.1, 1.1 );
 }
 
 void mainWindow::zoomOut()
 {
-	if ( dynamic_cast<QGraphicsView*>( m_tw->currentWidget() ) )
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->scale( 0.9, 0.9 );
+	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale( 0.9, 0.9 );
 }
 
 void mainWindow::zoomWYSIWYG()
 {
-	if ( dynamic_cast<QGraphicsView*>( m_tw->currentWidget() ) )
+	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
 	{
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->resetMatrix();
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->scale(( double )QDesktopWidget().screen()->width() / ( screen_widthMM*10 ), ( double )QDesktopWidget().screen()->height() / ( screen_heightMM*10 ) );
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->centerOn( 0, 0 );
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale(( double )QDesktopWidget().screen()->width() / ( screen_widthMM*10 ), ( double )QDesktopWidget().screen()->height() / ( screen_heightMM*10 ) );
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
 	}
 }
 
 void mainWindow::zoomOriginal()
 {
-	if ( dynamic_cast<QGraphicsView*>( m_tw->currentWidget() ) )
+	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
 	{
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->resetMatrix();
-		dynamic_cast<QGraphicsView*>( m_tw->currentWidget() )->centerOn( 0, 0 );
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
 	}
 }
 
@@ -797,8 +796,8 @@ void mainWindow::currentChanged( int index )
 	return;
     }
     actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
-    if (dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ))))
-	m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene() ) );
+    if (dynamic_cast<PageView*>( m_tw->widget( index )))
+	m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<PageView*>( m_tw->widget( index ) )->scene() ) );
 }
 
 void mainWindow::itemMoved( QObject *movedItem, QPointF movedFromPosition )
@@ -822,13 +821,13 @@ void mainWindow::itemGeometryChanged( QObject* object, QRectF newGeometry, QRect
 
 int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QString pageName )
 {
-	QGraphicsView * gw = 0;
+	PageView * pageView = 0;
 
 	if ( 1 == m_reportEngine.pages().count() ) {
 	    if (!page)
-		gw = new QGraphicsView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) );
+		pageView = new PageView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) , this );
 	    else
-		gw = new QGraphicsView( static_cast<QGraphicsScene*>(page) );
+		pageView = new PageView( static_cast<QGraphicsScene*>(page), this );
 	    }
 	else
 	{
@@ -847,54 +846,23 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 			gw->setPalette(pal);
 			gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
 	*/
-	QString nameOfPage = pageName.isNull() ? Report::ReportEngine::uniqueName( dynamic_cast<Report::PageInterface*>( gw->scene() )->metaObject()->className() , m_report ) : pageName;
+	QString nameOfPage = pageName.isNull() ? Report::ReportEngine::uniqueName( dynamic_cast<Report::PageInterface*>( pageView->scene() )->metaObject()->className() , m_report ) : pageName;
 
-	dynamic_cast<Report::PageInterface*>( gw->scene() )->setObjectName( nameOfPage );
-	dynamic_cast<Report::PageInterface*>( gw->scene() )->setContextMenu( &m_contextMenu );
+	dynamic_cast<Report::PageInterface*>( pageView->scene() )->setObjectName( nameOfPage );
+	dynamic_cast<Report::PageInterface*>( pageView->scene() )->setContextMenu( &m_contextMenu );
 
-	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->setMargin(0);
-	gridLayout->setSpacing(0);
-
-	qDebug("1");
-	// Ruler
-	QRuler * m_horizontalRuler = new QRuler(this, Qt::Horizontal);
-	m_horizontalRuler->setShowMousePosition(true);
-	m_horizontalRuler->setUnit(QUnit());
-	m_horizontalRuler->setRulerLength(gw->width());
-	QRuler * m_verticalRuler = new QRuler(this, Qt::Vertical);
-	m_verticalRuler->setShowMousePosition(true);
-	m_verticalRuler->setUnit(QUnit());
-	m_verticalRuler->setRulerLength(gw->height());
-
-	qDebug("2");
-	QFrame * frame = new QFrame(this);
-	frame->setLayout(gridLayout);
-
-	qDebug("3");
-//	gridLayout->addWidget(m_horizontalRuler->tabChooser(), 0, 0);
-	gridLayout->addWidget(m_horizontalRuler, 0, 1);
-	gridLayout->addWidget(m_verticalRuler, 1, 0);
-	gridLayout->addWidget(gw, 1, 1);
-
-	qDebug("4");
-	int m_index = m_tw->insertTab( afterIndex, frame, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
-	qDebug("4_5");
-	m_tw->setCurrentWidget( frame );
-
-	qDebug("5");
-//	int m_index = m_tw->insertTab( afterIndex, ( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
-//	m_tw->setCurrentWidget(( QWidget* ) gw );
+	int m_index = m_tw->insertTab( afterIndex, ( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
+	m_tw->setCurrentWidget(( QWidget* ) pageView );
 
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 
-	connect( dynamic_cast<Report::PageInterface*>( gw->scene() ), SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
-	connect( dynamic_cast<Report::PageInterface*>( gw->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
+	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
 
-	setMagnetActions( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
+	setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
 
 	if ( (STATIC_TABS + 1) == m_tw->count() )
-	    m_pe->setObject( dynamic_cast<Report::PageInterface*>( gw->scene() ) );
+	    m_pe->setObject( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
 
 	m_objectModel.setRootObject( m_report );
 
@@ -909,8 +877,8 @@ void mainWindow::_deletePage_( int index )
     if (index < STATIC_TABS)
 	return;
 
-    if ( dynamic_cast<QGraphicsView*>( m_tw->widget( index ) ) )
-	delete dynamic_cast<QGraphicsView*>( m_tw->widget( index ) )->scene();
+    if ( dynamic_cast<PageView*>( m_tw->widget( index ) ) )
+	delete dynamic_cast<PageView*>( m_tw->widget( index ) )->scene();
     m_tw->removeTab( index );
     actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
     
