@@ -396,7 +396,7 @@ QVariant ItemInterface::datasetField(const QString & dataset, const QString & fi
 		return tr("Query '%1' not found").arg(dataset);
 
 	if (!dtst->value(field).isValid())
-		return tr("Field '%1' not found").arg(dataset);
+		return tr("Field '%1' not found").arg(field);
 
 	return dtst->value(field);
 }
