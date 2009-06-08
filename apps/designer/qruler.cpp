@@ -23,18 +23,10 @@
 
 #include "qruler.h"
 
-//#include "QRuler_p.h"
-
-//#include <klocale.h>
-//#include <kdebug.h>
-//#include <kglobalsettings.h>
-
 #include <QPainter>
 #include <QResizeEvent>
 #include <QMenu>
 #include <QMouseEvent>
-
-//#include <KoViewConverter.h>
 
 // the distance in pixels of a mouse position considered outside the rule
 const int OutsideRulerThreshold = 20;
@@ -1217,5 +1209,3 @@ bool QRuler::removeHotSpot(int id)
     return false;
 }
 
-//#include "QRuler.moc"
-//#include "moc_QRuler.cxx"
