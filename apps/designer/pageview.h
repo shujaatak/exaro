@@ -35,9 +35,15 @@ public:
 
     QGraphicsScene * scene() const;
     QGraphicsView * view() const;
+    qreal zoom();
+
+public slots:
+    void setZoom(qreal zoom);
+    void setZoomFitToPage();
+    void setActiveRange(QRect rect);
 
 protected:
-    virtual void resizeEvent ( QResizeEvent * event );
+//    virtual void resizeEvent ( QResizeEvent * event );
 //    virtual void scrollContentsBy ( int dx, int dy );
 //    virtual void mouseMoveEvent ( QMouseEvent * e );
 
@@ -52,6 +58,8 @@ private:
     QRuler * m_horizontalRuler;
     QRuler * m_verticalRuler;
     QUnit * m_unit;
+    qreal m_zoom;
+    QRect m_range;
 };
 
 class GraphicsView: public QGraphicsView

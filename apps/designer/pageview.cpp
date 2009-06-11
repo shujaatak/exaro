@@ -18,26 +18,24 @@
 #include "QGridLayout"
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsView>
+#include <QDesktopWidget>
 #include <QScrollBar>
 #include <QMouseEvent>
+#include <QTimer>
 #include "qruler.h"
 #include "qunit.h"
 
-/*
-GraphicsView::GraphicsView ( QGraphicsScene * scene, QWidget * parent)
-	:QGraphicsView (scene, parent)
-{
-
-}
-*/
+#define _scale 0.283465  // make scene ratio depend on rules
 
 PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f )
 	: QWidget(parent, f ),
-	m_scene(scene)
+	m_scene(scene),
+	m_zoom(1),
+	m_range(QRect())
 {
     m_view = new GraphicsView ( m_scene, this );
-//    m_unit = new QUnit();
-//    m_unit->
+    m_view->centerOn( 0, 0 );
+    m_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     QGridLayout *gridLayout = new QGridLayout(this);
     gridLayout->setMargin(0);
@@ -46,14 +44,12 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
     m_horizontalRuler = new QRuler(this, Qt::Horizontal);
     m_horizontalRuler->setShowMousePosition(true);
     m_horizontalRuler->setUnit(QUnit(QUnit::Millimeter));
-//    m_horizontalRuler->setRulerLength(m_view->width());
-//    m_horizontalRuler->setActiveRange(200,300/*gw->width()*/);
+    m_horizontalRuler->setRulerLength((qreal)m_scene->width() * m_zoom);
 
     m_verticalRuler = new QRuler(this, Qt::Vertical);
     m_verticalRuler->setShowMousePosition(true);
     m_verticalRuler->setUnit(QUnit(QUnit::Millimeter));
-//    m_verticalRuler->setRulerLength( m_view->height() );
-//    m_verticalRuler->setActiveRange(0, m_view->height() );
+    m_verticalRuler->setRulerLength(  (qreal)m_scene->height()* m_zoom);
 
     setLayout(gridLayout);
 
@@ -62,19 +58,20 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
     gridLayout->addWidget(m_verticalRuler, 1, 0);
     gridLayout->addWidget(m_view , 1, 1);
 
-    //connect ( m_view->horizontalScrollBar() , SIGNAL (valueChanged(int)), m_horizontalRuler, SLOT(setOffset(int) ) );
     connect ( m_view->horizontalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doHorizontalScroll(int) ) );
     connect ( m_view->verticalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doVerticalScroll(int) ) );
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
 
+    QTimer::singleShot(0, this, SLOT ( setZoomFitToPage())) ;
 }
 
+/*
 void PageView::resizeEvent ( QResizeEvent * event )
 {
-    QPoint p = m_view->mapFromScene(m_scene->width(), m_scene->height());
-    m_horizontalRuler->setRulerLength(p.x() );
-    m_verticalRuler->setRulerLength( p.y() );
+    m_horizontalRuler->setRulerLength(m_scene->width() * m_zoom * _scale );
+    m_verticalRuler->setRulerLength(  m_scene->height()* m_zoom * _scale );
 }
+*/
 
 void PageView::mousePositionChanged(QPoint pos)
 {
@@ -82,22 +79,24 @@ void PageView::mousePositionChanged(QPoint pos)
     m_verticalRuler->updateMouseCoordinate(m_view->verticalScrollBar()->value() + pos.y());
 }
 
-/*
-void PageView::mouseMoveEvent ( QMouseEvent * e )
+qreal PageView::zoom()
 {
-    qDebug("mouse ");
-    m_horizontalRuler->updateMouseCoordinate(e->x());
-    m_verticalRuler->updateMouseCoordinate(e->y());
+    return m_zoom;
 }
-*/
 
-/*
-void PageView::scrollContentsBy ( int dx, int dy )
+void PageView::setZoom(qreal zoom)
 {
-    m_horizontalRuler->setOffset(dx);
-    m_verticalRuler->setOffset(dy);
+    m_zoom = zoom;
+    m_view->resetMatrix();
+    m_view->scale(_scale * m_zoom, _scale * m_zoom);
+    m_horizontalRuler->setScale(m_zoom);
+    m_verticalRuler->setScale(m_zoom);
 }
-*/
+
+void PageView::setZoomFitToPage()
+{
+    setZoom( (qreal)(m_view->viewport()->width() - 4) / (qreal)m_scene->width() / _scale ); // 4 = gap
+}
 
 void PageView::doHorizontalScroll(int value)
 {
@@ -118,3 +117,10 @@ QGraphicsView * PageView::view() const
 {
     return (QGraphicsView *)m_view;
 }
+
+void PageView::setActiveRange(QRect rect)
+{
+    m_horizontalRuler->setActiveRange(rect.left(), rect.right() );
+    m_verticalRuler->setActiveRange(rect.top(), rect.bottom() );
+}
+

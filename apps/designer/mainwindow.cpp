@@ -131,7 +131,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( actionZoom_in, SIGNAL( triggered( bool ) ), SLOT( zoomIn() ) );
 	connect( actionZoom_out, SIGNAL( triggered( bool ) ), SLOT( zoomOut() ) );
 	connect( actionZoom_original, SIGNAL( triggered( bool ) ), SLOT( zoomOriginal() ) );
-	connect( actionZoom_WYSIWYG, SIGNAL( triggered( bool ) ), SLOT( zoomWYSIWYG() ) );
 
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( saveReport() ) );
 	connect( actionExecute, SIGNAL( triggered( bool ) ), SLOT( executeReport() ) );
@@ -566,7 +565,6 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
 		pageView->view()->centerOn( 0, 0 );
 		m_tw->setCurrentIndex(lastTab);
-		zoomWYSIWYG();
 	}
 
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
@@ -703,31 +701,34 @@ void mainWindow::saveReportAs()
 void mainWindow::zoomIn()
 {
 	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale( 1.1, 1.1 );
+	    dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoom( dynamic_cast<PageView*>( m_tw->currentWidget() )->zoom() * 1.1);
 }
 
 void mainWindow::zoomOut()
 {
 	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale( 0.9, 0.9 );
+		dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoom( dynamic_cast<PageView*>( m_tw->currentWidget() )->zoom() * 0.9);
 }
 
+/*
 void mainWindow::zoomWYSIWYG()
 {
 	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
 	{
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale(( double )QDesktopWidget().screen()->width() / ( screen_widthMM*10 ), ( double )QDesktopWidget().screen()->height() / ( screen_heightMM*10 ) );
+		//dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->scale(( double )QDesktopWidget().screen()->width() / ( screen_widthMM*10 ), ( double )QDesktopWidget().screen()->height() / ( screen_heightMM*10 ) );
+//	    dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoom(( double )QDesktopWidget().screen()->width() / ( screen_widthMM*10 ) );
 		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
 	}
 }
+*/
 
 void mainWindow::zoomOriginal()
 {
 	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
 	{
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
-		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
+	    //		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
+	    dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoom(1.0);
+	    dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
 	}
 }
 
@@ -865,8 +866,6 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 	    m_pe->setObject( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
 
 	m_objectModel.setRootObject( m_report );
-
-	zoomWYSIWYG();
 
 	return m_index;
 }

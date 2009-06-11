@@ -132,7 +132,7 @@ private:
 
 class QRulerPrivate {
 public:
-    QRulerPrivate(QRuler *parent, /*const KoViewConverter *vc,*/ Qt::Orientation orientation);
+    QRulerPrivate(QRuler *parent, qreal scale, Qt::Orientation orientation);
     ~QRulerPrivate();
 
     void emitTabChanged();
@@ -203,6 +203,7 @@ public:
     int hotSpotIndex(const QPoint & pos);
 
     QFont m_font;
+    qreal m_scale;
 
     friend class VerticalPaintingStrategy;
     friend class HorizontalPaintingStrategy;
@@ -252,7 +253,7 @@ public:
      * @param orientation the orientation of the ruler
      * @param viewConverter the view converter used to convert from point to pixel
      */
-    QRuler(QWidget* parent, Qt::Orientation orientation/*, const KoViewConverter* viewConverter*/);
+    QRuler(QWidget* parent, Qt::Orientation orientation, qreal  scale = 1/*, const KoViewConverter* viewConverter*/);
     ~QRuler();
 
     /// For paragraphs each tab definition is represented by this struct.
@@ -407,6 +408,8 @@ public slots:
      * A hotspot is a position on the ruler that the user can manipulate by dragging.
      */
     bool removeHotSpot(int id);
+
+    void setScale(qreal scale);
 
 signals:
     /**
