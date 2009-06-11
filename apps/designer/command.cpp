@@ -16,9 +16,9 @@
 
 #include "command.h"
 #include <QGraphicsScene>
-#include <QGraphicsView>
 #include <QTimer>
 #include "layoutmanager.h"
+#include "pageview.h"
 
 AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
 {
@@ -35,7 +35,7 @@ AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, 
 void AddCommand::redo()
 {
 	m_canUndo=false;
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject * m_parent = dynamic_cast<Report::ItemInterface*>( m_page->itemAt( m_pos ) ) ? dynamic_cast<QObject*>( m_page->itemAt( m_pos ) )
@@ -87,7 +87,7 @@ void AddCommand::undo()
 {
 	if (!m_canUndo)
 		return;
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
@@ -125,7 +125,7 @@ void AddDomObject::undo()
 	if (!m_canUndo)
 		return;
 
-	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( page );
 
 	QObject *m_parent;
@@ -156,7 +156,7 @@ void AddDomObject::undo()
 
 void AddDomObject::redo() 
 {
-	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( page );
 
 	QObject *m_parent;
@@ -283,7 +283,7 @@ MoveCommand::MoveCommand( Report::ItemInterface *item, const QPointF &oldPos, ma
 
 void MoveCommand::redo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
@@ -296,7 +296,7 @@ void MoveCommand::redo()
 
 void MoveCommand::undo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	Report::ItemInterface *m_item = dynamic_cast<Report::ItemInterface *>( findObject( m_page, m_itemName ) );
@@ -334,7 +334,7 @@ DelCommand::DelCommand( Report::ItemInterface* item, mainWindow* mw )
 void DelCommand::redo()
 {
 	qDebug("DelCommand::redo()");
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *m_parent;
@@ -371,7 +371,7 @@ void DelCommand::redo()
 
 void DelCommand::undo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *m_parent;
@@ -438,7 +438,7 @@ PropertyChangeCommand::PropertyChangeCommand( QObject * obj, const QString & pro
 
 void PropertyChangeCommand::redo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *item;
@@ -458,7 +458,7 @@ void PropertyChangeCommand::redo()
 
 void PropertyChangeCommand::undo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *item;
@@ -507,7 +507,7 @@ GeometryChangeCommand::GeometryChangeCommand( QObject* obj, QRectF newGeometry, 
 
 void GeometryChangeCommand::redo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *item;
@@ -531,7 +531,7 @@ void GeometryChangeCommand::redo()
 
 void GeometryChangeCommand::undo()
 {
-	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
 	QObject *item;
@@ -593,7 +593,7 @@ RemovePageCommand::RemovePageCommand( mainWindow * mw, int index )
 void RemovePageCommand::redo()
 {
     qDebug("RemovePageCommand::redo()");
-        Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<QGraphicsView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->scene();
+	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
         Q_ASSERT( m_page );
 
         QDomDocument doc;

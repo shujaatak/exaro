@@ -102,7 +102,7 @@ protected slots:
 	void zoomIn();
 	void zoomOut();
 	void zoomOriginal();
-	void zoomWYSIWYG();
+//	void zoomWYSIWYG();
 	void saveReport();
 	void saveReportAs();
 	void openReport(bool notAsk = false);

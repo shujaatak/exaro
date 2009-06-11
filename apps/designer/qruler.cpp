@@ -112,10 +112,10 @@ QRectF HorizontalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPaint
     rectangle.setHeight( d->ruler->height() - 6.0);
     QRectF activeRangeRectangle;
     activeRangeRectangle.setX(qMax(rectangle.x() + 1,
-          /*d->viewConverter->documentToViewX(*/d->activeRangeStart/*)*/ + d->offset));
+	  d->m_scale * (d->activeRangeStart) + d->offset));
     activeRangeRectangle.setY(rectangle.y() + 1);
     activeRangeRectangle.setRight(qMin(rectangle.right() - 1,
-          /*d->viewConverter->documentToViewX(*/d->activeRangeEnd/*)*/ + d->offset));
+	  d->m_scale * (d->activeRangeEnd) + d->offset));
     activeRangeRectangle.setHeight(rectangle.height() - 2);
 
     painter.setPen(d->ruler->palette().color(QPalette::Mid));
@@ -127,12 +127,12 @@ QRectF HorizontalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPaint
     if(d->showSelectionBorders) {
         // Draw first selection border
         if(d->firstSelectionBorder > 0) {
-            qreal border = /*d->viewConverter->documentToViewX(*/d->firstSelectionBorder/*)*/ + d->offset;
+	    qreal border = d->m_scale * (d->firstSelectionBorder) + d->offset;
             painter.drawLine(QPointF(border, rectangle.y() + 1), QPointF(border, rectangle.bottom() - 1));
         }
         // Draw second selection border
         if(d->secondSelectionBorder > 0) {
-            qreal border = /*d->viewConverter->documentToViewX(*/d->secondSelectionBorder/*)*/ + d->offset;
+	    qreal border = d->m_scale * (d->secondSelectionBorder) + d->offset;
             painter.drawLine(QPointF(border, rectangle.y() + 1), QPointF(border, rectangle.bottom() - 1));
         }
     }
@@ -197,7 +197,7 @@ void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPaint
 {
     qreal numberStep = d->numberStepForUnit(); // number step in unit
     QRectF activeRangeRectangle;
-    int numberStepPixel = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(numberStep))/*)*/;
+    int numberStepPixel = qRound(d->m_scale * (d->unit.fromUserValue(numberStep)));
     const bool adjustMillimeters = d->unit.indexInList() == QUnit::Millimeter;
     QFontMetrics fontMetrics(d->m_font);
 
@@ -229,8 +229,8 @@ void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPaint
     const qreal lengthInUnit = d->unit.toUserValue(d->rulerLength);
     const qreal hackyLength = lengthInUnit - fmod(lengthInUnit, numberStep);
     if(d->rightToLeft) {
-        start -= int(/*d->viewConverter->documentToViewX(*/fmod(d->rulerLength,
-                    d->unit.fromUserValue(numberStep)))/*)*/;
+	start -= int(d->m_scale * (fmod(d->rulerLength,
+		    d->unit.fromUserValue(numberStep))));
     }
 
     int stepCount = (start / numberStepPixel) + 1;
@@ -244,12 +244,12 @@ void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPaint
         painter.translate(d->offset, 0);
 
     const int len = qRound(rectangle.width()) + start;
-    int nextStep = qRound(/*d->viewConverter->documentToViewX(*/
-        d->unit.fromUserValue(numberStep * stepCount))/*)*/;
-    int nextHalfStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-        numberStep * 0.5 * halfStepCount))/*)*/;
-    int nextQuarterStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-        numberStep * 0.25 * quarterStepCount))/*)*/;
+    int nextStep = qRound(d->m_scale * (
+	d->unit.fromUserValue(numberStep * stepCount)));
+    int nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+	numberStep * 0.5 * halfStepCount)));
+    int nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+	numberStep * 0.25 * quarterStepCount)));
 
     for(int i = start; i < len; ++i) {
         pos = i - start;
@@ -270,33 +270,33 @@ void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPaint
             painter.drawText(QPointF(x, rectangle.bottom() -6), numberText);
 
             ++stepCount;
-            nextStep = qRound(/*d->viewConverter->documentToViewX(*/
-                d->unit.fromUserValue(numberStep * stepCount))/*)*/;
+	    nextStep = qRound(d->m_scale * (
+		d->unit.fromUserValue(numberStep * stepCount)));
             ++halfStepCount;
-            nextHalfStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-                numberStep * 0.5 * halfStepCount))/*)*/;
+	    nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.5 * halfStepCount)));
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         }
         else if(i == nextHalfStep) {
             if(pos != 0)
                 painter.drawLine(QPointF(pos, rectangle.bottom()-1), QPointF(pos, rectangle.bottom() - 6));
 
             ++halfStepCount;
-            nextHalfStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-                numberStep * 0.5 * halfStepCount))/*)*/;
+	    nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.5 * halfStepCount)));
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         }
         else if(i == nextQuarterStep) {
             if(pos != 0)
                 painter.drawLine(QPointF(pos, rectangle.bottom()-1), QPointF(pos, rectangle.bottom() - 4));
 
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewX(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         }
     }
 
@@ -308,7 +308,7 @@ void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPaint
 	if (d->selected == QRulerPrivate ::None && d->showMousePosition && mouseCoord > 0 && mouseCoord < rectangle.width() )
             painter.drawLine(QPointF(mouseCoord, top), QPointF(mouseCoord, bottom));
 	foreach (const QRulerPrivate ::HotSpotData & hp, d->hotspots) {
-            const qreal x = /*d->viewConverter->documentToViewX(*/hp.position/*)*/ + d->offset;
+	    const qreal x = d->m_scale * (hp.position) + d->offset;
             painter.drawLine(QPointF(x, top), QPointF(x, bottom));
         }
     }
@@ -328,7 +328,7 @@ void HorizontalPaintingStrategy::drawIndents(const QRulerPrivate *d, QPainter &p
     else
         x = d->activeRangeStart + d->firstLineIndent + d->paragraphIndent;
     // convert and use the +0.5 to go to nearest integer so that the 0.5 added below ensures sharp lines
-    x = int(/*d->viewConverter->documentToViewX(*/x/*)*/ + qMax(0, d->offset) +0.5);
+    x = int(d->m_scale * (x) + qMax(0, d->offset) +0.5);
     polygon << QPointF(x+6.5, 0.5)
         << QPointF(x+0.5, 8.5)
         << QPointF(x-5.5, 0.5)
@@ -341,7 +341,7 @@ void HorizontalPaintingStrategy::drawIndents(const QRulerPrivate *d, QPainter &p
     else
         x = d->activeRangeStart + d->paragraphIndent;
     // convert and use the +0.5 to go to nearest integer so that the 0.5 added below ensures sharp lines
-    x = int(/*d->viewConverter->documentToViewX(*/x/*)*/ + qMax(0, d->offset) +0.5);
+    x = int(d->m_scale * (x) + qMax(0, d->offset) +0.5);
     const int bottom = d->ruler->height();
     polygon.clear();
     polygon << QPointF(x+6.5, bottom - 0.5)
@@ -353,10 +353,10 @@ void HorizontalPaintingStrategy::drawIndents(const QRulerPrivate *d, QPainter &p
     // Draw end-indent or paragraph indent if mode is rightToLeft
     qreal diff;
     if (d->rightToLeft)
-        diff = /*d->viewConverter->documentToViewX(*/d->activeRangeEnd
-                     - d->paragraphIndent/*)*/ + qMax(0, d->offset) - x;
+	diff = d->m_scale * (d->activeRangeEnd
+		     - d->paragraphIndent) + qMax(0, d->offset) - x;
     else
-        diff = /*d->viewConverter->documentToViewX(*/d->activeRangeEnd - d->endIndent/*)*/
+	diff = d->m_scale * (d->activeRangeEnd - d->endIndent)
                 + qMax(0, d->offset) - x;
     polygon.translate(diff, 0);
     painter.drawPolygon(polygon);
@@ -377,7 +377,7 @@ QSize HorizontalPaintingStrategy::sizeHint(const QRulerPrivate *d)
 
 QRectF VerticalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPainter &painter)
 {
-    lengthInPixel = /*d->viewConverter->documentToViewY(*/d->rulerLength/*)*/;
+    lengthInPixel = d->m_scale * (d->rulerLength);
     QRectF rectangle;
     rectangle.setX(0);
     rectangle.setY(qMax(0, d->offset));
@@ -387,10 +387,10 @@ QRectF VerticalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPainter
     QRectF activeRangeRectangle;
     activeRangeRectangle.setX(rectangle.x() + 1);
     activeRangeRectangle.setY(qMax(rectangle.y() + 1,
-        /*d->viewConverter->documentToViewY(*/d->activeRangeStart/*)*/ + d->offset));
+	d->m_scale * (d->activeRangeStart) + d->offset));
     activeRangeRectangle.setWidth(rectangle.width() - 2);
     activeRangeRectangle.setBottom(qMin(rectangle.bottom() - 1,
-        /*d->viewConverter->documentToViewY(*/d->activeRangeEnd/*)*/ + d->offset));
+	d->m_scale * (d->activeRangeEnd) + d->offset));
 
     painter.setPen(d->ruler->palette().color(QPalette::Mid));
     painter.drawRect(rectangle);
@@ -401,12 +401,12 @@ QRectF VerticalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPainter
     if(d->showSelectionBorders) {
         // Draw first selection border
         if(d->firstSelectionBorder > 0) {
-            qreal border = /*d->viewConverter->documentToViewY(*/d->firstSelectionBorder/*)*/ + d->offset;
+	    qreal border = d->m_scale * (d->firstSelectionBorder) + d->offset;
             painter.drawLine(QPointF(rectangle.x() + 1, border), QPointF(rectangle.right() - 1, border));
         }
         // Draw second selection border
         if(d->secondSelectionBorder > 0) {
-            qreal border = /*d->viewConverter->documentToViewY(*/d->secondSelectionBorder/*)*/ + d->offset;
+	    qreal border = d->m_scale * (d->secondSelectionBorder) + d->offset;
             painter.drawLine(QPointF(rectangle.x() + 1, border), QPointF(rectangle.right() - 1, border));
         }
     }
@@ -417,7 +417,7 @@ QRectF VerticalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPainter
 void VerticalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPainter &painter, const QRectF &rectangle)
 {
     qreal numberStep = d->numberStepForUnit(); // number step in unit
-    int numberStepPixel = qRound(/*d->viewConverter->documentToViewY(*/ d->unit.fromUserValue(numberStep))/*)*/;
+    int numberStepPixel = qRound(d->m_scale * ( d->unit.fromUserValue(numberStep)));
     if (numberStepPixel <= 0)
         return;
 
@@ -455,12 +455,12 @@ void VerticalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPainter
         painter.translate(0, d->offset);
 
     const int len = qRound(rectangle.height()) + start;
-    int nextStep = qRound(/*d->viewConverter->documentToViewY(*/
-        d->unit.fromUserValue(numberStep * stepCount))/*)*/;
-    int nextHalfStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-        numberStep * 0.5 * halfStepCount))/*)*/;
-    int nextQuarterStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-        numberStep * 0.25 * quarterStepCount))/*)*/;
+    int nextStep = qRound(d->m_scale * (
+	d->unit.fromUserValue(numberStep * stepCount)));
+    int nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+	numberStep * 0.5 * halfStepCount)));
+    int nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+	numberStep * 0.25 * quarterStepCount)));
 
     int pos = 0;
     for(int i = start; i < len; ++i) {
@@ -481,31 +481,31 @@ void VerticalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPainter
             painter.restore();
 
             ++stepCount;
-            nextStep = qRound(/*d->viewConverter->documentToViewY(*/
-                d->unit.fromUserValue(numberStep * stepCount))/*)*/;
+	    nextStep = qRound(d->m_scale * (
+		d->unit.fromUserValue(numberStep * stepCount)));
             ++halfStepCount;
-            nextHalfStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-                numberStep * 0.5 * halfStepCount))/*)*/;
+	    nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.5 * halfStepCount)));
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         } else if(i == nextHalfStep) {
             if(pos != 0)
                 painter.drawLine(QPointF(rectangle.right() - 6, pos), QPointF(rectangle.right() - 1, pos));
 
             ++halfStepCount;
-            nextHalfStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-                numberStep * 0.5 * halfStepCount))/*)*/;
+	    nextHalfStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.5 * halfStepCount)));
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         } else if(i == nextQuarterStep) {
             if(pos != 0)
                 painter.drawLine(QPointF(rectangle.right() - 4, pos), QPointF(rectangle.right() - 1, pos));
 
             ++quarterStepCount;
-            nextQuarterStep = qRound(/*d->viewConverter->documentToViewY(*/d->unit.fromUserValue(
-                numberStep * 0.25 * quarterStepCount))/*)*/;
+	    nextQuarterStep = qRound(d->m_scale * (d->unit.fromUserValue(
+		numberStep * 0.25 * quarterStepCount)));
         }
     }
 
@@ -517,7 +517,7 @@ void VerticalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPainter
 	if (d->selected == QRulerPrivate ::None && d->showMousePosition && mouseCoord > 0 && mouseCoord < rectangle.height() )
             painter.drawLine(QPointF(left, mouseCoord), QPointF(right, mouseCoord));
 	foreach (const QRulerPrivate ::HotSpotData & hp, d->hotspots) {
-            const qreal y = /*d->viewConverter->documentToViewY(*/hp.position/*)*/ + d->offset;
+	    const qreal y = d->m_scale * (hp.position) + d->offset;
             painter.drawLine(QPointF(left, y), QPointF(right, y));
         }
     }
@@ -549,8 +549,8 @@ void HorizontalDistancesPaintingStrategy::drawDistanceLine(const QRulerPrivate *
     painter.setPen(d->ruler->palette().color(QPalette::Text));
     painter.setBrush(d->ruler->palette().color(QPalette::Text));
 
-    QLineF line(QPointF(/*d->viewConverter->documentToViewX(*/start/*)*/, 0),
-            QPointF(/*d->viewConverter->documentToViewX(*/end/*)*/, 0));
+    QLineF line(QPointF(d->m_scale * (start), 0),
+	    QPointF(d->m_scale * (end), 0));
     QPointF midPoint = line.pointAt(0.5);
 
     // Draw the label text
@@ -558,7 +558,7 @@ void HorizontalDistancesPaintingStrategy::drawDistanceLine(const QRulerPrivate *
     font.setPointSize(6);
     QFontMetrics fontMetrics(font);
     QString label = d->unit.toUserStringValue(
-            /*d->viewConverter->viewToDocumentX(*/line.length())/*)*/ + ' ' + QUnit::unitName(d->unit);
+	    d->m_scale * (line.length())) + ' ' + QUnit::unitName(d->unit);
     QPointF labelPosition = QPointF(midPoint.x() - fontMetrics.width(label)/2,
             midPoint.y() + fontMetrics.ascent()/2);
     painter.setFont(font);
@@ -604,10 +604,10 @@ void HorizontalDistancesPaintingStrategy::drawMeasurements(const QRulerPrivate *
     }
 }
 
-QRulerPrivate ::QRulerPrivate (QRuler *parent, /*const KoViewConverter *vc,*/ Qt::Orientation o)
+QRulerPrivate ::QRulerPrivate (QRuler *parent, qreal scale, Qt::Orientation o)
     : unit(QUnit(QUnit::Point)),
     orientation(o),
-    /*viewConverter(vc),*/
+    m_scale(scale),
     offset(0),
     rulerLength(0),
     activeRangeStart(0),
@@ -671,21 +671,21 @@ qreal QRulerPrivate ::doSnapping(const qreal value) const
 QRulerPrivate ::Selection QRulerPrivate ::selectionAtPosition(const QPoint & pos, int *selectOffset ) {
     const int height = ruler->height();
     if (rightToLeft) {
-        int x = int(/*viewConverter->documentToViewX(*/activeRangeEnd - firstLineIndent - paragraphIndent/*)*/ + offset);
+	int x = int(m_scale * (activeRangeEnd - firstLineIndent - paragraphIndent) + offset);
         if (pos.x() >= x - 8 && pos.x() <= x +8 && pos.y() < height / 2) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
 	    return QRulerPrivate ::FirstLineIndent;
         }
 
-        x = int(/*viewConverter->documentToViewX(*/activeRangeEnd - paragraphIndent/*)*/ + offset);
+	x = int(m_scale * (activeRangeEnd - paragraphIndent) + offset);
         if (pos.x() >= x - 8 && pos.x() <= x +8 && pos.y() > height / 2) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
 	    return QRulerPrivate ::ParagraphIndent;
         }
 
-        x = int(/*viewConverter->documentToViewX(*/activeRangeStart + endIndent/*)*/ + offset);
+	x = int(m_scale * (activeRangeStart + endIndent) + offset);
         if (pos.x() >= x - 8 && pos.x() <= x + 8) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
@@ -693,21 +693,21 @@ QRulerPrivate ::Selection QRulerPrivate ::selectionAtPosition(const QPoint & pos
         }
     }
     else {
-        int x = int(/*viewConverter->documentToViewX(*/activeRangeStart + firstLineIndent + paragraphIndent/*)*/ + offset);
+	int x = int(m_scale * (activeRangeStart + firstLineIndent + paragraphIndent) + offset);
         if (pos.x() >= x -8 && pos.x() <= x + 8 && pos.y() < height / 2) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
 	    return QRulerPrivate ::FirstLineIndent;
         }
 
-        x = int(/*viewConverter->documentToViewX(*/activeRangeStart + paragraphIndent/*)*/ + offset);
+	x = int(m_scale * (activeRangeStart + paragraphIndent) + offset);
         if (pos.x() >= x - 8 && pos.x() <= x + 8 && pos.y() > height/2) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
 	    return QRulerPrivate ::ParagraphIndent;
         }
 
-        x = int(/*viewConverter->documentToViewX(*/activeRangeEnd - endIndent/*)*/ + offset);
+	x = int(m_scale * (activeRangeEnd - endIndent) + offset);
         if (pos.x() >= x - 8 && pos.x() <= x + 8) {
             if (selectOffset)
                 *selectOffset = x - pos.x();
@@ -722,9 +722,9 @@ int QRulerPrivate ::hotSpotIndex(const QPoint & pos) {
     for(int counter = 0; counter < hotspots.count(); counter++) {
         bool hit;
         if (orientation == Qt::Horizontal)
-            hit = qAbs(/*viewConverter->documentToViewX(*/hotspots[counter].position/*)*/ - pos.x() + offset) < 3;
+	    hit = qAbs(m_scale * (hotspots[counter].position) - pos.x() + offset) < 3;
         else
-            hit = qAbs(/*viewConverter->documentToViewY(*/hotspots[counter].position/*)*/ - pos.y() + offset) < 3;
+	    hit = qAbs(m_scale * (hotspots[counter].position) - pos.y() + offset) < 3;
 
         if (hit)
             return counter;
@@ -742,9 +742,9 @@ void QRulerPrivate ::emitTabChanged()
 }
 */
 
-QRuler::QRuler(QWidget* parent, Qt::Orientation orientation/*, const KoViewConverter* viewConverter*/)
+QRuler::QRuler(QWidget* parent, Qt::Orientation orientation, qreal  scale /*, const KoViewConverter* viewConverter*/)
   : QWidget(parent)
-  , d( new QRulerPrivate ( this/*, viewConverter*/, orientation) )
+  , d( new QRulerPrivate ( this, scale, orientation) )
 {
     setMouseTracking( true );
 }
@@ -952,10 +952,10 @@ void QRuler::mousePressEvent ( QMouseEvent* ev )
 //        int x;
 //        foreach (const Tab & t, d->tabs) {
 //            if (d->rightToLeft)
-//                x = int(/*d->viewConverter->documentToViewX(*/d->activeRangeEnd - t.position/*)*/
+//                x = int(d->m_scale * (d->activeRangeEnd - t.position)
 //                        + d->offset);
 //            else
-//                x = int(/*d->viewConverter->documentToViewX(*/d->activeRangeStart + t.position/*)*/
+//                x = int(d->m_scale * (d->activeRangeStart + t.position)
 //                        + d->offset);
 //            if (pos.x() >= x-6 && pos.x() <= x+6) {
 //		d->selected = QRulerPrivate ::Tab;
@@ -980,7 +980,7 @@ void QRuler::mousePressEvent ( QMouseEvent* ev )
 
     if (/*d->showTabs && */d->selected == QRulerPrivate ::None) {
         // still haven't found something so let assume the user wants to add a tab
-        qreal tabpos = /*d->viewConverter->viewToDocumentX(*/pos.x() - d->offset/*)*/
+	qreal tabpos = d->m_scale * (pos.x() - d->offset)
                     - d->activeRangeStart;
 //        Tab t = {tabpos, d->tabChooser->type()};
 //        d->tabs.append(t);
@@ -1034,10 +1034,10 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
     case QRulerPrivate ::FirstLineIndent:
         if (d->rightToLeft)
             d->firstLineIndent = d->activeRangeEnd - d->paragraphIndent -
-                /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset - d->offset/*)*/;
+		d->m_scale * (pos.x() + d->selectOffset - d->offset);
         else
-            d->firstLineIndent = /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset
-                - d->offset/*)*/ - d->activeRangeStart - d->paragraphIndent;
+	    d->firstLineIndent = d->m_scale * (pos.x() + d->selectOffset
+		- d->offset) - d->activeRangeStart - d->paragraphIndent;
         if( ! (ev->modifiers() & Qt::ShiftModifier)) {
             d->firstLineIndent = d->doSnapping(d->firstLineIndent);
             d->paintingStrategy = d->normalPaintingStrategy;
@@ -1051,10 +1051,10 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
     case QRulerPrivate ::ParagraphIndent:
         if (d->rightToLeft)
             d->paragraphIndent = d->activeRangeEnd -
-                /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset - d->offset/*)*/;
+		d->m_scale * (pos.x() + d->selectOffset - d->offset);
         else
-	    d->paragraphIndent = /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset
-		- d->offset/*)*/ - d->activeRangeStart;
+	    d->paragraphIndent = d->m_scale * (pos.x() + d->selectOffset
+		- d->offset) - d->activeRangeStart;
         if( ! (ev->modifiers() & Qt::ShiftModifier)) {
             d->paragraphIndent = d->doSnapping(d->paragraphIndent);
             d->paintingStrategy = d->normalPaintingStrategy;
@@ -1071,11 +1071,11 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
         break;
     case QRulerPrivate ::EndIndent:
         if (d->rightToLeft)
-            d->endIndent = /*d->viewConverter->viewToDocumentX(*/pos.x()
-                 + d->selectOffset - d->offset/*)*/ - d->activeRangeStart;
+	    d->endIndent = d->m_scale * (pos.x()
+		 + d->selectOffset - d->offset) - d->activeRangeStart;
         else
-            d->endIndent = d->activeRangeEnd - /*d->viewConverter->viewToDocumentX(*/pos.x()
-                 + d->selectOffset - d->offset/*)*/;
+	    d->endIndent = d->activeRangeEnd - d->m_scale * (pos.x()
+		 + d->selectOffset - d->offset);
         if( ! (ev->modifiers() & Qt::ShiftModifier)) {
             d->endIndent = d->doSnapping(d->endIndent);
             d->paintingStrategy = d->normalPaintingStrategy;
@@ -1102,10 +1102,10 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
 //        }
 //        if (d->rightToLeft)
 //            d->tabs[d->currentIndex].position = d->activeRangeEnd -
-//                /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset - d->offset/*)*/;
+//                d->m_scale * (pos.x() + d->selectOffset - d->offset);
 //        else
-//            d->tabs[d->currentIndex].position = /*d->viewConverter->viewToDocumentX(*/pos.x() + d->selectOffset
-//                - d->offset/*)*/ - d->activeRangeStart;
+//            d->tabs[d->currentIndex].position = d->m_scale * (pos.x() + d->selectOffset
+//                - d->offset) - d->activeRangeStart;
 //        if( ! (ev->modifiers() & Qt::ShiftModifier))
 //            d->tabs[d->currentIndex].position = d->doSnapping(d->tabs[d->currentIndex].position);
 //        if (d->tabs[d->currentIndex].position < 0)
@@ -1128,9 +1128,9 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
     case QRulerPrivate ::HotSpot:
         qreal newPos;
         if (d->orientation == Qt::Horizontal)
-	    newPos= /*d->viewConverter->viewToDocumentX(*/pos.x() - d->offset/*)*/;
+	    newPos= d->m_scale * (pos.x() - d->offset);
         else
-	    newPos= /*d->viewConverter->viewToDocumentY(*/pos.y() - d->offset/*)*/;
+	    newPos= d->m_scale * (pos.y() - d->offset);
         d->hotspots[d->currentIndex].position = newPos;
         emit hotSpotChanged(d->hotspots[d->currentIndex].id, newPos);
         break;
@@ -1209,3 +1209,8 @@ bool QRuler::removeHotSpot(int id)
     return false;
 }
 
+void QRuler::setScale(qreal scale)
+{
+    d->m_scale = scale;
+    update();
+}

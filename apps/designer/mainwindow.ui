@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>896</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -88,7 +88,6 @@
     <addaction name="separator"/>
     <addaction name="actionZoom_in"/>
     <addaction name="actionZoom_out"/>
-    <addaction name="actionZoom_WYSIWYG"/>
     <addaction name="actionZoom_original"/>
     <addaction name="separator"/>
     <addaction name="actionLeft_magnet"/>
@@ -141,7 +140,6 @@
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
    <addaction name="actionZoom_original"/>
-   <addaction name="actionZoom_WYSIWYG"/>
    <addaction name="separator"/>
    <addaction name="actionLeft_magnet"/>
    <addaction name="actionRight_magnet"/>
@@ -455,18 +453,6 @@
   <action name="action_About_eXaro">
    <property name="text">
     <string>&amp;About eXaro</string>
-   </property>
-  </action>
-  <action name="actionZoom_WYSIWYG">
-   <property name="icon">
-    <iconset resource="report.qrc">
-     <normaloff>:/images/zoom-fit-best.png</normaloff>:/images/zoom-fit-best.png</iconset>
-   </property>
-   <property name="text">
-    <string>Zoom WYSIWYG</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+1</string>
    </property>
   </action>
   <action name="actionOpen_template">
