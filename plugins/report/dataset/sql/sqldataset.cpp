@@ -38,7 +38,6 @@ SqlDataset::SqlDataset(QObject *parent)
     m_model = new QSqlQueryModel  (this);
     m_fmodel = new QSortFilterProxyModel(this);
     m_fmodel->setSourceModel(m_model);
-    m_fmodel->setDynamicSortFilter ( true );
 }
 
 
@@ -99,6 +98,7 @@ bool SqlDataset::populate()
 	while (m_model->canFetchMore())
 	    m_model->fetchMore();
     m_isPopulated = ret;
+    m_fmodel->setSourceModel(m_model);
     return ret;
 }
 

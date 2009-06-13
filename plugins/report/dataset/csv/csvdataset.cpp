@@ -40,7 +40,6 @@ CsvDataset::CsvDataset(QObject *parent)
     m_model = new Model (this);
     m_fmodel = new QSortFilterProxyModel(this);
     m_fmodel->setSourceModel(m_model);
-    m_fmodel->setDynamicSortFilter ( true );
 }
 
 
@@ -153,6 +152,7 @@ bool CsvDataset::populate()
 	m_model->setHeaderData(i, Qt::Horizontal, QString("field_%1").arg(i));
 
     m_isPopulated = true;
+    m_fmodel->setSourceModel(m_model);
     return true;
 }
 
