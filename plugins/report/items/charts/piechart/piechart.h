@@ -70,6 +70,9 @@ public:
 	qreal toColorFactor();
 	void setToColorFactor(qreal toColorFactor);
 
+        bool findNegativeValue(QList<ChartInterface::_chartValue> & );
+
+
 private:	
 //	bool m_show3d;
 	bool m_showLabels;

@@ -34,6 +34,9 @@
 #include <QLinearGradient>
 #include "piechart.h"
 
+
+
+
 inline void initMyResource()
 {
 	Q_INIT_RESOURCE(piechart);
@@ -53,6 +56,17 @@ QRectF PieChart::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
+bool PieChart::findNegativeValue(QList<ChartInterface::_chartValue> &valori)
+{
+    // need optimize
+    foreach(ChartInterface::_chartValue cv, valori)
+    {
+            if(cv.value < 0)
+                    return true;
+    }
+    return false;
+}
+
 void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
 
@@ -63,15 +77,39 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	adjustRect(rect);
 
 	QList<ChartInterface::_chartValue> val=values();
+        QVector<qreal> val_prelucrate ;
 	if (!val.size())
 		return;
 
 	qreal suma=0;
+        qreal suma_prelucrata=0;
 	
 	foreach(ChartInterface::_chartValue cv, val)
 	{
 		suma +=cv.value;
 	}
+
+        if(findNegativeValue(val))
+        {               
+                int pos=0;                
+                foreach(ChartInterface::_chartValue cv, val)
+                {
+                        qreal cv_prelucrata;
+                        if(val.value(0).value < val.value(val.size()-1).value)
+                        {
+                            // sorted ascendent                           
+                            cv_prelucrata = cv.value + abs(val.value(0).value)+4;
+                        }
+                        else                            
+                        {                                                        
+                            cv_prelucrata = cv.value + abs(val.value(val.size()-1).value)+3;
+                        }
+                            // sorted descendent
+                        val_prelucrate.append(cv_prelucrata);
+                        suma_prelucrata += val_prelucrate.value(pos);
+                        pos++;
+                }                
+        }
 	painter->setBrush(brush());
 	painter->fillRect(rect,brush());	
 	int unghi_dela=0;
@@ -94,10 +132,14 @@ void PieChart::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 		lg.setSpread(QGradient::ReflectSpread);
 		lg.setColorAt(0, cv.color);		
 		lg.setColorAt(1, QColor(cv.color.red()*m_toColorFactor, cv.color.green()*m_toColorFactor, cv.color.blue()*m_toColorFactor, cv.color.alpha()));			
-		painter->setBrush(lg);
-
+		painter->setBrush(lg);                
 		int pondere;
-		pondere=static_cast<int>((100*cv.value)/suma+0.5);
+                if(findNegativeValue(val))
+                {
+                    pondere=static_cast<int>((100 * val_prelucrate.value(contor-1))/suma_prelucrata+0.5);
+                }
+                else
+                    pondere=static_cast<int>((100*cv.value)/suma+0.5);                
 		int unghi_deschidere;
 		unghi_deschidere=static_cast<int>((pondere*360)/100 +0.5);
 		if(m_showLabels)
