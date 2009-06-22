@@ -31,6 +31,7 @@
 #include <QBrush>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include "reportinterface.h"
 
 #include "detail.h"
 
@@ -39,7 +40,8 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(detail);
 }
 
-Detail::Detail(QGraphicsItem* parent, QObject* parentObject): BandInterface(parent, parentObject)
+Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
+    : BandInterface(parent, parentObject)
 {
 	initMyResource();
 	setResizeFlags(FixedPos | ResizeBottom);
@@ -51,15 +53,36 @@ Detail::~Detail()
 {
 }
 
+bool Detail::prInit(Report::PaintInterface * paintInterface)
+{
+    Report::ItemInterface::prInit(paintInterface);
+    if (!m_joinTo.isEmpty())
+    {
+	Report::BandInterface * band = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
+	if (!band)
+	    return true;
+	connect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
+    }
+    return true;
+}
+
 bool Detail::prData()
 {
     accumulateAgregateValues();
     return true;
 }
 
+
 bool Detail::prReset()
 {
     resetAgregateValues();
+    if (!m_joinTo.isEmpty())
+    {
+	Report::BandInterface * band = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
+	if (!band)
+	    return true;
+	disconnect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
+    }
     return true;
 }
 
@@ -73,6 +96,21 @@ void Detail::setZebra(bool b)
     m_isZebra = b;
 }
 
+QString Detail::joinTo()
+{
+    return m_joinTo;
+}
+
+void Detail::setJoinTo(QString bandName)
+{
+    m_joinTo = bandName;
+}
+
+void Detail::joinToSlot(QObject * item)
+{
+    odd = false;
+    m_paintInterface->processBand(this);
+}
 
 bool Detail::canContain(QObject * object)
 {

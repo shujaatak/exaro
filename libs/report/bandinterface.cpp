@@ -141,7 +141,6 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	m_order = -1;
 	m_indentation = 0;
 	m_dataset = "";
-	m_joinTo = "";
 
 	setHeight(20/UNIT);
 }
@@ -353,16 +352,6 @@ void BandInterface::resetAgregateValues()
 int BandInterface::agregateCounter()
 {
     return m_agregateCounter;
-}
-
-QString BandInterface::joinTo()
-{
-    return m_joinTo;
-}
-
-void BandInterface::setJoinTo(QString bandName)
-{
-    m_joinTo = bandName;
 }
 
 }

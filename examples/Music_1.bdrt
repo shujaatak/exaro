@@ -80,7 +80,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                         <condition type="QString" >[query_0."artist"]</condition>
                         <reprintOnNewPage type="bool" >false</reprintOnNewPage>
                         <resetDetailNumber type="bool" >false</resetDetailNumber>
@@ -163,7 +162,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >1</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                         <condition type="QString" >[query_0."album"]</condition>
                         <reprintOnNewPage type="bool" >true</reprintOnNewPage>
                         <resetDetailNumber type="bool" >true</resetDetailNumber>
@@ -246,9 +244,9 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >2</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                         <dataset type="QString" >query_0</dataset>
                         <zebra type="bool" >true</zebra>
+                        <joinTo type="QString" ></joinTo>
                     </properties>
                     <children>
                         <Memo>
@@ -402,7 +400,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >3</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                         <condition type="QString" >[query_0."album"]</condition>
                         <dataset type="QString" >query_0</dataset>
                     </properties>
@@ -489,7 +486,7 @@
                     <properties>
                         <objectName type="QString" >detail_1</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,669,1798,70</geometry>
+                        <geometry type="QRectF" >150,669,1798,56</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >0</frame>
                         <pen type="QPen" >
@@ -507,63 +504,23 @@
                             <width type="int" >0</width>
                         </pen>
                         <brush type="QBrush" >
-                            <color type="QColor" >255,0,0,255</color>
+                            <color type="QColor" >250,47,6,255</color>
                             <style type="int" >1</style>
                             <texture type="QPixmap" ></texture>
                         </brush>
                         <backgroundBrush type="QBrush" >
                             <color type="QColor" >0,0,0,255</color>
-                            <style type="int" >1</style>
+                            <style type="int" >0</style>
                             <texture type="QPixmap" ></texture>
                         </backgroundBrush>
-                        <backgroundMode type="int" >1</backgroundMode>
+                        <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >4</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" >detailheader_1</joinTo>
-                        <dataset type="QString" >ds_1</dataset>
+                        <dataset type="QString" ></dataset>
                         <zebra type="bool" >true</zebra>
+                        <joinTo type="QString" >detail</joinTo>
                     </properties>
-                    <children>
-                        <Memo>
-                            <properties>
-                                <objectName type="QString" >memo_7</objectName>
-                                <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >615.833,10.0833,401,50</geometry>
-                                <opacity type="int" >100</opacity>
-                                <frame type="int" >0</frame>
-                                <pen type="QPen" >
-                                    <brush type="QBrush" >
-                                        <color type="QColor" >0,0,0,255</color>
-                                        <style type="int" >1</style>
-                                        <texture type="QPixmap" ></texture>
-                                    </brush>
-                                    <capStyle type="int" >16</capStyle>
-                                    <color type="QColor" >0,0,0,255</color>
-                                    <isCosmetic type="bool" >true</isCosmetic>
-                                    <joinStyle type="int" >64</joinStyle>
-                                    <miterLimit type="double" >2</miterLimit>
-                                    <style type="int" >1</style>
-                                    <width type="int" >0</width>
-                                </pen>
-                                <brush type="QBrush" >
-                                    <color type="QColor" >0,0,0,255</color>
-                                    <style type="int" >0</style>
-                                    <texture type="QPixmap" ></texture>
-                                </brush>
-                                <backgroundBrush type="QBrush" >
-                                    <color type="QColor" >0,0,0,255</color>
-                                    <style type="int" >0</style>
-                                    <texture type="QPixmap" ></texture>
-                                </backgroundBrush>
-                                <backgroundMode type="int" >0</backgroundMode>
-                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
-                                <textFlags type="int" >0</textFlags>
-                                <sizePolicy type="int" >0</sizePolicy>
-                                <text type="QString" >[ds_1."name"]</text>
-                            </properties>
-                        </Memo>
-                    </children>
                 </Detail>
                 <Title>
                     <properties>
@@ -600,7 +557,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                     </properties>
                     <children>
                         <Memo>
@@ -792,7 +748,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                     </properties>
                     <children>
                         <Memo>
@@ -870,7 +825,6 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
                         <indentation type="int" >0</indentation>
-                        <joinTo type="QString" ></joinTo>
                     </properties>
                     <children>
                         <Memo>
@@ -928,7 +882,7 @@
         <SqlDataset>
             <properties>
                 <objectName type="QString" >ds_1</objectName>
-                <parentDataset type="QString" >query_0</parentDataset>
+                <parentDataset type="QString" ></parentDataset>
                 <filterCondition type="QString" >$album</filterCondition>
                 <filterColumn type="int" >3</filterColumn>
                 <text type="QString" >select * from album;</text>

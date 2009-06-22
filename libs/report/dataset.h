@@ -1,7 +1,7 @@
 /***************************************************************************
  *   This file is part of the eXaro project                                *
- *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Alexander Mikhalov  (aka alFoX)                 *
+ *              alexmi3@rambler.ru                                         *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -90,6 +90,10 @@ signals:
 	void afterLast();
 	void beforeSeek(int index);
 	void afterSeek(int index);
+	void beforePopulate();
+	void afterPopulate();
+	void beforeSetFilter(const int col, const QString & str) ;
+	void afterSetFilter(const int col, const QString & str) ;
 
 private:
 	QString m_parentDataset;
@@ -98,6 +102,6 @@ private:
 
 };
 }
-Q_DECLARE_INTERFACE(Report::DataSet, "ro.bigendian.ReportDesigner.DataSet/1.0");
+Q_DECLARE_INTERFACE(Report::DataSet, "ReportDesigner.DataSet/1.0");
 
 #endif

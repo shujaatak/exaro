@@ -38,6 +38,7 @@ class Detail : public Report::BandInterface
 	Q_INTERFACES(Report::ItemInterface);
 	Q_PROPERTY(QString dataset READ dataset WRITE setDataset);
 	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
+	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo);
 
 public:
 	Detail(QGraphicsItem* parent = 0, QObject* parentObject = 0);
@@ -46,6 +47,7 @@ public:
 
 	int layoutPriority(){ return 50;}
 
+	bool prInit(Report::PaintInterface * paintInterface);
 	bool prData();
 	bool prReset();
 
@@ -61,9 +63,16 @@ public:
 
 	bool isZebra();			    //light and dark rows
 	void setZebra(bool b);
+
+	QString joinTo();
+	void setJoinTo(QString bandName);
+
+public slots:
+	void joinToSlot(QObject * item);
 private:
 	bool m_isZebra;
 	bool odd;	//counter for zebra
+	QString m_joinTo;
 
 };
 
