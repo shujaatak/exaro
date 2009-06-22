@@ -339,7 +339,7 @@ public:
 	virtual bool prData();
 //	virtual bool prPaint(QPainter * painter, const QStyleOptionGraphicsItem * option);
 	virtual bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
-	virtual bool prReset();
+	virtual bool prReset();		// process after report was build to remove all temp values
 //	virtual bool prePaint();	    //default implementation do nothing
 //	virtual bool prePaint(QPainter * painter, PaintInterface::PrintMode pMode = PaintInterface::pmNormal);
 //	virtual bool postPaint();	    //default implementation do nothing

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   This file is part of the eXaro project                                *
- *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Alexander Mikhalov  (aka alFoX)                 *
+ *              alexmi3@rambler.ru                                         *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -96,6 +96,7 @@ QString DataSet::fieldName(int column ) {return tr("Unknown");}
 
 void DataSet::setFilter ( const int col, const QString & str, Qt::CaseSensitivity cs)
 {
+    emit beforeSetFilter (col, str);
     QSortFilterProxyModel* _model = dynamic_cast<QSortFilterProxyModel*>( model() );
     if (_model )
     {
@@ -105,6 +106,7 @@ void DataSet::setFilter ( const int col, const QString & str, Qt::CaseSensitivit
 	_model->setFilterKeyColumn(col);
     }
    else qWarning("WARNING: please reimplement setFilter () in plugin \'%s\'", this->metaObject()->className());
+   emit afterSetFilter (col, str);
 }
 
 }

@@ -92,6 +92,7 @@ void SqlDataset::setText(QString str)
 
 bool SqlDataset::populate()
 {
+    emit beforePopulate();
     m_model->setQuery(m_queryText);
     bool ret = !m_model->lastError().isValid();
     if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
@@ -99,6 +100,7 @@ bool SqlDataset::populate()
 	    m_model->fetchMore();
     m_isPopulated = ret;
     m_fmodel->setSourceModel(m_model);
+    emit afterPopulate();
     return ret;
 }
 

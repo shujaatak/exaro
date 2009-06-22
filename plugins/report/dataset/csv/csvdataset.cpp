@@ -119,6 +119,7 @@ bool CsvDataset::populate()
 {
     qDebug("m_list count = %i", m_list.count());
 
+    emit beforePopulate();
     QStringList list = m_list;
     if (!list.count())			//** data not injected direct to report as strinlist
     {
@@ -153,6 +154,8 @@ bool CsvDataset::populate()
 
     m_isPopulated = true;
     m_fmodel->setSourceModel(m_model);
+
+    emit afterPopulate();
     return true;
 }
 

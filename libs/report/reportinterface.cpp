@@ -159,6 +159,7 @@ bool ReportInterface::exec()
 	processDialog->setModal(true);
 	connect(this, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
 	processDialog->show();
+	qApp->processEvents();
 
 	m_scriptEngine = new QScriptEngine(this);
 	setReportFunction("dateFormat", ::getSetDateFormat,2);
@@ -180,7 +181,10 @@ bool ReportInterface::exec()
 	//prepare uis
 	QUiLoader loader;
 	foreach(QString path, m_uiPluginsPaths)
-		loader.addPluginPath( path );
+	{
+	    loader.addPluginPath( path );
+	    qApp->processEvents();
+	}
 
 	foreach(QString key, m_uis.keys())
 	{

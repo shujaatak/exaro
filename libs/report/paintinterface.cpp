@@ -1,3 +1,32 @@
+/***************************************************************************
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2009 by Alexander Mikhalov  (aka alFoX)                 *
+ *              alexmi3@rambler.ru                                         *
+ **                   GNU General Public License Usage                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ ****************************************************************************/
+
 #include "paintinterface.h"
 #include <QtSql>
 #include <paintdevice.h>
@@ -62,13 +91,6 @@ void PaintInterface::processPage()
 
     initBands();
 
-    /// populate datasets
-    foreach(Report::DataSet * dtst, m_report->datasets())
-    {
-	if (!dtst->isPopulated()) /// dataset can be already populated manualy in script
-	    dtst->populate();
-    }
-
     m_currentPageNumber = 1;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, 1), QScriptValue::ReadOnly);
 
@@ -93,7 +115,7 @@ void PaintInterface::processPage()
 		if ( band->prData() )
 		    processBand(band);
 	    }
-	    else    /// process dataset
+	    else    /// process dataset group
 	    {
 		DataSet * dtst = m_report->findChild<DataSet *>(band->dataset());
 		if (!dtst)
@@ -105,11 +127,14 @@ void PaintInterface::processPage()
     }
 
     postprocessCurrentPage();
+
+    /// reset temporary data in items
+    foreach (ItemInterface * item, m_report->findChildren <ItemInterface *>())
+	item->prReset();
 }
 
 void PaintInterface::finish(QString error)
 {
-//    qDebug("PaintInterface::finish");
     showError(error);
     deleteLater () ;
 }
@@ -146,65 +171,38 @@ void PaintInterface::showError(QString err)
 
 void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 {
-	if (!band /*|| m_reportCanceled*/)
-		return;
-	qDebug("PaintInterface::processBand = %s", qPrintable(band->objectName()));
-	if (!band->isEnabled())
-	    return;
+    if (!band /*|| m_reportCanceled*/)
+	return;
+    qDebug("PaintInterface::processBand = %s", qPrintable(band->objectName()));
+    if (!band->isEnabled())
+	return;
 
-	m_painter.save();	
+    m_painter.save();
+    m_painter.resetMatrix();
 
-	if (!canPaint(band) )
-	    newPage();
+    if (!canPaint(band) )
+	newPage();
 
-	if (band->layoutType() == BandInterface::LayoutBottom)
-	    m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.bottom() - band->geometry().height());
-	else
-	    if (band->layoutType() == BandInterface::LayoutTop)
-		m_painter.translate(/*freeSpace.x() +*/ band->x(), freeSpace.top());
-	else
-	    if (band->layoutType() == BandInterface::LayoutFree)
-		m_painter.translate(band->geometry().x(), band->geometry().y());
+    if (band->layoutType() == BandInterface::LayoutBottom)
+	m_painter.translate( band->x(), freeSpace.bottom() - band->geometry().height());
+    else
+	if (band->layoutType() == BandInterface::LayoutTop)
+	    m_painter.translate( band->x(), freeSpace.top());
+    else
+	if (band->layoutType() == BandInterface::LayoutFree)
+	    m_painter.translate(band->geometry().x(), band->geometry().y());
 
-	band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+    if (band->layoutType()== BandInterface::LayoutBottom)
+	freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() -  band->indentation());
+    else
+	freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
 
-	if (band->layoutType()== BandInterface::LayoutBottom)
-	    freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() -  band->indentation());
-	else
-	    freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
+    band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
 
-	m_painter.restore();
-
-	///* test block
-//	BandList joinedBands;
-//	foreach (BandInterface * tBand, m_report->findChild<BandInterface *>() )
-//	    if (tBand->joinTo() == band->objectName())
-//		joinedBands.append( tBand);
-	foreach(BandInterface * tBand, m_report->findChildren<BandInterface *>())
-	{
-	    if (tBand->joinTo() != band->objectName()) continue;
-	    //if (!bandDone.contains(tBand))
-	    {
-		if (tBand->dataset().isEmpty())
-		{
-		    if ( tBand->prData() )
-			processBand(tBand);
-		}
-		else    /// process dataset
-		{
-		    DataSet * dtst = m_report->findChild<DataSet *>(tBand->dataset());
-		    if (!dtst)
-			finish(tr("Dataset named \'%1\' not found for band \'%2\'").arg(dtst->objectName()).arg(tBand->objectName()) );
-
-		    processDataset(dtst);
-		}
-	    }
-	}
-	///* end test block
-
-
+    m_painter.restore();
+    if (!bandDone.contains(band))
+	bandDone.append(band);
 }
-
 
 
 void PaintInterface::newPage()
@@ -234,20 +232,17 @@ void PaintInterface::prepareCurrentPage()
 
     foreach(BandInterface * band, listFree)	    //process listFree first if it want paint on background
     {
-	qDebug("new page for = %s", qPrintable(band->objectName()));
 	if (band->prNewPage())
 	    processBand(band);
     }
     foreach(BandInterface * band, listTop)
     {
-	qDebug("new page for = %s", qPrintable(band->objectName()));
 	if (band->prNewPage())
 	    processBand(band);
     }
     for (int i = listBottom.count()-1; i>=0 ;i--)
     {
 	BandInterface * band = listBottom.at(i);
-	qDebug("new page for = %s", qPrintable(band->objectName()));
 	if (band->prNewPage())
 	    processBand(band);
     }
@@ -277,60 +272,31 @@ void PaintInterface::postprocessCurrentPage()
 void PaintInterface::processDataset(DataSet * dtst)
 {
     qDebug("PaintInterface::processDataset = %s", qPrintable(dtst->objectName()));
-//    DataSet * dtst = m_report->findChild<DataSet *>(datasetName);
-//    if (!dtst)
-//    {
-//	QString bandName = band ? band->objectName(): "Unknown";
-//	finish(tr("Query named \'%1\' not found for band \'%2\'").arg(datasetName).arg(bandName) );
-//    }
 
     /// store dynmic data
     int currentDatasetRow = m_currentDatasetRow;
     int currentLineNumber = m_currentLineNumber;
     DataSet * currentDataset = m_currentDataset;
 
+//    bool skipIteration = false;
 
-    bool skipIteration = false;
+    if (!dtst->isPopulated())
+	dtst->populate();
 
-    ///  lookup for children datasets
-    QStringList childrenDatasets;
-    foreach (DataSet* child, m_report->findChildren<DataSet *>())
-	if (child->parentDataset() == dtst->objectName())
-	    childrenDatasets.append(child->objectName());
-
-    #warning //FIXME: check for already populated
-    if ( !dtst->populate() )
-	finish(tr("dataset \'%1\' execution error: %2").arg(dtst->objectName()).arg(dtst->lastError()));
-
-    if ( !dtst->parentDataset().isEmpty() )
+    if (!dtst->first())
     {
-	QString filter = dtst->filterCondition();
-	DataSet* parentDataset = m_report->findChild<DataSet *>(dtst->parentDataset() );
-	if (parentDataset)
-	{
-
-	    /// changing all '$field' including to parent field value
-	    QString regExp ("\\$([\\w\\d]+)");
-	    QRegExp rxlen(regExp);
-	    int pos = 0;
-	    while ((pos = rxlen.indexIn(filter, pos)) != -1)
-	    {
-		QString _fieldName = rxlen.cap(0);
-		QString fieldName = rxlen.cap(1);
-		filter.replace(_fieldName, parentDataset->value(fieldName).toString());
-		pos += rxlen.matchedLength();
-	    }
-	    qDebug("filter = %s",qPrintable(filter));
-	    qDebug("size before filter = %i",dtst->size());
-	    if (filter.isEmpty())
-		skipIteration = true;
-	    else
-		dtst->setFilter(dtst->filterColumn(), filter);
-	    qDebug("size after filter = %i",dtst->size());
-	}
+	qDebug("setFirst error");
+//	if ( !dtst->populate() || !dtst->first() );
+//	    qDebug("dataset \'%s\' execution error: %s", dtst->objectName(), dtst->lastError());
     }
 
-/*
+    if (!dtst->size())
+    {
+	qDebug("dataset is empty");
+	return;
+    }
+
+    /*
     QDomElement dtstElement = m_report->m_doc.createElement("dataset");
     dtstElement.setAttribute("name", dtst->objectName());
     QDomElement rowElement = m_report->m_doc.createElement("row");
@@ -343,13 +309,12 @@ void PaintInterface::processDataset(DataSet * dtst)
     }
     dtstElement.appendChild(rowElement);
 */
+
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, 0), QScriptValue::ReadOnly);
 
     m_currentDataset = dtst;
     m_currentDatasetRow = 0;
     m_currentLineNumber = 0;
-
-//    currentGroup.clear();
 
     /// making item group for dataset iteration
     BandList  currentGroup;
@@ -357,8 +322,6 @@ void PaintInterface::processDataset(DataSet * dtst)
 	if (band->dataset() == dtst->objectName() /*|| childrenDatasets.contains( band->dataset() )*/ )
 	    currentGroup.append(band);
 
-    dtst->first();
-    if (dtst->size() && !skipIteration)
     do
     {
 	m_currentDatasetRow++;
@@ -368,35 +331,25 @@ void PaintInterface::processDataset(DataSet * dtst)
 	foreach(BandInterface * band, currentGroup)
 	{
 	    qDebug("next in group = %s", qPrintable(band->objectName()));
-	    if (band->dataset() == dtst->objectName())
-	    {
+
 		if (band->prData())
 		    processBand(band);
-	    }
-	    else
-	    {
-		processDataset (m_report->findChild<DataSet *>(band->dataset()));
-	    }
 	}
 
-//	m_report->exportRecord(dtst->record(), dtstElement);
+	//m_report->exportRecord(dtst->record(), dtstElement);
     }
     while (dtst->next());
 
-
 //    m_report->m_exportNode.appendChild(dtstElement);
-
 
     foreach (BandInterface * band, currentGroup)
 	if (!bandDone.contains(band))
 	    bandDone.append(band);
-    currentGroup.clear();
 
     /// restore dynamic data
     m_currentDatasetRow = currentDatasetRow;
     m_currentLineNumber = currentLineNumber;
     m_currentDataset = currentDataset;
-
 }
 
 int PaintInterface::currentPageNumber()
