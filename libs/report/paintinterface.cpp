@@ -177,6 +177,8 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
     if (!band->isEnabled())
 	return;
 
+    emit processBandBefore(band);
+
     m_painter.save();
     m_painter.resetMatrix();
 
@@ -202,11 +204,15 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
     m_painter.restore();
     if (!bandDone.contains(band))
 	bandDone.append(band);
+
+    emit processBandAfter(band);
 }
 
 
 void PaintInterface::newPage()
 {
+    emit newPageBefore();
+
     postprocessCurrentPage();
     m_currentPageNumber++;
     m_report->m_scriptEngine->globalObject().setProperty("_page_", QScriptValue(m_report->m_scriptEngine, m_currentPageNumber), QScriptValue::ReadOnly);
@@ -214,6 +220,8 @@ void PaintInterface::newPage()
     m_printer->newPage();
     freeSpace = m_currentPage->geometry();
     prepareCurrentPage();
+
+    emit newPageAfter();
 }
 
 
@@ -272,6 +280,7 @@ void PaintInterface::postprocessCurrentPage()
 void PaintInterface::processDataset(DataSet * dtst)
 {
     qDebug("PaintInterface::processDataset = %s", qPrintable(dtst->objectName()));
+    emit processDatasetBefore(dtst);
 
     /// store dynmic data
     int currentDatasetRow = m_currentDatasetRow;
@@ -350,6 +359,8 @@ void PaintInterface::processDataset(DataSet * dtst)
     m_currentDatasetRow = currentDatasetRow;
     m_currentLineNumber = currentLineNumber;
     m_currentDataset = currentDataset;
+
+    emit processDatasetAfter(dtst);
 }
 
 int PaintInterface::currentPageNumber()
@@ -371,4 +382,9 @@ void PaintInterface::setDetailNumber(int num)
 QString PaintInterface::currentDatasetName()
 {
     return m_currentDataset ? m_currentDataset->name() : QString();
+}
+
+Report::DataSet * PaintInterface::currentDataset()
+{
+    return m_currentDataset;
 }

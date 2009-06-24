@@ -59,22 +59,29 @@ public:
     int currentPageNumber();
     int currentDatasetRow();
     QString currentDatasetName();
+    Report::DataSet * currentDataset();
     void setDetailNumber(int num);
     void newPage();
     void processBand(BandInterface * band);
+    void prepareDatasets();
+    void processDataset(DataSet * dtst);
 
 public slots:
     void showError(QString err);
 signals:
     void showProcess(QString str);
+    void processBandBefore(BandInterface *band);
+    void processBandAfter(BandInterface *band);
+    void processDatasetBefore(DataSet * dtst);
+    void processDatasetAfter(DataSet * dtst);
+    void newPageBefore();
+    void newPageAfter();
 
 private:
     void run();
     void finish(QString error = "");
     void initBands();
 //    void processDataset(QString datasetName, BandInterface * band = 0);
-    void prepareDatasets();
-    void processDataset(DataSet * dtst);
     bool canPaint(BandInterface * band);
     void processPage();
 //    void exportRecord(const QSqlRecord & record, QDomElement & el);

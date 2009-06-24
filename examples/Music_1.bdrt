@@ -245,6 +245,8 @@
                         <order type="int" >2</order>
                         <indentation type="int" >0</indentation>
                         <dataset type="QString" >query_0</dataset>
+                        <datasetFilter type="QString" ></datasetFilter>
+                        <datasetFilterColumn type="int" >0</datasetFilterColumn>
                         <zebra type="bool" >true</zebra>
                         <joinTo type="QString" ></joinTo>
                     </properties>
@@ -517,7 +519,9 @@
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >4</order>
                         <indentation type="int" >0</indentation>
-                        <dataset type="QString" ></dataset>
+                        <dataset type="QString" >ds_1</dataset>
+                        <datasetFilter type="QString" >$artist</datasetFilter>
+                        <datasetFilterColumn type="int" >1</datasetFilterColumn>
                         <zebra type="bool" >true</zebra>
                         <joinTo type="QString" >detail</joinTo>
                     </properties>

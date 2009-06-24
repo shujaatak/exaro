@@ -37,6 +37,8 @@ class Detail : public Report::BandInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
 	Q_PROPERTY(QString dataset READ dataset WRITE setDataset);
+	Q_PROPERTY(QString datasetFilter READ datasetFilter WRITE setDatasetFilter);
+	Q_PROPERTY(int datasetFilterColumn READ datasetFilterColumn WRITE setDatasetFilterColumn);
 	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
 	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo);
 
@@ -66,6 +68,10 @@ public:
 
 	QString joinTo();
 	void setJoinTo(QString bandName);
+	QString datasetFilter();
+	void setDatasetFilter(QString filter);
+	int datasetFilterColumn();			// count 1...n, 0 - not defined, -1 for all columns
+	void setDatasetFilterColumn(int column);
 
 public slots:
 	void joinToSlot(QObject * item);
@@ -73,6 +79,8 @@ private:
 	bool m_isZebra;
 	bool odd;	//counter for zebra
 	QString m_joinTo;
+	QString m_datasetFilter;
+	int m_datasetFilterColumn;
 
 };
 
