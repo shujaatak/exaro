@@ -500,6 +500,7 @@ bool ItemInterface::prData(){return false;}
 bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
 //bool ItemInterface::prPaint(QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
+//    qDebug("prPaint. item=%s",qPrintable (this->objectName()));
     emit beforePrint(this);
 
     QStyleOptionGraphicsItem option;

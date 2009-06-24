@@ -1,7 +1,9 @@
 /***************************************************************************
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bog_dan_ro@yahoo.com                                                  *
+ *       bog_dan_ro@yahoo.com                                              *
+ *   Copyright (C) 2009 by Alexander Mikhalov                              *
+ *       alexmi3@rambler.ru                                                *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -47,6 +49,7 @@ Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
 	setResizeFlags(FixedPos | ResizeBottom);
 	m_isZebra = true;
 	odd = false;
+	this->m_datasetFilterColumn = 0;
 }
 
 Detail::~Detail()
@@ -83,6 +86,8 @@ bool Detail::prReset()
 	    return true;
 	disconnect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
     }
+//    if (!this->m_dataset.isEmpty())
+//	Report::DataSet * dtst = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
     return true;
 }
 
@@ -106,10 +111,58 @@ void Detail::setJoinTo(QString bandName)
     m_joinTo = bandName;
 }
 
+QString Detail::datasetFilter()
+{
+    return m_datasetFilter;
+}
+
+void Detail::setDatasetFilter(QString filter)
+{
+    m_datasetFilter = filter;
+}
+
+int Detail::datasetFilterColumn()			// count 1...n, 0 - not defined, -1 for all columns
+{
+    return this->m_datasetFilterColumn;
+}
+
+void Detail::setDatasetFilterColumn(int column)
+{
+    this->m_datasetFilterColumn = column;
+}
+
 void Detail::joinToSlot(QObject * item)
 {
     odd = false;
-    m_paintInterface->processBand(this);
+    Report::DataSet * dtst = this->m_dataset.isEmpty() ? 0 : this->reportObject()->findChild<Report::DataSet *>(this->m_dataset);
+    if (!m_datasetFilter.isEmpty() && !(m_datasetFilterColumn == 0))
+    {
+	qDebug("test 1");
+	if (dtst)
+	{
+		qDebug("test 2");
+	    QString filter = m_datasetFilter;
+	    QString regExp ("\\$([\\w\\d]+)");
+	    QRegExp rxlen(regExp);
+	    int pos = 0;
+	    while ((pos = rxlen.indexIn(filter, pos)) != -1)
+	    {
+		QString _fieldName = rxlen.cap(0);
+		QString fieldName = rxlen.cap(1);
+		filter.replace(_fieldName,  this->m_paintInterface->currentDataset()->value(fieldName).toString());
+		pos += rxlen.matchedLength();
+	    }
+	    qDebug("filter = %s", qPrintable(filter));
+	    if (m_datasetFilterColumn == -1)
+		 dtst->setFilter(m_datasetFilterColumn, filter);
+	    else
+		dtst->setFilter(m_datasetFilterColumn - 1, filter);
+	}
+    }
+    if (dtst)
+	m_paintInterface->processDataset(dtst);
+    else
+	m_paintInterface->processBand(this);
 }
 
 bool Detail::canContain(QObject * object)
