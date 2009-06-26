@@ -49,7 +49,7 @@
                     <properties>
                         <objectName type="QString" >detailheader_1</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,351,1798,115</geometry>
+                        <geometry type="QRectF" >150,351,1798,288</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >15</frame>
                         <pen type="QPen" >
@@ -91,7 +91,7 @@
                             <properties>
                                 <objectName type="QString" >memo_5</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >125.354,2.0833,1386,97</geometry>
+                                <geometry type="QRectF" >125.354,2.0833,1252,97</geometry>
                                 <opacity type="int" >100</opacity>
                                 <frame type="int" >0</frame>
                                 <pen type="QPen" >
@@ -125,13 +125,31 @@
                                 <text type="QString" >[query_0."artist"]</text>
                             </properties>
                         </Memo>
+                        <Picture>
+                            <properties>
+                                <objectName type="QString" >picture</objectName>
+                                <enabled type="bool" >true</enabled>
+                                <geometry type="QRectF" >1390.99,11.1656,397,269</geometry>
+                                <opacity type="int" >100</opacity>
+                                <frame type="int" >0</frame>
+                                <howToPaintPicture type="int" >3</howToPaintPicture>
+                                <drawTextType type="int" >0</drawTextType>
+                                <pixmap type="QPixmap" ></pixmap>
+                                <datasetField type="QString" >[query_0."img"]</datasetField>
+                                <text type="QString" >picture</text>
+                                <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textColor type="QColor" >0,0,0,255</textColor>
+                                <borderWidth type="int" >0</borderWidth>
+                                <borderColor type="QColor" >0,0,0,255</borderColor>
+                            </properties>
+                        </Picture>
                     </children>
                 </DetailHeader>
                 <DetailHeader>
                     <properties>
                         <objectName type="QString" >detailheader</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,466,1798,79</geometry>
+                        <geometry type="QRectF" >150,639,1798,79</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >8</frame>
                         <pen type="QPen" >
@@ -213,7 +231,7 @@
                     <properties>
                         <objectName type="QString" >detail</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,545,1798,65</geometry>
+                        <geometry type="QRectF" >150,718,1798,65</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >0</frame>
                         <pen type="QPen" >
@@ -371,7 +389,7 @@
                     <properties>
                         <objectName type="QString" >detailfooter</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,610,1798,59</geometry>
+                        <geometry type="QRectF" >150,783,1798,59</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >0</frame>
                         <pen type="QPen" >
@@ -488,7 +506,7 @@
                     <properties>
                         <objectName type="QString" >detail_1</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,669,1798,56</geometry>
+                        <geometry type="QRectF" >150,842,1798,56</geometry>
                         <opacity type="int" >100</opacity>
                         <frame type="int" >0</frame>
                         <pen type="QPen" >
@@ -879,7 +897,8 @@
                 <parentDataset type="QString" ></parentDataset>
                 <filterCondition type="QString" ></filterCondition>
                 <filterColumn type="int" >-1</filterColumn>
-                <text type="QString" >select * from song;</text>
+                <text type="QString" >select artist.name artist,album.name album,year, lenght,genre, title, artist.photo img from song, artist ,album
+where song.artist = artist.id and song.album = album.id</text>
             </properties>
             <children/>
         </SqlDataset>

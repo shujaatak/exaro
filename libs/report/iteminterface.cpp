@@ -495,7 +495,7 @@ bool ItemInterface::prInit(PaintInterface * paintInterface)
     return true;
 }
 
-bool ItemInterface::prData(){return false;}
+bool ItemInterface::prData(){return true;}
 
 bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
 //bool ItemInterface::prPaint(QPainter * painter, const QStyleOptionGraphicsItem * option)
@@ -515,7 +515,8 @@ bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF 
     painter->restore();
     translate += option.exposedRect.topLeft();
     foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
-	childItem->prPaint(painter, translate, option.exposedRect);
+	if (childItem->prData())
+	    childItem->prPaint(painter, translate, option.exposedRect);
 
     emit afterPrint(this);
 
