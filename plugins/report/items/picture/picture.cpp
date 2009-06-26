@@ -59,28 +59,32 @@ Picture::Picture(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
-/*
-bool Picture::prePaint(QPainter * painter, Report::PaintInterface::PrintMode pMode)
+
+bool Picture::prData()
 { 
-    qDebug("Picture::prePaint(QPainter * painter)");
+    qDebug("================Picture::prData()");
     if (stringIsField(m_datasetField))
     {
 	qDebug("isField");
 	QString dataset;
 	QString field;
 	stringToField (m_datasetField, &dataset, &field);
-	if (!m_image.loadFromData(ItemInterface::datasetField(dataset,field).toByteArray()))
+	qDebug("dataset = %s,   field=%s", qPrintable(dataset), qPrintable(field));
+	if (!m_image.loadFromData(datasetField(dataset,field).toByteArray()))
 	    qDebug("ERROR loading image from field!!!");
-	return ItemInterface::prePaint(painter);
+
     }
+    else qDebug("no field found");
+    return true;
 }
 
-bool Picture::postPaint()
+bool Picture::prReset()
 {
     if (stringIsField(m_datasetField))
 	m_image = QImage();
+    return true;
 }
-*/
+
 Picture::PaintTypes Picture::paintType()
 {
 	return m_paintType;
