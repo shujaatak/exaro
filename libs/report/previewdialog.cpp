@@ -263,6 +263,8 @@ newOrientation:
 	printer->setPaperSize(m_pages[i].page->pageSize()*UNIT,QPrinter::Millimeter);
 	printer->setOrientation(m_pages[i].page->paperOrientation());
 	printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
+	if (!m_reportName.isEmpty())
+		printer->setDocName(m_reportName);
 
 	if (showPrintDialog)
 	{
@@ -502,5 +504,10 @@ void PreviewDialog::setShowPrintDialog(bool show)
 void PreviewDialog::setShowExitConfirm(bool show)
 {
 	m_showExitConfirm = show;
+}
+
+void PreviewDialog::setReportName(const QString & name)
+{
+	m_reportName = name;
 }
 }

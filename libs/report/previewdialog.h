@@ -63,6 +63,7 @@ public:
 	void setPrinterName(const QString & name);
 	void setShowPrintDialog(bool show);
 	void setShowExitConfirm(bool show);
+	void setReportName(const QString & name);
 
 protected:
 	void reject();
@@ -102,6 +103,7 @@ private:
 	QString m_printerName;
 	bool m_showPrintDialog;
 	bool m_showExitConfirm;
+	QString m_reportName;
 };
 
 }
