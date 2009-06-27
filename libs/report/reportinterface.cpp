@@ -531,6 +531,7 @@ bool ReportInterface::exec()
 		d.setShowExitConfirm(m_showExitConfirm);
 		d.setDocument(&pdf_file);
 		d.setExportDocument(m_exportNode);
+		d.setReportName(name());
 		if (m_showSplashScreen)
 			m_splashScreen.finish(&d);
 		if (m_showPrintPreview)
