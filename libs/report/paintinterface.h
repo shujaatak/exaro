@@ -83,7 +83,7 @@ private:
     void initBands();
 //    void processDataset(QString datasetName, BandInterface * band = 0);
     bool canPaint(BandInterface * band);
-    void processPage();
+    void processTemplatePage();
 //    void exportRecord(const QSqlRecord & record, QDomElement & el);
 
 private:

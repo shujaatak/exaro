@@ -70,7 +70,7 @@ bool Picture::prData()
 	QString field;
 	stringToField (m_datasetField, &dataset, &field);
 	qDebug("dataset = %s,   field=%s", qPrintable(dataset), qPrintable(field));
-	if (!m_image.loadFromData(datasetField(dataset,field).toByteArray()))
+	if (!m_image.loadFromData(ItemInterface::datasetField(dataset,field).toByteArray()))
 	    qDebug("ERROR loading image from field!!!");
 
     }

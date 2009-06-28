@@ -56,6 +56,11 @@ bool PageHeader::prNewPage()
     return true;
 }
 
+bool PageHeader::prData()
+{
+    return false;
+}
+
 bool PageHeader::canContain(QObject * object)
 {
 	return (!dynamic_cast<Report::BandInterface*>(object) && dynamic_cast<Report::ItemInterface*>(object));

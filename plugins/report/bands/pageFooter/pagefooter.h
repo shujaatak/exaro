@@ -48,6 +48,7 @@ public:
 	Report::BandInterface::AccomodationType accommodationType() {return AccomodationEveryPage;}
 
 	bool prNewPage();
+	bool prData();
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

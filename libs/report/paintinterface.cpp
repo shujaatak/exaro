@@ -30,7 +30,6 @@
 #include "paintinterface.h"
 #include <QtSql>
 #include <paintdevice.h>
-//#include <sqlquery.h>
 #include "reportinterface.h"
 #include "pageinterface.h"
 
@@ -65,15 +64,15 @@ void PaintInterface::run()
     m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
 
-    bool first=true;
+//    bool first=true;
     foreach (PageInterface* page, m_report->findChildren<PageInterface *>())
     {
-	if (!first)
-	    m_printer->newPage();
+//	if (!first)
+//	    m_printer->newPage();
 	m_printer->setPaperSize(page->paperRect().size());
 	m_printer->setPaperOrientation((QPrinter::Orientation)page->orientation());
 	m_currentPage = page;
-	processPage();
+	processTemplatePage();
     }
 
     m_painter.end();
@@ -81,11 +80,13 @@ void PaintInterface::run()
     m_printer = 0;
 }
 
-void PaintInterface::processPage()
+void PaintInterface::processTemplatePage()
 {
     listTop.clear();
     listBottom.clear();
     listFree.clear();
+
+    freeSpace = QRect();
 
     LayoutManager::splitOnLayoutTypesSorted(m_currentPage, &listTop, &listBottom, &listFree);
 
