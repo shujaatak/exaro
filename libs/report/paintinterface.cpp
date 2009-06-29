@@ -188,18 +188,18 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
 	newPage();
 
     if (band->layoutType() == BandInterface::LayoutBottom)
-	m_painter.translate( band->x(), freeSpace.bottom() - band->geometry().height());
+	m_painter.translate( band->x(), freeSpace.bottom() - band->geometry().height() - band->indentationBottom());
     else
 	if (band->layoutType() == BandInterface::LayoutTop)
-	    m_painter.translate( band->x(), freeSpace.top());
+	    m_painter.translate( band->x(), freeSpace.top() + band->indentationTop());
     else
 	if (band->layoutType() == BandInterface::LayoutFree)
 	    m_painter.translate(band->geometry().x(), band->geometry().y());
 
     if (band->layoutType()== BandInterface::LayoutBottom)
-	freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() -  band->indentation());
+	freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() - band->indentationTop() - band->indentationBottom() );
     else
-	freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentation());
+	freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentationTop() + band->indentationBottom() );
 
     band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
 

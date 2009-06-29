@@ -67,7 +67,8 @@ class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
 	 * @see indentation()
 	 * @see setIndentation()
 	*/
-	Q_PROPERTY(int indentation READ indentation WRITE setIndentation)
+	Q_PROPERTY(int indentationTop READ indentationTop WRITE setIndentationTop)
+	Q_PROPERTY(int indentationBottom READ indentationBottom WRITE setIndentationBottom)
 
 //	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo)
 public:
@@ -128,12 +129,15 @@ public:
 	* Returns the space between bands.
 	* @return int
 	*/
-	int indentation();
+	int indentationTop();
+	int indentationBottom();
 	/**
 	* Set the band indentation. The indentation is the space between bands.
+	* Can be negative for crossed bands
 	* @param indentation
 	*/
-	void setIndentation(int indentation);
+	void setIndentationTop(int indentation);
+	void setIndentationBottom(int indentation);
 
 	virtual void setHeight(qreal height);
 
@@ -189,7 +193,7 @@ protected slots:
 
 private:
 	int m_order;
-	int m_indentation;
+	int m_indentationTop, m_indentationBottom;
 	bool m_deleting;
 	TitleItem * m_titleItem;
 

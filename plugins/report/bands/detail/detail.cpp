@@ -86,7 +86,7 @@ bool Detail::prData()
 	if (m_currentColumn > 1)
 	{
 	    QRectF freeSpace = m_paintInterface->pageFreeSpace();
-	    freeSpace.setTop( freeSpace.top() - geometry().height() - indentation() );
+	    freeSpace.setTop( freeSpace.top() - geometry().height() - indentationTop() - indentationBottom() );
 	    m_paintInterface->setPageFreeSpace( freeSpace );
 	}
 
@@ -94,7 +94,10 @@ bool Detail::prData()
 	    darkRow = !darkRow;
     }
     else
+    {
 	darkRow = !darkRow;
+	m_currentColumn = 1;
+    }
 
     return true;
 }
