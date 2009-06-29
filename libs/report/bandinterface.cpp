@@ -139,7 +139,7 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 		connect(parentObject, SIGNAL(geometryChanged(QRectF)), this, SLOT(updateGeometry(QRectF)));
 
 	m_order = -1;
-	m_indentation = 0;
+	m_indentationTop = m_indentationBottom = 0;
 	m_dataset = "";
 
 	setHeight(20/UNIT);
@@ -172,18 +172,26 @@ int BandInterface::freeSpace()
     return height() - mSize;
 }
 
-void BandInterface::setIndentation(int indentation)
+void BandInterface::setIndentationTop(int indentation)
 {
-	if (indentation < 0)
-		indentation = 0;
-
-	m_indentation = indentation;
+	m_indentationTop = indentation;
 	setHeight(height());
 }
 
-int BandInterface::indentation()
+void BandInterface::setIndentationBottom(int indentation)
 {
-	return m_indentation;
+	m_indentationBottom = indentation;
+	setHeight(height());
+}
+
+int BandInterface::indentationTop()
+{
+	return m_indentationTop;
+}
+
+int BandInterface::indentationBottom()
+{
+	return m_indentationBottom;
 }
 
 void BandInterface::setOrder(int order, bool refreshOthers)

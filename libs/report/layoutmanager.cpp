@@ -60,17 +60,17 @@ void LayoutManager::itemAdded(ItemInterface * item)
 	    {
 		case BandInterface::LayoutTop:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order())*/)
-			by += iBand->indentation() + iBand->height();
+			by += /*iBand->indentation() +*/ iBand->height();
 		    else
-			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->indentation());
+			iBand->setPos(iBand->x(), iBand->y() + band->height() /*+ band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > maxOrder)
 			maxOrder = iBand->order();
 		    break;
 		case BandInterface::LayoutBottom:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order())*/)
-			by += iBand->indentation() + iBand->height();
+			by += /*iBand->indentation() +*/ iBand->height();
 		    else
-			iBand->setPos(iBand->x(), iBand->y() - band->height() - band->indentation());
+			iBand->setPos(iBand->x(), iBand->y() - band->height() /*- band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority())
 			iBand->setOrder(iBand->order() + 1, false);
 		    break;
@@ -194,7 +194,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	int by =  band->geometry().bottom();
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
-	    list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->indentation());
+	    list.at(i)->setPos(list.at(i)->x(), by /*+ list.at(i)->indentation()*/);
 	    by += list.at(i)->height();
 	}
     }
@@ -202,11 +202,11 @@ void LayoutManager::itemGeometryChanged(QObject * item)
     if (band->layoutType() == BandInterface::LayoutBottom)
     {
 	list = listBottom.values();
-	int by =  band->geometry().top() + band->indentation();
+	int by =  band->geometry().top() /*+ band->indentation()*/;
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
 	    list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
-	    by += list.at(i)->height() + list.at(i)->indentation();
+	    by += list.at(i)->height() /*+ list.at(i)->indentation()*/;
 	}
     }
 }
@@ -298,7 +298,7 @@ void LayoutManager::updatePositions(QObject * item)
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
 	for (int j = 0; j<orderList.count() ;j++)
 	{
-	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->indentation());
+	    orderList.at(j)->setPos(orderList.at(j)->x(), by /*+ orderList.at(j)->indentation()*/);
 	    by += orderList.at(j)->height();
 	}
     }
@@ -311,7 +311,7 @@ void LayoutManager::updatePositions(QObject * item)
 	for (int j = orderList.count() -1; j>=0 ;j--)
 	{
 	    orderList.at(j)->setPos(orderList.at(j)->x(), by - orderList.at(j)->height());
-	    by -= orderList.at(j)->height() - orderList.at(j)->indentation();
+	    by -= orderList.at(j)->height() /*- orderList.at(j)->indentation()*/;
 	}
     }
 }

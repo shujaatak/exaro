@@ -512,10 +512,11 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 
 	QSettings s;
 	QStringList list = s.value( "Designer/lastReports" ).toString().split( ";;", QString::SkipEmptyParts );
-	if ( !list.contains( report ) )
-		list.append( report );
+	if ( list.contains( report ) )
+	    list.removeAll( report );
+	list.prepend( report );
 	if ( list.count() > ROWS_IN_MENU )
-		list.removeFirst();
+		list.removeLast();
 
 	QFileInfo f( report );
 	s.setValue( "Designer/reportDir", f.absolutePath() );
