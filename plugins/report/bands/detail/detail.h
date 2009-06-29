@@ -41,6 +41,7 @@ class Detail : public Report::BandInterface
 	Q_PROPERTY(int datasetFilterColumn READ datasetFilterColumn WRITE setDatasetFilterColumn);
 	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
 	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo);
+	Q_PROPERTY(int columns READ numColumns WRITE setNumColumns);
 
 public:
 	Detail(QGraphicsItem* parent = 0, QObject* parentObject = 0);
@@ -52,6 +53,7 @@ public:
 	bool prInit(Report::PaintInterface * paintInterface);
 	bool prData();
 	bool prReset();
+	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -72,15 +74,19 @@ public:
 	void setDatasetFilter(QString filter);
 	int datasetFilterColumn();			// count 1...n, 0 - not defined, -1 for all columns
 	void setDatasetFilterColumn(int column);
+	int numColumns();
+	void setNumColumns(int col);
 
 public slots:
 	void joinToSlot(QObject * item);
 private:
 	bool m_isZebra;
-	bool odd;	//counter for zebra
+	bool darkRow;	//counter for zebra
 	QString m_joinTo;
 	QString m_datasetFilter;
 	int m_datasetFilterColumn;
+	int m_numColumns;
+	int m_currentColumn;
 
 };
 

@@ -37,6 +37,8 @@
 
 #include "detail.h"
 
+#define  MAX_COLUMNS 5
+
 inline void initMyResource()
 {
 	Q_INIT_RESOURCE(detail);
@@ -44,11 +46,13 @@ inline void initMyResource()
 
 Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
     : BandInterface(parent, parentObject)
+    , m_numColumns(1)
+    , m_currentColumn (0)
 {
 	initMyResource();
 	setResizeFlags(FixedPos | ResizeBottom);
 	m_isZebra = true;
-	odd = false;
+	darkRow = false;
 	this->m_datasetFilterColumn = 0;
 }
 
@@ -72,6 +76,26 @@ bool Detail::prInit(Report::PaintInterface * paintInterface)
 bool Detail::prData()
 {
     accumulateAgregateValues();
+
+    if (m_numColumns > 1)
+    {
+	m_currentColumn++;
+	if ( m_currentColumn > m_numColumns || m_paintInterface->lastProcessedBand() != this)
+	    m_currentColumn = 1;
+
+	if (m_currentColumn > 1)
+	{
+	    QRectF freeSpace = m_paintInterface->pageFreeSpace();
+	    freeSpace.setTop( freeSpace.top() - geometry().height() - indentation() );
+	    m_paintInterface->setPageFreeSpace( freeSpace );
+	}
+
+	if (m_currentColumn == 1)
+	    darkRow = !darkRow;
+    }
+    else
+	darkRow = !darkRow;
+
     return true;
 }
 
@@ -88,6 +112,9 @@ bool Detail::prReset()
     }
 //    if (!this->m_dataset.isEmpty())
 //	Report::DataSet * dtst = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
+    m_currentColumn = 0;
+    darkRow = false;
+
     return true;
 }
 
@@ -109,6 +136,21 @@ QString Detail::joinTo()
 void Detail::setJoinTo(QString bandName)
 {
     m_joinTo = bandName;
+}
+
+int Detail::numColumns()
+{
+    return m_numColumns;
+}
+
+void Detail::setNumColumns(int col)
+{
+    m_numColumns = col;
+    if (m_numColumns < 1)
+	m_numColumns = 1;
+    if (m_numColumns > MAX_COLUMNS)
+	m_numColumns = MAX_COLUMNS;
+    update();
 }
 
 QString Detail::datasetFilter()
@@ -133,7 +175,7 @@ void Detail::setDatasetFilterColumn(int column)
 
 void Detail::joinToSlot(QObject * item)
 {
-    odd = false;
+    darkRow = false;
     Report::DataSet * dtst = this->m_dataset.isEmpty() ? 0 : this->reportObject()->findChild<Report::DataSet *>(this->m_dataset);
     if (!m_datasetFilter.isEmpty() && !(m_datasetFilterColumn == 0))
     {
@@ -183,14 +225,21 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 
 	painter->fillRect(rect,painter->brush());
 
-	if (option->type != QStyleOption::SO_GraphicsItem && m_isZebra && odd)
+	if ( option->type != QStyleOption::SO_GraphicsItem &&  darkRow && m_currentColumn  <= 1)
 	    painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
-	odd = !odd;
 
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	{
 		drawSelection(painter, rect);
 		drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
+		if (m_numColumns > 1 )
+		{
+		    QPen p(Qt::DashLine);
+		    painter->setPen(p);
+		    qreal deltaX = (qreal)rect.width() / (qreal)m_numColumns;
+		    for (int i=1 ;i<=m_numColumns; i++)
+			painter->drawLine(rect.left() + deltaX*i, rect.top(), rect.left() + deltaX*i, rect.bottom() );
+		}
 	}
 
 	adjustRect(rect);
@@ -207,7 +256,33 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	if (frame()&DrawBottom)
 		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
+	if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
+	    painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
 }
+
+
+bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
+{
+    emit beforePrint(this);
+
+    QStyleOptionGraphicsItem option;
+    option.type = 31;
+    option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
+    painter->save();
+    option.exposedRect.translate(translate);
+    painter->setClipRect(clipRect);
+
+    paint(painter, &option);
+
+    painter->restore();
+    translate += option.exposedRect.topLeft() + ((QPointF((qreal)geometry().width() / (qreal)m_numColumns , 0)) * (m_currentColumn - 1));
+    foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
+	if (childItem->prData())
+	    childItem->prPaint(painter, translate, option.exposedRect);
+
+    emit afterPrint(this);
+}
+
 
 QIcon Detail::toolBoxIcon()
 {

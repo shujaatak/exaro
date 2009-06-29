@@ -41,6 +41,7 @@ PaintInterface::PaintInterface(ReportInterface * report, QObject * parent)
 {
     m_report = report;
     m_currentDataset = 0;
+    m_lastProcessedBand = 0;
 }
 
 PaintInterface::~PaintInterface()
@@ -205,6 +206,8 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
     m_painter.restore();
     if (!bandDone.contains(band))
 	bandDone.append(band);
+
+    m_lastProcessedBand = band;
 
     emit processBandAfter(band);
 }
@@ -388,4 +391,19 @@ QString PaintInterface::currentDatasetName()
 Report::DataSet * PaintInterface::currentDataset()
 {
     return m_currentDataset;
+}
+
+QRectF PaintInterface::pageFreeSpace()
+{
+    return freeSpace;
+}
+
+void PaintInterface::setPageFreeSpace (QRectF rect)
+{
+    freeSpace = rect;
+}
+
+BandInterface * PaintInterface::lastProcessedBand()
+{
+    return m_lastProcessedBand;
 }

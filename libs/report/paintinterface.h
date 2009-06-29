@@ -65,6 +65,9 @@ public:
     void processBand(BandInterface * band);
     void prepareDatasets();
     void processDataset(DataSet * dtst);
+    QRectF pageFreeSpace();
+    void setPageFreeSpace (QRectF rect);
+    BandInterface * lastProcessedBand();
 
 public slots:
     void showError(QString err);
@@ -101,6 +104,7 @@ private:
     int m_currentLineNumber;	    //can be changed by Bands or in user script
     BandInterface * currentBand;    //current processed band
     PageInterface * m_currentPage;  //current processed page
+    BandInterface * m_lastProcessedBand;
 
     PaintDevice * m_printer;
 
