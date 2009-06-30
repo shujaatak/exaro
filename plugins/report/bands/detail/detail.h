@@ -53,7 +53,7 @@ public:
 	bool prInit(Report::PaintInterface * paintInterface);
 	bool prData();
 	bool prReset();
-	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
+//	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);

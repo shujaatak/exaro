@@ -44,6 +44,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 		, m_resizeHandle(2/UNIT) //2mm
 		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1),m_stretch(0)
 		, m_paintInterface(0)
+		, offsetX(0), offsetY(0), _offsetX(0), _offsetY(0)
 {
     	m_frame = 0;
 	m_resizeEvent = Fixed;
@@ -513,7 +514,7 @@ bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF 
     paint(painter, &option);
 
     painter->restore();
-    translate += option.exposedRect.topLeft();
+    translate += option.exposedRect.topLeft() + QPointF(offsetX + _offsetX, offsetY + _offsetY);
     foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
 	if (childItem->prData())
 	    childItem->prPaint(painter, translate, option.exposedRect);

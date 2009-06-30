@@ -92,6 +92,8 @@ bool Detail::prData()
 
 	if (m_currentColumn == 1)
 	    darkRow = !darkRow;
+
+	_offsetX = ( (qreal)geometry().width() / (qreal)m_numColumns ) * (qreal)(m_currentColumn - 1);
     }
     else
     {
@@ -117,7 +119,7 @@ bool Detail::prReset()
 //	Report::DataSet * dtst = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
     m_currentColumn = 0;
     darkRow = false;
-
+    offsetX = 0;
     return true;
 }
 
@@ -263,7 +265,7 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	    painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
 }
 
-
+/*
 bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
 {
     emit beforePrint(this);
@@ -285,7 +287,7 @@ bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipR
 
     emit afterPrint(this);
 }
-
+*/
 
 QIcon Detail::toolBoxIcon()
 {
