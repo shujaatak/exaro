@@ -32,16 +32,36 @@
 
 #include <bandinterface.h>
 
+struct PrintParam
+{
+    QPainter * painter;
+    QPointF translate;
+    QRectF clipRect;
+    int lineNum;
+};
+
+struct CashedData
+{
+    int dsFirst, dsLast;
+    QList <PrintParam> param;
+};
+
 class Detail : public Report::BandInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
+	Q_ENUMS(ColumnAlignType);
+
 	Q_PROPERTY(QString dataset READ dataset WRITE setDataset);
 	Q_PROPERTY(QString datasetFilter READ datasetFilter WRITE setDatasetFilter);
 	Q_PROPERTY(int datasetFilterColumn READ datasetFilterColumn WRITE setDatasetFilterColumn);
 	Q_PROPERTY(bool zebra READ isZebra WRITE setZebra);
 	Q_PROPERTY(QString joinTo READ joinTo WRITE setJoinTo);
 	Q_PROPERTY(int columns READ numColumns WRITE setNumColumns);
+	Q_PROPERTY(ColumnAlignType columnAlignType READ columnAlignType WRITE setColumnAlignType);
+
+public:
+    enum ColumnAlignType {caHorizontal = 1, caVertical = 2};
 
 public:
 	Detail(QGraphicsItem* parent = 0, QObject* parentObject = 0);
@@ -53,7 +73,7 @@ public:
 	bool prInit(Report::PaintInterface * paintInterface);
 	bool prData();
 	bool prReset();
-//	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
+	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
 
 	QRectF boundingRect() const;
 	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
@@ -76,9 +96,14 @@ public:
 	void setDatasetFilterColumn(int column);
 	int numColumns();
 	void setNumColumns(int col);
+	ColumnAlignType columnAlignType();
+	void setColumnAlignType (ColumnAlignType align);
+	void paintVerticalColumns();
 
-public slots:
+private slots:
 	void joinToSlot(QObject * item);
+	void checkCurrentBand(BandInterface* band);
+	void closePageBefore();
 private:
 	bool m_isZebra;
 	bool darkRow;	//counter for zebra
@@ -87,7 +112,9 @@ private:
 	int m_datasetFilterColumn;
 	int m_numColumns;
 	int m_currentColumn;
-
+	ColumnAlignType m_columnAlignType;
+	bool m_isFakePass;		    // 2 passes for vertical columns. first = fake pass
+	CashedData cashedData;
 };
 
 #endif

@@ -187,21 +187,42 @@ void PaintInterface::processBand(BandInterface * band/*, PrintMode pMode*/)
     if (!canPaint(band) )
 	newPage();
 
+//    if (band->layoutType() == BandInterface::LayoutBottom)
+//	m_painter.translate( band->x(), freeSpace.bottom() - band->geometry().height() - band->indentationBottom());
+//    else
+//	if (band->layoutType() == BandInterface::LayoutTop)
+//	    m_painter.translate( band->x(), freeSpace.top() + band->indentationTop());
+//    else
+//	if (band->layoutType() == BandInterface::LayoutFree)
+//	    m_painter.translate(band->geometry().x(), band->geometry().y());
+//
+//    if (band->layoutType()== BandInterface::LayoutBottom)
+//	freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() - band->indentationTop() - band->indentationBottom() );
+//    else
+//	freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentationTop() + band->indentationBottom() );
+//
+//    band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+
+    QPointF translate;
+
     if (band->layoutType() == BandInterface::LayoutBottom)
-	m_painter.translate( band->x(), freeSpace.bottom() - band->geometry().height() - band->indentationBottom());
+	translate = QPointF( band->x(), freeSpace.bottom() - band->geometry().height() - band->indentationBottom());
     else
 	if (band->layoutType() == BandInterface::LayoutTop)
-	    m_painter.translate( band->x(), freeSpace.top() + band->indentationTop());
+	    translate = QPointF( band->x(), freeSpace.top() + band->indentationTop());
     else
 	if (band->layoutType() == BandInterface::LayoutFree)
-	    m_painter.translate(band->geometry().x(), band->geometry().y());
+	    translate = QPointF(band->geometry().x(), band->geometry().y());
 
     if (band->layoutType()== BandInterface::LayoutBottom)
 	freeSpace.setBottom( freeSpace.bottom() - band->geometry().height() - band->indentationTop() - band->indentationBottom() );
     else
 	freeSpace.setTop( freeSpace.top() + band->geometry().height() + band->indentationTop() + band->indentationBottom() );
 
-    band->prPaint(&m_painter, QPointF(0, 0), QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+    band->prPaint(&m_painter, translate, QRectF(0, 0, m_currentPage->geometry().width(), m_currentPage->geometry().height()));
+
+
+
 
     m_painter.restore();
     if (!bandDone.contains(band))
@@ -263,6 +284,8 @@ void PaintInterface::prepareCurrentPage()
 
 void PaintInterface::postprocessCurrentPage()
 {
+    emit closePageBefore();
+
     foreach(BandInterface * band, listTop)
 	if (band->prClosePage())
 	    processBand(band);
@@ -278,6 +301,7 @@ void PaintInterface::postprocessCurrentPage()
 	if (band->prClosePage())
 	    processBand(band);
 
+    emit closePageAfter();
 }
 
 
@@ -326,8 +350,8 @@ void PaintInterface::processDataset(DataSet * dtst)
     m_report->m_scriptEngine->globalObject().setProperty("_line_", QScriptValue(m_report->m_scriptEngine, 0), QScriptValue::ReadOnly);
 
     m_currentDataset = dtst;
-    m_currentDatasetRow = 0;
-    m_currentLineNumber = 0;
+    m_currentDatasetRow = -1;
+    m_currentLineNumber = -1;
 
     /// making item group for dataset iteration
     BandList  currentGroup;
@@ -375,6 +399,11 @@ int PaintInterface::currentPageNumber()
 int PaintInterface::currentDatasetRow()
 {
     return m_currentDatasetRow;
+}
+
+int PaintInterface::currentDetailNumber()
+{
+    return m_currentLineNumber;
 }
 
 void PaintInterface::setDetailNumber(int num)

@@ -60,6 +60,7 @@ public:
     int currentDatasetRow();
     QString currentDatasetName();
     Report::DataSet * currentDataset();
+    int currentDetailNumber();
     void setDetailNumber(int num);
     void newPage();
     void processBand(BandInterface * band);
@@ -79,6 +80,8 @@ signals:
     void processDatasetAfter(DataSet * dtst);
     void newPageBefore();
     void newPageAfter();
+    void closePageBefore();
+    void closePageAfter();
 
 private:
     void run();
