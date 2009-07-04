@@ -155,6 +155,7 @@ bool SqlDataset::prepare(const QString & query)
 
 bool SqlDataset::seek(int index)
 {
+    qDebug("SqlDataset::seek(%i)", index);
 	emit(beforeSeek(index));
 	m_currentRow = index;
 //	bool ret = !m_model.record(m_currentRow).isEmpty();

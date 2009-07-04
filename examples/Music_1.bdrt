@@ -79,7 +79,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                         <condition type="QString" >[query_0."artist"]</condition>
                         <reprintOnNewPage type="bool" >false</reprintOnNewPage>
                         <resetDetailNumber type="bool" >false</resetDetailNumber>
@@ -179,7 +180,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >1</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                         <condition type="QString" >[query_0."album"]</condition>
                         <reprintOnNewPage type="bool" >true</reprintOnNewPage>
                         <resetDetailNumber type="bool" >true</resetDetailNumber>
@@ -261,13 +263,15 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >2</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                         <dataset type="QString" >query_0</dataset>
                         <datasetFilter type="QString" ></datasetFilter>
                         <datasetFilterColumn type="int" >0</datasetFilterColumn>
                         <zebra type="bool" >true</zebra>
                         <joinTo type="QString" ></joinTo>
                         <columns type="int" >1</columns>
+                        <columnAlignType type="int" >1</columnAlignType>
                     </properties>
                     <children>
                         <Memo>
@@ -420,7 +424,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >3</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                         <condition type="QString" >[query_0."album"]</condition>
                         <dataset type="QString" >query_0</dataset>
                     </properties>
@@ -537,7 +542,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                     </properties>
                     <children>
                         <Memo>
@@ -728,7 +734,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                     </properties>
                     <children>
                         <Memo>
@@ -805,7 +812,8 @@
                         <backgroundMode type="int" >0</backgroundMode>
                         <font type="QFont" >Serif,3.5,-1,5,50,0,0,0,0,0</font>
                         <order type="int" >0</order>
-                        <indentation type="int" >0</indentation>
+                        <indentationTop type="int" >0</indentationTop>
+                        <indentationBottom type="int" >0</indentationBottom>
                     </properties>
                     <children>
                         <Memo>

@@ -75,8 +75,10 @@ ReportEngine::ReportEngine(QObject *parent)
 
 	qApp->setLibraryPaths(paths);
 
+	qDebug("Loading plugins...");
 	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
 	{
+	    qDebug("   %s", qPrintable(fileName));
 		QPluginLoader loader;
 		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
 		loader.setFileName(pluginsDir.absoluteFilePath(fileName));
@@ -101,6 +103,7 @@ ReportEngine::ReportEngine(QObject *parent)
 		else
 			qCritical() << plugin << loader.errorString();
 	}
+	qDebug("Done!");
 
 	pluginsDir.cd("dataset");
 

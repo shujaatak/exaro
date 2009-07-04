@@ -499,11 +499,30 @@ bool ItemInterface::prInit(PaintInterface * paintInterface)
 bool ItemInterface::prData(){return true;}
 
 bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
-//bool ItemInterface::prPaint(QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
 //    qDebug("prPaint. item=%s",qPrintable (this->objectName()));
     emit beforePrint(this);
 
+    QStyleOptionGraphicsItem option;
+    option.type = 31;
+    painter->save();
+    painter->resetMatrix();
+    painter->translate(translate);
+    option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, geometry().width(), geometry().height()) : geometry();
+    translate += option.exposedRect.topLeft() + QPointF(offsetX + _offsetX, offsetY + _offsetY);
+//    painter->setClipRect(clipRect);
+    paint(painter, &option);
+    painter->restore();
+
+    foreach(QObject * child, QObject::children())
+    {
+    if (ItemInterface * childItem = dynamic_cast<ItemInterface *>(child))
+	if (childItem->prData())
+	    childItem->prPaint(painter, translate, option.exposedRect);
+    }
+    emit afterPrint(this);
+
+    /*
     QStyleOptionGraphicsItem option;
     option.type = 31;
     option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
@@ -518,44 +537,7 @@ bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF 
     foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
 	if (childItem->prData())
 	    childItem->prPaint(painter, translate, option.exposedRect);
-
-    emit afterPrint(this);
-
-    /// version 2
-    /*
-    QRectF clipRect = QRectF(0, 0, geometry().width(), geometry().height());
-    QStyleOptionGraphicsItem t_option;
-//    QPointF translate;
-    t_option.type = 31;
-    //t_option.exposedRect = QRectF(0, 0, geometry().width(), geometry().height());
-    t_option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
-    t_option.exposedRect.translate(t_option.exposedRect.topLeft());
-    painter->setClipRect(clipRect);
-
-
-    paint(painter,option);
-
-	QPointF translate = geometry().topLeft();
-
-    foreach(ItemInterface * item, findChildren<ItemInterface *>())
-	item->prPaint(painter, &t_option);
-*/
-
-/// version 1
-/*
-    //QPointF translate = option->exposedRect.topLeft();
-    QPointF translate = geometry().topLeft();
-
-    foreach(ItemInterface * item, findChildren<ItemInterface *>())
-    {
-	QRectF clipRect = item->geometry();
-	t_option.exposedRect = item->geometry();
-	painter->save();
-	t_option.exposedRect.translate(translate);
-	painter->setClipRect(clipRect);
-	item->prPaint(painter, &t_option);
-	painter->restore();
-    }
+	    
 */
 }
 

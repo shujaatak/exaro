@@ -34,6 +34,8 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include "reportinterface.h"
+#include "dataset.h"
+#include <qmath.h>
 
 #include "detail.h"
 
@@ -48,12 +50,15 @@ Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
     : BandInterface(parent, parentObject)
     , m_numColumns(1)
     , m_currentColumn (0)
+    , m_datasetFilterColumn (0)
+    , darkRow(false)
+    , m_isZebra(false)
+    , m_columnAlignType(caHorizontal)
+    , m_isFakePass (false)
+//    , cashedData(0)
 {
 	initMyResource();
 	setResizeFlags(FixedPos | ResizeBottom);
-	m_isZebra = true;
-	darkRow = false;
-	this->m_datasetFilterColumn = 0;
 }
 
 Detail::~Detail()
@@ -70,30 +75,43 @@ bool Detail::prInit(Report::PaintInterface * paintInterface)
 	    return true;
 	connect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
     }
+
+    if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
+    {
+	connect ( paintInterface, SIGNAL(processBandBefore(BandInterface*)), this, SLOT(checkCurrentBand(BandInterface*)), Qt::BlockingQueuedConnection);
+	connect ( paintInterface, SIGNAL(closePageBefore()), this, SLOT(closePageBefore()), Qt::BlockingQueuedConnection);
+    }
+
     return true;
 }
 
 bool Detail::prData()
 {
-    accumulateAgregateValues();
+    if ( !m_isFakePass )
+	accumulateAgregateValues();
 
     if (m_numColumns > 1)
     {
-	m_currentColumn++;
+	if ( (m_columnAlignType == caHorizontal) || ( (m_columnAlignType == caVertical)  &&  m_isFakePass ) )
+	    m_currentColumn++;
+
 	if ( m_currentColumn > m_numColumns || m_paintInterface->lastProcessedBand() != this)
 	    m_currentColumn = 1;
 
 	if (m_currentColumn > 1)
 	{
-	    QRectF freeSpace = m_paintInterface->pageFreeSpace();
-	    freeSpace.setTop( freeSpace.top() - geometry().height() - indentationTop() - indentationBottom() );
-	    m_paintInterface->setPageFreeSpace( freeSpace );
+	    if ( (m_columnAlignType == caHorizontal) || ( (m_columnAlignType == caVertical)  &&  m_isFakePass ) )
+	    {
+		QRectF freeSpace = m_paintInterface->pageFreeSpace();
+		freeSpace.setTop( freeSpace.top() - geometry().height() - indentationTop() - indentationBottom() );
+		m_paintInterface->setPageFreeSpace( freeSpace );
+	    }
 	}
 
 	if (m_currentColumn == 1)
 	    darkRow = !darkRow;
 
-	_offsetX = ( (qreal)geometry().width() / (qreal)m_numColumns ) * (qreal)(m_currentColumn - 1);
+	    _offsetX = ( (qreal)geometry().width() / (qreal)m_numColumns ) * (qreal)(m_currentColumn - 1);
     }
     else
     {
@@ -115,11 +133,19 @@ bool Detail::prReset()
 	    return true;
 	disconnect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
     }
-//    if (!this->m_dataset.isEmpty())
-//	Report::DataSet * dtst = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
+
     m_currentColumn = 0;
     darkRow = false;
     offsetX = 0;
+    _offsetX = 0;
+    m_isFakePass = false;
+
+    if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
+    {
+	disconnect ( m_paintInterface, SIGNAL(processBandBefore(BandInterface*)), this, SLOT(checkCurrentBand(BandInterface*)));
+	disconnect ( m_paintInterface, SIGNAL(closePageBefore()), this, SLOT(closePageBefore()));
+    }
+    cashedData.param.clear();
     return true;
 }
 
@@ -158,6 +184,17 @@ void Detail::setNumColumns(int col)
     update();
 }
 
+Detail::ColumnAlignType Detail::columnAlignType()
+{
+    return m_columnAlignType;
+}
+
+void Detail::setColumnAlignType (ColumnAlignType align)
+{
+    m_columnAlignType = align;
+}
+
+
 QString Detail::datasetFilter()
 {
     return m_datasetFilter;
@@ -184,10 +221,8 @@ void Detail::joinToSlot(QObject * item)
     Report::DataSet * dtst = this->m_dataset.isEmpty() ? 0 : this->reportObject()->findChild<Report::DataSet *>(this->m_dataset);
     if (!m_datasetFilter.isEmpty() && !(m_datasetFilterColumn == 0))
     {
-	qDebug("test 1");
 	if (dtst)
 	{
-		qDebug("test 2");
 	    QString filter = m_datasetFilter;
 	    QString regExp ("\\$([\\w\\d]+)");
 	    QRegExp rxlen(regExp);
@@ -212,6 +247,61 @@ void Detail::joinToSlot(QObject * item)
 	m_paintInterface->processBand(this);
 }
 
+void Detail::checkCurrentBand(Report::BandInterface* band)
+{
+    qDebug("check band = %s", qPrintable(band->objectName()));
+    if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
+    {
+	if (m_paintInterface->lastProcessedBand() != this && band == this ) // first detail row
+	{
+	    qDebug("check band range start -----");
+	    cashedData.dsFirst = m_paintInterface->currentDatasetRow();
+	    m_isFakePass = true;
+	}
+	if (m_paintInterface->lastProcessedBand() == this && band != this)  // last detail row
+	{
+	    qDebug("check band range end -----");
+	    paintVerticalColumns();
+	}
+    }
+}
+
+void Detail::closePageBefore()
+{
+    paintVerticalColumns();
+}
+
+void Detail::paintVerticalColumns()
+{
+    qDebug("Detail::paintVerticalColumns()");
+    Report::DataSet* dtst = this->reportObject()->findChild<Report::DataSet*> (m_dataset);
+    Q_ASSERT(dtst);
+
+    cashedData.dsLast = m_paintInterface->currentDatasetRow() - 1;
+
+    m_isFakePass = false;
+    m_currentColumn = 0;
+    darkRow = false;
+
+    int rows = qCeil ((double)cashedData.param.count() / (double)m_numColumns);
+    for (int i = 0; i < cashedData.param.count() ; i++)
+    {
+	int col = i / rows;
+	int trNum = (i - rows * col) * m_numColumns + col;
+	m_currentColumn = col + 1;
+//	qDebug("i=%i    currRow = %i   curCol = %i", i, trNum, col);
+	dtst->seek( i + cashedData.dsFirst );
+	m_paintInterface->setDetailNumber(cashedData.param.at(i).lineNum);
+	if (this->prData())
+	    this->prPaint(cashedData.param.at(i).painter, cashedData.param.at(trNum).translate, cashedData.param.at(i).clipRect);
+    }
+    dtst->seek(cashedData.dsLast +1);
+
+    cashedData.param.clear();
+    m_currentColumn = 0;
+    darkRow = false;
+}
+
 bool Detail::canContain(QObject * object)
 {
 	return (!dynamic_cast<Report::BandInterface*>(object) && dynamic_cast<Report::ItemInterface*>(object));
@@ -224,70 +314,65 @@ QRectF Detail::boundingRect() const
 
 void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
 {
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+    QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
 
-	setupPainter(painter);
+    setupPainter(painter);
 
-	painter->fillRect(rect,painter->brush());
+    painter->fillRect(rect,painter->brush());
 
-	if ( option->type != QStyleOption::SO_GraphicsItem &&  darkRow && m_currentColumn  <= 1)
-	    painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
+    if ( option->type != QStyleOption::SO_GraphicsItem &&  darkRow && m_currentColumn  <= 1)
+	painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
 
-	if (option->type == QStyleOption::SO_GraphicsItem)
+    if (option->type == QStyleOption::SO_GraphicsItem)
+    {
+	drawSelection(painter, rect);
+	drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
+	if (m_numColumns > 1 )
 	{
-		drawSelection(painter, rect);
-		drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
-		if (m_numColumns > 1 )
-		{
-		    QPen p(Qt::DashLine);
-		    painter->setPen(p);
-		    qreal deltaX = (qreal)rect.width() / (qreal)m_numColumns;
-		    for (int i=1 ;i<=m_numColumns; i++)
-			painter->drawLine(rect.left() + deltaX*i, rect.top(), rect.left() + deltaX*i, rect.bottom() );
-		}
+	    QPen p(Qt::DashLine);
+	    painter->setPen(p);
+	    qreal deltaX = (qreal)rect.width() / (qreal)m_numColumns;
+	    for (int i=1 ;i<=m_numColumns; i++)
+		painter->drawLine(rect.left() + deltaX*i, rect.top(), rect.left() + deltaX*i, rect.bottom() );
 	}
+    }
 
-	adjustRect(rect);
+    adjustRect(rect);
 
-	if (frame()&DrawLeft)
-		painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+    if (frame()&DrawLeft)
+	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
 
-	if (frame()&DrawRight)
-		painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
+    if (frame()&DrawRight)
+	painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
 
-	if (frame()&DrawTop)
-		painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+    if (frame()&DrawTop)
+	painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
 
-	if (frame()&DrawBottom)
-		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
+    if (frame()&DrawBottom)
+	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-	if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
-	    painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
+    if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
+	painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
 }
 
-/*
 bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
 {
-    emit beforePrint(this);
-
-    QStyleOptionGraphicsItem option;
-    option.type = 31;
-    option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
-    painter->save();
-    option.exposedRect.translate(translate);
-    painter->setClipRect(clipRect);
-
-    paint(painter, &option);
-
-    painter->restore();
-    translate += option.exposedRect.topLeft() + ((QPointF((qreal)geometry().width() / (qreal)m_numColumns , 0)) * (m_currentColumn - 1));
-    foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
-	if (childItem->prData())
-	    childItem->prPaint(painter, translate, option.exposedRect);
-
-    emit afterPrint(this);
+    qDebug("Detail::prPaint");
+    if (m_isFakePass)
+    {
+	emit beforePrint(this);
+	PrintParam pp;
+	pp.painter = painter;
+	pp.translate = translate;
+	pp.clipRect = clipRect;
+	pp.lineNum = m_paintInterface->currentDetailNumber();
+	cashedData.param.append(pp);
+	emit afterPrint(this);
+	return true;
+    }
+    else
+	return ItemInterface::prPaint(painter, translate, clipRect);
 }
-*/
 
 QIcon Detail::toolBoxIcon()
 {
