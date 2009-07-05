@@ -75,7 +75,9 @@ ReportEngine::ReportEngine(QObject *parent)
 
 	qApp->setLibraryPaths(paths);
 
+	qDebug("Plugins path = %s", qPrintable(pluginsDir.absolutePath()));
 	qDebug("Loading plugins...");
+
 	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
 	{
 	    qDebug("   %s", qPrintable(fileName));
