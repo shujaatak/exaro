@@ -115,6 +115,7 @@ private:
 	ColumnAlignType m_columnAlignType;
 	bool m_isFakePass;		    // 2 passes for vertical columns. first = fake pass
 	CashedData cashedData;
+	int m_lastPage;
 };
 
 #endif

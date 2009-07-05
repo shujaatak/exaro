@@ -56,6 +56,7 @@ Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
     , m_columnAlignType(caHorizontal)
     , m_isFakePass (false)
 //    , cashedData(0)
+    , m_lastPage(-1)
 {
 	initMyResource();
 	setResizeFlags(FixedPos | ResizeBottom);
@@ -87,6 +88,7 @@ bool Detail::prInit(Report::PaintInterface * paintInterface)
 
 bool Detail::prData()
 {
+    qDebug(" Detail::prData()");
     if ( !m_isFakePass )
 	accumulateAgregateValues();
 
@@ -118,7 +120,6 @@ bool Detail::prData()
 	darkRow = !darkRow;
 	m_currentColumn = 1;
     }
-
     return true;
 }
 
@@ -139,6 +140,7 @@ bool Detail::prReset()
     offsetX = 0;
     _offsetX = 0;
     m_isFakePass = false;
+    m_lastPage = -1;
 
     if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
     {
@@ -252,24 +254,61 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
     qDebug("check band = %s", qPrintable(band->objectName()));
     if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
     {
-	if (m_paintInterface->lastProcessedBand() != this && band == this ) // first detail row
+	if (m_lastPage == m_paintInterface->currentPageNumber())
 	{
-	    qDebug("check band range start -----");
-	    cashedData.dsFirst = m_paintInterface->currentDatasetRow();
-	    m_isFakePass = true;
+	    if (m_paintInterface->lastProcessedBand() != this && band == this ) // first detail row
+	    {
+		qDebug("check band range start -----");
+		cashedData.dsFirst = m_paintInterface->currentDatasetRow();
+		m_isFakePass = true;
+		qDebug("first row = %i", cashedData.dsFirst);
+	    }
+	    if (m_paintInterface->lastProcessedBand() == this && band != this)  // last detail row
+	    {
+		qDebug("check band range end -----");
+		paintVerticalColumns();
+	    }
 	}
-	if (m_paintInterface->lastProcessedBand() == this && band != this)  // last detail row
+	else
 	{
-	    qDebug("check band range end -----");
-	    paintVerticalColumns();
+	    if (band == this)	// new page - so need new block
+	    {
+		qDebug("New Page detected - range begin -----");
+		cashedData.dsFirst = m_paintInterface->currentDatasetRow();
+		m_isFakePass = true;
+		qDebug("first row = %i", cashedData.dsFirst);
+	    }
 	}
+
+	if (band == this)
+	    m_lastPage = m_paintInterface->currentPageNumber();
     }
 }
 
 void Detail::closePageBefore()
 {
-    paintVerticalColumns();
+    qDebug("Detail::closePageBefore()===========================");
+    if (m_isFakePass)
+    {
+	paintVerticalColumns();
+	m_isFakePass = true;
+	cashedData.dsFirst = m_paintInterface->currentDatasetRow() -1;
+	this->prData();		// repeat lost (before new page) prData;
+    }
+
+//    this->prData();		// repeat lost (before new page) prData;
+
+//    cashedData.dsFirst = m_paintInterface->currentDatasetRow();
+//    m_isFakePass = true;
+//    disconnect ( m_paintInterface, SIGNAL(processBandBefore(BandInterface*)), this, SLOT(checkCurrentBand(BandInterface*)));
 }
+
+/*
+void Detail::closePageAfter()
+{
+
+}
+*/
 
 void Detail::paintVerticalColumns()
 {
@@ -284,18 +323,19 @@ void Detail::paintVerticalColumns()
     darkRow = false;
 
     int rows = qCeil ((double)cashedData.param.count() / (double)m_numColumns);
+    qDebug("rows = %i, count = %i", rows, cashedData.param.count());
     for (int i = 0; i < cashedData.param.count() ; i++)
     {
 	int col = i / rows;
-	int trNum = (i - rows * col) * m_numColumns + col;
+	int trNum = (i - rows * col) * m_numColumns /*+ col*/;
 	m_currentColumn = col + 1;
-//	qDebug("i=%i    currRow = %i   curCol = %i", i, trNum, col);
+	qDebug("i=%i    currRow = %i   curCol = %i", i, trNum, col);
 	dtst->seek( i + cashedData.dsFirst );
 	m_paintInterface->setDetailNumber(cashedData.param.at(i).lineNum);
 	if (this->prData())
 	    this->prPaint(cashedData.param.at(i).painter, cashedData.param.at(trNum).translate, cashedData.param.at(i).clipRect);
     }
-    dtst->seek(cashedData.dsLast +1);
+    dtst->seek(cashedData.dsLast + 1);
 
     cashedData.param.clear();
     m_currentColumn = 0;
