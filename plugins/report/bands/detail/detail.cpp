@@ -254,7 +254,7 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
     qDebug("check band = %s", qPrintable(band->objectName()));
     if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
     {
-	if (m_lastPage == m_paintInterface->currentPageNumber())
+	if (m_lastPage == m_paintInterface->currentPageNumber() || (m_lastPage== -1))
 	{
 	    if (m_paintInterface->lastProcessedBand() != this && band == this ) // first detail row
 	    {
@@ -274,7 +274,8 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
 	    if (band == this)	// new page - so need new block
 	    {
 		qDebug("New Page detected - range begin -----");
-		cashedData.dsFirst = m_paintInterface->currentDatasetRow();
+		if (!m_isFakePass)
+		    cashedData.dsFirst = m_paintInterface->currentDatasetRow() ;
 		m_isFakePass = true;
 		qDebug("first row = %i", cashedData.dsFirst);
 	    }
@@ -287,28 +288,16 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
 
 void Detail::closePageBefore()
 {
-    qDebug("Detail::closePageBefore()===========================");
+    qDebug("Detail::closePageBefore()   ===========================");
     if (m_isFakePass)
     {
 	paintVerticalColumns();
 	m_isFakePass = true;
-	cashedData.dsFirst = m_paintInterface->currentDatasetRow() -1;
+	cashedData.dsFirst = m_paintInterface->currentDatasetRow();
 	this->prData();		// repeat lost (before new page) prData;
     }
-
-//    this->prData();		// repeat lost (before new page) prData;
-
-//    cashedData.dsFirst = m_paintInterface->currentDatasetRow();
-//    m_isFakePass = true;
-//    disconnect ( m_paintInterface, SIGNAL(processBandBefore(BandInterface*)), this, SLOT(checkCurrentBand(BandInterface*)));
 }
 
-/*
-void Detail::closePageAfter()
-{
-
-}
-*/
 
 void Detail::paintVerticalColumns()
 {
@@ -320,7 +309,6 @@ void Detail::paintVerticalColumns()
 
     m_isFakePass = false;
     m_currentColumn = 0;
-    darkRow = false;
 
     int rows = qCeil ((double)cashedData.param.count() / (double)m_numColumns);
     qDebug("rows = %i, count = %i", rows, cashedData.param.count());
@@ -336,6 +324,7 @@ void Detail::paintVerticalColumns()
 	    this->prPaint(cashedData.param.at(i).painter, cashedData.param.at(trNum).translate, cashedData.param.at(i).clipRect);
     }
     dtst->seek(cashedData.dsLast + 1);
+    m_paintInterface->setDetailNumber(cashedData.param.at(cashedData.param.count()-1).lineNum + 1);
 
     cashedData.param.clear();
     m_currentColumn = 0;
