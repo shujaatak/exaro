@@ -600,12 +600,12 @@
 <context>
     <name>PieChart</name>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="165"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="203"/>
         <source>Pie chart</source>
         <translation>Круговая диаграмма</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="170"/>
+        <location filename="../plugins/report/items/charts/piechart/piechart.cpp" line="208"/>
         <source>Charts</source>
         <translation>Диаграммы</translation>
     </message>
@@ -823,82 +823,82 @@
 <context>
     <name>Report::PreviewDialog</name>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="129"/>
+        <location filename="../libs/report/previewdialog.cpp" line="128"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="144"/>
+        <location filename="../libs/report/previewdialog.cpp" line="143"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="150"/>
+        <location filename="../libs/report/previewdialog.cpp" line="149"/>
         <source>First page</source>
         <translation>Первая стр.</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="154"/>
+        <location filename="../libs/report/previewdialog.cpp" line="153"/>
         <source>Read previous</source>
         <translation>Смотреть предыдущую страницу</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="158"/>
+        <location filename="../libs/report/previewdialog.cpp" line="157"/>
         <source>Read next</source>
         <translation>Смотреть следующую страницу</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="162"/>
+        <location filename="../libs/report/previewdialog.cpp" line="161"/>
         <source>Last page</source>
         <translation>Последняя стр.</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="168"/>
+        <location filename="../libs/report/previewdialog.cpp" line="167"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="174"/>
+        <location filename="../libs/report/previewdialog.cpp" line="173"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="185"/>
+        <location filename="../libs/report/previewdialog.cpp" line="184"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="190"/>
+        <location filename="../libs/report/previewdialog.cpp" line="189"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="220"/>
+        <location filename="../libs/report/previewdialog.cpp" line="219"/>
         <source>Please select an export format</source>
         <translation>Пожалуйста выберите формат экспорта</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="225"/>
+        <location filename="../libs/report/previewdialog.cpp" line="224"/>
         <source>&amp;Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="229"/>
+        <location filename="../libs/report/previewdialog.cpp" line="228"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="235"/>
+        <location filename="../libs/report/previewdialog.cpp" line="234"/>
         <source>Export format</source>
         <translation>Формат экспорта</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="488"/>
+        <location filename="../libs/report/previewdialog.cpp" line="490"/>
         <source>Quit ?</source>
         <translation>Выйти?</translation>
     </message>
     <message>
-        <location filename="../libs/report/previewdialog.cpp" line="488"/>
+        <location filename="../libs/report/previewdialog.cpp" line="490"/>
         <source>Really quit?</source>
         <translation>Уверены что желаете выйти?</translation>
     </message>
@@ -1182,7 +1182,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="152"/>
@@ -1487,17 +1487,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="14"/>
         <source>Exception</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="32"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../apps/designer/exceptiondialog.ui" line="52"/>
         <source>C&amp;lose</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1712,7 +1712,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="362"/>
         <source>Save changes ?</source>
-        <translation>Сохранить именения?</translation>
+        <translation>Сохранить изменения?</translation>
     </message>
     <message>
         <location filename="../apps/designer/mainwindow.cpp" line="519"/>
