@@ -137,19 +137,12 @@ QRectF Picture::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Picture::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
 	QString m_text;
 	m_text=m_comment;
 
-	setupPainter(painter);
 	painter->setFont(fontConvert(m_font));
-	adjustRect(rect, painter->pen());
 
 	qreal textH  = 0;
 	qreal sw=0;
@@ -248,24 +241,24 @@ void Picture::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		setHeight(height()+sh);
 	}
 
-	if (m_borderWidth > 0)
-	{
-		QPen pen;
-		pen.setWidth(m_borderWidth);
-		pen.setColor(m_borderColor);
-		pen.setJoinStyle(Qt::MiterJoin);
-		painter->setPen(pen);
-		painter->setBrush(Qt::NoBrush);
-		painter->drawRect(rect.x() + m_borderWidth/2, rect.y() + m_borderWidth/2,
-		                  rect.width() - m_borderWidth, rect.height() - m_borderWidth);
-	}
+//	if (m_borderWidth > 0)
+//	{
+//		QPen pen;
+//		pen.setWidth(m_borderWidth);
+//		pen.setColor(m_borderColor);
+//		pen.setJoinStyle(Qt::MiterJoin);
+//		painter->setPen(pen);
+//		painter->setBrush(Qt::NoBrush);
+//		painter->drawRect(rect.x() + m_borderWidth/2, rect.y() + m_borderWidth/2,
+//		                  rect.width() - m_borderWidth, rect.height() - m_borderWidth);
+//	}
 
 
-	if (option->type == QStyleOption::SO_GraphicsItem)
-	    drawSelection(painter, rect);
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//	    drawSelection(painter, rect);
+//
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
 }
 
 

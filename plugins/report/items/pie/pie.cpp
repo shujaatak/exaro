@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(pie);
 }
 
-Pie::Pie(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_startAngle(30), m_spanAngle(120)
+Pie::Pie(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_startAngle(30), m_spanAngle(120)
 {
 	initMyResource();
 
@@ -77,24 +77,24 @@ QRectF Pie::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Pie::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Pie::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit beforePrint(this);
+//
+//	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//		drawSelection(painter, boundingRect());
+//
+//	setupPainter(painter);
 
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
+//	adjustRect(rect);
 
 	painter->drawPie(rect, m_startAngle*16, m_spanAngle*16);
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
 }
 
 QIcon Pie::toolBoxIcon()

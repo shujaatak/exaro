@@ -30,7 +30,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(barcode);
 }
 
-Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject)
+Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
 {
 	m_barcodeType = (BarcodeTypes)BARCODE_CODE128;
 	m_paintType = IgnoreAspectRatio;
@@ -237,7 +237,7 @@ QRectF Barcode::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Barcode::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * /*widget*/)
 {
 	QString error;
 	QString m_text;
@@ -245,19 +245,6 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		m_text=m_testText;
 	else
 		m_text=scriptEngine()->evaluate(m_script).toString();
-
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
 
 	Zint::QZint bc;
 
@@ -304,10 +291,6 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		default:
 			break;
 	}
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-
 }
 
 QIcon Barcode::toolBoxIcon()

@@ -39,11 +39,15 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(memo);
 }
 
-Memo::Memo(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_textFlags(0), m_text(tr("Memo item")),m_sizePolicy(None)
+Memo::Memo(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_text(tr("Memo item")),m_sizePolicy(None)
 {
 	initMyResource();
 	setWidth(25/UNIT);
 	setHeight(5/UNIT);
+	m_font=QFont("Serif");
+	m_font.setPointSizeF(3.5);
+	m_font.setStyleStrategy(QFont::PreferMatch);
+	m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
 Memo::SizePolicy Memo::sizePolicy()
@@ -77,6 +81,17 @@ void Memo::setText(const QString &text)
 	update();
 }
 
+QFont Memo::font()
+{
+	return m_font;
+}
+
+void Memo::setFont(const QFont & font)
+{
+	m_font = font;
+	update();
+}
+
 QRectF Memo::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
@@ -84,58 +99,20 @@ QRectF Memo::boundingRect() const
 
 bool Memo::prInit(Report::PaintInterface * paintInterface)
 {
-//    ItemInterface::init(paintInterface);
     storeAgregateValuesFromString(m_text);  // lookup for agragate functions
 }
 
-/*
-void Memo::prePaint(QPainter * painter)
+void Memo::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	ItemInterface::prePaint(painter);
-	if (m_sizePolicy==None)
-		return;
+	QFont f=font();
+	f.setPixelSize(font().pointSizeF()/UNIT);
+	painter->setFont(f);
 
-	QRectF rect = boundingRect();
-	adjustRect(rect);
-	QFontMetricsF fm(painter->font());
-	m_printText = processString(m_text);
-	if (m_sizePolicy==AutoSize)
-	{
-		qreal wd=fm.width(m_text);
-		if (wd>width())
-			setWidth(wd);
-	}
-	else
-	{
-		QRectF rc=fm.boundingRect(rect, TextFlags(), m_text);
-		if (rc.height()>rect.height())
-			setStretch(rc.height()-rect.height());
-	}
-}
-*/
-void Memo::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
-{
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-	setupPainter(painter);
-
-	adjustRect(rect);
-
-	painter->save();
-	painter->setRenderHint(QPainter::TextAntialiasing);
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	    painter->drawText(rect, textFlags(), m_text);
 	else
 	    if (scriptEngine())
 		painter->drawText(rect, textFlags(), processString(m_text));
-	painter->restore();
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon Memo::toolBoxIcon()

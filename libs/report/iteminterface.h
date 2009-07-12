@@ -52,6 +52,10 @@ class PaintInterface;
 class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
+	Q_ENUMS(BGMode)
+//	Q_ENUMS(FillType)
+//	Q_ENUMS(PatternType)
+//	Q_ENUMS(GradientType )
 
 	Q_FLAGS(Frames Frame);
 
@@ -66,15 +70,31 @@ class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 	*/
 	Q_PROPERTY(QRectF geometry READ geometry WRITE setGeometry)
 	/**
-	 * @see opacity()
-	 * @see setOpacity()
-	*/
-	Q_PROPERTY(int opacity READ opacity WRITE setOpacity)
-	/**
 	 * @see frame()
 	 * @see setFrame()
 	*/
 	Q_PROPERTY(Frames frame READ frame WRITE setFrame)
+	/**
+	 * @see pen()
+	 * @see setPen()
+	*/
+	Q_PROPERTY(QPen frameBorder READ borderPen WRITE setBorderPen)
+	/**
+	 * @see backgroundBrush()
+	 * @see setBackgroundBrush()
+	*/
+	Q_PROPERTY(QBrush backgroundBrush READ backgroundBrush WRITE setBackgroundBrush)
+	/**
+	 * @see backgroundMode()
+	 * @see setBackgroundMode()
+	 * @see BGMode
+	*/
+	Q_PROPERTY(BGMode backgroundMode READ backgroundMode WRITE setBackgroundMode)
+	/**
+	 * @see opacity()
+	 * @see setOpacity()
+	*/
+	Q_PROPERTY(int opacity READ opacity WRITE setOpacity)
 
 public:
 	/**
@@ -99,6 +119,17 @@ public:
 	                  ResizeBottom = 8, /**< Item can be resized to bottom*/
 	                  FixedPos = 16 /**< Item cant be moved*/
 	                 };
+	/** @enum BGMode
+	* @see backgroundMode()
+	* @see setBackgroundMode()
+	*/
+	enum BGMode { TransparentMode, /**< Background is transparent*/
+		      OpaqueMode /**< Background is opaque*/
+		  };
+//	enum FillType {Solid, Pattern, Gradient, Texture};
+//	enum PatternType {Dense1 = 2, Dense2 = 3, Dense3 = 4, Dense4 = 5, Dense5 = 6, Dense6 = 7, Dense7 = 8,
+//			  Hor = 9, Ver = 10, Cross = 11, BDiag = 12, FDiag = 13, DiagCross = 14};
+//	enum GradientType {Linear = 15, Conical = 17, Radial = 16};
 
 	Q_DECLARE_FLAGS(Frames, Frame);
 
@@ -269,6 +300,7 @@ public:
 	 * @param widget the widget argument is optional. If provided, it points to the widget that is being painted on; otherwise, it is 0. For cached painting, widget is always 0.
 	 */
 	virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	virtual void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * widget = 0);
 	/**
 	 * This pure virtual function is used to create the item object
 	 * @param parent parent item
@@ -329,6 +361,46 @@ public:
 	 * @return parent geometry
 	 */
 	QRectF parentGeometry();
+	/**
+	 * Return the pen used to paint the item
+	 * @return pen used to paint the item
+	 * @see setBorderPen()
+	 */
+	virtual QPen borderPen();
+	/**
+	 * Set the pen used to paint the item
+	 * @param pen
+	 * @see borderPen()
+	 */
+	virtual void setBorderPen(const QPen & pen);
+	/**
+	 * Return the brush used to paint background
+	 * @return backgroundBrush
+	 * @see setBackgroundBrush()
+	 */
+	virtual QBrush backgroundBrush();
+	/**
+	 * Set the brush used to paint background
+	 * @param brush brush used to paint background
+	 * @see backgroundBrush()
+	 */
+	virtual void setBackgroundBrush(const QBrush & brush);
+	/**
+	 * Return background mode
+	 * @return background mode
+	 * @see BGMode
+	 * @see setBackgroundMode()
+	 */
+	virtual BGMode backgroundMode();
+	/**
+	 * Set background mode
+	 * @param bgMode background mode
+	 * @see BGMode
+	 * @see backgroundMode()
+	 */
+	virtual void setBackgroundMode(BGMode bgMode);
+
+
 
 	virtual bool isEnabled();
 	virtual void setEnabled(bool b);
@@ -392,12 +464,6 @@ protected:
 	 */
 	void drawSelection(QPainter * painter, QRectF rect);
 
-	/**
-	 * This function set the background brush, the brush, the pen and the font to painter
-	 * @param painter
-	 */
-	virtual void setupPainter(QPainter * painter);
-
 	static QFont fontConvert(QFont & font);
 	static const QRectF adjustRect(QRectF & rect, const QPen & pen);
 
@@ -434,6 +500,9 @@ protected:
 	double _offsetX, _offsetY;   //use in plugin to manipulate drawing of child
 
 private:
+	BGMode m_BGMode;
+	QBrush m_backgroundBrush;
+	QPen m_borderPen;
 	Frames m_frame;
 	int m_resizeHandle;
 	int m_resizeEvent;

@@ -76,7 +76,7 @@ public:
 	bool prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect);
 
 	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * widget = 0);
 	bool canContain(QObject * object);
 
 	QIcon toolBoxIcon();

@@ -32,7 +32,7 @@
 
 #include <QObject>
 #include <QGraphicsItem>
-#include "iteminterfaceext.h"
+#include "iteminterface.h"
 #include "globals.h"
 
 /** \namespace Report */
@@ -54,7 +54,7 @@ class TitleItem;
 *
 * This is the base class for all bands objects.
 */
-class KONTAMABIL_EXPORTS BandInterface : public ItemInterfaceExt
+class KONTAMABIL_EXPORTS BandInterface : public ItemInterface
 {
 	Q_OBJECT
 

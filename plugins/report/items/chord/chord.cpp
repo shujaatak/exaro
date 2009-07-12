@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(chord);
 }
 
-Chord::Chord(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_startAngle(30), m_spanAngle(120)
+Chord::Chord(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_startAngle(30), m_spanAngle(120)
 {
 	initMyResource();
 
@@ -78,24 +78,24 @@ QRectF Chord::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Chord::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Chord::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit beforePrint(this);
+//
+//	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//		drawSelection(painter, boundingRect());
+//
+//	setupPainter(painter);
 
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//	adjustRect(rect);
 
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
-
-	painter->drawChord(rect, m_startAngle*16, m_spanAngle*16);
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
+//	painter->drawChord(rect, m_startAngle*16, m_spanAngle*16);
+//
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
 }
 
 QIcon Chord::toolBoxIcon()

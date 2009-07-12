@@ -41,7 +41,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(ellipse);
 }
 
-Ellipse::Ellipse(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject)
+Ellipse::Ellipse(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject)
 {
 	initMyResource();
 
@@ -57,24 +57,24 @@ QRectF Ellipse::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Ellipse::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Ellipse::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit beforePrint(this);
+//
+//	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//		drawSelection(painter, boundingRect());
+//
+//	setupPainter(painter);
 
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
+//	adjustRect(rect);
 
 	painter->drawEllipse(rect);
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
 
 }
 

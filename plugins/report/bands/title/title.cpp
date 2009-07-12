@@ -70,41 +70,41 @@ QRectF Title::boundingRect() const
 }
 
 
-void Title::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
-{
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	setupPainter(painter);
-
-	painter->fillRect(rect,painter->brush());
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-	{
-		drawSelection(painter, rect);
-		drawTitle(tr("Title"), TitleLeft, Qt::AlignCenter);
-	}
-
-	adjustRect(rect);
-
-	if (frame()&DrawLeft)
-		painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
-
-	if (frame()&DrawRight)
-		painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
-
-	if (frame()&DrawTop)
-		painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
-
-	if (frame()&DrawBottom)
-		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
-
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
-}
+//void Title::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+//{
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit beforePrint(this);
+//
+//	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//	setupPainter(painter);
+//
+//	painter->fillRect(rect,painter->brush());
+//
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//	{
+//		drawSelection(painter, rect);
+//		drawTitle(tr("Title"), TitleLeft, Qt::AlignCenter);
+//	}
+//
+////	adjustRect(rect);
+//
+//	if (frame()&DrawLeft)
+//		painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+//
+//	if (frame()&DrawRight)
+//		painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
+//
+//	if (frame()&DrawTop)
+//		painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+//
+//	if (frame()&DrawBottom)
+//		painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
+//
+//
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
+//}
 
 QIcon Title::toolBoxIcon()
 {

@@ -42,7 +42,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(line);
 }
 
-LineItem::LineItem(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_lineStyle(BackwardDiagonal)
+LineItem::LineItem(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_lineStyle(BackwardDiagonal)
 {
 	initMyResource();
 }
@@ -64,19 +64,8 @@ void LineItem::setLinestyle(LineStyle lineStyle)
 	update();
 }
 
-void LineItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void LineItem::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
-
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, boundingRect());
-
-	setupPainter(painter);
-
-	adjustRect(rect);
 	switch (lineStyle())
 	{
 		case Vertical:
@@ -92,9 +81,6 @@ void LineItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 			painter->drawLine(rect.x(), rect.y(), rect.right(), rect.bottom());
 			break;
 	}
-
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
 }
 
 QIcon LineItem::toolBoxIcon()
