@@ -124,7 +124,7 @@ void TitleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
-		: ItemInterfaceExt(parent, parentObject),
+		: ItemInterface(parent, parentObject),
 		m_deleting(false),
 		m_titleItem(0)
 {

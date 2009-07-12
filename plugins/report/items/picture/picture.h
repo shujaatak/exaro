@@ -83,7 +83,7 @@ public:
 	bool prReset();
 
 	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();

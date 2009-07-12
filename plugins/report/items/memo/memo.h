@@ -30,10 +30,10 @@
 #ifndef MEMO_H
 #define MEMO_H
 
-#include <iteminterfaceext.h>
+#include <iteminterface.h>
 
 
-class Memo : public Report::ItemInterfaceExt
+class Memo : public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
@@ -43,6 +43,7 @@ class Memo : public Report::ItemInterfaceExt
 	Q_PROPERTY(TextFlags textFlags READ textFlags WRITE setTextFlags)
 	Q_PROPERTY(SizePolicy sizePolicy READ sizePolicy WRITE setSizePolicy)
 	Q_PROPERTY(QString text READ text WRITE setText)
+	Q_PROPERTY(QFont font READ font WRITE setFont)
 
 public:
 
@@ -75,12 +76,25 @@ public:
 public:
 	Memo(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
+	/**
+	 * Return the item font
+	 * @return item font
+	 * @see setFont()
+	 */
+	virtual QFont font();
+	/**
+	 * Set the item font
+	 * @param font item font
+	 * @see font()
+	 */
+	virtual void setFont(const QFont & font);
+
+
 	QRectF boundingRect() const;
 
 	bool prInit(Report::PaintInterface * paintInterface);
-//	void prePaint(QPainter * painter);
 
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();
@@ -101,6 +115,7 @@ private:
 	TextFlags m_textFlags;
 	QString m_text, m_printText;
 	SizePolicy m_sizePolicy;
+	QFont m_font;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Memo::TextFlags);

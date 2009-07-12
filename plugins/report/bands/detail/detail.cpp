@@ -341,21 +341,22 @@ QRectF Detail::boundingRect() const
 	return QRectF(0, 0, width(), height());
 }
 
-void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Detail::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-    QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-
-    setupPainter(painter);
-
-    painter->fillRect(rect,painter->brush());
+//    QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//    setupPainter(painter);
+//
+//    painter->fillRect(rect,painter->brush());
+//
 
     if ( option->type != QStyleOption::SO_GraphicsItem &&  darkRow && m_currentColumn  <= 1)
 	painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
 
     if (option->type == QStyleOption::SO_GraphicsItem)
     {
-	drawSelection(painter, rect);
-	drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
+//	drawSelection(painter, rect);
+//	drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
 	if (m_numColumns > 1 )
 	{
 	    QPen p(Qt::DashLine);
@@ -366,22 +367,22 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 	}
     }
 
-    adjustRect(rect);
+//    adjustRect(rect);
 
-    if (frame()&DrawLeft)
-	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+//    if (frame()&DrawLeft)
+//	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+//
+//    if (frame()&DrawRight)
+//	painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
+//
+//    if (frame()&DrawTop)
+//	painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+//
+//    if (frame()&DrawBottom)
+//	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-    if (frame()&DrawRight)
-	painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
-
-    if (frame()&DrawTop)
-	painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
-
-    if (frame()&DrawBottom)
-	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
-
-    if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
-	painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
+//    if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
+//	painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
 }
 
 bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)

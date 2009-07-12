@@ -47,7 +47,7 @@ public:
 	int layoutPriority(){ return 100;}
 
 	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+//	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 	bool canContain(QObject * object);
 
 	QIcon toolBoxIcon();

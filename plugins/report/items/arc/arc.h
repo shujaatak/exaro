@@ -30,9 +30,9 @@
 #ifndef ARC_H
 #define ARC_H
 
-#include <iteminterfaceext.h>
+#include <iteminterface.h>
 
-class Arc : public Report::ItemInterfaceExt
+class Arc : public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
@@ -43,7 +43,7 @@ public:
 	Arc(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 	QRectF boundingRect() const;
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();

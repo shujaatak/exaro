@@ -40,7 +40,7 @@ inline void initMyResource()
 	Q_INIT_RESOURCE(rectangle);
 }
 
-Rectangle::Rectangle(QGraphicsItem* parent, QObject* parentObject) : ItemInterfaceExt(parent, parentObject), m_xRadius(0), m_yRadius(0)
+Rectangle::Rectangle(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_xRadius(0), m_yRadius(0)
 {
 	initMyResource();
 }
@@ -78,24 +78,24 @@ void Rectangle::setYRadius(qreal radius)
 }
 
 
-void Rectangle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * /*widget*/)
+void Rectangle::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit beforePrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit beforePrint(this);
+//
+//	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//
+//	if (option->type == QStyleOption::SO_GraphicsItem)
+//		drawSelection(painter, rect);
 
-	QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+//	setupPainter(painter);
 
-	if (option->type == QStyleOption::SO_GraphicsItem)
-		drawSelection(painter, rect);
-
-	setupPainter(painter);
-
-	adjustRect(rect);
+//	adjustRect(rect);
 
 	painter->drawRoundRect(rect, xRadius(), yRadius());
 
-	if (option->type != QStyleOption::SO_GraphicsItem)
-		emit afterPrint(this);
+//	if (option->type != QStyleOption::SO_GraphicsItem)
+//		emit afterPrint(this);
 }
 
 QIcon Rectangle::toolBoxIcon()

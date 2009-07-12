@@ -30,9 +30,9 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
-#include <iteminterfaceext.h>
+#include <iteminterface.h>
 
-class HtmlScript : public Report::ItemInterfaceExt
+class HtmlScript : public Report::ItemInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
@@ -53,7 +53,7 @@ public:
 
 	QRectF boundingRect() const;
 //	void prePaint(QPainter * painter);
-	void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+	void _paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * widget = 0);
 
 	QIcon toolBoxIcon();
 	QString toolBoxText();

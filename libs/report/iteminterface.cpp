@@ -58,6 +58,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
 	expBegin = "[";
 	expEnd = "]";
+	m_BGMode = TransparentMode;
 }
 
 
@@ -142,13 +143,6 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 	}
 
 	painter->restore();
-}
-
-void ItemInterface::setupPainter(QPainter * painter)
-{
-    if (!painter)
-	return;
-    painter->setOpacity((qreal)m_opacity/100.);
 }
 
 int ItemInterface::resizeFlags()
@@ -240,8 +234,56 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
+    /// common item paint block
+
+    if (option->type != QStyleOption::SO_GraphicsItem)
+	emit beforePrint(this);
+
+    if (!painter)
+	return;
+
+    painter->save();
+    painter->setOpacity((qreal)m_opacity/100.);
+    painter->setRenderHint(QPainter::TextAntialiasing);
+
+    QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+
+    painter->save();
+    painter->setBrush(backgroundBrush());
+    painter->setPen( QPen(Qt::NoPen));
+    painter->drawRect(rect);
+    painter->restore();
+
+    /// own item painting
+
+    _paint(painter, option, rect, widget);
+
+    /// common item paint block
+    if (frame()&DrawLeft)
+	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+
+    if (frame()&DrawRight)
+	painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
+
+    if (frame()&DrawTop)
+	painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+
+    if (frame()&DrawBottom)
+	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
+
+    if (option->type == QStyleOption::SO_GraphicsItem)
+	drawSelection(painter, boundingRect());
+
+    painter->restore();
+
+    if (option->type != QStyleOption::SO_GraphicsItem)
+	emit afterPrint(this);    
+}
+void ItemInterface::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect, QWidget * widget)
+{
 	Q_UNUSED(painter);
 	Q_UNUSED(option);
+	Q_UNUSED(rect);
 	Q_UNUSED(widget);
 }
 
@@ -430,6 +472,38 @@ void ItemInterface::setEnabled(bool e)
     m_enabled = e;
 }
 
+QBrush ItemInterface::backgroundBrush()
+{
+	return m_backgroundBrush;
+}
+
+void ItemInterface::setBackgroundBrush(const QBrush & brush)
+{
+	m_backgroundBrush = brush;
+	update();
+}
+
+ItemInterface::BGMode ItemInterface::backgroundMode()
+{
+	return m_BGMode;
+}
+
+void ItemInterface::setBackgroundMode(BGMode bgMode)
+{
+	m_BGMode = bgMode;
+	update(boundingRect());
+}
+
+QPen ItemInterface::borderPen()
+{
+	return m_borderPen;
+}
+
+void ItemInterface::setBorderPen(const QPen & pen)
+{
+	m_borderPen = pen;
+	update();
+}
 
 QRectF ItemInterface::parentGeometry()
 {
