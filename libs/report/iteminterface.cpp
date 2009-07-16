@@ -247,6 +247,8 @@ void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
     painter->setRenderHint(QPainter::TextAntialiasing);
 
     QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
+    qreal penwidth = m_borderPen.widthF();
+    rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
 
     painter->save();
     painter->setBrush(backgroundBrush());
@@ -259,6 +261,9 @@ void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
     _paint(painter, option, rect, widget);
 
     /// common item paint block
+
+    painter->setPen(m_borderPen);
+
     if (frame()&DrawLeft)
 	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
 

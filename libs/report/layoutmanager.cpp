@@ -22,6 +22,7 @@
 
 using namespace Report;
 
+#define MARGIN 0
 
 void LayoutManager::itemAdded(ItemInterface * item)
 {
@@ -60,17 +61,17 @@ void LayoutManager::itemAdded(ItemInterface * item)
 	    {
 		case BandInterface::LayoutTop:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order())*/)
-			by += /*iBand->indentation() +*/ iBand->height();
+			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + MARGIN;
 		    else
-			iBand->setPos(iBand->x(), iBand->y() + band->height() /*+ band->indentation()*/);
+			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->title()->boundingRect().height() + MARGIN/*+ band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > maxOrder)
 			maxOrder = iBand->order();
 		    break;
 		case BandInterface::LayoutBottom:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order())*/)
-			by += /*iBand->indentation() +*/ iBand->height();
+			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + MARGIN;
 		    else
-			iBand->setPos(iBand->x(), iBand->y() - band->height() /*- band->indentation()*/);
+			iBand->setPos(iBand->x(), iBand->y() - band->height() + band->title()->boundingRect().height() + MARGIN/*- band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority())
 			iBand->setOrder(iBand->order() + 1, false);
 		    break;
@@ -79,7 +80,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
 
     if (band->layoutType() == BandInterface::LayoutTop)
     {
-	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by);
+	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by + band->title()->boundingRect().height() + MARGIN);
 	band->setOrder(maxOrder + 1, false);
     }
     if (band->layoutType() == BandInterface::LayoutBottom)
@@ -133,9 +134,7 @@ void LayoutManager::ItemDelete(ItemInterface * item, QObject * parent)
 
     //band->setOrder(INT_MAX, false);
 
-    qDebug("test1");
     updatePositions(parent);
-    qDebug("test2");
 }
 
 
@@ -194,8 +193,8 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	int by =  band->geometry().bottom();
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
-	    list.at(i)->setPos(list.at(i)->x(), by /*+ list.at(i)->indentation()*/);
-	    by += list.at(i)->height();
+	    list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->title()->boundingRect().height() + MARGIN/*+ list.at(i)->indentation()*/);
+	    by += list.at(i)->height() + list.at(i)->title()->boundingRect().height() + MARGIN;
 	}
     }
 
@@ -206,7 +205,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
 	    list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
-	    by += list.at(i)->height() /*+ list.at(i)->indentation()*/;
+	    by += list.at(i)->height() + list.at(i)->title()->boundingRect().height() + MARGIN/*+ list.at(i)->indentation()*/;
 	}
     }
 }
@@ -298,8 +297,8 @@ void LayoutManager::updatePositions(QObject * item)
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
 	for (int j = 0; j<orderList.count() ;j++)
 	{
-	    orderList.at(j)->setPos(orderList.at(j)->x(), by /*+ orderList.at(j)->indentation()*/);
-	    by += orderList.at(j)->height();
+	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->title()->boundingRect().height() + MARGIN/*+ orderList.at(j)->indentation()*/);
+	    by += orderList.at(j)->height() + orderList.at(j)->title()->boundingRect().height() + MARGIN;
 	}
     }
 
@@ -311,7 +310,7 @@ void LayoutManager::updatePositions(QObject * item)
 	for (int j = orderList.count() -1; j>=0 ;j--)
 	{
 	    orderList.at(j)->setPos(orderList.at(j)->x(), by - orderList.at(j)->height());
-	    by -= orderList.at(j)->height() /*- orderList.at(j)->indentation()*/;
+	    by -= orderList.at(j)->height() + orderList.at(j)->title()->boundingRect().height() + MARGIN/*- orderList.at(j)->indentation()*/;
 	}
     }
 }

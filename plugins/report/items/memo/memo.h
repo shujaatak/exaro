@@ -43,6 +43,7 @@ class Memo : public Report::ItemInterface
 	Q_PROPERTY(TextFlags textFlags READ textFlags WRITE setTextFlags)
 	Q_PROPERTY(SizePolicy sizePolicy READ sizePolicy WRITE setSizePolicy)
 	Q_PROPERTY(QString text READ text WRITE setText)
+	Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor)
 	Q_PROPERTY(QFont font READ font WRITE setFont)
 
 public:
@@ -109,6 +110,9 @@ public:
 	QString text();
 	void setText(const QString &text);
 
+	QColor textColor();
+	void setTextColor(const QColor & color);
+
 	QObject * createInstance(QGraphicsItem* parent = 0, QObject* parentObject = 0);
 
 private:
@@ -116,6 +120,7 @@ private:
 	QString m_text, m_printText;
 	SizePolicy m_sizePolicy;
 	QFont m_font;
+	QColor m_textColor;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Memo::TextFlags);

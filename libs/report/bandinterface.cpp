@@ -39,90 +39,6 @@
 namespace Report
 {
 
-class TitleItem : public QGraphicsItem
-{
-	public:
-		TitleItem( BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position,  QGraphicsItem * parent=0 );
-		void setSize(QSizeF size);
-		inline const QSizeF & size(){return m_size;};
-		QRectF boundingRect() const;
-		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
-	protected:
-		void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-	private:
-		QSizeF m_size;
-		QString m_text;
-		int m_textFlags;
-		BandInterface::TitlePosition m_position;
-		BandInterface * m_parentBand;
-};
-
-TitleItem::TitleItem(BandInterface * parentBand, const QSizeF & size, const QString & text, int textFlags, BandInterface::TitlePosition position, QGraphicsItem * parent):
-		QGraphicsItem(parent),m_parentBand(parentBand),m_size(size), m_text(text), m_textFlags(textFlags), m_position(position)
-{
-}
-
-void TitleItem::setSize(QSizeF size)
-{
-	prepareGeometryChange ();
-	if (m_size==size)
-		return;
-	m_size=size;
-	update();
-}
-
-QRectF TitleItem::boundingRect() const
-{
-	return QRectF(0,0,m_size.width(), m_size.height());
-}
-
-void TitleItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{
-	QRectF rect=boundingRect();
-	qreal penwidth = painter->pen().widthF();
-	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
-	painter->save();
-	QFont f=painter->font();
-	f.setPointSizeF(16);
-	painter->setFont(f);
-	painter->setPen(QColor(224,224,224));
-	QBrush a;
-	a.setColor(QColor(194,255,240,50));
-	a.setStyle(Qt::SolidPattern);
-	QPainterPath p;
-	if (m_position==BandInterface::TitleLeft)
-	{
-		p.moveTo(40,0);
-		p.lineTo(0,40);
-		p.lineTo(0,rect.height()-40);
-		p.lineTo(40,rect.height());
-		painter->drawPath(p);
-		painter->fillPath(p,a);
-		painter->rotate(270);
-		painter->setPen(QColor(50,50,50));
-		painter->drawText(-rect.height(), 0, rect.height(), 40, m_textFlags, m_text);
-	}
-	else
-	{
-		p.moveTo(0,0);
-		p.lineTo(40,40);
-		p.lineTo(40,rect.height()-40);
-		p.lineTo(0,rect.height());
-		painter->drawPath(p);
-		painter->fillPath(p,a);
-		painter->rotate(90);
-		painter->drawText(0, -40, rect.height(), 40, m_textFlags, m_text);
-	}
-	painter->restore();
-}
-
-void TitleItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	m_parentBand->selectBand();
-}
-
-
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 		: ItemInterface(parent, parentObject),
 		m_deleting(false),
@@ -228,6 +144,22 @@ void BandInterface::updateGeometry(QRectF rect)
 	setGeometry(QRectF(parentGeometry().x(), geometry().y(), rect.width(), height()));
 }
 
+void BandInterface::createTitle(const QString & title)
+{
+    if (!m_titleItem)
+    {
+	m_titleItem=new BandTitle(this, QSizeF(geometry().width(), 40), title);
+	scene()->addItem(m_titleItem);
+	connect (this, SIGNAL(geometryChanged(QRectF)), this, SLOT(setTitleGeometry(QRectF)) );
+    }
+}
+
+void BandInterface::setTitleGeometry(QRectF rect)
+{
+    m_titleItem->setSize(QSize(rect.width(), m_titleItem->boundingRect().height() ) );
+}
+
+/*
 void BandInterface::drawTitle(const QString & title, TitlePosition position, int textFlags)
 {
 	QPointF pos;
@@ -272,7 +204,7 @@ void BandInterface::drawTitle(const QString & title, TitlePosition position, int
 		}
 	}
 }
-
+*/
 
 void BandInterface::setGeometry(QRectF rect)
 {
@@ -360,6 +292,23 @@ void BandInterface::resetAgregateValues()
 int BandInterface::agregateCounter()
 {
     return m_agregateCounter;
+}
+
+
+BandTitle * BandInterface::title()
+{
+    return m_titleItem;
+}
+
+
+QVariant BandInterface::itemChange ( GraphicsItemChange change, const QVariant & value )
+{
+    if (change == ItemSceneHasChanged && !value.isNull())
+	if (scene())
+	    this->createTitle( /*this->objectName()*/ this->metaObject()->className());
+    if (change == ItemPositionHasChanged)
+	m_titleItem->setPos(value.toPointF().x(), value.toPointF().y() - m_titleItem->boundingRect().height());
+    return QGraphicsItem::itemChange(change, value);
 }
 
 }
