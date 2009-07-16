@@ -92,6 +92,18 @@ void Memo::setFont(const QFont & font)
 	update();
 }
 
+QColor Memo::textColor()
+{
+    return m_textColor;
+}
+
+void Memo::setTextColor(const QColor & color)
+{
+    m_textColor = color;
+    update();
+
+}
+
 QRectF Memo::boundingRect() const
 {
 	return QRectF(0, 0, width(), height());
@@ -108,6 +120,7 @@ void Memo::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, Q
 	f.setPixelSize(font().pointSizeF()/UNIT);
 	painter->setFont(f);
 
+	painter->setPen(m_textColor);
 	if (option->type == QStyleOption::SO_GraphicsItem)
 	    painter->drawText(rect, textFlags(), m_text);
 	else

@@ -34,6 +34,7 @@
 #include <QGraphicsItem>
 #include "iteminterface.h"
 #include "globals.h"
+#include "bandtitle.h"
 
 /** \namespace Report */
 namespace Report
@@ -47,7 +48,7 @@ struct ValueStruct
 };
 
 
-class TitleItem;
+class BandTitle;
 
 /** \class BandInterface
 * \brief Interface for bands
@@ -79,6 +80,7 @@ public:
 	*/
 	enum TitlePosition {TitleLeft, /**< Draw the title on left side*/
 			    TitleRight /**< Draw the title on right side*/
+			    ,TitleTop
 			    };
 	enum LayoutType { LayoutTop, LayoutBottom, LayoutFree };
 
@@ -167,6 +169,9 @@ public:
 
 //	virtual QString joinTo();			// return band to which current is joined
 //	virtual void setJoinTo(QString bandName);	// can be useful in some cases inside band
+//	static BandInterface::TitlePosition titlePosition();
+//	static void setTitlePosition (BandInterface::TitlePosition pos);
+	Report::BandTitle * title();
 
 signals:
 	void bandDelete(int);
@@ -180,7 +185,9 @@ protected:
 	* @param position text flags
 	* @see TitlePosition
 	*/
-	virtual void drawTitle(const QString & title, TitlePosition position, int textFlags);
+//	virtual void drawTitle(const QString & title, TitlePosition position, int textFlags);
+	virtual void createTitle(const QString & title);
+	QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
 
 protected slots:
 	/**
@@ -190,17 +197,19 @@ protected slots:
 	 */
 	void updateGeometry(QRectF rect);
 	//void bandDestroyed(/*int type,*/ int order);
+	void setTitleGeometry(QRectF rect);
 
 private:
 	int m_order;
 	int m_indentationTop, m_indentationBottom;
 	bool m_deleting;
-	TitleItem * m_titleItem;
+	Report::BandTitle * m_titleItem;
 
 protected:
 	QHash <QString, ValueStruct> m_agregateValues;
 	int m_agregateCounter;
 	QString m_dataset;
+//	static BandInterface::TitlePosition m_titlePosition;
 };
 }
 Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");
