@@ -305,7 +305,7 @@ QVariant BandInterface::itemChange ( GraphicsItemChange change, const QVariant &
 {
     if (change == ItemSceneHasChanged && !value.isNull())
 	if (scene())
-	    this->createTitle( /*this->objectName()*/ this->metaObject()->className());
+	    this->createTitle( toolBoxText());
     if (change == ItemPositionHasChanged)
 	m_titleItem->setPos(value.toPointF().x(), value.toPointF().y() - m_titleItem->boundingRect().height());
     return QGraphicsItem::itemChange(change, value);
