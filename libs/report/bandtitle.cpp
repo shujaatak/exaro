@@ -29,7 +29,8 @@ void BandTitle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 //	rect=rect.adjusted(penwidth,penwidth,-penwidth,-penwidth);
 	painter->save();
 	QFont f=painter->font();
-	f.setPointSizeF(26);
+	f.setPointSizeF(20);
+	f.setBold(true);
 	painter->setFont(f);
 	painter->setPen(QColor(224,224,224));
 	QBrush a;
@@ -46,7 +47,8 @@ void BandTitle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 		painter->fillPath(p,a);
 //		painter->rotate(270);
 		painter->setPen(QColor(50,50,50));
-		painter->drawText(rect, Qt::AlignCenter, m_text);
+//		painter->drawText(rect, Qt::AlignCenter, m_text);
+		painter->drawText(40,0, rect.width() - 40, rect.height(), Qt::AlignLeft, m_text);
 	painter->restore();
 }
 

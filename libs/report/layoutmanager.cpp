@@ -22,7 +22,7 @@
 
 using namespace Report;
 
-#define MARGIN 0
+#define MARGIN 50
 
 void LayoutManager::itemAdded(ItemInterface * item)
 {
@@ -61,17 +61,17 @@ void LayoutManager::itemAdded(ItemInterface * item)
 	    {
 		case BandInterface::LayoutTop:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order())*/)
-			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + MARGIN;
+			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + (i?MARGIN:0);
 		    else
-			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->title()->boundingRect().height() + MARGIN/*+ band->indentation()*/);
+			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->title()->boundingRect().height() + (i?MARGIN:0)/*+ band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > maxOrder)
 			maxOrder = iBand->order();
 		    break;
 		case BandInterface::LayoutBottom:
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order())*/)
-			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + MARGIN;
+			by += /*iBand->indentation() +*/ iBand->height() + iBand->title()->boundingRect().height() + (i?MARGIN:0);
 		    else
-			iBand->setPos(iBand->x(), iBand->y() - band->height() + band->title()->boundingRect().height() + MARGIN/*- band->indentation()*/);
+			iBand->setPos(iBand->x(), iBand->y() - band->height() - band->title()->boundingRect().height() - (i?MARGIN:0)/*- band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority())
 			iBand->setOrder(iBand->order() + 1, false);
 		    break;
@@ -80,7 +80,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
 
     if (band->layoutType() == BandInterface::LayoutTop)
     {
-	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by + band->title()->boundingRect().height() + MARGIN);
+	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by + band->title()->boundingRect().height());
 	band->setOrder(maxOrder + 1, false);
     }
     if (band->layoutType() == BandInterface::LayoutBottom)
@@ -92,7 +92,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
     if (band->resizeFlags()|BandInterface::ResizeRight)
 	band->setWidth(band->parentGeometry().width());
 
-    qDebug("order is %i", band->order());
+    qDebug("order is %i,  by=%f", band->order(), by);
 }
 
 
@@ -297,8 +297,8 @@ void LayoutManager::updatePositions(QObject * item)
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
 	for (int j = 0; j<orderList.count() ;j++)
 	{
-	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->title()->boundingRect().height() + MARGIN/*+ orderList.at(j)->indentation()*/);
-	    by += orderList.at(j)->height() + orderList.at(j)->title()->boundingRect().height() + MARGIN;
+	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->title()->boundingRect().height() + (by==rect.top()?0:MARGIN)/*+ orderList.at(j)->indentation()*/);
+	    by += orderList.at(j)->height() + orderList.at(j)->title()->boundingRect().height() + (by==rect.top()?0:MARGIN);
 	}
     }
 
