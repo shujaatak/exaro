@@ -39,6 +39,8 @@
 namespace Report
 {
 
+static bool m_hasTitle = false;
+
 BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 		: ItemInterface(parent, parentObject),
 		m_deleting(false),
@@ -154,57 +156,48 @@ void BandInterface::createTitle(const QString & title)
     }
 }
 
+void BandInterface::showTitle(bool b)
+{
+    if (m_titleItem && b)
+	return;
+    if (b)
+    {
+	createTitle( toolBoxText());
+	m_titleItem->setPos(this->geometry().x(), this->geometry().y() - m_titleItem->boundingRect().height());
+    }
+    else
+	hideTitle();
+}
+
+void BandInterface::hideTitle()
+{
+    if (!m_titleItem)
+	return;
+    disconnect (this, SIGNAL(geometryChanged(QRectF)), this, SLOT(setTitleGeometry(QRectF)) );
+    delete m_titleItem;
+    m_titleItem = 0;
+}
+
 void BandInterface::setTitleGeometry(QRectF rect)
 {
     m_titleItem->setSize(QSize(rect.width(), m_titleItem->boundingRect().height() ) );
 }
 
-/*
-void BandInterface::drawTitle(const QString & title, TitlePosition position, int textFlags)
+QRectF BandInterface::titleGeometry()
 {
-	QPointF pos;
-	if(position==TitleLeft)
-	{
-		if (parentItem())
-		{
-			pos.setX(parentItem()->pos().x()+geometry().left()-40);
-			pos.setY(parentItem()->pos().y()+geometry().top());
-		}
-		else
-		{
-			pos.setX(geometry().left()-40);
-			pos.setY(geometry().top());
-		}
-	}
-	else
-	{
-		if (parentItem())
-		{
-			pos.setX(parentItem()->pos().x()+geometry().right());
-			pos.setY(parentItem()->pos().y()+geometry().top());
-		}
-		else
-		{
-			pos.setX(geometry().right());
-			pos.setY(geometry().top());
-		}
-	}
-	if (!m_titleItem)
-	{
-		m_titleItem=new TitleItem(this, QSizeF(40,geometry().height()), title, textFlags, position);
-		scene()->addItem(m_titleItem);
-		m_titleItem->setPos(pos);
-	}
-	else
-	{
-		if (m_titleItem->size().height()!=geometry().height() || m_titleItem->pos()!=pos)
-		{
-			m_titleItem->setSize(QSizeF(40,geometry().height()));
-			m_titleItem->setPos(pos);
-		}
-	}
+   return m_titleItem ? m_titleItem->boundingRect(): QRectF();
 }
-*/
+
+bool BandInterface::hasTitle()
+{
+    return m_hasTitle;
+}
+
+void BandInterface::setTitleEnabled(bool b)
+{
+    m_hasTitle = b;
+}
+
 
 void BandInterface::setGeometry(QRectF rect)
 {
@@ -295,19 +288,14 @@ int BandInterface::agregateCounter()
 }
 
 
-BandTitle * BandInterface::title()
-{
-    return m_titleItem;
-}
-
-
 QVariant BandInterface::itemChange ( GraphicsItemChange change, const QVariant & value )
 {
     if (change == ItemSceneHasChanged && !value.isNull())
-	if (scene())
+	if (scene() && m_hasTitle)
 	    this->createTitle( toolBoxText());
     if (change == ItemPositionHasChanged)
-	m_titleItem->setPos(value.toPointF().x(), value.toPointF().y() - m_titleItem->boundingRect().height());
+	if (m_titleItem)
+	    m_titleItem->setPos(value.toPointF().x(), value.toPointF().y() - m_titleItem->boundingRect().height());
     return QGraphicsItem::itemChange(change, value);
 }
 

@@ -171,21 +171,17 @@ public:
 //	virtual void setJoinTo(QString bandName);	// can be useful in some cases inside band
 //	static BandInterface::TitlePosition titlePosition();
 //	static void setTitlePosition (BandInterface::TitlePosition pos);
-	Report::BandTitle * title();
+//	Report::BandTitle * title();
+	void showTitle(bool b = true);
+	void hideTitle();
+	QRectF titleGeometry();
+	static bool hasTitle();
+	static void setTitleEnabled(bool b);
 
 signals:
 	void bandDelete(int);
 
 protected:
-
-	/**
-	* Draw the title 
-	* @param title title text
-	* @param position title position
-	* @param position text flags
-	* @see TitlePosition
-	*/
-//	virtual void drawTitle(const QString & title, TitlePosition position, int textFlags);
 	virtual void createTitle(const QString & title);
 	QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
 
