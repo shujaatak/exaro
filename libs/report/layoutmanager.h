@@ -18,8 +18,6 @@
 
 #include <QtCore>
 #include <QtGui>
-//#include "iteminterface.h"
-//#include "bandinterface.h"
 
 namespace Report	
 {
@@ -46,6 +44,9 @@ public:
     static BandMap sortByPriority(BandList lc);
     static BandMap sortByPriority(ItemList lc);
     static BandList sortByOrder(BandList lc);
+
+    static int margin();
+    static void setMargin(int value);
 };
 
 }

@@ -129,6 +129,7 @@ protected slots:
 	void on_actionBandUp_triggered();
 	void on_actionBandDown_triggered();
 	void on_actionLastConnect_triggered();
+	void restoreSettings();
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);

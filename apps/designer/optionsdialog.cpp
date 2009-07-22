@@ -49,6 +49,8 @@ void OptionsDialog::storeAll()
 	s.setValue( "Options/designerPath", leDesignerPath->text() );
 	s.setValue( "Options/iconSize", cbIconSize->currentText() );
 	s.setValue( "Items/drawSelectionBorder", drawSelection->isChecked());
+	s.setValue( "Options/drawTitles", cbBandTitle->isChecked());
+	s.setValue( "Options/margin", sbBandsMargin->value());
 }
 
 void OptionsDialog::restoreAll()
@@ -57,5 +59,7 @@ void OptionsDialog::restoreAll()
 	leDesignerPath->setText( s.value( "Options/designerPath" ).toString() );
 	cbIconSize->setCurrentIndex( cbIconSize->findText( s.value( "Options/iconSize" ).toString() ) );
 	drawSelection->setChecked( s.value( "Items/drawSelectionBorder", true ).toBool());
+	cbBandTitle->setChecked( s.value( "Options/drawTitles", true ).toBool());
+	sbBandsMargin->setValue( s.value( "Options/margin", 0 ).toInt() );
 }
 

@@ -41,6 +41,8 @@
 #include "optionsdialog.h"
 #include "namevalidator.h"
 #include "pageview.h"
+#include "layoutmanager.h"
+#include "bandinterface.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -219,7 +221,19 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_smReport = 0;
 	setupActions();
 
+	restoreSettings();
 
+	m_wdataset = new Report::DesignerDatasetEditor( &m_reportEngine,  m_tw);
+	m_tw->addTab(m_wdataset , tr("Data"));
+
+	m_dscript = new Report::DesignerScriptWidget( m_tw );
+	m_tw->addTab(m_dscript, tr("Script"));
+
+	newReport();
+}
+
+void mainWindow::restoreSettings()
+{   
 	QSettings s;
 
 	QString iSize = s.value( "Options/iconSize" ).toString();
@@ -236,14 +250,22 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
 
-	m_wdataset = new Report::DesignerDatasetEditor( &m_reportEngine,  m_tw);
-	m_tw->addTab(m_wdataset , tr("Data"));
+	Report::LayoutManager::setMargin( s.value( "Options/margin", 0 ).toInt() * 10 );
+	Report::BandInterface::setTitleEnabled( s.value( "Options/drawTitles", true ).toBool() );
 
-	m_dscript = new Report::DesignerScriptWidget( m_tw );
-	m_tw->addTab(m_dscript, tr("Script"));
+//	if (Report::BandInterface::hasTitle() != s.value( "Options/drawTitles", true ).toBool() )
+//	{
+	    for (int i=STATIC_TABS; i<m_tw->count(); i++)
+	    {
+		foreach (QObject * obj, dynamic_cast<PageView*>(m_tw->widget( i ))->scene()->findChildren<Report::BandInterface*>() )
+		    if (dynamic_cast<Report::BandInterface*> (obj))
+			dynamic_cast<Report::BandInterface*> (obj)->showTitle( ( s.value( "Options/drawTitles", true ).toBool()));
+		Report::LayoutManager::updatePositions(dynamic_cast<PageView*>(m_tw->widget( i ))->scene() );
+	    }
+//	}
 
-	newReport();
 }
+
 
 void mainWindow::setupActions()
 {
@@ -673,6 +695,7 @@ void mainWindow::options()
 {
 	OptionsDialog d( this );
 	d.exec();
+	restoreSettings();
 }
 
 
