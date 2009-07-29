@@ -37,6 +37,7 @@
 #include <QTimer>
 #include "qruler.h"
 #include "qunit.h"
+#include "selecter.h"
 
 #define _scale 0.283465  // make scene ratio depend on rules
 
@@ -75,9 +76,15 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
     connect ( m_view->verticalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doVerticalScroll(int) ) );
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
 
+    m_selecter = new Selecter(scene);
+
     QTimer::singleShot(0, this, SLOT ( setZoomFitToPage())) ;
 }
 
+PageView::~PageView()
+{
+    delete m_selecter;
+}
 /*
 void PageView::resizeEvent ( QResizeEvent * event )
 {
@@ -129,6 +136,11 @@ QGraphicsScene * PageView::scene() const
 QGraphicsView * PageView::view() const
 {
     return (QGraphicsView *)m_view;
+}
+
+Selecter * PageView::selecter() const
+{
+    return m_selecter;
 }
 
 void PageView::setActiveRange(QRect rect)

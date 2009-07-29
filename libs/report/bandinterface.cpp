@@ -65,7 +65,7 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 
 void BandInterface::selectBand()
 {
-	emit(itemSelected(this, QPointF(0,0)));
+	emit(itemSelected(this, QPointF(0,0), Qt::NoModifier));
 	raise();
 }
 

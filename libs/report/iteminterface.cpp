@@ -193,7 +193,7 @@ void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mousePressEvent(event);
 
 	if (event->buttons() == Qt::LeftButton)
-		emit(itemSelected(this, event->pos()));
+		emit(itemSelected(this, event->pos(), event->modifiers()  ) );
 }
 
 void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

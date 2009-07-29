@@ -98,7 +98,7 @@ protected slots:
 	void newPage();
 	void removePage();
 	void currentChanged(int);
-	void itemSelected(QObject *, QPointF);
+	void itemSelected(QObject *, QPointF, Qt::KeyboardModifiers );
 	void zoomIn();
 	void zoomOut();
 	void zoomOriginal();

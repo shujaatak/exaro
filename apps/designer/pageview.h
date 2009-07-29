@@ -34,6 +34,7 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 
+class Selecter;
 class QGraphicsScene;
 class GraphicsView;
 class QRuler;
@@ -45,14 +46,18 @@ class PageView : public QWidget
     Q_OBJECT
 public:
     PageView(QGraphicsScene * scene = 0, QWidget * parent = 0, Qt::WindowFlags f = 0);
+    ~PageView();
 
     QGraphicsScene * scene() const;
     QGraphicsView * view() const;
+    Selecter * selecter() const;
     qreal zoom();
 
 public slots:
     void setZoom(qreal zoom);
     void setZoomFitToPage();
+
+private:
     void setActiveRange(QRect rect);
 
 protected:
@@ -73,6 +78,7 @@ private:
     QUnit * m_unit;
     qreal m_zoom;
     QRect m_range;
+    Selecter * m_selecter;
 };
 
 class GraphicsView: public QGraphicsView
