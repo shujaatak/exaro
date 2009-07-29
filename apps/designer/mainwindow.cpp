@@ -43,6 +43,7 @@
 #include "pageview.h"
 #include "layoutmanager.h"
 #include "bandinterface.h"
+#include "selecter.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -88,7 +89,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_objectInspector = new QTreeView( this );
 	m_objectInspector->setModel( &m_objectModel );
 	m_objectInspector->setHeaderHidden( true );
-	m_objectInspector->setSelectionMode( QAbstractItemView::SingleSelection );
+//	m_objectInspector->setSelectionMode( QAbstractItemView::SingleSelection );
+	m_objectInspector->setSelectionMode( QAbstractItemView::MultiSelection );
 	QItemSelectionModel *selectionModel = new QItemSelectionModel( &m_objectModel );
 	m_objectInspector->setSelectionModel( selectionModel );
 
@@ -339,12 +341,12 @@ void mainWindow::about()
 void mainWindow::objectChanged( const QModelIndex & current, const QModelIndex & /*previous */ )
 {
 	m_pe->setObject( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object );
-	foreach( QObject * obj, m_report->children() )
-		if ( dynamic_cast<Report::PageInterface *>( obj ) )
-			dynamic_cast<Report::PageInterface *>( obj )->clearSelection();
+//	foreach( QObject * obj, m_report->children() )
+//		if ( dynamic_cast<Report::PageInterface *>( obj ) )
+//			dynamic_cast<Report::PageInterface *>( obj )->clearSelection();
 
-	if ( dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object ) )
-		dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object )->setSelected( true );
+//	if ( dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object ) )
+//		dynamic_cast<Report::ItemInterface *>( reinterpret_cast<ObjectModel::ObjectStruct*>( current.internalPointer() )->object )->setSelected( true );
 }
 
 
@@ -407,7 +409,7 @@ void mainWindow::copy()
 
 void mainWindow::pasteItem( QObject * item )
 {
-	connect( item, SIGNAL( itemSelected( QObject *, QPointF ) ), SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( item, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ), SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ) );
 	connect( item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	item->setObjectName( Report::ReportEngine::uniqueName( item->metaObject()->className(), m_report ) );
 	foreach( QObject * obj, item->children() )
@@ -521,7 +523,7 @@ void mainWindow::newReport( bool notAsk )
 
 void mainWindow::connectItem( QObject * obj )
 {
-	connect( obj, SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( obj, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), this, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * child, obj->children() )
 		connectItem( child );
@@ -581,7 +583,7 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		pageView = new PageView ( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) , this);
 		int lastTab = m_tw->addTab(( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
-		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
 		foreach (QObject * obj, m_report->children()[p]->children())
 			connectItem( obj );
@@ -777,10 +779,10 @@ void mainWindow::newPage()
 
 void mainWindow::selectLastObject()
 {
-	itemSelected(m_lastSelectedObject ,QPointF(0,0));
+	itemSelected(m_lastSelectedObject ,QPointF(0,0) , Qt::NoModifier);
 }
 
-void mainWindow::itemSelected( QObject *object, QPointF pos )
+void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
 	m_lastSelectedObject = object;
 	m_lastSelectedObjectPos = pos;
@@ -801,6 +803,15 @@ void mainWindow::itemSelected( QObject *object, QPointF pos )
 	{
 		m_pe->setObject( object );
 		selectObject( object, m_objectModel.index( 0, 0 ) );
+		Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( object );
+		PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
+
+		if (key != Qt::ShiftModifier)
+		    page->selecter()->free();
+
+		if (item && page /*&& !dynamic_cast<Report::BandInterface*>( object )*/)
+		    if (item->scene() == page->scene())
+			page->selecter()->add(item);
 	}
 }
 
@@ -881,7 +892,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 
-	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
+	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
 
 	setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );

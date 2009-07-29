@@ -287,10 +287,10 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (event->buttons() == Qt::LeftButton)
 	{
 		if  (!itemAt(event->scenePos()))
-			emit itemSelected(parent(), event->scenePos());
+		    emit itemSelected(parent(), event->scenePos(), event->modifiers());
 		else
-			if (itemAt(event->scenePos()) == m_paperBorder || itemAt(event->scenePos()) == m_pageBorder)
-				emit itemSelected(this, event->scenePos());
+		    if (itemAt(event->scenePos()) == m_paperBorder || itemAt(event->scenePos()) == m_pageBorder)
+			emit itemSelected(this, event->scenePos(), event->modifiers());
 	}
 }
 

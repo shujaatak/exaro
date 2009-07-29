@@ -469,7 +469,7 @@ signals:
 	 * @param thisObj item object
 	 * @param cursorPos cursor position
 	 */
-	void itemSelected(QObject * thisObject, QPointF cursorPos);
+	void itemSelected(QObject * thisObject, QPointF cursorPos, Qt::KeyboardModifiers keys);
 
 	/**
 	 * This signal is emitted when the item geometry is changed
