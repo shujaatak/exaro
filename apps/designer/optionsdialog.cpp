@@ -21,8 +21,10 @@ OptionsDialog::OptionsDialog( QWidget *parent ) :
 		QDialog( parent )
 {
 	setupUi( this );
-	connect( buttonBox, SIGNAL( accepted() ), SLOT( needAccept() ) );
-	QTimer::singleShot( 0, this, SLOT( restoreAll() ) );
+	QSettings s;
+	leDesignerPath->setText( s.value( "Options/designerPath" ).toString() );
+	cbIconSize->setCurrentIndex( cbIconSize->findText( s.value( "Options/iconSize" ).toString() ) );
+	drawSelection->setChecked( s.value( "Items/drawSelectionBorder", true ).toBool());
 }
 
 void OptionsDialog::on_bDesignerPath_clicked()
@@ -32,30 +34,14 @@ void OptionsDialog::on_bDesignerPath_clicked()
 #else
 	QString fileName = QFileDialog::getOpenFileName( this, "designer", "/usr/bin", "designer" );
 #endif
-
 	leDesignerPath->setText( fileName );
-
 }
 
-void OptionsDialog::needAccept()
-{
-	storeAll();
-	emit accept();
-}
-
-void OptionsDialog::storeAll()
+void OptionsDialog::accept()
 {
 	QSettings s;
 	s.setValue( "Options/designerPath", leDesignerPath->text() );
 	s.setValue( "Options/iconSize", cbIconSize->currentText() );
 	s.setValue( "Items/drawSelectionBorder", drawSelection->isChecked());
+	QDialog::accept();
 }
-
-void OptionsDialog::restoreAll()
-{
-	QSettings s;
-	leDesignerPath->setText( s.value( "Options/designerPath" ).toString() );
-	cbIconSize->setCurrentIndex( cbIconSize->findText( s.value( "Options/iconSize" ).toString() ) );
-	drawSelection->setChecked( s.value( "Items/drawSelectionBorder", true ).toBool());
-}
-

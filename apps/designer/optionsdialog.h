@@ -25,12 +25,11 @@ class OptionsDialog : public QDialog, private Ui::OptionsDialog {
 public:
     explicit OptionsDialog(QWidget *parent = 0);
 
+protected slots:
+    void accept();
+
 private slots:
     void on_bDesignerPath_clicked();
-    void storeAll();
-    void restoreAll();
-    void needAccept();
-
 };
 
 #endif // OPTIONSDIALOG_H
