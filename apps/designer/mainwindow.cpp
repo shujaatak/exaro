@@ -44,6 +44,7 @@
 #include "namevalidator.h"
 #include "reportwizard.h"
 
+
 #define ROWS_IN_MENU  10
 
 #define screen_heightMM (((double)QDesktopWidget().screen()->height() /(double)QDesktopWidget().screen()->physicalDpiY() )*25.4)
@@ -716,6 +717,15 @@ void mainWindow::options()
 {
 	OptionsDialog d( this );
 	d.exec();
+        QSettings s;
+        QString iSize = s.value( "Options/iconSize" ).toString();
+        int h, w;
+        h = iSize.section( "x", 0, 0 ).toInt();
+        w = iSize.section( "x", 1, 1 ).toInt();
+        if ( h == 0 || w == 0 )
+                toolBar->setIconSize( QSize( 16, 16 ) );
+        else
+                toolBar->setIconSize( QSize( w, h ) );
 }
 
 
@@ -733,7 +743,8 @@ void mainWindow::saveReport()
 
 	if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
 		throw( QString( "Can't save the report" ) );
-	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(m_saveFile) );
+        m_lastUndoIndex=m_undoStack->index();
+        setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(m_saveFile) );
 }
 
 void mainWindow::saveReportAs()
