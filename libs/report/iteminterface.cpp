@@ -41,21 +41,23 @@
 using namespace Report;
 
 ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QObject(parentObject), QGraphicsItem(parent)
-		, m_resizeHandle(2/UNIT) //2mm
-		, m_minWidth(m_resizeHandle*2+1), m_minHeight(m_resizeHandle*2+1),m_stretch(0)
+//		, m_resizeHandle(2/UNIT) //2mm
+		, m_minWidth(/*m_resizeHandle*2+1*/ 5)
+		, m_minHeight(/*m_resizeHandle*2+1*/ 5)
+		, m_stretch(0)
 		, m_paintInterface(0)
 		, offsetX(0), offsetY(0), _offsetX(0), _offsetY(0)
 {
     	m_frame = 0;
-	m_resizeEvent = Fixed;
+//	m_resizeEvent = Fixed;
 	m_resizeFlags = ResizeTop | ResizeBottom | ResizeLeft | ResizeRight;
 	m_width = 20/UNIT; // 20 mm
 	m_height = 20/UNIT; // 20 mm
 	m_opacity = 100;
 	m_enabled = true;
-	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
-	QSettings s;
-	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
+	setFlags(/*QGraphicsItem::ItemIsMovable |*/ QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
+//	QSettings s;
+//	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
 	expBegin = "[";
 	expEnd = "]";
 	m_BGMode = TransparentMode;
@@ -77,6 +79,7 @@ void ItemInterface::setFrame(Frames frame)
 	update();
 }
 
+/*
 void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 {
 	painter->save();
@@ -144,6 +147,7 @@ void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
 
 	painter->restore();
 }
+*/
 
 int ItemInterface::resizeFlags()
 {
@@ -155,6 +159,7 @@ void ItemInterface::setResizeFlags(int resizeFlags)
 	m_resizeFlags = resizeFlags;
 }
 
+/*
 void ItemInterface::setResizeHandle(int resizeHandle)
 {
 	m_resizeHandle = resizeHandle;
@@ -172,9 +177,12 @@ int ItemInterface::resizeHandle()
 {
 	return m_resizeHandle;
 }
-
+*/
+/*
 void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug("mouse press on \'%s\'", qPrintable (this->objectName()));
+
 	oldGeometry = geometry();
 	foreach(QGraphicsItem *item, scene()->items())
 		if (item->zValue() == 1)
@@ -194,18 +202,24 @@ void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->buttons() == Qt::LeftButton)
 		emit(itemSelected(this, event->pos(), event->modifiers()  ) );
+
 }
 
 void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
+
+
 	m_resizeEvent = Fixed;
 	
 	QRectF newGeometry = geometry();
 	if (newGeometry != oldGeometry)
 	    emit(geometryChanged(this, newGeometry, oldGeometry));
-}
 
+}
+*/
+
+/*
 int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 {
 	int flags = Fixed;
@@ -230,6 +244,13 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 		flags |= FixedPos;
 
 	return flags;
+}
+*/
+
+void ItemInterface::selectItem(Qt::KeyboardModifiers keys)
+{
+	emit(itemSelected(this, QPointF(0,0), keys));
+	raise();
 }
 
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -276,8 +297,8 @@ void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
     if (frame()&DrawBottom)
 	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-    if (option->type == QStyleOption::SO_GraphicsItem)
-	drawSelection(painter, boundingRect());
+//    if (option->type == QStyleOption::SO_GraphicsItem)
+//	drawSelection(painter, boundingRect());
 
     painter->restore();
 
@@ -298,8 +319,10 @@ bool ItemInterface::canContain(QObject * object)
 	return false;
 }
 
+/*
 void ItemInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+
 	if (event->buttons() == Qt::LeftButton)
 	{
 		if (m_resizeEvent == Fixed)
@@ -334,6 +357,7 @@ void ItemInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 	QGraphicsItem::mouseMoveEvent(event);
 }
+*/
 
 void ItemInterface::setWidth(qreal width)
 {
@@ -399,16 +423,16 @@ void ItemInterface::setMinHeight(qreal height)
 {
     height > 0 ? m_minHeight = height: 0;
 
-	if (m_resizeHandle*2+1<m_minHeight)
-		setResizeHandle(m_minHeight/2-1);
+//	if (m_resizeHandle*2+1<m_minHeight)
+//		setResizeHandle(m_minHeight/2-1);
 }
 
 void ItemInterface::setMinWidth(qreal width)
 {
     width > 0 ? m_minWidth = width: 0;
 
-	if (m_resizeHandle*2+1<m_minWidth)
-		setResizeHandle(m_minWidth/2-1);
+//	if (m_resizeHandle*2+1<m_minWidth)
+//		setResizeHandle(m_minWidth/2-1);
 }
 
 qreal ItemInterface::minHeight() const

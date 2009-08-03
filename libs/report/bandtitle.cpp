@@ -54,7 +54,7 @@ void BandTitle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void BandTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	m_parentBand->selectBand();
+	m_parentBand->selectItem();
 }
 
 void BandTitle::setCaption(QString str)

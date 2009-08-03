@@ -161,13 +161,13 @@ public:
 	 * @return pixels
 	 * @see setResizeHandle()
 	 */
-	int resizeHandle();
+//	int resizeHandle();
 	/**
 	 * Set resizeHandle pixels (default 6)
 	 * @param resizeHandle pixels
 	 * @see resizeHandle()
 	 */
-	void setResizeHandle(int resizeHandle);
+//	void setResizeHandle(int resizeHandle);
 
 	/**
 	 * Return the item width
@@ -246,7 +246,7 @@ public:
 	 * @param cursor cursor point
 	 * @return resize flags
 	 */
-	int posibleResizeCurrsor(QPointF cursor);
+//	int posibleResizeCurrsor(QPointF cursor);
 
 	/**
 	 * Return the item geometry
@@ -406,6 +406,7 @@ public:
 	virtual void setEnabled(bool b);
 
 	void raise();
+	void selectItem(Qt::KeyboardModifiers keys = Qt::NoModifier);
 
 	virtual bool prInit(PaintInterface * paintInterface);	    //default implementation do nothing
 	virtual bool prData();
@@ -434,17 +435,17 @@ protected:
 	 * This event handler, for event event, can be reimplemented to receive mouse press events for this item. Mouse press events are only delivered to items that accept the mouse button that is pressed. By default, an item accepts all mouse buttons, but you can change this by calling setAcceptedMouseButtons().
 	 * @param event QGraphicsSceneMouseEvent
 	 */
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+//	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	/**
 	 * This event handler, for event event, can be reimplemented to receive mouse release events for this item.
 	 * @param event QGraphicsSceneMouseEvent
 	 */
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+//	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	/**
 	 * This event handler, for event event, can be reimplemented to receive mouse move events for this item. If you do receive this event, you can be certain that this item also received a mouse press event, and that this item is the current mouse grabber.
 	 * @param event QGraphicsSceneMouseEvent
 	 */
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+//	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 
 	/**
 	 * Set the resizeFlags for the item. This should set only once in the item constructor.
@@ -458,7 +459,7 @@ protected:
 	 * @param painter the painter to draw to
 	 * @param rect bounding rect
 	 */
-	void drawSelection(QPainter * painter, QRectF rect);
+//	void drawSelection(QPainter * painter, QRectF rect);
 
 	static QFont fontConvert(QFont & font);
 	static const QRectF adjustRect(QRectF & rect, const QPen & pen);
@@ -500,15 +501,15 @@ private:
 	QBrush m_backgroundBrush;
 	QPen m_borderPen;
 	Frames m_frame;
-	int m_resizeHandle;
-	int m_resizeEvent;
+//	int m_resizeHandle;
+//	int m_resizeEvent;
 	int m_resizeFlags;
 	qreal m_width, m_height;
  	qreal m_minWidth, m_minHeight;
 	int m_opacity;
 	qreal m_stretch;
-	QRectF oldGeometry;
-	bool m_drawSelectionBorder;
+//	QRectF oldGeometry;
+//	bool m_drawSelectionBorder;
 	bool m_enabled;
 	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
 };

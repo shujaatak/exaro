@@ -158,7 +158,7 @@ public:
 
 	void removeItem();
 
-	void selectBand();
+//	void selectBand();
 
 	int freeSpace();
 	void addAgregateValue(QString value);

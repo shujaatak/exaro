@@ -77,13 +77,19 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
 
     m_selecter = new Selecter(scene);
+    connect ( m_selecter, SIGNAL(itemMoved(Report::ItemInterface, QPointF)), this, SIGNAL(selectionMoved(Report::ItemInterface, QPointF)) );
+    connect ( m_scene , SIGNAL(destroyed()), this, SLOT (sceneDestroyed()));
 
     QTimer::singleShot(0, this, SLOT ( setZoomFitToPage())) ;
 }
 
 PageView::~PageView()
 {
-    delete m_selecter;
+    if (m_selecter)
+    {
+	m_selecter->free();
+	delete m_selecter;
+    }
 }
 /*
 void PageView::resizeEvent ( QResizeEvent * event )
@@ -92,6 +98,12 @@ void PageView::resizeEvent ( QResizeEvent * event )
     m_verticalRuler->setRulerLength(  m_scene->height()* m_zoom * _scale );
 }
 */
+
+void PageView::sceneDestroyed()
+{
+    delete m_selecter;
+    m_selecter = 0;
+}
 
 void PageView::mousePositionChanged(QPoint pos)
 {

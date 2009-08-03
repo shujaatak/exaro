@@ -63,11 +63,13 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 	setHeight(20/UNIT);
 }
 
+/*
 void BandInterface::selectBand()
 {
 	emit(itemSelected(this, QPointF(0,0), Qt::NoModifier));
 	raise();
 }
+*/
 
 bool BandInterface::deleting()
 {
