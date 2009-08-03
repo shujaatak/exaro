@@ -41,13 +41,26 @@ Barcode::Barcode(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(p
 	m_barcodeForegroundColor = qRgb(0, 0, 0);
 	m_barcodeBackgroundColor = qRgb(0xff, 0xff, 0xff);
 	m_barcodeWidth = 0;
-	m_barcodeSecurityLevel = -1;
 	m_script = "05072006";
 	m_testText = "05072006";
-	m_drawTextType = NO_TEXT;
+/*	m_drawTextType = NO_TEXT;*/
 	m_pdf417Max = 928;
+	m_pdfDataColmns=0;
+	m_pdf_ECC=ECC_AUTO;
 	m_msiPlessey=MSI_PLESSEY_;
-	m_exCode39_43Extension=false;
+	m_aztecResize=AUTOMATIC_RESIZE;
+	m_inputMode=UNICODE;
+	m_pdfDataColmns=0;
+	m_pdf_ECC=ECC_AUTO;
+	m_code39CheckDigit=NO_CHECK_DIGIT;
+	m_maxiCodeEncodingMode=MODE_4;
+	m_barcodeChannelChannels=AUTO;
+	m_codeoneSymbolSize=AUTOMATIC_SYMBOL_SIZE;
+	m_microQrResize=MQR_AUTO_RESIZE;
+	m_qrResize=QR_AUTO_RESIZE;
+	m_dataMatrixEncodingMode=ECC_200_RECOMMENDED;
+	m_dataMatrixNonECC200Size=NONECC200SIZE_AUTOMATIC;
+	m_dataMatrixECC200Size=ECC200SIZE_AUTOMATIC;
 	initMyResource();
 	setWidth(50/UNIT);
 	setHeight(10/UNIT);
@@ -81,6 +94,17 @@ Barcode::FrameTypes Barcode::frameType()
 void Barcode::setFrameType(FrameTypes frameType)
 {
 	m_frameType = frameType;
+	update();
+}
+
+Barcode::InputMode Barcode::inputMode()
+{
+	return m_inputMode;
+}
+
+void Barcode::setInputMode(Barcode::InputMode inputMode)
+{
+	m_inputMode=inputMode;
 	update();
 }
 
@@ -148,15 +172,41 @@ void Barcode::setBarcodeWidth(int barcodeWidth)
 	update();
 }
 
-int Barcode::barcodeSecurityLevel()
+
+Barcode::AztecResize Barcode::aztecResize()
 {
-	return m_barcodeSecurityLevel;
+	return m_aztecResize;
 }
-void Barcode::setBarcodeSecurityLevel(int barcodeSecurityLevel)
+void Barcode::setAztecResize(Barcode::AztecResize aztecResize)
 {
-	m_barcodeSecurityLevel = barcodeSecurityLevel;
+	m_aztecResize=aztecResize;
 	update();
 }
+
+
+Barcode::Pdf_ECC Barcode::pdf_ECC()
+{
+	return m_pdf_ECC;
+}
+void Barcode::setPdf_ECC(Barcode::Pdf_ECC pdf_ECC)
+{
+	m_pdf_ECC=pdf_ECC;
+	update();
+}
+
+
+int Barcode::pdfDataColmns()
+{
+	return m_pdfDataColmns;
+}
+void Barcode::setPdfDataColmns(int pdfDataColmns)
+{
+	if (pdfDataColmns<0||pdfDataColmns>20)
+		pdfDataColmns=0;
+	m_pdfDataColmns=pdfDataColmns;
+	update();
+}
+
 
 int Barcode::pdf417Max()
 {
@@ -181,25 +231,25 @@ void Barcode::setMsiPlessey(MsiPlessey msiPlessey)
 	update();
 }
 
-bool Barcode::exCode39_43Extension()
+Barcode::Code39CheckDigit Barcode::code39CheckDigit()
 {
-	return m_exCode39_43Extension;
+	return m_code39CheckDigit;
 }
-void Barcode::setExCode39_43Extension(bool exCode39_43Extension)
+void Barcode::setCode39CheckDigit(Barcode::Code39CheckDigit code39CheckDigit)
 {
-	m_exCode39_43Extension=exCode39_43Extension;
+	m_code39CheckDigit=code39CheckDigit;
 	update();
 }
 
-Barcode::DrawTextTypes Barcode::drawTextType()
-{
-	return m_drawTextType;
-}
-void Barcode::setDrawTextType(DrawTextTypes drawTextType)
-{
-	m_drawTextType = drawTextType;
-	update();
-}
+// Barcode::DrawTextTypes Barcode::drawTextType()
+// {
+// 	return m_drawTextType;
+// }
+// void Barcode::setDrawTextType(DrawTextTypes drawTextType)
+// {
+// 	m_drawTextType = drawTextType;
+// 	update();
+// }
 
 const QString & Barcode::primaryMessage()
 {
@@ -211,11 +261,92 @@ void Barcode::setPrimaryMessage(const QString &primaryMessage)
 	update();
 }
 
+
+Barcode::MaxiCodeEncodingMode Barcode::maxiCodeEncodingMode()
+{
+	return m_maxiCodeEncodingMode;
+}
+void Barcode::setMaxiCodeEncodingMode(Barcode::MaxiCodeEncodingMode maxiCodeEncodingMode)
+{
+	m_maxiCodeEncodingMode=maxiCodeEncodingMode;
+	update();
+}
+
+
+Barcode::BarcodeChannelChannels Barcode::barcodeChannelChannels()
+{
+	return m_barcodeChannelChannels;
+}
+void Barcode::setBarcodeChannelChannels(Barcode::BarcodeChannelChannels barcodeChannelChannels)
+{
+	m_barcodeBackgroundColor=barcodeChannelChannels;
+	update();
+}
+
+Barcode::CodeoneSymbolSize Barcode::codeoneSymbolSize()
+{
+	return m_codeoneSymbolSize;
+}
+void Barcode::setCodeoneSymbolSize(Barcode::CodeoneSymbolSize codeoneSymbolSize)
+{
+	m_codeoneSymbolSize=codeoneSymbolSize;
+	update();
+}
+
+Barcode::MicroQrResize Barcode::microQrResize()
+{
+	return m_microQrResize;
+}
+void Barcode::setMicroQrResize(Barcode::MicroQrResize microQrResize)
+{
+	m_microQrResize=microQrResize;
+	update();
+}
+
+Barcode::QrResize Barcode::qrResize()
+{
+	return m_qrResize;
+}
+void Barcode::setQrResize(Barcode::QrResize qrResize)
+{
+	m_qrResize=qrResize;
+	update();
+}
+
+Barcode::DataMatrixEncodingMode Barcode::dataMatrixEncodingMode()
+{
+	return m_dataMatrixEncodingMode;
+}
+void Barcode::setDataMatrixEncodingMode(Barcode::DataMatrixEncodingMode dataMatrixEncodingMode)
+{
+	m_dataMatrixEncodingMode=dataMatrixEncodingMode;
+	update();
+}
+
+Barcode::DataMatrixECC200Size Barcode::dataMatrixECC200Size()
+{
+	return m_dataMatrixECC200Size;
+}
+void Barcode::setDataMatrixECC200Size(Barcode::DataMatrixECC200Size dataMatrixECC200Size)
+{
+	m_dataMatrixECC200Size=dataMatrixECC200Size;
+	update();
+}
+
+Barcode::DataMatrixNonECC200Size Barcode::dataMatrixNonECC200Size()
+{
+	return m_dataMatrixNonECC200Size;
+}
+void Barcode::setDataMatrixNonECC200Size(Barcode::DataMatrixNonECC200Size dataMatrixNonECC200Size)
+{
+	m_dataMatrixNonECC200Size=dataMatrixNonECC200Size;
+	update();
+}
+
 QString Barcode::script()
 {
 	return m_script;
 }
-
 void Barcode::setScript(const QString &script)
 {
 	m_script = script;
@@ -259,34 +390,90 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 	Zint::QZint bc;
 
 	bc.setSymbol(m_barcodeType);
-	switch(m_barcodeType)
-	{
-		case  MSI_PLESSEY:
-			bc.setMsiExtraSymbology(m_msiPlessey);
-			break;
-		case  CODE39:
-			bc.setCode39ExtraSymbology(m_exCode39_43Extension);
-			break;
-		case  EXCODE39:
-			bc.setExcode39ExtraSymbology(m_exCode39_43Extension);
-			break;
-		default:
-			break;
-	}
-	bc.setPrimaryMessage(m_primaryMessage);
 	bc.setBorderType((Zint::QZint::BorderType)m_frameType);
 	bc.setHeight(m_barcodeHeight);
 	bc.setWidth(m_barcodeWidth);
-	bc.setSecurityLevel(m_barcodeSecurityLevel);
 	bc.setBorderWidth(m_barcodeBoderWidth);
 	bc.setPdf417CodeWords(m_pdf417Max);
 	bc.setFgColor(m_barcodeForegroundColor);
 	bc.setBgColor(m_barcodeBackgroundColor);
 	bc.setText(m_text);
+	bc.setInputMode(m_inputMode);
+	
+	switch(m_barcodeType)
+	{
+		case  MSI_PLESSEY:
+			bc.setWidth(m_msiPlessey);
+			break;
 
-	bc.render(*painter,QRectF(rect.x()+1,rect.y()+1+((m_drawTextType==DRAW_ABOVE)?painter->fontMetrics().height():0),rect.width()-2, rect.height()-2-((m_drawTextType==DRAW_ABOVE || m_drawTextType==DRAW_BELOW)?painter->fontMetrics().height():0)),(Zint::QZint::AspectRatioMode)m_paintType);
+		case BARCODE_PDF417:
+			bc.setWidth(m_pdfDataColmns);
+			bc.setSecurityLevel(m_pdf_ECC);
+			bc.setPdf417CodeWords(m_pdf417Max);
+			break;
 
-	switch (m_drawTextType)
+		case BARCODE_AZTEC:
+			if (!m_aztecResize)
+				break;
+			if (m_aztecResize<100)
+				bc.setWidth(m_aztecResize);
+			else
+				bc.setSecurityLevel(m_aztecResize-100);
+			break;
+
+		case BARCODE_CODE39:
+		case BARCODE_EXCODE39:
+			bc.setWidth(m_code39CheckDigit);
+			break;
+			
+		case BARCODE_HIBC_DM:
+		case BARCODE_DATAMATRIX:
+			bc.setSecurityLevel(m_dataMatrixEncodingMode);
+			if (m_dataMatrixEncodingMode==ECC_200_RECOMMENDED)
+				bc.setWidth(m_dataMatrixECC200Size);
+			else
+				bc.setWidth(m_dataMatrixNonECC200Size);
+			break;
+
+		case BARCODE_QRCODE:
+			if (!m_qrResize)
+				break;
+			if (m_qrResize<100)
+				bc.setWidth(m_qrResize);
+			else
+				bc.setSecurityLevel(m_qrResize-100);
+			break;
+
+		case BARCODE_MICROQR:
+			if (!m_microQrResize)
+				break;
+			if (m_microQrResize<100)
+				bc.setWidth(m_microQrResize);
+			else
+				bc.setSecurityLevel(m_microQrResize-100);
+			break;
+			
+		case BARCODE_MAXICODE:
+			bc.setSecurityLevel(m_maxiCodeEncodingMode);
+			if (2==m_maxiCodeEncodingMode)
+				bc.setPrimaryMessage(m_primaryMessage);
+			break;
+
+		case BARCODE_CHANNEL:
+			bc.setWidth(m_barcodeChannelChannels);
+			break;
+
+		case BARCODE_CODEONE:
+			bc.setWidth(m_codeoneSymbolSize);
+			break;
+
+		default:
+			break;
+	}
+
+	bc.render(*painter,rect,(Zint::QZint::AspectRatioMode)m_paintType);
+
+/*	switch (m_drawTextType)
 	{
 		case DRAW_TOP:
 			painter->drawText(rect, Qt::AlignTop| Qt::AlignHCenter, m_text);
@@ -302,7 +489,7 @@ void Barcode::paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 			break;
 		default:
 			break;
-	}
+	}*/
 }
 
 QIcon Barcode::toolBoxIcon()
