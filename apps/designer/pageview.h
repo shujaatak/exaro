@@ -33,6 +33,7 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include <QMouseEvent>
+#include "iteminterface.h"
 
 class Selecter;
 class QGraphicsScene;
@@ -69,6 +70,7 @@ private slots:
     void doHorizontalScroll(int value);
     void doVerticalScroll(int value);
     void mousePositionChanged(QPoint pos);
+    void sceneDestroyed();
 
 private:
     QGraphicsScene * m_scene;
@@ -87,7 +89,8 @@ class GraphicsView: public QGraphicsView
 public:
     GraphicsView ( QGraphicsScene * scene, QWidget * parent = 0 ): QGraphicsView(scene, parent) {};
 signals:
-    void mousePositionChanged (QPoint pos);
+    void mousePositionChanged (QPoint);
+    void selectionMoved(Report::ItemInterface *, QPointF);
 protected:
     void mouseMoveEvent ( QMouseEvent * e )
     {

@@ -228,61 +228,29 @@ void PageInterface::drawMagnets(ItemInterface* item)
 
 void PageInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent)
 {
-	Report::ItemInterface* item = 0;
-
-	if (itemAt(mouseEvent->scenePos()))
-		item = dynamic_cast<Report::ItemInterface*>(itemAt(mouseEvent->scenePos()));
-
-
-	if (mouseEvent->buttons() == Qt::NoButton && item)
-	{
-
-		int pc = item->posibleResizeCurrsor(item->mapFromScene(mouseEvent->scenePos()));
-		if (ItemInterface::Fixed != pc)
-		{
-			if ((pc&ItemInterface::ResizeTop && pc&ItemInterface::ResizeLeft) || (pc&ItemInterface::ResizeBottom && pc&ItemInterface::ResizeRight))
-				item->setCursor(QCursor(Qt::SizeFDiagCursor));
-			else
-				if ((pc&ItemInterface::ResizeTop && pc&ItemInterface::ResizeRight) || (pc&ItemInterface::ResizeBottom && pc&ItemInterface::ResizeLeft))
-					item->setCursor(QCursor(Qt::SizeBDiagCursor));
-				else
-					if ((pc&ItemInterface::ResizeTop) || (pc&ItemInterface::ResizeBottom))
-						item->setCursor(QCursor(Qt::SizeVerCursor));
-					else
-						if ((pc&ItemInterface::ResizeRight) || (pc&ItemInterface::ResizeLeft))
-							item->setCursor(QCursor(Qt::SizeHorCursor));
-						else
-							if (pc&ItemInterface::FixedPos)
-								item->setCursor(QCursor(Qt::ArrowCursor));
-		}
-		else
-			if (ItemInterface::Fixed == pc)
-				item->setCursor(QCursor(Qt::OpenHandCursor));
-	}
-
 	QGraphicsScene::mouseMoveEvent(mouseEvent);
 
 	if (mouseEvent->buttons() != Qt::LeftButton)
 		return;
 
-	item = 0;
+	/*
+	if (movingItem)
+	{
+	    qDebug("moving item");
+	    if (mouseOldPos != mouseEvent->scenePos())
+		movingItem->setPos( movingItemOldPos + (mouseEvent->scenePos() - mouseOldPos) );
+	}
+*/
 
-	if (selectedItems().size())
-		item = dynamic_cast<Report::ItemInterface*>(selectedItems()[0]);
-
-	if (item && !(mouseEvent->modifiers()& Qt::ControlModifier))
-		drawMagnets(item);
+	if (movingItem && !(mouseEvent->modifiers()& Qt::ControlModifier))
+		drawMagnets(movingItem);
 }
 
 void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
-			event->buttonDownScenePos(Qt::LeftButton).y());
-	movingItem = itemAt(mousePos.x(), mousePos.y());
+//    qDebug("mouse press");
+	movingItem = 0;
 
-	if (movingItem != 0 && event->button() == Qt::LeftButton) 
-		mouseOldPos = movingItem->pos();
-  
 	QGraphicsScene::mousePressEvent(event);
 	if (event->buttons() == Qt::LeftButton)
 	{
@@ -291,6 +259,23 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		else
 		    if (itemAt(event->scenePos()) == m_paperBorder || itemAt(event->scenePos()) == m_pageBorder)
 			emit itemSelected(this, event->scenePos(), event->modifiers());
+		else
+		{
+		    foreach (QGraphicsItem* item, items(event->scenePos()))
+			if (dynamic_cast<Report::ItemInterface *>(item) )
+			{
+//			    qDebug("selected = %s", qPrintable (dynamic_cast<Report::ItemInterface *>(item)->objectName() ) );
+			    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
+					 event->buttonDownScenePos(Qt::LeftButton).y());
+			    movingItem = dynamic_cast<Report::ItemInterface *>(item);
+//			    mouseOldPos = event->scenePos();
+			    movingItemOldPos = movingItem->scenePos();
+
+			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(event->modifiers());
+
+			    break;
+			}
+		}
 	}
 }
 
@@ -301,12 +286,14 @@ void PageInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 	m_gideLines.clear();
 
-	if (movingItem != 0 && event->button() == Qt::LeftButton) 
+
+	if (movingItem && event->button() == Qt::LeftButton)
 	{
-		if (mouseOldPos != movingItem->pos())
-			emit itemMoved(dynamic_cast<QObject *>(movingItem), mouseOldPos);
-		movingItem = 0;
+	    if (movingItemOldPos != movingItem->scenePos())
+		emit itemMoved(movingItem, movingItemOldPos);
+	    movingItem = 0;
 	}
+
 	QGraphicsScene::mouseReleaseEvent(event);
 }
 

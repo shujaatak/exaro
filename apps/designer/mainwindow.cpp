@@ -584,7 +584,7 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		int lastTab = m_tw->addTab(( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
-	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
+//	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
 		foreach (QObject * obj, m_report->children()[p]->children())
 			connectItem( obj );
 		setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
@@ -784,6 +784,7 @@ void mainWindow::selectLastObject()
 
 void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
+    qDebug("mainwindow::item selected");
 	m_lastSelectedObject = object;
 	m_lastSelectedObjectPos = pos;
 	QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
@@ -803,15 +804,12 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 	{
 		m_pe->setObject( object );
 		selectObject( object, m_objectModel.index( 0, 0 ) );
+
 		Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( object );
 		PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
-		if (key != Qt::ShiftModifier)
-		    page->selecter()->free();
-
-		if (item && page /*&& !dynamic_cast<Report::BandInterface*>( object )*/)
-		    if (item->scene() == page->scene())
-			page->selecter()->add(item);
+		if (item && page)
+		    page->selecter()->itemSelected( item, key );
 	}
 }
 
@@ -893,7 +891,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 	actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
 
 	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
-	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
+//	connect( dynamic_cast<Report::PageInterface*>( pageView->scene() ), SIGNAL( itemMoved( QObject*, QPointF ) ), this, SLOT( itemMoved( QObject*, QPointF ) ) );
 
 	setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
 

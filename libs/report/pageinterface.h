@@ -192,7 +192,7 @@ signals:
 	 */
 	void geometryChanged(QRectF newGeometry);
 
-        void itemMoved(QObject*, QPointF);
+	void itemMoved(ItemInterface *, QPointF);
 
 private:
 	void drawMagnets(ItemInterface* item);
@@ -208,8 +208,8 @@ private:
 	QGraphicsRectItem * m_paperBorder;
 	QGraphicsRectItem * m_pageBorder;
 	bool m_showGrid;
-	QGraphicsItem *movingItem;
-	QPointF mouseOldPos;
+	ItemInterface *movingItem;
+	QPointF /*mouseOldPos,*/ movingItemOldPos;
 };
 }
 
