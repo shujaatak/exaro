@@ -1,3 +1,11 @@
+exaro (1.90.0) unstable; urgency=low
+
+  * On linux show backtrace symbols.
+  * Update the barcode plugin, now it's require zint v2.2+.
+  * More bugfixes.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Tue, 04 Aug 2009 19:04:51 +0300
+
 exaro (1.85.0) unstable; urgency=low
 
   * New api on ReportInterface for:
