@@ -710,12 +710,20 @@ void mainWindow::saveReport()
 	if ( !m_saveFile.length() )
 		return;
 
+	for (int i=STATIC_TABS; i< m_tw->count(); i++)
+	    if ( dynamic_cast<PageView*>( m_tw->widget(i) ) )
+		dynamic_cast<PageView*>( m_tw->widget(i) )->selecter()->store() ;
+
 	m_wdataset ->sync();
 	m_report->setUis( m_dui->uis() );
 
 	if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
 		throw( QString( "Can't save the report" ) );
 	setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(m_saveFile) );
+
+	for (int i=STATIC_TABS; i< m_tw->count(); i++)
+	    if ( dynamic_cast<PageView*>( m_tw->widget(i) ) )
+		dynamic_cast<PageView*>( m_tw->widget(i) )->selecter()->restore() ;
 }
 
 void mainWindow::saveReportAs()
@@ -802,6 +810,15 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 	}
 	else
 	{
+	    PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
+
+	    if (page)
+		if (page->selecter()->itemSelected( object, pos ,key))
+		{
+		    m_pe->setObject( page->selecter()->activeObject() );
+		    selectObject( page->selecter()->activeObject(), m_objectModel.index( 0, 0 ) );
+		}
+	    /*
 		m_pe->setObject( object );
 		selectObject( object, m_objectModel.index( 0, 0 ) );
 
@@ -809,7 +826,8 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 		PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
 		if (item && page)
-		    page->selecter()->itemSelected( item, key );
+		    page->selecter()->itemSelected( item, key, pos);
+		    */
 	}
 }
 
