@@ -248,7 +248,6 @@ void PageInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent)
 
 void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-//    qDebug("mouse press");
 	movingItem = 0;
 
 	QGraphicsScene::mousePressEvent(event);
@@ -260,22 +259,22 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		    if (itemAt(event->scenePos()) == m_paperBorder || itemAt(event->scenePos()) == m_pageBorder)
 			emit itemSelected(this, event->scenePos(), event->modifiers());
 		else
-		{
 		    foreach (QGraphicsItem* item, items(event->scenePos()))
+		    {
+			if (!dynamic_cast<Report::ItemInterface *>(item) && item->isSelected() )
+			    break;
 			if (dynamic_cast<Report::ItemInterface *>(item) )
 			{
-//			    qDebug("selected = %s", qPrintable (dynamic_cast<Report::ItemInterface *>(item)->objectName() ) );
 			    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
 					 event->buttonDownScenePos(Qt::LeftButton).y());
 			    movingItem = dynamic_cast<Report::ItemInterface *>(item);
-//			    mouseOldPos = event->scenePos();
 			    movingItemOldPos = movingItem->scenePos();
 
 			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(event->modifiers());
 
 			    break;
 			}
-		}
+		    }
 	}
 }
 

@@ -165,7 +165,11 @@ void BandInterface::showTitle(bool b)
     if (b)
     {
 	createTitle( toolBoxText());
-	m_titleItem->setPos(this->geometry().x(), this->geometry().y() - m_titleItem->boundingRect().height());
+
+	QPointF pos(mapToScene(0,0 ));
+	if (m_titleItem->parentItem())
+	    m_titleItem->parentItem()->mapFromScene( pos );
+	m_titleItem->setPos(pos.x(), pos.y() - m_titleItem->boundingRect().height());
     }
     else
 	hideTitle();
@@ -296,8 +300,13 @@ QVariant BandInterface::itemChange ( GraphicsItemChange change, const QVariant &
 	if (scene() && m_hasTitle)
 	    this->createTitle( toolBoxText());
     if (change == ItemPositionHasChanged)
-	if (m_titleItem)
-	    m_titleItem->setPos(value.toPointF().x(), value.toPointF().y() - m_titleItem->boundingRect().height());
+	if (m_titleItem && (this->scenePos() != mapToScene(value.toPointF()) ) )
+	{
+	    QPointF pos = mapToScene( this->pos() - value.toPointF() );
+	    if (m_titleItem->parentItem())
+		m_titleItem->parentItem()->mapFromScene( pos );
+	    m_titleItem->setPos(pos.x(), pos.y() - m_titleItem->boundingRect().height());
+	}
     return QGraphicsItem::itemChange(change, value);
 }
 

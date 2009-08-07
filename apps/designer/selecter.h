@@ -11,6 +11,7 @@ struct Item
 {
     Report::ItemInterface * item;
     qreal zValue;
+    QPointF pos;
     Report::ItemInterface * parent;
     ItemSelection * sel;
 };
@@ -22,7 +23,12 @@ public:
     Selecter( QGraphicsScene * scene);
     ~Selecter();
 
-    void itemSelected(Report::ItemInterface * item, Qt::KeyboardModifiers keys);
+    QObject * itemSelected(Report::ItemInterface * item, QPointF pos, Qt::KeyboardModifiers keys);
+    QObject * itemSelected(QObject * object, QPointF pos, Qt::KeyboardModifiers keys);
+
+    QObject * activeObject();
+    QPointF activeObjectLastPressPos();
+
     void add (Report::ItemInterface * item);
     void remove (Report::ItemInterface * item);
     void free();
@@ -33,6 +39,9 @@ public:
 public slots:
     void itemMoved(Report::ItemInterface * item, QPointF oldPos);
 
+private:
+    QObject * _itemSelected(Report::ItemInterface * item, QPointF pos, Qt::KeyboardModifiers keys);
+    void setGuideItem(Report::ItemInterface * item);
 //private slots:
 //    void sceneDestroyed();
 
@@ -40,6 +49,8 @@ private:
     GraphicsItemGroup * sItem;
     QList<Item> items;
     QList<Item> storedItems;
+    QObject * m_activeObject;
+    QPointF m_activeObjectPressPos;
 };
 
 class GraphicsItemGroup: public QGraphicsItemGroup
