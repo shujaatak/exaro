@@ -2,32 +2,23 @@
 #include <QGraphicsItemGroup>
 #include <QGraphicsScene>
 #include "bandinterface.h"
+#include "mainwindow.h"
 
 #define ZVALUE 100.0
 
-Selecter::Selecter(QGraphicsScene * scene)
+Selecter::Selecter(QGraphicsScene * scene, mainWindow * mw)
 	: QObject (scene)
 	,m_activeObject(0)
+	,m_mw(mw)
 {
-    sItem = new GraphicsItemGroup();
-    scene->addItem(sItem);
-    sItem->setZValue(ZVALUE);
-    sItem->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-    sItem->setSelected( true );
 }
 
 Selecter::~Selecter()
 {
-//    free();
-//    delete sItem;
 }
 
 QObject * Selecter::activeObject()
 {
-//    qDebug("count = %i", items.count());
-    if (items.count())
-	return /*dynamic_cast<QObject *>*/(items.last().item);
-    else
 	return m_activeObject;
 }
 
@@ -46,7 +37,10 @@ QObject * Selecter::itemSelected(QObject * object, QPointF pos, Qt::KeyboardModi
 
     Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( object );
     if (!item)
+    {
+	free();
 	return m_activeObject;
+    }
 
     return _itemSelected(item, pos, keys);
 }
@@ -88,8 +82,7 @@ QObject * Selecter::_itemSelected(Report::ItemInterface * item, QPointF pos, Qt:
     if (items.count() == 1 && dynamic_cast<Report::BandInterface *>(items[0].item) && keys == Qt::ShiftModifier)
 	return items[0].item;
 
-    if (item->scene() == sItem->scene())
-	add(item);
+	append(item);
 }
 
 void Selecter::itemMoved(Report::ItemInterface * item, QPointF oldPos)
@@ -97,7 +90,7 @@ void Selecter::itemMoved(Report::ItemInterface * item, QPointF oldPos)
     qDebug("group moved");
 }
 
-void Selecter::add (Report::ItemInterface * item)
+void Selecter::append(Report::ItemInterface * item)
 {
     qDebug("Selecter::add");
 
@@ -105,35 +98,30 @@ void Selecter::add (Report::ItemInterface * item)
     if ( dynamic_cast<Report::BandInterface *> (item))
     {
 	free();
-	sItem->setFlags (sItem->flags() ^ QGraphicsItem::ItemIsMovable);
+	item->setFlag (QGraphicsItem::ItemIsMovable, false);
     }
     else
-	sItem->setFlags (sItem->flags() | QGraphicsItem::ItemIsMovable);
+    	item->setFlag (QGraphicsItem::ItemIsMovable, true);
+
+    qDebug(" is item movable = %i", (int)item->flags().testFlag(QGraphicsItem::ItemIsMovable));
 
     Item i;
     i.item = item;
     i.pos = item->pos();
-    i.parent = dynamic_cast<Report::ItemInterface *> (item->parentItem());
     i.sel = new ItemSelection();
     item->scene()->addItem(i.sel);
     i.sel->setItem(item);
     i.sel->setZValue( ZVALUE + 1); //on top of selector's group item
 
+    connect (item, SIGNAL(geometryChanged(QObject*, QRectF)), this, SLOT(itemGeometryChanged(QObject*, QRectF) ) );
+
     items.append(i);
-
-    // workaround - addToGroup don't work without this, and i don't know why
-    QPointF iPos = item->pos();
-    item->setParentItem(0);
-    if (i.parent)
-	item->setPos( i.parent->mapToScene ( iPos ) );
-    // ---
-
-    sItem->addToGroup( item );
 
     QPointF pos = item->mapToScene( item->pos() );
     setGuideItem(items.last().item);
-
 }
+
+
 
 void Selecter::remove (Report::ItemInterface * item)
 {
@@ -141,16 +129,9 @@ void Selecter::remove (Report::ItemInterface * item)
     for (int i=0; i< items.count(); i++)
 	if (items.at(i).item == item)
 	{
-	    sItem->removeFromGroup( items.at(i).item );
 	    delete items.at(i).sel;
 
-	    if (items.at(i).parent)
-	    {
-		items.at(i).item->setParentItem(items.at(i).parent);
-		items.at(i).item->setPos( items.at(i).parent->mapFromScene(items.at(i).item->pos()));
-		items.at(i).item->setZValue( items.at(i).zValue );
-		items.at(i).item->setSelected( false );
-	    }
+	    items.at(i).item->setSelected( false );
 
 	    items.removeAt(i);
 	    break;
@@ -166,16 +147,9 @@ void Selecter::free()
 
     for (int i=0; i< items.count(); i++)
     {
-	sItem->removeFromGroup( items.at(i).item );
 	delete items.at(i).sel;
 
-	if (items.at(i).parent)
-	{
-	    items.at(i).item->setParentItem(items.at(i).parent);
-	    items.at(i).item->setPos( items.at(i).parent->mapFromScene(items.at(i).item->pos()));
-	    items.at(i).item->setZValue( items.at(i).zValue );
-	    items.at(i).item->setSelected( false );
-	}
+	items.at(i).item->setSelected( false );
     }
 
     items.clear();
@@ -192,13 +166,37 @@ void Selecter::restore()
 {
 //    qDebug("restore");
     foreach (Item i, storedItems)
-	add(i.item);
+	append(i.item);
     storedItems.clear();
 }
 
 void Selecter::setGuideItem(Report::ItemInterface * item)
 {
-//    qDebug("set Guide = %s", qPrintable(item->objectName()) );
+    qDebug("set Guide = %s", qPrintable(item->objectName()) );
     foreach (Item i, items)
 	i.sel->setGuideItem(item);
+}
+
+void Selecter::itemGeometryChanged(QObject* item, QRectF)
+{
+    for (int i=0; i< items.count(); i++)
+	if (items.at(i).item == item)
+	{
+	items.at(i).sel->updateGeometry();
+	break;
+    }
+}
+
+QList<Report::ItemInterface *> Selecter::selectedItems()
+{
+    QList<Report::ItemInterface *> list;
+    foreach (Item i, items)
+	list.append( i.item );
+
+    return list;
+}
+
+bool Selecter::haveSelection()
+{
+    return (bool)items.count();
 }

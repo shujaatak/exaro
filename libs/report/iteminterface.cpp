@@ -247,9 +247,9 @@ int ItemInterface::posibleResizeCurrsor(QPointF cursor)
 }
 */
 
-void ItemInterface::selectItem(Qt::KeyboardModifiers keys)
+void ItemInterface::selectItem(QPointF pos, Qt::KeyboardModifiers keys)
 {
-	emit(itemSelected(this, QPointF(0,0), keys));
+	emit(itemSelected(this, pos, keys));
 	raise();
 }
 
@@ -364,6 +364,7 @@ void ItemInterface::setWidth(qreal width)
 	prepareGeometryChange();
 	m_width = width;
 	emit(geometryChanged(geometry()));
+	emit(geometryChanged(this, geometry()));
 }
 
 void ItemInterface::setHeight(qreal height)
@@ -371,6 +372,7 @@ void ItemInterface::setHeight(qreal height)
 	prepareGeometryChange();
 	m_height = height;
 	emit(geometryChanged(geometry()));
+	emit(geometryChanged(this, geometry()));
 }
 
 double ItemInterface::stretch()
@@ -822,4 +824,10 @@ int ItemInterface::agregateCounter()
 	return dynamic_cast<Report::BandInterface*>(parentItem())->agregateCounter();
     else
 	return 0;
+}
+
+void ItemInterface::setPosition(qreal x, qreal y)
+{
+    setPos(x,y);
+     emit geometryChanged(this, geometry());
 }

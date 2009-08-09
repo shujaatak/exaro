@@ -162,6 +162,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( m_pe, SIGNAL( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ),
 	                this, SLOT( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ) );
 
+	connect (m_objectInspector, SIGNAL(pressed(QModelIndex)), this, SLOT(on_m_objectInspector_pressed(QModelIndex)));
+
 	m_contextMenu.addAction( actionCopy );
 	m_contextMenu.addAction( actionCut );
 	m_contextMenu.addAction( actionPaste );
@@ -194,7 +196,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	}
 
 	m_tb->setCurrentIndex( 0 );
-	m_lastSelectedObject = 0;
+//	m_lastSelectedObject = 0;
 	if ( 2 == qApp->arguments().size() )
 		openReport( qApp->arguments()[1] );
 
@@ -292,44 +294,55 @@ void mainWindow::setupActions()
 
 void mainWindow::saveItem()
 {
-	if ( !m_lastSelectedObject )
-		return;
-	QString fileName = QFileDialog::getSaveFileName( this, tr( "Save item" ),
-	                QDir::homePath() + "/item.bdrti", tr( "Item (*.bdrti)" ) );
-	if ( !fileName.length() )
-		return;
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
 
-	QFile file( fileName );
+    QString fileName = QFileDialog::getSaveFileName( this, tr( "Save item" ),
+						     QDir::homePath() + "/item.bdrti", tr( "Item (*.bdrti)" ) );
+    if ( !fileName.length() )
+	return;
 
-	if ( file.open( QIODevice::WriteOnly | QIODevice::Text ) )
-	{
-		QDomDocument doc( "report" );
-		doc.appendChild( Report::ReportEngine::objectProperties( m_lastSelectedObject, &doc ) );
-		file.write( doc.toByteArray( 4 ) );
-		file.close();
-	}
+    QFile file( fileName );
+
+    if ( file.open( QIODevice::WriteOnly | QIODevice::Text ) )
+    {
+	QDomDocument doc( "report" );
+	foreach (Report::ItemInterface* item, view->selectedItems())
+	    doc.appendChild( Report::ReportEngine::objectProperties( item, &doc ) );
+	file.write( doc.toByteArray( 4 ) );
+	file.close();
+    }
 }
 
 void mainWindow::openItem()
 {
-	m_lastSelectedObject = m_pe->object();
-	if ( !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) && !dynamic_cast<Report::PageInterface *>( m_lastSelectedObject ) )
-		return;
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
 
-	QString reportName = QFileDialog::getOpenFileName( this, tr( "Open report" ),
-	                QDir::homePath() + "", tr( "Item (*.bdrti)" ) );
+    QObject * lastSelectedObject = view->activeObject();
+    QPointF pos = view->activeObjectLastPressPos();
 
-	if ( !reportName.size() )
-		return;
+    if ( !dynamic_cast<Report::ItemInterface*>( lastSelectedObject ) && !dynamic_cast<Report::PageInterface *>( lastSelectedObject ) )
+	return;
 
-	QFile file( reportName );
-	if ( file.open( QIODevice::ReadOnly ) )
-	{
-		if ( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
-			undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject )->scene() ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
-		else
-			undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( m_lastSelectedObject ), m_lastSelectedObject->objectName(), file.readAll(),  m_lastSelectedObjectPos, this ) );
-	}
+    QString reportName = QFileDialog::getOpenFileName( this, tr( "Open report" ),
+						       QDir::homePath() + "", tr( "Item (*.bdrti)" ) );
+
+    if ( !reportName.size() )
+	return;
+
+    QFile file( reportName );
+    if ( file.open( QIODevice::ReadOnly ) )
+    {
+	if ( dynamic_cast<Report::ItemInterface*>( lastSelectedObject ) )
+	    undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( dynamic_cast<Report::ItemInterface*>( lastSelectedObject )->scene() ), lastSelectedObject->objectName(), file.readAll(),  pos, this ) );
+	else
+	    undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( lastSelectedObject ), lastSelectedObject->objectName(), file.readAll(),  pos, this ) );
+    }
+
+    qDebug("pos = %f x %f", pos.x(), pos.y());
 }
 
 void mainWindow::about()
@@ -350,16 +363,16 @@ void mainWindow::objectChanged( const QModelIndex & current, const QModelIndex &
 }
 
 
-bool mainWindow::selectObject( QObject * object, QModelIndex index )
+bool mainWindow::selectObject( QObject * object, QModelIndex index, QItemSelectionModel::SelectionFlag selFlag)
 {
 	if ( index.isValid() && reinterpret_cast<ObjectModel::ObjectStruct *>( index.internalPointer() )->object == object )
 	{
-		emit( setCurrentIndex( index, QItemSelectionModel::SelectCurrent ) );
+		emit( setCurrentIndex( index, selFlag ) );
 		return true;
 	}
 
 	for ( int i = 0;i < m_objectModel.rowCount( index );i++ )
-		if ( selectObject( object, m_objectModel.index( i, 0, index ) ) )
+		if ( selectObject( object, m_objectModel.index( i, 0, index ), selFlag ) )
 			return true;
 	return false;
 }
@@ -403,8 +416,12 @@ void mainWindow::setMagnetActions( Report::PageInterface* page )
 
 void mainWindow::copy()
 {
-	if ( m_lastSelectedObject )
-		m_reportEngine.copy( m_lastSelectedObject );
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    if ( view->hasSelection() )
+		m_reportEngine.copy( view->selectedItems() );
 }
 
 void mainWindow::pasteItem( QObject * item )
@@ -418,53 +435,66 @@ void mainWindow::pasteItem( QObject * item )
 
 void mainWindow::paste()
 {
-	if ( !m_lastSelectedObject )
-		return;
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+    if ( !view->activeObject() )
+	return;
 
-	QObject * obj = m_reportEngine.paste( m_lastSelectedObject );
-	Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( obj );
-	if ( dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
+    QObject * obj = m_reportEngine.paste( view->activeObject() );
+    Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( obj );
+    if ( dynamic_cast<Report::ItemInterface*>( view->activeObject() ) )
+    {
+	if ( !dynamic_cast<Report::ItemInterface*>( view->activeObject() )->canContain( item ) )
 	{
-		if ( !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject )->canContain( item ) )
-		{
-			delete item;
-			item = 0;
-		}
+	    delete item;
+	    item = 0;
 	}
-	else
-		if ( dynamic_cast<Report::PageInterface*>( m_lastSelectedObject )->canContain( item ) )
-			dynamic_cast<Report::PageInterface*>( m_lastSelectedObject )->addItem( item );
-		else
-		{
-			delete item;
-			item = 0;
-		}
+    }
+    else
+	if ( dynamic_cast<Report::PageInterface*>( view->activeObject() )->canContain( item ) )
+	    dynamic_cast<Report::PageInterface*>( view->activeObject() )->addItem( item );
+    else
+    {
+	delete item;
+	item = 0;
+    }
 
-	if ( item )
-	{
-		pasteItem( item );
-		if ( dynamic_cast<Report::BandInterface*>( item ) )
-			dynamic_cast<Report::BandInterface*>( item )->setOrder( INT_MAX );
+    if ( item )
+    {
+	pasteItem( item );
+	if ( dynamic_cast<Report::BandInterface*>( item ) )
+	    dynamic_cast<Report::BandInterface*>( item )->setOrder( INT_MAX );
 
-		m_pe->setObject( item );
-		m_objectModel.setRootObject( m_report );
-		selectObject( item, m_objectModel.index( 0, 0 ) );
-	}
+	m_pe->setObject( item );
+	m_objectModel.setRootObject( m_report );
+	selectObject( item, m_objectModel.index( 0, 0 ) );
+    }
+
 }
 
 void mainWindow::del()
 {
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+
+    /*
 	QGraphicsItem* item;
 	if ( !( item = dynamic_cast<QGraphicsItem*>( m_lastSelectedObject ) ) || !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
 		return;
 	QUndoCommand *delCommand = new DelCommand( dynamic_cast<Report::ItemInterface*>( item ), this );
 	undoStack->push( delCommand );
+	*/
 }
 
 void mainWindow::cut()
 {
+    /*
 	copy();
 	del();
+	*/
 }
 
 mainWindow::~mainWindow()
@@ -580,7 +610,7 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		if ( !dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) )
 			continue;
 		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
-		pageView = new PageView ( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) , this);
+		pageView = new PageView ( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) , this, this);
 		int lastTab = m_tw->addTab(( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
@@ -712,7 +742,7 @@ void mainWindow::saveReport()
 
 	for (int i=STATIC_TABS; i< m_tw->count(); i++)
 	    if ( dynamic_cast<PageView*>( m_tw->widget(i) ) )
-		dynamic_cast<PageView*>( m_tw->widget(i) )->selecter()->store() ;
+		dynamic_cast<PageView*>( m_tw->widget(i) )->beforeOuterChanging();
 
 	m_wdataset ->sync();
 	m_report->setUis( m_dui->uis() );
@@ -723,7 +753,7 @@ void mainWindow::saveReport()
 
 	for (int i=STATIC_TABS; i< m_tw->count(); i++)
 	    if ( dynamic_cast<PageView*>( m_tw->widget(i) ) )
-		dynamic_cast<PageView*>( m_tw->widget(i) )->selecter()->restore() ;
+		dynamic_cast<PageView*>( m_tw->widget(i) )->afterOuterChanging();;
 }
 
 void mainWindow::saveReportAs()
@@ -787,14 +817,18 @@ void mainWindow::newPage()
 
 void mainWindow::selectLastObject()
 {
-	itemSelected(m_lastSelectedObject ,QPointF(0,0) , Qt::NoModifier);
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    itemSelected(view->activeObject() ,QPointF(0,0) , Qt::NoModifier);
 }
 
 void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
     qDebug("mainwindow::item selected");
-	m_lastSelectedObject = object;
-	m_lastSelectedObjectPos = pos;
+//	m_lastSelectedObject = object;
+//	m_lastSelectedObjectPos = pos;
 	QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
 
 	if ( lw && lw->currentRow() > -1 )
@@ -815,19 +849,19 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 	    if (page)
 		if (page->selecter()->itemSelected( object, pos ,key))
 		{
-		    m_pe->setObject( page->selecter()->activeObject() );
-		    selectObject( page->selecter()->activeObject(), m_objectModel.index( 0, 0 ) );
+		    QObject* selObj = page->selecter()->activeObject();
+		    m_pe->setObject( selObj );
+
+		    /// FIXME : QTreeview not update immidiately - without this workaround
+		    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::QItemSelectionModel::ClearAndSelect );
+
+		    foreach(Report::ItemInterface * item, page->selectedItems())
+			selectObject( item, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
+
+		    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
+
+		    qDebug("item selected in pos = %f x %f", pos.x(), pos.y());
 		}
-	    /*
-		m_pe->setObject( object );
-		selectObject( object, m_objectModel.index( 0, 0 ) );
-
-		Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( object );
-		PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
-
-		if (item && page)
-		    page->selecter()->itemSelected( item, key, pos);
-		    */
 	}
 }
 
@@ -877,9 +911,9 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 
 	if ( 1 == m_reportEngine.pages().count() ) {
 	    if (!page)
-		pageView = new PageView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) , this );
+		pageView = new PageView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) , this, this );
 	    else
-		pageView = new PageView( static_cast<QGraphicsScene*>(page), this );
+		pageView = new PageView( static_cast<QGraphicsScene*>(page), this, this);
 	    }
 	else
 	{
@@ -939,14 +973,22 @@ void mainWindow::_deletePage_( int index )
 
 void mainWindow::on_actionBandUp_triggered()
 {
-    if (dynamic_cast<Report::BandInterface*>(m_lastSelectedObject))
-	dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->setOrder(dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->order() - 1);
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    if (dynamic_cast<Report::BandInterface*>(view->activeObject()))
+	dynamic_cast<Report::BandInterface*>(view->activeObject())->setOrder(dynamic_cast<Report::BandInterface*>(view->activeObject())->order() - 1);
 }
 
 void mainWindow::on_actionBandDown_triggered()
 {
-   if (dynamic_cast<Report::BandInterface*>(m_lastSelectedObject))
-	dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->setOrder(dynamic_cast<Report::BandInterface*>(m_lastSelectedObject)->order() + 1);
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+   if (dynamic_cast<Report::BandInterface*>(view->activeObject()) )
+	dynamic_cast<Report::BandInterface*>(view->activeObject())->setOrder(dynamic_cast<Report::BandInterface*>(view->activeObject())->order() + 1);
 }
 
 void mainWindow::on_actionLastConnect_triggered()
@@ -973,4 +1015,17 @@ void mainWindow::refreshReportBeholders(Report::ReportInterface* report)
 	m_pe->setObject( report );
 	m_nameValidator->setRootObject( report );
 	m_objectModel.setRootObject( report );
+}
+
+void mainWindow::on_m_objectInspector_pressed(const QModelIndex & index)
+{
+    qDebug("on_m_objectInspector_clicked");
+    Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>(reinterpret_cast<ObjectModel::ObjectStruct *>( index.internalPointer() )->object);
+    if (item)
+	item->selectItem( QPointF(10,10), QApplication::keyboardModifiers ());
+}
+
+inline Report::ReportEngine * mainWindow::reportEngine()
+{
+    return &m_reportEngine;
 }

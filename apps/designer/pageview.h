@@ -40,19 +40,27 @@ class QGraphicsScene;
 class GraphicsView;
 class QRuler;
 class QUnit;
+class mainWindow;
 
 
 class PageView : public QWidget
 {
     Q_OBJECT
 public:
-    PageView(QGraphicsScene * scene = 0, QWidget * parent = 0, Qt::WindowFlags f = 0);
+    PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt::WindowFlags f = 0);
     ~PageView();
 
     QGraphicsScene * scene() const;
     QGraphicsView * view() const;
     Selecter * selecter() const;
     qreal zoom();
+
+    bool hasSelection();
+    QList<Report::ItemInterface *> selectedItems();
+    QObject * activeObject();
+    QPointF activeObjectLastPressPos();
+    void beforeOuterChanging();
+    void afterOuterChanging();
 
 public slots:
     void setZoom(qreal zoom);
@@ -81,6 +89,7 @@ private:
     qreal m_zoom;
     QRect m_range;
     Selecter * m_selecter;
+    mainWindow * m_mw;
 };
 
 class GraphicsView: public QGraphicsView

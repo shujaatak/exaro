@@ -38,14 +38,16 @@
 #include "qruler.h"
 #include "qunit.h"
 #include "selecter.h"
+#include "mainwindow.h"
 
 #define _scale 0.283465  // make scene ratio depend on rules
 
-PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f )
+PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt::WindowFlags f )
 	: QWidget(parent, f ),
 	m_scene(scene),
 	m_zoom(1),
-	m_range(QRect())
+	m_range(QRect()),
+	m_mw(mw)
 {
     m_view = new GraphicsView ( m_scene, this );
     m_view->centerOn( 0, 0 );
@@ -76,7 +78,7 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
     connect ( m_view->verticalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doVerticalScroll(int) ) );
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
 
-    m_selecter = new Selecter(scene);
+    m_selecter = new Selecter(scene, m_mw);
     connect ( m_selecter, SIGNAL(itemMoved(Report::ItemInterface, QPointF)), this, SIGNAL(selectionMoved(Report::ItemInterface, QPointF)) );
     connect ( m_scene , SIGNAL(destroyed()), this, SLOT (sceneDestroyed()));
 
@@ -85,11 +87,11 @@ PageView::PageView(QGraphicsScene *  scene, QWidget * parent, Qt::WindowFlags f 
 
 PageView::~PageView()
 {
-    if (m_selecter)
-    {
-	m_selecter->free();
-	delete m_selecter;
-    }
+//    if (m_selecter)
+//    {
+//	m_selecter->free();
+//	delete m_selecter;
+//    }
 }
 /*
 void PageView::resizeEvent ( QResizeEvent * event )
@@ -161,3 +163,42 @@ void PageView::setActiveRange(QRect rect)
     m_verticalRuler->setActiveRange(rect.top(), rect.bottom() );
 }
 
+bool PageView::hasSelection()
+{
+    if (!m_selecter)
+	return false;
+    return m_selecter->haveSelection()?true:false;
+}
+
+QList<Report::ItemInterface *> PageView::selectedItems()
+{
+    if (!m_selecter)
+	return QList<Report::ItemInterface *>();
+    return m_selecter->selectedItems();
+}
+
+QObject * PageView::activeObject()
+{
+    if (!m_selecter)
+	return 0;
+    return m_selecter->activeObject();
+}
+
+QPointF PageView::activeObjectLastPressPos()
+{
+    if (!m_selecter)
+	return QPointF();
+    return m_selecter->activeObjectLastPressPos();
+}
+
+void PageView::beforeOuterChanging()
+{
+    if (m_selecter)
+	m_selecter->store();
+}
+
+void PageView::afterOuterChanging()
+{
+    if (m_selecter)
+	m_selecter->restore();
+}

@@ -260,6 +260,12 @@ public:
 	virtual void setGeometry(QRectF rect);
 
 	/**
+	 * Set the item position with emiting geometryChanged signal
+	 * @param x,y item position
+	 */
+	virtual void setPosition(qreal x, qreal y);
+
+	/**
 	 * Return the icon for tool box
 	 * @return icon
 	 */
@@ -406,7 +412,7 @@ public:
 	virtual void setEnabled(bool b);
 
 	void raise();
-	void selectItem(Qt::KeyboardModifiers keys = Qt::NoModifier);
+	void selectItem(QPointF pos = QPointF(0,0), Qt::KeyboardModifiers keys = Qt::NoModifier);
 
 	virtual bool prInit(PaintInterface * paintInterface);	    //default implementation do nothing
 	virtual bool prData();
@@ -470,13 +476,14 @@ signals:
 	 * @param thisObj item object
 	 * @param cursorPos cursor position
 	 */
-	void itemSelected(QObject * thisObject, QPointF cursorPos, Qt::KeyboardModifiers keys);
+	void itemSelected(QObject * thisObject, QPointF cursorPos, Qt::KeyboardModifiers keys = Qt::NoModifier);
 
 	/**
 	 * This signal is emitted when the item geometry is changed
 	 * @param newGeometry new geometry
 	 */
 	void geometryChanged(QRectF newGeometry);
+	void geometryChanged(QObject * thisObject, QRectF newGeometry);
 
 	/**
 	 * This signal should be emitted before printing
@@ -490,7 +497,7 @@ signals:
 	 */
 	void afterPrint(QObject * sender);
 	
-	void geometryChanged(QObject * object, QRectF newGeometry, QRectF oldGeometry);
+//	void geometryChanged(QObject * object, QRectF newGeometry, QRectF oldGeometry);
 protected:
 	QString m_lastError;
 	PaintInterface * m_paintInterface;

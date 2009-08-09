@@ -33,6 +33,7 @@
 #include <QCursor>
 #include <QKeyEvent>
 #include <QGraphicsView>
+#include <QGraphicsItemGroup>
 
 #include "pageinterface.h"
 #include "bandinterface.h"
@@ -265,12 +266,12 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			    break;
 			if (dynamic_cast<Report::ItemInterface *>(item) )
 			{
-			    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
-					 event->buttonDownScenePos(Qt::LeftButton).y());
+//			    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
+//					 event->buttonDownScenePos(Qt::LeftButton).y());
 			    movingItem = dynamic_cast<Report::ItemInterface *>(item);
 			    movingItemOldPos = movingItem->scenePos();
 
-			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(event->modifiers());
+			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(movingItem->mapFromScene(event->scenePos()), event->modifiers());
 
 			    break;
 			}
