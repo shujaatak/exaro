@@ -402,26 +402,36 @@ QObject * ReportEngine::objectFromDom(QObject * parent, const QDomElement & dom)
 	return obj;
 }
 
+
 void ReportEngine::copy(QObject* object)
 {
-	QDomDocument doc;
-	doc.appendChild(objectProperties(object, &doc));
-	lastObject = doc.toString(0);
+    QDomDocument doc;
+    doc.appendChild(objectProperties(object, &doc));
+    lastObject = doc.toString(0);
+}
+
+void ReportEngine::copy(QList<Report::ItemInterface*> items)
+{
+    QDomDocument doc;
+    foreach (QObject* obj, items)
+	doc.appendChild(objectProperties(obj, &doc));
+    lastObject = doc.toString(0);
 }
 
 QObject * ReportEngine::paste(QObject* parent)
 {
-	QDomDocument doc;
-	doc.setContent(lastObject);
-	QObject * obj = objectFromDom(parent, doc.firstChildElement());
+    QDomDocument doc;
+    doc.setContent(lastObject);
+    QObject * obj = objectFromDom(parent, doc.firstChildElement());
 
-	if (dynamic_cast<Report::BandInterface*>(obj))
-	{
-		dynamic_cast<Report::BandInterface*>(obj)->setOrder(INT_MAX);
-		dynamic_cast<Report::BandInterface*>(obj)->setGeometry(QRectF(0, 0, dynamic_cast<Report::BandInterface*>(obj)->geometry().width(), dynamic_cast<Report::BandInterface*>(obj)->geometry().height()));
-	}
+    if (dynamic_cast<Report::BandInterface*>(obj))
+    {
+	dynamic_cast<Report::BandInterface*>(obj)->setOrder(INT_MAX);
+	dynamic_cast<Report::BandInterface*>(obj)->setGeometry(QRectF(0, 0, dynamic_cast<Report::BandInterface*>(obj)->geometry().width(), dynamic_cast<Report::BandInterface*>(obj)->geometry().height()));
+    }
 
-	return obj;
+    return obj;
 }
+
 
 }

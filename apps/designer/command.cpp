@@ -70,7 +70,11 @@ void AddCommand::redo()
 		Report::LayoutManager::itemAdded(m_item);
 //		m_item->setGeometry( QRectF( localPos.x(), localPos.y(), m_item->geometry().width(), m_item->geometry().height() ) );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
-		m_mainWindow->m_lastSelectedObject=m_item;
+		PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
+		if (!view )
+		    qCritical("Developer ERROR in Command::AddCommand::redo()");
+//		m_mainWindow->m_lastSelectedObject=m_item;
+		m_mainWindow->itemSelected( m_item ,QPointF(0,0));
 		QTimer::singleShot(0, m_mainWindow, SLOT(selectLastObject()));
 		m_itemName = m_item->objectName();
 		m_canUndo=true;
@@ -102,7 +106,13 @@ void AddCommand::undo()
 	m_item->setParentItem( 0 );
 	//dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
 	delete dynamic_cast<Report::ItemInterface*>( m_item );
-	m_mainWindow->m_lastSelectedObject = parent;
+
+	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
+	if (!view )
+	    qCritical("Developer ERROR in Command::AddCommand::redo()");
+	m_mainWindow->itemSelected( parent ,QPointF(0,0));
+
+//	m_mainWindow->m_lastSelectedObject = parent;
 	m_mainWindow->m_pe->setObject( parent );
 	m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 	m_mainWindow->selectObject( parent, m_mainWindow->m_objectModel.index( 0, 0 ) );
@@ -148,7 +158,13 @@ void AddDomObject::undo()
 	m_item->setParentItem( 0 );
 	//dynamic_cast<Report::ItemInterface*>( m_item )->removeItem();
 	delete dynamic_cast<Report::ItemInterface*>( m_item );
-	m_mainWindow->m_lastSelectedObject = m_parent;
+
+	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
+	if (!view )
+	    qCritical("Developer ERROR in Command::AddCommand::redo()");
+	m_mainWindow->itemSelected( m_parent ,QPointF(0,0));
+
+//	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
 	m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 	m_mainWindow->selectObject( m_parent, m_mainWindow->m_objectModel.index( 0, 0 ) );
@@ -173,40 +189,45 @@ void AddDomObject::redo()
 	}
 	QDomDocument doc;
 	doc.setContent( m_domObject );
-	QObject * obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, doc.firstChildElement() );
+	QObject * obj;
 
-	if ( dynamic_cast<Report::BandInterface*>( obj ) )
+	QDomElement child = doc.firstChildElement();
+	while (!child.isNull())
 	{
+	    obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, child );
+//	    qDebug("childname = %s", qPrintable(obj->objectName()));
+	    if ( dynamic_cast<Report::BandInterface*>( obj ) )
+	    {
 		dynamic_cast<Report::BandInterface*>( obj )->setOrder( INT_MAX );
 		dynamic_cast<Report::BandInterface*>( obj )->setGeometry( QRectF( 0, 0, dynamic_cast<Report::BandInterface*>( obj )->geometry().width(), dynamic_cast<Report::BandInterface*>( obj )->geometry().height() ) );
-	}
+	    }
 
-	m_item = dynamic_cast<Report::ItemInterface*>( obj );
+	    m_item = dynamic_cast<Report::ItemInterface*>( obj );
 
-	if ( dynamic_cast<Report::ItemInterface*>( m_parent ) )
-	{
+	    if ( dynamic_cast<Report::ItemInterface*>( m_parent ) )
+	    {
 		if ( !dynamic_cast<Report::ItemInterface*>( m_parent )->canContain( m_item ) )
 		{
-			delete m_item;
-			m_item = 0;
+		    delete m_item;
+		    m_item = 0;
 		}
-	}
-	else
+	    }
+	    else
 		if ( dynamic_cast<Report::PageInterface*>( m_parent )->canContain( m_item ) )
-			dynamic_cast<Report::PageInterface*>( m_parent )->addItem( m_item );
-		else
-		{
-			delete m_item;
-			m_item = 0;
-		}
+		    dynamic_cast<Report::PageInterface*>( m_parent )->addItem( m_item );
+	    else
+	    {
+		delete m_item;
+		m_item = 0;
+	    }
 
-	if ( m_item )
-	{
+	    if ( m_item )
+	    {
 		connectItems(m_item, m_mainWindow);
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
-			dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
+		    dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 		else
-			m_item->setPos(m_pos);
+		    m_item->setPos(m_pos);
 		makeUnique( static_cast<QObject*>(m_item));
 		m_itemName=m_item->objectName();
 		m_mainWindow->m_pe->setObject( m_item );
@@ -215,14 +236,16 @@ void AddDomObject::redo()
 		setText(QObject::tr("Open item %1(%2)").arg(m_itemName).arg(m_item->metaObject()->className()));
 		m_mainWindow->m_pe->setObject( m_item );
 		m_mainWindow->selectObject( m_item, m_mainWindow->m_objectModel.index( 0, 0 ) );
-	}
-	else
-	{
+	    }
+	    else
+	    {
 		m_canUndo=false;
 		m_mainWindow->m_pe->setObject( m_parent );
 		m_mainWindow->selectObject( m_parent, m_mainWindow->m_objectModel.index( 0, 0 ) );
-	}
+	    }
 
+	    child = child.nextSiblingElement();
+	}
 }
 
 void AddDomObject::makeUnique(QObject * object) const
@@ -363,7 +386,13 @@ void DelCommand::redo()
 	Report::LayoutManager::ItemDelete(m_item, m_page);
 	//delete dynamic_cast<Report::ItemInterface*>( m_item );
 	delete (m_item);
-	m_mainWindow->m_lastSelectedObject = m_parent;
+
+	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
+	if (!view )
+	    qCritical("Developer ERROR in Command::AddCommand::redo()");
+	m_mainWindow->itemSelected( m_parent,QPointF(0,0));
+
+//	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
 	m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
 	m_mainWindow->selectObject( m_parent, m_mainWindow->m_objectModel.index( 0, 0 ) );

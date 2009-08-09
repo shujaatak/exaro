@@ -66,7 +66,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() < band->order())*/)
 			by += /*iBand->indentation() +*/ iBand->height() + iBand->titleGeometry().height() + (i?layoutMargin:0);
 		    else
-			iBand->setPos(iBand->x(), iBand->y() + band->height() + band->titleGeometry().height() + (i?layoutMargin:0)/*+ band->indentation()*/);
+			iBand->setPosition(iBand->x(), iBand->y() + band->height() + band->titleGeometry().height() + (i?layoutMargin:0)/*+ band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > maxOrder)
 			maxOrder = iBand->order();
 		    break;
@@ -74,7 +74,7 @@ void LayoutManager::itemAdded(ItemInterface * item)
 		    if (iBand->layoutPriority() >= band->layoutPriority() /*|| (iBand->layoutPriority() == band->layoutPriority() && iBand->order() > band->order())*/)
 			by += /*iBand->indentation() +*/ iBand->height() + iBand->titleGeometry().height() + (i?layoutMargin:0);
 		    else
-			iBand->setPos(iBand->x(), iBand->y() - band->height() - band->titleGeometry().height() - (i?layoutMargin:0)/*- band->indentation()*/);
+			iBand->setPosition(iBand->x(), iBand->y() - band->height() - band->titleGeometry().height() - (i?layoutMargin:0)/*- band->indentation()*/);
 		    if (iBand->layoutPriority() == band->layoutPriority())
 			iBand->setOrder(iBand->order() + 1, false);
 		    break;
@@ -83,12 +83,12 @@ void LayoutManager::itemAdded(ItemInterface * item)
 
     if (band->layoutType() == BandInterface::LayoutTop)
     {
-	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + by + band->titleGeometry().height());
+	band->setPosition(band->parentGeometry().x(), band->parentGeometry().y() + by + band->titleGeometry().height());
 	band->setOrder(maxOrder + 1, false);
     }
     if (band->layoutType() == BandInterface::LayoutBottom)
     {
-	band->setPos(band->parentGeometry().x(), band->parentGeometry().y() + band->parentGeometry().height() - band->height()-  by);
+	band->setPosition(band->parentGeometry().x(), band->parentGeometry().y() + band->parentGeometry().height() - band->height()-  by);
 	band->setOrder(0, false);
     }
 
@@ -196,7 +196,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	int by =  band->geometry().bottom();
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
-	    list.at(i)->setPos(list.at(i)->x(), by + list.at(i)->titleGeometry().height() + layoutMargin/*+ list.at(i)->indentation()*/);
+	    list.at(i)->setPosition(list.at(i)->x(), by + list.at(i)->titleGeometry().height() + layoutMargin/*+ list.at(i)->indentation()*/);
 	    by += list.at(i)->height() + list.at(i)->titleGeometry().height() + layoutMargin;
 	}
     }
@@ -207,7 +207,7 @@ void LayoutManager::itemGeometryChanged(QObject * item)
 	int by =  band->geometry().top() /*+ band->indentation()*/;
 	for (int i = list.count()-1; i>=0 ;i--)
 	{
-	    list.at(i)->setPos(list.at(i)->x(), by - list.at(i)->height());
+	    list.at(i)->setPosition(list.at(i)->x(), by - list.at(i)->height());
 	    by += list.at(i)->height() + list.at(i)->titleGeometry().height() + layoutMargin/*+ list.at(i)->indentation()*/;
 	}
     }
@@ -300,7 +300,7 @@ void LayoutManager::updatePositions(QObject * item)
 	BandList orderList = sortByOrder(listTop.values(pList.at(i)));
 	for (int j = 0; j<orderList.count() ;j++)
 	{
-	    orderList.at(j)->setPos(orderList.at(j)->x(), by + orderList.at(j)->titleGeometry().height() + (by==rect.top()?0:layoutMargin)/*+ orderList.at(j)->indentation()*/);
+	    orderList.at(j)->setPosition(orderList.at(j)->x(), by + orderList.at(j)->titleGeometry().height() + (by==rect.top()?0:layoutMargin)/*+ orderList.at(j)->indentation()*/);
 	    by += orderList.at(j)->height() + orderList.at(j)->titleGeometry().height() + (by==rect.top()?0:layoutMargin);
 	}
     }
@@ -312,7 +312,7 @@ void LayoutManager::updatePositions(QObject * item)
 	BandList orderList = sortByOrder(listBottom.values(pList.at(i)));
 	for (int j = orderList.count() -1; j>=0 ;j--)
 	{
-	    orderList.at(j)->setPos(orderList.at(j)->x(), by - orderList.at(j)->height());
+	    orderList.at(j)->setPosition(orderList.at(j)->x(), by - orderList.at(j)->height());
 	    by -= orderList.at(j)->height() + orderList.at(j)->titleGeometry().height() + layoutMargin/*- orderList.at(j)->indentation()*/;
 	}
     }

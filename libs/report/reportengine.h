@@ -113,6 +113,7 @@ public:
 
 	QObject* paste(QObject* parent);
 	void copy(QObject* object);
+	void copy(QList<Report::ItemInterface*> items);
 
 	ItemInterface * findItemByClassName(const char * name);
 	DataSet * findDatasetByClassName(QString name);

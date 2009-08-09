@@ -48,6 +48,7 @@ public:
 	~mainWindow();
 
 	void closeEvent(QCloseEvent *event);
+	inline Report::ReportEngine * reportEngine();
 
 protected:
 	void keyReleaseEvent(QKeyEvent * event);
@@ -57,7 +58,7 @@ protected:
 	bool askToSaveReport();
 
 private:
-	bool selectObject(QObject * object, QModelIndex index);
+	bool selectObject(QObject * object, QModelIndex index, QItemSelectionModel::SelectionFlag selFlag = QItemSelectionModel::ClearAndSelect);
 	int _createNewPage_(Report::PageInterface* page = 0, int afterIndex = -1, QString pageName = QString());
 	void _deletePage_(int index);
 	void setupActions();
@@ -75,8 +76,8 @@ private:
 	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;
-	QObject * m_lastSelectedObject;
-	QPointF m_lastSelectedObjectPos;
+//	QObject * m_lastSelectedObject;
+//	QPointF m_lastSelectedObjectPos;
 	QMenu	m_contextMenu;
 	QDockWidget * m_dwToolBox;
 	QDockWidget * m_dwPropertyEditor;
@@ -98,7 +99,7 @@ protected slots:
 	void newPage();
 	void removePage();
 	void currentChanged(int);
-	void itemSelected(QObject *, QPointF, Qt::KeyboardModifiers );
+	void itemSelected(QObject *, QPointF, Qt::KeyboardModifiers = Qt::NoModifier);
 	void zoomIn();
 	void zoomOut();
 	void zoomOriginal();
@@ -130,6 +131,7 @@ protected slots:
 	void on_actionBandDown_triggered();
 	void on_actionLastConnect_triggered();
 	void restoreSettings();
+	void on_m_objectInspector_pressed(const QModelIndex & index);
 
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
