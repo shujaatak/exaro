@@ -91,6 +91,7 @@ private:
 	QUndoStack *undoStack;
 	QUndoView *undoView;
 	QToolBar *itemLayoutToolbar;
+	QDomDocument lastCopyGroup;
 
 public slots:
 	void selectLastObject();

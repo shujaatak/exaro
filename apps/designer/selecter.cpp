@@ -195,3 +195,9 @@ bool Selecter::haveSelection()
 {
     return (bool)items.count();
 }
+
+void Selecter::reset()
+{
+    free();
+    m_activeObject = 0;
+}

@@ -32,6 +32,7 @@ public:
 
     void store();
     void restore();
+    void reset();
 
     bool haveSelection();
     QList<Report::ItemInterface *> selectedItems();
