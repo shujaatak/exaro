@@ -308,8 +308,10 @@ void mainWindow::saveItem()
     if ( file.open( QIODevice::WriteOnly | QIODevice::Text ) )
     {
 	QDomDocument doc( "report" );
+	QDomElement root = doc.createElement("ROOT");
 	foreach (Report::ItemInterface* item, view->selectedItems())
-	    doc.appendChild( Report::ReportEngine::objectProperties( item, &doc ) );
+	    root.appendChild( Report::ReportEngine::objectProperties( item, &doc ) );
+	doc.appendChild(root);
 	file.write( doc.toByteArray( 4 ) );
 	file.close();
     }
@@ -336,10 +338,77 @@ void mainWindow::openItem()
     QFile file( reportName );
     if ( file.open( QIODevice::ReadOnly ) )
     {
+
+	/*
 	if ( dynamic_cast<Report::ItemInterface*>( lastSelectedObject ) )
 	    undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( dynamic_cast<Report::ItemInterface*>( lastSelectedObject )->scene() ), lastSelectedObject->objectName(), file.readAll(),  pos, this ) );
 	else
 	    undoStack->push( new AddDomObject( dynamic_cast<Report::PageInterface *>( lastSelectedObject ), lastSelectedObject->objectName(), file.readAll(),  pos, this ) );
+	    */
+
+	QDomDocument doc;
+	doc.setContent( file.readAll() );
+	QObject * obj;
+	QDomElement root = doc.documentElement ();
+
+	QDomElement child = root.firstChildElement();
+	while (!child.isNull())
+	{
+	    obj = m_reportEngine.objectFromDom( lastSelectedObject, child );
+	    qDebug("childname = %s", qPrintable(obj->objectName()));
+	    if ( dynamic_cast<Report::BandInterface*>( obj ) )
+	    {
+		dynamic_cast<Report::BandInterface*>( obj )->setOrder( INT_MAX );
+		dynamic_cast<Report::BandInterface*>( obj )->setGeometry( QRectF( 0, 0, dynamic_cast<Report::BandInterface*>( obj )->geometry().width(), dynamic_cast<Report::BandInterface*>( obj )->geometry().height() ) );
+	    }
+
+	    Report::ItemInterface * m_item = dynamic_cast<Report::ItemInterface*>( obj );
+
+	    if ( dynamic_cast<Report::ItemInterface*>( lastSelectedObject ) )
+	    {
+		if ( !dynamic_cast<Report::ItemInterface*>( lastSelectedObject )->canContain( m_item ) )
+		{
+		    delete m_item;
+		    m_item = 0;
+		}
+	    }
+	    else
+		if ( dynamic_cast<Report::PageInterface*>( lastSelectedObject )->canContain( m_item ) )
+		    dynamic_cast<Report::PageInterface*>( lastSelectedObject )->addItem( m_item );
+	    else
+	    {
+		delete m_item;
+		m_item = 0;
+	    }
+
+	    if ( m_item )
+	    {
+		connectItems(m_item, this);
+		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
+		    dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
+		else
+		    m_item->setPos( pos);
+
+		m_objectModel.setRootObject( m_report );
+
+	    }
+
+	    child = child.nextSiblingElement();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     qDebug("pos = %f x %f", pos.x(), pos.y());
@@ -827,42 +896,42 @@ void mainWindow::selectLastObject()
 void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
     qDebug("mainwindow::item selected");
-//	m_lastSelectedObject = object;
-//	m_lastSelectedObjectPos = pos;
-	QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
+    //	m_lastSelectedObject = object;
+    //	m_lastSelectedObjectPos = pos;
+    QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
 
-	if ( lw && lw->currentRow() > -1 )
+    qDebug("key = %i", (int)key);
+
+    PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
+
+    if (page)
+	if (page->selecter()->itemSelected( object, pos ,key))
 	{
-		const char* needClassName = ( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()] )[lw->currentRow()] )->metaObject()->className();
-		QPointF absPos = dynamic_cast<Report::PageInterface*>( object ) ? pos : dynamic_cast<Report::ItemInterface*>( object )->mapToScene( pos );
-		Report::PageInterface* page = dynamic_cast<Report::PageInterface*>( object ) ? dynamic_cast<Report::PageInterface*>( object )
-		                : dynamic_cast<Report::PageInterface*>( dynamic_cast<Report::ItemInterface*>( object )->scene() );
+	    QObject* selObj = page->selecter()->activeObject();
+	    m_pe->setObject( selObj );
 
-		QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
-		undoStack->push( addCommand );
-		lw->setCurrentRow( -1 );
+	    /// FIXME : QTreeview not update immidiately - without this workaround
+	    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::QItemSelectionModel::ClearAndSelect );
+
+	    foreach(Report::ItemInterface * item, page->selectedItems())
+		selectObject( item, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
+
+	    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
+
+	    qDebug("item selected in pos = %f x %f", pos.x(), pos.y());
 	}
-	else
-	{
-	    PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
-	    if (page)
-		if (page->selecter()->itemSelected( object, pos ,key))
-		{
-		    QObject* selObj = page->selecter()->activeObject();
-		    m_pe->setObject( selObj );
+    if ( lw && lw->currentRow() > -1 )
+    {
+	const char* needClassName = ( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()] )[lw->currentRow()] )->metaObject()->className();
+	QPointF absPos = dynamic_cast<Report::PageInterface*>( object ) ? pos : dynamic_cast<Report::ItemInterface*>( object )->mapToScene( pos );
+	Report::PageInterface* page = dynamic_cast<Report::PageInterface*>( object ) ? dynamic_cast<Report::PageInterface*>( object )
+				      : dynamic_cast<Report::PageInterface*>( dynamic_cast<Report::ItemInterface*>( object )->scene() );
 
-		    /// FIXME : QTreeview not update immidiately - without this workaround
-		    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::QItemSelectionModel::ClearAndSelect );
-
-		    foreach(Report::ItemInterface * item, page->selectedItems())
-			selectObject( item, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
-
-		    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
-
-		    qDebug("item selected in pos = %f x %f", pos.x(), pos.y());
-		}
-	}
+	QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
+	undoStack->push( addCommand );
+	lw->setCurrentRow( -1 );
+    }
 }
 
 void mainWindow::removePage()

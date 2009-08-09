@@ -266,8 +266,6 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			    break;
 			if (dynamic_cast<Report::ItemInterface *>(item) )
 			{
-//			    QPointF mousePos(event->buttonDownScenePos(Qt::LeftButton).x(),
-//					 event->buttonDownScenePos(Qt::LeftButton).y());
 			    movingItem = dynamic_cast<Report::ItemInterface *>(item);
 			    movingItemOldPos = movingItem->scenePos();
 
