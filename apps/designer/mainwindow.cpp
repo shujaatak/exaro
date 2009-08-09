@@ -386,8 +386,8 @@ void mainWindow::openItem()
 		connectItems(m_item, this);
 		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
 		    dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
-		else
-		    m_item->setPos( pos);
+//		else
+//		    m_item->setPos( pos);
 
 		m_objectModel.setRootObject( m_report );
 
@@ -395,20 +395,6 @@ void mainWindow::openItem()
 
 	    child = child.nextSiblingElement();
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     qDebug("pos = %f x %f", pos.x(), pos.y());
@@ -434,16 +420,19 @@ void mainWindow::objectChanged( const QModelIndex & current, const QModelIndex &
 
 bool mainWindow::selectObject( QObject * object, QModelIndex index, QItemSelectionModel::SelectionFlag selFlag)
 {
-	if ( index.isValid() && reinterpret_cast<ObjectModel::ObjectStruct *>( index.internalPointer() )->object == object )
-	{
-		emit( setCurrentIndex( index, selFlag ) );
-		return true;
-	}
-
-	for ( int i = 0;i < m_objectModel.rowCount( index );i++ )
-		if ( selectObject( object, m_objectModel.index( i, 0, index ), selFlag ) )
-			return true;
+    if (!object)
 	return false;
+
+    if ( index.isValid() && reinterpret_cast<ObjectModel::ObjectStruct *>( index.internalPointer() )->object == object )
+    {
+	emit( setCurrentIndex( index, selFlag ) );
+	return true;
+    }
+
+    for ( int i = 0;i < m_objectModel.rowCount( index );i++ )
+	if ( selectObject( object, m_objectModel.index( i, 0, index ), selFlag ) )
+	    return true;
+    return false;
 }
 
 bool mainWindow::askToSaveReport()
@@ -489,12 +478,20 @@ void mainWindow::copy()
     if (!view )
 	return;
 
-    if ( view->hasSelection() )
-		m_reportEngine.copy( view->selectedItems() );
+    QDomDocument doc( "copypaste" );
+    QDomElement root = doc.createElement("ROOT");
+
+    foreach (Report::ItemInterface* item, view->selectedItems())
+	root.appendChild( Report::ReportEngine::objectProperties( item, &doc ) );
+
+    doc.appendChild(root);
+
+    lastCopyGroup = doc;
 }
 
 void mainWindow::pasteItem( QObject * item )
 {
+    qDebug("mainWindow::pasteItem");
 	connect( item, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ), SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ) );
 	connect( item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	item->setObjectName( Report::ReportEngine::uniqueName( item->metaObject()->className(), m_report ) );
@@ -507,39 +504,58 @@ void mainWindow::paste()
     PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
     if (!view )
 	return;
+
     if ( !view->activeObject() )
 	return;
 
-    QObject * obj = m_reportEngine.paste( view->activeObject() );
-    Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( obj );
-    if ( dynamic_cast<Report::ItemInterface*>( view->activeObject() ) )
+    QObject * parent = view->activeObject();
+    view->selecter()->reset();
+
+//    QDomDocument doc;
+//    doc.setContent( file.readAll() );
+
+    QObject * obj;
+    QDomElement root = lastCopyGroup.documentElement ();
+
+    QDomElement child = root.firstChildElement();
+
+    while (!child.isNull())
     {
-	if ( !dynamic_cast<Report::ItemInterface*>( view->activeObject() )->canContain( item ) )
+	obj = m_reportEngine.objectFromDom( parent, child );
+
+	Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>( obj );
+	if ( dynamic_cast<Report::ItemInterface*>( parent ) )
+	{
+	    if ( !dynamic_cast<Report::ItemInterface*>( parent )->canContain( item ) )
+	    {
+		delete item;
+		item = 0;
+	    }
+	}
+	else
+	    if ( dynamic_cast<Report::PageInterface*>( parent )->canContain( item ) )
+		dynamic_cast<Report::PageInterface*>( parent )->addItem( item );
+	else
 	{
 	    delete item;
 	    item = 0;
 	}
-    }
-    else
-	if ( dynamic_cast<Report::PageInterface*>( view->activeObject() )->canContain( item ) )
-	    dynamic_cast<Report::PageInterface*>( view->activeObject() )->addItem( item );
-    else
-    {
-	delete item;
-	item = 0;
-    }
 
-    if ( item )
-    {
-	pasteItem( item );
-	if ( dynamic_cast<Report::BandInterface*>( item ) )
-	    dynamic_cast<Report::BandInterface*>( item )->setOrder( INT_MAX );
+	if ( item )
+	{
+	    pasteItem( item );
+	    if ( dynamic_cast<Report::BandInterface*>( item ) )
+		dynamic_cast<Report::BandInterface*>( item )->setOrder( INT_MAX );
 
-	m_pe->setObject( item );
-	m_objectModel.setRootObject( m_report );
-	selectObject( item, m_objectModel.index( 0, 0 ) );
+	    view->selecter()->itemSelected( item ,QPointF(0,0),  Qt::ShiftModifier);
+	}
+
+	child = child.nextSiblingElement();
     }
 
+    m_objectModel.setRootObject( m_report );
+    m_pe->setObject( view->activeObject() );
+    selectObject( view->activeObject(), m_objectModel.index( 0, 0 ) );
 }
 
 void mainWindow::del()
@@ -548,22 +564,16 @@ void mainWindow::del()
     if (!view )
 	return;
 
-
-    /*
-	QGraphicsItem* item;
-	if ( !( item = dynamic_cast<QGraphicsItem*>( m_lastSelectedObject ) ) || !dynamic_cast<Report::ItemInterface*>( m_lastSelectedObject ) )
-		return;
-	QUndoCommand *delCommand = new DelCommand( dynamic_cast<Report::ItemInterface*>( item ), this );
-	undoStack->push( delCommand );
-	*/
+    QList<Report::ItemInterface *> items = view->selecter()->selectedItems();
+    view->selecter()->reset();
+    foreach (Report::ItemInterface * item, items )
+	delete item;
 }
 
 void mainWindow::cut()
 {
-    /*
-	copy();
-	del();
-	*/
+    copy();
+    del();
 }
 
 mainWindow::~mainWindow()

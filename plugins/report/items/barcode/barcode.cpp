@@ -249,6 +249,7 @@ void Barcode::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 	Zint::QZint bc;
 
 	bc.setSymbol(m_barcodeType);
+	/*
 	switch(m_barcodeType)
 	{
 		case  MSI_PLESSEY:
@@ -261,6 +262,7 @@ void Barcode::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 			bc.setExcode39ExtraSymbology(m_exCode39_43Extension);
 			break;
 	}
+	*/
 	bc.setPrimaryMessage(m_primaryMessage);
 	bc.setBorderType((Zint::QZint::BorderType)m_frameType);
 	bc.setHeight(m_barcodeHeight);
