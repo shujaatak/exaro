@@ -38,12 +38,13 @@
 #include "iteminterface.h"
 #include "reportinterface.h"
 
+#define CORNERSIZE 20
+
 using namespace Report;
 
 ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QObject(parentObject), QGraphicsItem(parent)
-//		, m_resizeHandle(2/UNIT) //2mm
-		, m_minWidth(/*m_resizeHandle*2+1*/ 5)
-		, m_minHeight(/*m_resizeHandle*2+1*/ 5)
+		, m_minWidth(5)
+		, m_minHeight(5)
 		, m_stretch(0)
 		, m_paintInterface(0)
 		, offsetX(0), offsetY(0), _offsetX(0), _offsetY(0)
@@ -55,9 +56,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_height = 20/UNIT; // 20 mm
 	m_opacity = 100;
 	m_enabled = true;
-	setFlags(/*QGraphicsItem::ItemIsMovable |*/ QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
-//	QSettings s;
-//	m_drawSelectionBorder=s.value( "Items/drawSelectionBorder", true ).toBool();
+	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
 	expBegin = "[";
 	expEnd = "]";
 	m_BGMode = TransparentMode;
@@ -79,76 +78,6 @@ void ItemInterface::setFrame(Frames frame)
 	update();
 }
 
-/*
-void ItemInterface::drawSelection(QPainter * painter, QRectF rect)
-{
-	painter->save();
-
-
-	if (isSelected())
-	{
-		QBrush a;
-		a.setColor(QColor(200,0,0,150));
-		a.setStyle(Qt::SolidPattern);
-		if (m_drawSelectionBorder)
-		{
-			QPen p(Qt::DashDotDotLine);
-			p.setBrush(a);
-			painter->setPen(p);
-			painter->drawRect(rect);
-		}
-		QPainterPath lt;
-		lt.moveTo(0,0);
-		lt.lineTo(0,m_resizeHandle);
-		lt.lineTo(m_resizeHandle,0);
-		painter->fillPath(lt,a);
-
-		QPainterPath rt;
-		rt.moveTo(rect.width(),0);
-		rt.lineTo(rect.width(),m_resizeHandle);
-		rt.lineTo(rect.width()-m_resizeHandle,0);
-		painter->fillPath(rt,a);
-
-		QPainterPath lb;
-		lb.moveTo(0,rect.height());
-		lb.lineTo(0,rect.height()-m_resizeHandle);
-		lb.lineTo(m_resizeHandle,rect.height());
-		painter->fillPath(lb,a);
-
-		QPainterPath rb;
-		rb.moveTo(rect.width(),rect.height());
-		rb.lineTo(rect.width(),rect.height()-m_resizeHandle);
-		rb.lineTo(rect.width()-m_resizeHandle,rect.height());
-		painter->fillPath(rb,a);
-	}
-	else
-	{
-		if (m_drawSelectionBorder)
-		{
-			QBrush a;
-			a.setColor(QColor(100,100,100,200));
-			a.setStyle(Qt::SolidPattern);
-
-			QPen p(Qt::DashDotDotLine);
-			p.setBrush(a);
-			painter->setPen(p);
-			painter->drawRect(rect);
-		}
-		painter->setPen(QColor(0,0,0,100));
-		painter->drawLine(0,0,0,2*m_resizeHandle);
-		painter->drawLine(0,0,2*m_resizeHandle,0);
-		painter->drawLine(rect.width(),0,rect.width()-2*m_resizeHandle,0);
-		painter->drawLine(rect.width(),0,rect.width(),2*m_resizeHandle);
-		painter->drawLine(rect.width(),rect.height(),rect.width()-2*m_resizeHandle, rect.height());
-		painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-2*m_resizeHandle);
-		painter->drawLine(0,rect.height(), 2*m_resizeHandle, rect.height());
-		painter->drawLine(0,rect.height(), 0, rect.height()-2*m_resizeHandle);
-	}
-
-	painter->restore();
-}
-*/
-
 int ItemInterface::resizeFlags()
 {
 	return m_resizeFlags;
@@ -159,98 +88,11 @@ void ItemInterface::setResizeFlags(int resizeFlags)
 	m_resizeFlags = resizeFlags;
 }
 
-/*
-void ItemInterface::setResizeHandle(int resizeHandle)
-{
-	m_resizeHandle = resizeHandle;
-
-	if (m_minWidth<m_resizeHandle*2+1)
-		m_minWidth=m_resizeHandle*2+1;
-
-	if (m_minHeight<m_resizeHandle*2+1)
-		m_minHeight=m_resizeHandle*2+1;
-
-	update(boundingRect());
-}
-
-int ItemInterface::resizeHandle()
-{
-	return m_resizeHandle;
-}
-*/
-/*
-void ItemInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    qDebug("mouse press on \'%s\'", qPrintable (this->objectName()));
-
-	oldGeometry = geometry();
-	foreach(QGraphicsItem *item, scene()->items())
-		if (item->zValue() == 1)
-			item->setZValue(0);
-
-	setZValue(1);
-
-	if (event->buttons() == Qt::LeftButton)
-		m_resizeEvent = posibleResizeCurrsor(event->pos());
-	else
-		m_resizeEvent = Fixed;
-
-	if (m_resizeEvent == Fixed)
-		setCursor(QCursor(Qt::ClosedHandCursor));
-
-	QGraphicsItem::mousePressEvent(event);
-
-	if (event->buttons() == Qt::LeftButton)
-		emit(itemSelected(this, event->pos(), event->modifiers()  ) );
-
-}
-
-void ItemInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsItem::mouseReleaseEvent(event);
-
-
-	m_resizeEvent = Fixed;
-	
-	QRectF newGeometry = geometry();
-	if (newGeometry != oldGeometry)
-	    emit(geometryChanged(this, newGeometry, oldGeometry));
-
-}
-*/
-
-/*
-int ItemInterface::posibleResizeCurrsor(QPointF cursor)
-{
-	int flags = Fixed;
-	QRectF topRect(0, 0, width(), resizeHandle());
-	QRectF leftRect(0, 0, resizeHandle(), height());
-	QRectF bottomRect(0, height() - resizeHandle(), width(), resizeHandle());
-	QRectF rightRect(width() - resizeHandle(), 0, width(), height());
-
-	if (resizeFlags()&ResizeTop && topRect.contains(cursor))
-		flags |= ResizeTop;
-
-	if (resizeFlags()&ResizeLeft && leftRect.contains(cursor))
-		flags |= ResizeLeft;
-
-	if (resizeFlags()&ResizeBottom && bottomRect.contains(cursor))
-		flags |= ResizeBottom;
-
-	if (resizeFlags()&ResizeRight && rightRect.contains(cursor))
-		flags |= ResizeRight;
-
-	if (resizeFlags()&FixedPos)
-		flags |= FixedPos;
-
-	return flags;
-}
-*/
 
 void ItemInterface::selectItem(QPointF pos, Qt::KeyboardModifiers keys)
 {
-	emit(itemSelected(this, pos, keys));
-	raise();
+    emit(itemSelected(this, pos, keys));
+    raise();
 }
 
 void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -297,8 +139,17 @@ void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
     if (frame()&DrawBottom)
 	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
-//    if (option->type == QStyleOption::SO_GraphicsItem)
-//	drawSelection(painter, boundingRect());
+    /// corners
+    painter->setPen(QColor(0,0,0,100));
+    painter->drawLine(0,0,0,CORNERSIZE);
+    painter->drawLine(0,0,CORNERSIZE,0);
+    painter->drawLine(rect.width(),0,rect.width()-CORNERSIZE,0);
+    painter->drawLine(rect.width(),0,rect.width(),CORNERSIZE);
+    painter->drawLine(rect.width(),rect.height(),rect.width()-CORNERSIZE, rect.height());
+    painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-CORNERSIZE);
+    painter->drawLine(0,rect.height(), CORNERSIZE, rect.height());
+    painter->drawLine(0,rect.height(), 0, rect.height()-CORNERSIZE);
+
 
     painter->restore();
 
@@ -318,46 +169,6 @@ bool ItemInterface::canContain(QObject * object)
 	Q_UNUSED(object);
 	return false;
 }
-
-/*
-void ItemInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-
-	if (event->buttons() == Qt::LeftButton)
-	{
-		if (m_resizeEvent == Fixed)
-			setPos(pos() + QPoint((int)(event->scenePos().x() - event->lastScenePos().x()), (int)(event->scenePos().y() - event->lastScenePos().y())));
-		else
-		{
-			if (m_resizeEvent&ResizeLeft)
-			{
-				setPos(pos().x() + event->scenePos().x() - event->lastScenePos().x(), pos().y());
-				setWidth(width() + event->lastScenePos().x() - event->scenePos().x());
-			}
-
-			if (m_resizeEvent&ResizeTop)
-			{
-				setPos(pos().x(), pos().y() + event->scenePos().y() - event->lastScenePos().y());
-				setHeight(height() + event->lastScenePos().y() - event->scenePos().y());
-			}
-
-			if (m_resizeEvent&ResizeRight)
-				setWidth((int)(width() + event->scenePos().x() - event->lastScenePos().x()));
-
-			if (m_resizeEvent&ResizeBottom)
-				setHeight((int)(height() + event->scenePos().y() - event->lastScenePos().y()));
-
-			if (width() < minWidth())
-				setWidth(minWidth());
-
-			if (height() < minHeight())
-				setHeight(minHeight());
-		}
-	}
-
-	QGraphicsItem::mouseMoveEvent(event);
-}
-*/
 
 void ItemInterface::setWidth(qreal width)
 {
@@ -425,16 +236,12 @@ void ItemInterface::setMinHeight(qreal height)
 {
     height > 0 ? m_minHeight = height: 0;
 
-//	if (m_resizeHandle*2+1<m_minHeight)
-//		setResizeHandle(m_minHeight/2-1);
 }
 
 void ItemInterface::setMinWidth(qreal width)
 {
     width > 0 ? m_minWidth = width: 0;
 
-//	if (m_resizeHandle*2+1<m_minWidth)
-//		setResizeHandle(m_minWidth/2-1);
 }
 
 qreal ItemInterface::minHeight() const
@@ -467,7 +274,7 @@ QVariant ItemInterface::datasetField(const QString & dataset, const QString & fi
 	DataSet * dtst = findDataset(dataset);
 
 	if (!dtst)
-		return tr("Query '%1' not found").arg(dataset);
+		return tr("Dataset '%1' not found").arg(dataset);
 
 	if (!dtst->value(field).isValid())
 		return tr("Field '%1' not found").arg(field);
@@ -605,7 +412,6 @@ bool ItemInterface::prData(){return true;}
 
 bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
 {
-//    qDebug("prPaint. item=%s",qPrintable (this->objectName()));
     emit beforePrint(this);
 
     QStyleOptionGraphicsItem option;
@@ -626,24 +432,6 @@ bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF 
 	    childItem->prPaint(painter, translate, option.exposedRect);
     }
     emit afterPrint(this);
-
-    /*
-    QStyleOptionGraphicsItem option;
-    option.type = 31;
-    option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, dynamic_cast<BandInterface *>(this)->geometry().width(), dynamic_cast<BandInterface *>(this)->geometry().height()) : geometry();
-    painter->save();
-    option.exposedRect.translate(translate);
-    painter->setClipRect(clipRect);
-
-    paint(painter, &option);
-
-    painter->restore();
-    translate += option.exposedRect.topLeft() + QPointF(offsetX + _offsetX, offsetY + _offsetY);
-    foreach(ItemInterface * childItem, findChildren<ItemInterface *>())
-	if (childItem->prData())
-	    childItem->prPaint(painter, translate, option.exposedRect);
-	    
-*/
 }
 
 bool ItemInterface::prReset(){return false;}

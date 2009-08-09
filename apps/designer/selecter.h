@@ -24,8 +24,8 @@ public:
     Selecter( QGraphicsScene * scene, mainWindow * mw);
     ~Selecter();
 
-    QObject * itemSelected(Report::ItemInterface * item, QPointF pos, Qt::KeyboardModifiers keys);
-    QObject * itemSelected(QObject * object, QPointF pos, Qt::KeyboardModifiers keys);
+    QObject * itemSelected(Report::ItemInterface * item, QPointF pos = QPointF(), Qt::KeyboardModifiers keys = Qt::NoModifier);
+    QObject * itemSelected(QObject * object, QPointF pos = QPointF(), Qt::KeyboardModifiers keys = Qt::NoModifier);
 
     QObject * activeObject();
     QPointF activeObjectLastPressPos();
@@ -40,11 +40,6 @@ private:
     void append (Report::ItemInterface * item);
     void remove (Report::ItemInterface * item);
     void free();
-
-
-public slots:
-    void itemMoved(Report::ItemInterface * item, QPointF oldPos);
-
 
 private:
     QObject * _itemSelected(Report::ItemInterface * item, QPointF pos, Qt::KeyboardModifiers keys);

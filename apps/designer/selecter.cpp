@@ -85,11 +85,6 @@ QObject * Selecter::_itemSelected(Report::ItemInterface * item, QPointF pos, Qt:
 	append(item);
 }
 
-void Selecter::itemMoved(Report::ItemInterface * item, QPointF oldPos)
-{
-    qDebug("group moved");
-}
-
 void Selecter::append(Report::ItemInterface * item)
 {
     qDebug("Selecter::add");
@@ -103,7 +98,7 @@ void Selecter::append(Report::ItemInterface * item)
     else
     	item->setFlag (QGraphicsItem::ItemIsMovable, true);
 
-    qDebug(" is item movable = %i", (int)item->flags().testFlag(QGraphicsItem::ItemIsMovable));
+//    qDebug(" is item movable = %i", (int)item->flags().testFlag(QGraphicsItem::ItemIsMovable));
 
     Item i;
     i.item = item;

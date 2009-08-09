@@ -19,6 +19,7 @@
 #include <QTimer>
 #include "layoutmanager.h"
 #include "pageview.h"
+#include "selecter.h"
 
 AddCommand::AddCommand( Report::PageInterface* page, const char* itemClassName, QPointF pos, mainWindow* mw )
 {
@@ -38,8 +39,11 @@ void AddCommand::redo()
 	Report::PageInterface* m_page = ( Report::PageInterface* )dynamic_cast<PageView *>( findObjectByTabName( m_mainWindow->m_tw, m_pageName ) )->view()->scene();
 	Q_ASSERT( m_page );
 
-	QObject * m_parent = dynamic_cast<Report::ItemInterface*>( m_page->itemAt( m_pos ) ) ? dynamic_cast<QObject*>( m_page->itemAt( m_pos ) )
-	                : dynamic_cast<Report::PageInterface*>( m_page );
+	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
+	Q_ASSERT( view );
+
+	QObject * m_parent = view->activeObject() ?  view->activeObject() :  m_page ;
+
 	Report::ItemInterface* itemExample = m_mainWindow->m_reportEngine.findItemByClassName( m_itemClassName );
 
 	Report::ItemInterface *m_item = 0;
@@ -58,31 +62,17 @@ void AddCommand::redo()
 		m_itemName = Report::ReportEngine::uniqueName( m_item->metaObject()->className(), m_mainWindow->m_report );
 		m_item->setObjectName( m_itemName );
 
-		QObject::connect( m_item, SIGNAL( itemSelected( QObject*, QPointF ) ), m_mainWindow, SLOT( itemSelected( QObject*, QPointF ) ) );
+		QObject::connect( m_item, SIGNAL( itemSelected( QObject*, QPointF, Qt::KeyboardModifiers) ), m_mainWindow, SLOT( itemSelected( QObject*, QPointF, Qt::KeyboardModifiers) ) );
 		QObject::connect( m_item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), m_mainWindow, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
-
-
-//		if ( dynamic_cast<Report::BandInterface*>( m_item ) )
-//		    dynamic_cast<Report::BandInterface*>( m_item )->setOrder( INT_MAX );
 
 		QPointF localPos = m_item->mapFromScene( m_pos );
 		m_item->setPos( localPos.x(), localPos.y());
 		Report::LayoutManager::itemAdded(m_item);
-//		m_item->setGeometry( QRectF( localPos.x(), localPos.y(), m_item->geometry().width(), m_item->geometry().height() ) );
 		m_mainWindow->m_objectModel.setRootObject( m_mainWindow->m_report );
-		PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
-		if (!view )
-		    qCritical("Developer ERROR in Command::AddCommand::redo()");
-//		m_mainWindow->m_lastSelectedObject=m_item;
-		m_mainWindow->itemSelected( m_item ,QPointF(0,0));
-		QTimer::singleShot(0, m_mainWindow, SLOT(selectLastObject()));
 		m_itemName = m_item->objectName();
 		m_canUndo=true;
-	}
-	else
-	{
-		m_mainWindow->m_pe->setObject( m_parent );
-		m_mainWindow->selectObject( m_parent, m_mainWindow->m_objectModel.index( 0, 0 ) );
+
+		view->selecter()->itemSelected(m_item);
 	}
 }
 
@@ -110,7 +100,7 @@ void AddCommand::undo()
 	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
 	if (!view )
 	    qCritical("Developer ERROR in Command::AddCommand::redo()");
-	m_mainWindow->itemSelected( parent ,QPointF(0,0));
+	m_mainWindow->itemSelected( parent ,QPointF(0,0),  Qt::NoModifier);
 
 //	m_mainWindow->m_lastSelectedObject = parent;
 	m_mainWindow->m_pe->setObject( parent );
@@ -162,7 +152,7 @@ void AddDomObject::undo()
 	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
 	if (!view )
 	    qCritical("Developer ERROR in Command::AddCommand::redo()");
-	m_mainWindow->itemSelected( m_parent ,QPointF(0,0));
+	m_mainWindow->itemSelected( m_parent ,QPointF(0,0),  Qt::NoModifier);
 
 //	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
@@ -190,12 +180,14 @@ void AddDomObject::redo()
 	QDomDocument doc;
 	doc.setContent( m_domObject );
 	QObject * obj;
-
-	QDomElement child = doc.firstChildElement();
+	QDomElement root = doc.documentElement ();
+	
+	QDomElement child = root.firstChildElement();
+//	QDomElement child = doc.documentElement ();
 	while (!child.isNull())
 	{
 	    obj = m_mainWindow->m_reportEngine.objectFromDom( m_parent, child );
-//	    qDebug("childname = %s", qPrintable(obj->objectName()));
+	    qDebug("childname = %s", qPrintable(obj->objectName()));
 	    if ( dynamic_cast<Report::BandInterface*>( obj ) )
 	    {
 		dynamic_cast<Report::BandInterface*>( obj )->setOrder( INT_MAX );
@@ -390,7 +382,7 @@ void DelCommand::redo()
 	PageView* view = dynamic_cast<PageView*>(m_mainWindow->m_tw->widget( m_mainWindow->m_tw->currentIndex()) );
 	if (!view )
 	    qCritical("Developer ERROR in Command::AddCommand::redo()");
-	m_mainWindow->itemSelected( m_parent,QPointF(0,0));
+	m_mainWindow->itemSelected( m_parent,QPointF(0,0), Qt::NoModifier);
 
 //	m_mainWindow->m_lastSelectedObject = m_parent;
 	m_mainWindow->m_pe->setObject( m_parent );
@@ -693,7 +685,7 @@ int findIndexByTabName( QTabWidget * tw, QString tabName )
 }
 void connectItems(QObject * object, QObject * mw)
 {
-	QObject::connect( object, SIGNAL( itemSelected( QObject *, QPointF ) ), mw, SLOT( itemSelected( QObject *, QPointF ) ) );
+	QObject::connect( object, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), mw, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 	QObject::connect( object, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * obj, object->children())
 		connectItems(obj,mw);
