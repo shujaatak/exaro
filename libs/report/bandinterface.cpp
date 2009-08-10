@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -62,14 +64,6 @@ BandInterface::BandInterface(QGraphicsItem* parent, QObject * parentObject)
 
 	setHeight(20/UNIT);
 }
-
-/*
-void BandInterface::selectBand()
-{
-	emit(itemSelected(this, QPointF(0,0), Qt::NoModifier));
-	raise();
-}
-*/
 
 bool BandInterface::deleting()
 {

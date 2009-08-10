@@ -686,7 +686,7 @@ int findIndexByTabName( QTabWidget * tw, QString tabName )
 void connectItems(QObject * object, QObject * mw)
 {
 	QObject::connect( object, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), mw, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
-	QObject::connect( object, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+//	QObject::connect( object, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), mw, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * obj, object->children())
 		connectItems(obj,mw);
 }

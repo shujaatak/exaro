@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -39,6 +41,7 @@
 
 #include "globals.h"
 #include "paintinterface.h"
+#include "grid.h"
 
 /** @namespace Report */
 
@@ -264,6 +267,7 @@ public:
 	 * @param x,y item position
 	 */
 	virtual void setPosition(qreal x, qreal y);
+	virtual void setPosition(QPointF pos);
 
 	/**
 	 * Return the icon for tool box
@@ -460,12 +464,6 @@ protected:
 	 */
 	void setResizeFlags(int resizeFlags);
 
-	/**
-	 * This function is used to draw the selection of the item
-	 * @param painter the painter to draw to
-	 * @param rect bounding rect
-	 */
-//	void drawSelection(QPainter * painter, QRectF rect);
 
 	static QFont fontConvert(QFont & font);
 	static const QRectF adjustRect(QRectF & rect, const QPen & pen);
@@ -508,20 +506,16 @@ private:
 	QBrush m_backgroundBrush;
 	QPen m_borderPen;
 	Frames m_frame;
-//	int m_resizeHandle;
-//	int m_resizeEvent;
 	int m_resizeFlags;
 	qreal m_width, m_height;
  	qreal m_minWidth, m_minHeight;
 	int m_opacity;
 	qreal m_stretch;
-//	QRectF oldGeometry;
-//	bool m_drawSelectionBorder;
 	bool m_enabled;
 	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(ItemInterface::Frames);
 }
 
-Q_DECLARE_INTERFACE(Report::ItemInterface, "ro.bigendian.Report.ItemInterface/1.0");
+Q_DECLARE_INTERFACE(Report::ItemInterface, "Report.ItemInterface/1.0");
 #endif

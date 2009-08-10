@@ -51,6 +51,8 @@ void OptionsDialog::storeAll()
 	s.setValue( "Items/drawSelectionBorder", drawSelection->isChecked());
 	s.setValue( "Options/drawTitles", cbBandTitle->isChecked());
 	s.setValue( "Options/margin", sbBandsMargin->value());
+	s.setValue( "Options/grid" , cbGrid->isChecked() );
+	s.setValue( "Options/gridStep", sbGridStep->value());
 }
 
 void OptionsDialog::restoreAll()
@@ -61,5 +63,7 @@ void OptionsDialog::restoreAll()
 	drawSelection->setChecked( s.value( "Items/drawSelectionBorder", true ).toBool());
 	cbBandTitle->setChecked( s.value( "Options/drawTitles", true ).toBool());
 	sbBandsMargin->setValue( s.value( "Options/margin", 0 ).toInt() );
+	cbGrid->setChecked ( s.value( "Options/grid", true ).toBool());
+	sbGridStep->setValue( s.value( "Options/gridStep", 1).toInt() );
 }
 

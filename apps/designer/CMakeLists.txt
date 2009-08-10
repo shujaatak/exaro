@@ -14,7 +14,8 @@ QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h
 			designerpage.h         exaroapplication.h  designerscriptwidget.h
 			designerdataseteditor.h  mainwindow.h        scriptsyntaxhighlighter.h
 			designeruitype.h       objectmodel.h       sqldatabasedialog.h optionsdialog.h
-			namevalidator.h newdatasetdialog.h qruler.h  qunit.h pageview.h selecter.h itemselection.h)
+			namevalidator.h newdatasetdialog.h qruler.h  qunit.h pageview.h selecter.h itemselection.h
+			)
 QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.ui
 			designerdataseteditor.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui
 			newdatasetdialog.ui)

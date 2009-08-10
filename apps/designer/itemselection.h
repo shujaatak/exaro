@@ -3,21 +3,47 @@
 
 //#include "formeditor_global.h"
 //#include <invisible_widget_p.h>
+/***************************************************************************
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
+ **                   GNU General Public License Usage                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ ****************************************************************************/
+
 #include "iteminterface.h"
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
 
-//class QDesignerFormEditorInterface;
 class QMouseEvent;
 class QPaintEvent;
 
-//class FormWindow;
 class ItemSelection;
 
 class ItemHandle: public QGraphicsItem
 {
-//    Q_OBJECT
 public:
     enum Type
     {
@@ -41,18 +67,14 @@ public:
     void setEnabled(bool) {}
 
     QRectF boundingRect () const;
-//    QDesignerFormEditorInterface *core() const;
 
 protected:
-//    void paintEvent(QPaintEvent *e);
     void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *e);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
 
 private:
-//    void changeGridLayoutItemSpan();
-//    void changeFormLayoutItemSpan();
     void trySetGeometry(Report::ItemInterface *i, int x, int y, int width, int height);
     void tryResize(Report::ItemInterface *i, int width, int height);
 
@@ -60,7 +82,6 @@ private:
     Report::ItemInterface *m_item;
     const Type m_type;
     QPointF m_origPressPos;
-//    FormWindow *m_formWindow;
     ItemSelection *m_sel;
     QRectF m_geom, m_origGeom;
     bool m_active;
@@ -68,11 +89,8 @@ private:
 
 class ItemSelection: public QGraphicsItem
 {
-//    Q_OBJECT
 public:
-//    ItemSelection(FormWindow *parent);
     ItemSelection();
-//    ItemSelection(Report::ItemInterface *parent);
 
     void setItem(Report::ItemInterface *i);
     bool isUsed() const;
@@ -84,25 +102,15 @@ public:
     void update();
 
     Report::ItemInterface *item() const;
-    void setGuideItem (Report::ItemInterface *i);
-
-//    QDesignerFormEditorInterface *core() const;
-
-
-//    enum  ItemState { UnlaidOut, LaidOut, ManagedGridLayout, ManagedFormLayout };
-//    static ItemState itemState(Report::ItemInterface *i);
 
     QRectF boundingRect () const;
 protected:
     void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
-    bool sceneEventFilter(QGraphicsItem * watched, QEvent * event );
+
 private:
     ItemHandle *m_handles[ItemHandle::TypeCount];
     QPointer<Report::ItemInterface> m_item;
     QRectF m_boundingRect;
-    QPointer<Report::ItemInterface> m_guideItem;
-//    FormWindow *m_formWindow;
 };
-
 
 #endif // ITEMSELECTION_H

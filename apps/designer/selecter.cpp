@@ -1,3 +1,32 @@
+/***************************************************************************
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
+ **                   GNU General Public License Usage                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ ****************************************************************************/
+
 #include "selecter.h"
 #include <QGraphicsItemGroup>
 #include <QGraphicsScene>
@@ -10,6 +39,8 @@ Selecter::Selecter(QGraphicsScene * scene, mainWindow * mw)
 	: QObject (scene)
 	,m_activeObject(0)
 	,m_mw(mw)
+	,m_guide(0)
+	,needRectRefresh(false)
 {
 }
 
@@ -31,7 +62,7 @@ QPointF Selecter::activeObjectLastPressPos()
 
 QObject * Selecter::itemSelected(QObject * object, QPointF pos, Qt::KeyboardModifiers keys)
 {
-    qDebug("selected object = %s", qPrintable(object->objectName()));
+//    qDebug("selected object = %s", qPrintable(object->objectName()));
     m_activeObject = object;
     m_activeObjectPressPos = pos;
 
@@ -87,18 +118,16 @@ QObject * Selecter::_itemSelected(Report::ItemInterface * item, QPointF pos, Qt:
 
 void Selecter::append(Report::ItemInterface * item)
 {
-    qDebug("Selecter::add");
+//    qDebug("Selecter::add");
 
     // we can't do group operations for Bands now
     if ( dynamic_cast<Report::BandInterface *> (item))
     {
 	free();
-	item->setFlag (QGraphicsItem::ItemIsMovable, false);
+//	item->setFlag (QGraphicsItem::ItemIsMovable, false);
     }
-    else
-    	item->setFlag (QGraphicsItem::ItemIsMovable, true);
-
-//    qDebug(" is item movable = %i", (int)item->flags().testFlag(QGraphicsItem::ItemIsMovable));
+//    else
+//    	item->setFlag (QGraphicsItem::ItemIsMovable, true);
 
     Item i;
     i.item = item;
@@ -114,13 +143,13 @@ void Selecter::append(Report::ItemInterface * item)
 
     QPointF pos = item->mapToScene( item->pos() );
     setGuideItem(items.last().item);
+    needRectRefresh = true;
 }
 
 
 
 void Selecter::remove (Report::ItemInterface * item)
 {
-    qDebug("Selecter::remove");
     for (int i=0; i< items.count(); i++)
 	if (items.at(i).item == item)
 	{
@@ -132,11 +161,11 @@ void Selecter::remove (Report::ItemInterface * item)
 	    break;
 	}
     setGuideItem(items.last().item);
+    needRectRefresh = true;
 }
 
 void Selecter::free()
 {
-    qDebug("Selecter::free");
     if (!items.count())
 	return;
 
@@ -148,18 +177,17 @@ void Selecter::free()
     }
 
     items.clear();
+    needRectRefresh = true;
 }
 
 void Selecter::store()
 {
-//    qDebug("store");
     storedItems = items;
     free();
 }
 
 void Selecter::restore()
 {
-//    qDebug("restore");
     foreach (Item i, storedItems)
 	append(i.item);
     storedItems.clear();
@@ -167,9 +195,16 @@ void Selecter::restore()
 
 void Selecter::setGuideItem(Report::ItemInterface * item)
 {
-    qDebug("set Guide = %s", qPrintable(item->objectName()) );
-    foreach (Item i, items)
-	i.sel->setGuideItem(item);
+    if (!item)
+	return;
+
+    if (m_guide)
+	disconnect ( m_guide , SIGNAL (geometryChanged(QObject*,QRectF)), this, SLOT (guideGeometryChanged(QObject*,QRectF)) );
+
+    connect ( item , SIGNAL (geometryChanged(QObject*,QRectF)), this, SLOT (guideGeometryChanged(QObject*,QRectF)) );
+
+    m_guideLastPos = item->pos();
+    m_guide = item;
 }
 
 void Selecter::itemGeometryChanged(QObject* item, QRectF)
@@ -180,7 +215,22 @@ void Selecter::itemGeometryChanged(QObject* item, QRectF)
 	items.at(i).sel->updateGeometry();
 	break;
     }
+    needRectRefresh = true;
 }
+
+void Selecter::guideGeometryChanged(QObject* item, QRectF rect)
+{
+    QPointF dp = rect.topLeft() - m_guideLastPos;
+    for (int i=0; i< items.count(); i++)
+	if (items.at(i).item != item)
+	{
+	    items.at(i).item->setPos( items.at(i).item->pos() + dp );
+	    items.at(i).sel->updateGeometry();
+	}
+    m_guideLastPos = rect.topLeft();
+    needRectRefresh = true;
+}
+
 
 QList<Report::ItemInterface *> Selecter::selectedItems()
 {
@@ -200,4 +250,51 @@ void Selecter::reset()
 {
     free();
     m_activeObject = 0;
+}
+
+void Selecter::updateSelection()
+{
+    for (int i=0; i< items.count(); i++)
+	items.at(i).sel->updateGeometry();
+}
+
+QRectF Selecter::_rect()
+{
+    needRectRefresh = false;
+    if (!items.count())
+	return QRect();
+
+    m_boundingRect = items.at(0).item->geometry();
+    if (items.count() > 1)
+    for (int i=1; i< items.count(); i++)
+	m_boundingRect = m_boundingRect.united( items.at(i).item->geometry());
+
+    return m_boundingRect;
+}
+
+QRectF Selecter::rect()
+{
+    if (!needRectRefresh)
+	return m_boundingRect;
+    return _rect();
+}
+
+QPointF Selecter::pos()
+{
+    return rect().topLeft();
+}
+
+void Selecter::setPos(QPointF pos)
+{
+    if (m_guide)
+	disconnect ( m_guide , SIGNAL (geometryChanged(QObject*,QRectF)), this, SLOT (guideGeometryChanged(QObject*,QRectF)) );
+
+    QPointF dp = pos - this->pos();
+     foreach (Item i, items)
+	i.item->setPosition( i.item->pos() + dp );
+
+     if (m_guide)
+	 connect ( m_guide , SIGNAL (geometryChanged(QObject*,QRectF)), this, SLOT (guideGeometryChanged(QObject*,QRectF)) );
+//     m_boundingRect.setTopLeft( m_boundingRect.topLeft() + dp );
+	 needRectRefresh = true;
 }
