@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,10 +22,7 @@
 #include <QList>
 #include <QDomDocument>
 #include <QSignalMapper>
-
 #include "reportengine.h"
-
-
 #include "ui_mainwindow.h"
 #include "propertyeditor.h"
 #include "designerdataseteditor.h"
@@ -92,6 +91,7 @@ private:
 	QUndoView *undoView;
 	QToolBar *itemLayoutToolbar;
 	QDomDocument lastCopyGroup;
+//	Grid m_grid;
 
 public slots:
 	void selectLastObject();
@@ -133,7 +133,10 @@ protected slots:
 	void on_actionLastConnect_triggered();
 	void restoreSettings();
 	void on_m_objectInspector_pressed(const QModelIndex & index);
-
+	void moveSelectionUp();
+	void moveSelectionDown();
+	void moveSelectionLeft();
+	void moveSelectionRight();
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 

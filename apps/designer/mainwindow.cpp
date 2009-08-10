@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bogdan@licentia.eu                                                    *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,6 +46,7 @@
 #include "layoutmanager.h"
 #include "bandinterface.h"
 #include "selecter.h"
+#include "grid.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -233,6 +236,27 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dscript = new Report::DesignerScriptWidget( m_tw );
 	m_tw->addTab(m_dscript, tr("Script"));
 
+	QAction * selMoveUp = new QAction(this);
+	selMoveUp->setShortcut( QKeySequence (Qt::ALT + Qt::Key_Up) );
+	connect(selMoveUp, SIGNAL(triggered()), this, SLOT(moveSelectionUp()));
+	this->addAction( selMoveUp );
+
+	QAction * selMoveDown = new QAction(this);
+	selMoveDown->setShortcut( QKeySequence (Qt::ALT + Qt::Key_Down) );
+	connect(selMoveDown, SIGNAL(triggered()), this, SLOT(moveSelectionDown()));
+	this->addAction( selMoveDown );
+
+	QAction * selMoveLeft = new QAction(this);
+	selMoveLeft->setShortcut( QKeySequence (Qt::ALT + Qt::Key_Left) );
+	connect(selMoveLeft, SIGNAL(triggered()), this, SLOT(moveSelectionLeft()));
+	this->addAction( selMoveLeft );
+
+	QAction * selMoveRight = new QAction(this);
+	selMoveRight->setShortcut( QKeySequence (Qt::ALT + Qt::Key_Right) );
+	connect(selMoveRight, SIGNAL(triggered()), this, SLOT(moveSelectionRight()));
+	this->addAction( selMoveRight );
+
+
 	newReport();
 }
 
@@ -257,17 +281,17 @@ void mainWindow::restoreSettings()
 	Report::LayoutManager::setMargin( s.value( "Options/margin", 0 ).toInt() * 10 );
 	Report::BandInterface::setTitleEnabled( s.value( "Options/drawTitles", true ).toBool() );
 
-//	if (Report::BandInterface::hasTitle() != s.value( "Options/drawTitles", true ).toBool() )
-//	{
-	    for (int i=STATIC_TABS; i<m_tw->count(); i++)
-	    {
-		foreach (QObject * obj, dynamic_cast<PageView*>(m_tw->widget( i ))->scene()->findChildren<Report::BandInterface*>() )
-		    if (dynamic_cast<Report::BandInterface*> (obj))
-			dynamic_cast<Report::BandInterface*> (obj)->showTitle( ( s.value( "Options/drawTitles", true ).toBool()));
-		Report::LayoutManager::updatePositions(dynamic_cast<PageView*>(m_tw->widget( i ))->scene() );
-	    }
-//	}
+	for (int i=STATIC_TABS; i<m_tw->count(); i++)
+	{
+	    foreach (QObject * obj, dynamic_cast<PageView*>(m_tw->widget( i ))->scene()->findChildren<Report::BandInterface*>() )
+		if (dynamic_cast<Report::BandInterface*> (obj))
+		    dynamic_cast<Report::BandInterface*> (obj)->showTitle( ( s.value( "Options/drawTitles", true ).toBool()));
+	    Report::LayoutManager::updatePositions(dynamic_cast<PageView*>(m_tw->widget( i ))->scene() );
+	    dynamic_cast<PageView*>(m_tw->widget( i ))->selecter()->updateSelection();
+	}
 
+	Grid::instance()->setDelta(  s.value( "Options/gridStep", 1).toInt() * 10 );
+	Grid::instance()->snap( s.value( "Options/grid", true ).toBool() );
 }
 
 
@@ -491,9 +515,8 @@ void mainWindow::copy()
 
 void mainWindow::pasteItem( QObject * item )
 {
-    qDebug("mainWindow::pasteItem");
 	connect( item, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ), SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers  ) ) );
-	connect( item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+//	connect( item, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	item->setObjectName( Report::ReportEngine::uniqueName( item->metaObject()->className(), m_report ) );
 	foreach( QObject * obj, item->children() )
 		pasteItem( obj );
@@ -578,6 +601,7 @@ void mainWindow::cut()
 
 mainWindow::~mainWindow()
 {
+    delete Grid::instance();
 }
 
 
@@ -621,7 +645,7 @@ void mainWindow::newReport( bool notAsk )
 	m_report = m_reportEngine.reports()[0]->createInstance( 0 );
 	m_report->setObjectName( "report" );
 	m_report->setName( tr( "Report name" ) );
-	m_report->setAuthor( "(c) 2008 BogDan" );
+	m_report->setAuthor( "(c) 2009 Exaro Team" );
 	m_report->setVersion( FILE_FORMAT_VERSION );
 	refreshReportBeholders(m_report);
 	m_saveFile = "";
@@ -633,7 +657,7 @@ void mainWindow::newReport( bool notAsk )
 void mainWindow::connectItem( QObject * obj )
 {
 	connect( obj, SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
-	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), this, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
+//	connect( obj, SIGNAL( geometryChanged( QObject*, QRectF, QRectF ) ), this, SLOT( itemGeometryChanged( QObject*, QRectF, QRectF ) ) );
 	foreach( QObject * child, obj->children() )
 		connectItem( child );
 }
@@ -905,12 +929,7 @@ void mainWindow::selectLastObject()
 
 void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
-    qDebug("mainwindow::item selected");
-    //	m_lastSelectedObject = object;
-    //	m_lastSelectedObjectPos = pos;
     QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
-
-    qDebug("key = %i", (int)key);
 
     PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
@@ -927,8 +946,6 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 		selectObject( item, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
 
 	    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
-
-	    qDebug("item selected in pos = %f x %f", pos.x(), pos.y());
 	}
 
     if ( lw && lw->currentRow() > -1 )
@@ -1108,3 +1125,40 @@ inline Report::ReportEngine * mainWindow::reportEngine()
 {
     return &m_reportEngine;
 }
+
+
+void mainWindow::moveSelectionUp()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+    view->selecter()->setPos( QPointF(view->selecter()->pos().x(), Grid::instance()->adjustY( view->selecter()->pos().y() - Grid::instance()->deltaY()-1 ) ) );
+}
+
+void mainWindow::moveSelectionDown()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    view->selecter()->setPos( QPointF(view->selecter()->pos().x(), Grid::instance()->adjustY( view->selecter()->pos().y() + Grid::instance()->deltaY()+1 ) ) );
+}
+
+void mainWindow::moveSelectionLeft()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    view->selecter()->setPos( QPointF( Grid::instance()->adjustX( view->selecter()->pos().x() - Grid::instance()->deltaX()-1 ),  view->selecter()->pos().y() ) );
+}
+
+void mainWindow::moveSelectionRight()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    view->selecter()->setPos( QPointF( Grid::instance()->adjustX( view->selecter()->pos().x() + Grid::instance()->deltaX()+1 ),  view->selecter()->pos().y() ) );
+}
+

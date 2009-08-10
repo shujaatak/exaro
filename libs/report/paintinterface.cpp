@@ -27,6 +27,7 @@
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
 
+
 #include "paintinterface.h"
 #include <QtSql>
 #include <paintdevice.h>

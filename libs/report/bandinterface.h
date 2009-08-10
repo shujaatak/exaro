@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -158,8 +160,6 @@ public:
 
 	void removeItem();
 
-//	void selectBand();
-
 	int freeSpace();
 	void addAgregateValue(QString value);
 	QList<qreal> agregateValues(QString value);
@@ -192,7 +192,6 @@ protected slots:
 	 * @see setGeometry()
 	 */
 	void updateGeometry(QRectF rect);
-	//void bandDestroyed(/*int type,*/ int order);
 	void setTitleGeometry(QRectF rect);
 
 private:
@@ -205,9 +204,8 @@ protected:
 	QHash <QString, ValueStruct> m_agregateValues;
 	int m_agregateCounter;
 	QString m_dataset;
-//	static BandInterface::TitlePosition m_titlePosition;
 };
 }
-Q_DECLARE_INTERFACE(Report::BandInterface, "ro.bigendian.ReportDesigner.BandInterface/1.0");
+Q_DECLARE_INTERFACE(Report::BandInterface, "ReportDesigner.BandInterface/1.0");
 
 #endif

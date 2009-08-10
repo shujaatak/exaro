@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -66,6 +68,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 ItemInterface::~ItemInterface()
 {
 }
+
 
 ItemInterface::Frames ItemInterface::frame()
 {
@@ -140,16 +143,18 @@ void ItemInterface::paint(QPainter * painter, const QStyleOptionGraphicsItem * o
 	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
 
     /// corners
-    painter->setPen(QColor(0,0,0,100));
-    painter->drawLine(0,0,0,CORNERSIZE);
-    painter->drawLine(0,0,CORNERSIZE,0);
-    painter->drawLine(rect.width(),0,rect.width()-CORNERSIZE,0);
-    painter->drawLine(rect.width(),0,rect.width(),CORNERSIZE);
-    painter->drawLine(rect.width(),rect.height(),rect.width()-CORNERSIZE, rect.height());
-    painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-CORNERSIZE);
-    painter->drawLine(0,rect.height(), CORNERSIZE, rect.height());
-    painter->drawLine(0,rect.height(), 0, rect.height()-CORNERSIZE);
-
+    if (option->type == QStyleOption::SO_GraphicsItem)
+    {
+	painter->setPen(QColor(0,0,0,100));
+	painter->drawLine(0,0,0,CORNERSIZE);
+	painter->drawLine(0,0,CORNERSIZE,0);
+	painter->drawLine(rect.width(),0,rect.width()-CORNERSIZE,0);
+	painter->drawLine(rect.width(),0,rect.width(),CORNERSIZE);
+	painter->drawLine(rect.width(),rect.height(),rect.width()-CORNERSIZE, rect.height());
+	painter->drawLine(rect.width(),rect.height(),rect.width(), rect.height()-CORNERSIZE);
+	painter->drawLine(0,rect.height(), CORNERSIZE, rect.height());
+	painter->drawLine(0,rect.height(), 0, rect.height()-CORNERSIZE);
+    }
 
     painter->restore();
 
@@ -617,5 +622,11 @@ int ItemInterface::agregateCounter()
 void ItemInterface::setPosition(qreal x, qreal y)
 {
     setPos(x,y);
-     emit geometryChanged(this, geometry());
+    emit geometryChanged(this, geometry());
+}
+
+void ItemInterface::setPosition(QPointF pos)
+{
+    setPos(pos);
+    emit geometryChanged(this, geometry());
 }

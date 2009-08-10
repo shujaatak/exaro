@@ -209,7 +209,7 @@ private:
 	QGraphicsRectItem * m_pageBorder;
 	bool m_showGrid;
 	ItemInterface *movingItem;
-	QPointF /*mouseOldPos,*/ movingItemOldPos;
+	QPointF mouseOldPos, movingItemOldPos;
 };
 }
 

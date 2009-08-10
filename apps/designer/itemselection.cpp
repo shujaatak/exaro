@@ -1,8 +1,37 @@
+/***************************************************************************
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
+ **                   GNU General Public License Usage                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ ****************************************************************************/
+
 #include "itemselection.h"
 
 #include <QtGui/QMouseEvent>
 #include <QtGui/QGraphicsSceneMouseEvent>
-//#include "bandinterface.h"
+#include "grid.h"
 
 #define BOUND 0
 #define SIZE 20
@@ -81,7 +110,6 @@ QRectF ItemHandle::boundingRect () const
 
 void ItemHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 {
-    qDebug("ItemHandle::mousePressEvent");
     QGraphicsItem::mousePressEvent(e );
 
     if (!(m_item && e->button() == Qt::LeftButton))
@@ -96,7 +124,6 @@ void ItemHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 
 void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
-    qDebug("ItemHandle::mouseMoveEvent");
     QGraphicsItem::mouseMoveEvent( e );
     if (!(m_item && m_active && e->buttons() & Qt::LeftButton))
         return;
@@ -106,11 +133,7 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 
 //    const QRect pr = container->rect();
 //    const QRectF pr = m_item->boundingRect();
-    /*
-    qdesigner_internal::Grid grid;
-    if (const qdesigner_internal::FormWindowBase *fwb = qobject_cast<const qdesigner_internal::FormWindowBase*>(m_formWindow))
-        grid = fwb->designerGrid();
-*/
+
     switch (m_type) {
 
     case LeftTop: {
@@ -118,11 +141,11 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 //            return;
         int w = m_origGeom.width() - d.x();
 	m_geom.setWidth(w);
-//        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX(w);
 
         int h = m_origGeom.height() - d.y();
 	m_geom.setHeight(h);
-//        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	const int dx = m_item->width() - w;
 	const int dy = m_item->height() - h;
@@ -137,6 +160,7 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int h = m_origGeom.height() - d.y();
         m_geom.setHeight(h);
 //        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	const int dy = m_item->height() - h;
 	trySetGeometry(m_item, m_item->x(), m_item->y() + dy, m_item->width(), h);
@@ -149,12 +173,14 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int h = m_origGeom.height() - d.y();
         m_geom.setHeight(h);
 //        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	const int dy = m_item->height() - h;
 
         int w = m_origGeom.width() + d.x();
         m_geom.setWidth(w);
 //        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX(w);
 
 	trySetGeometry(m_item, m_item->x(), m_item->y() + dy, w, h);
     } break;
@@ -166,6 +192,7 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int w = m_origGeom.width() + d.x();
         m_geom.setWidth(w);
 //        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX(w);
 
 	tryResize(m_item, w, m_item->height());
     } break;
@@ -177,10 +204,12 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int w = m_origGeom.width() + d.x();
         m_geom.setWidth(w);
 //        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX(w);
 
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
 //        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	tryResize(m_item, w, h);
     } break;
@@ -192,6 +221,7 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
 //        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	tryResize(m_item, m_item->width(), h);
     } break;
@@ -203,10 +233,12 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int w = m_origGeom.width() - d.x();
         m_geom.setWidth(w);
 //        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX( w );
 
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
 //        h = grid.widgetHandleAdjustY(h);
+	h = Grid::instance()->adjustY(h);
 
 	int dx = m_item->width() - w;
 
@@ -220,6 +252,7 @@ void ItemHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
         int w = m_origGeom.width() - d.x();
         m_geom.setWidth(w);
 //        w = grid.widgetHandleAdjustX(w);
+	w = Grid::instance()->adjustX( w );
 
 	const int dx = m_item->width() - w;
 
@@ -472,7 +505,7 @@ void ItemHandle::tryResize(Report::ItemInterface *i, int width, int height)
 
 ItemSelection::ItemSelection():
     m_item(0),
-    m_guideItem(0),
+//    m_guideItem(0),
     m_boundingRect(QRect()),
     QGraphicsItem()
 {
@@ -632,60 +665,6 @@ Report::ItemInterface *ItemSelection::item() const
     return m_item;
 }
 
-/*
-QDesignerFormEditorInterface *ItemSelection::core() const
-{
-    if (m_formWindow)
-        return m_formWindow->core();
-
-    return 0;
-}
-*/
-
-bool ItemSelection::sceneEventFilter(QGraphicsItem * watched, QEvent * event )
-{
-//    qDebug("ItemSelection::sceneEventFilter");
-    if (watched != m_item && watched !=m_guideItem)
-        return false;
-
-//    qDebug("event type = %i", event->type());
-    switch (event->type()) {
-        default: break;
-
-	case QEvent::GraphicsSceneMouseMove:
-	    if (m_guideItem->flags().testFlag( QGraphicsItem::ItemIsMovable ) )
-	    {
-		QPointF pd (static_cast<QGraphicsSceneMouseEvent *>(event)->scenePos() - static_cast<QGraphicsSceneMouseEvent *>(event)->lastScenePos());
-		setPos(pos() + pd);
-		if (m_guideItem != m_item)
-		    m_item->setPos(m_item->pos() + pd );
-	    }
-	    break;
-//	case QEvent::GraphicsSceneMove:
-//	    break;
-	case QEvent::GraphicsSceneResize:
-	    updateGeometry();
-            break;
-        case QEvent::ZOrderChange:
-            show();
-            break;
-
-
-    } // end switch
-
-    return false;
-}
-
-void  ItemSelection::setGuideItem (Report::ItemInterface *i)
-{
-    if (m_guideItem && m_guideItem!= m_item)
-	m_guideItem->removeSceneEventFilter(this);
-
-    m_guideItem = i;
-
-    if (m_guideItem && m_guideItem != m_item )
-	m_guideItem->installSceneEventFilter(this);
-}
 
 void ItemSelection::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {

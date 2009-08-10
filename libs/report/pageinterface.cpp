@@ -234,14 +234,8 @@ void PageInterface::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent)
 	if (mouseEvent->buttons() != Qt::LeftButton)
 		return;
 
-	/*
 	if (movingItem)
-	{
-	    qDebug("moving item");
-	    if (mouseOldPos != mouseEvent->scenePos())
-		movingItem->setPos( movingItemOldPos + (mouseEvent->scenePos() - mouseOldPos) );
-	}
-*/
+	    movingItem->setPosition( Grid::instance()->adjustPoint( movingItemOldPos + (mouseEvent->scenePos() - mouseOldPos) ) );
 
 	if (movingItem && !(mouseEvent->modifiers()& Qt::ControlModifier))
 		drawMagnets(movingItem);
@@ -267,7 +261,8 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			if (dynamic_cast<Report::ItemInterface *>(item) )
 			{
 			    movingItem = dynamic_cast<Report::ItemInterface *>(item);
-			    movingItemOldPos = movingItem->scenePos();
+			    movingItemOldPos = movingItem->pos();
+			    mouseOldPos = event->scenePos();
 
 			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(movingItem->mapFromScene(event->scenePos()), event->modifiers());
 
@@ -285,12 +280,12 @@ void PageInterface::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	m_gideLines.clear();
 
 
-	if (movingItem && event->button() == Qt::LeftButton)
-	{
-	    if (movingItemOldPos != movingItem->scenePos())
-		emit itemMoved(movingItem, movingItemOldPos);
-	    movingItem = 0;
-	}
+//	if (movingItem && event->button() == Qt::LeftButton)
+//	{
+//	    if (movingItemOldPos != movingItem->scenePos())
+//		emit itemMoved(movingItem, movingItemOldPos);
+//	    movingItem = 0;
+//	}
 
 	QGraphicsScene::mouseReleaseEvent(event);
 }
