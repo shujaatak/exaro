@@ -47,6 +47,7 @@
 #include "bandinterface.h"
 #include "selecter.h"
 #include "grid.h"
+#include "message.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -256,6 +257,16 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect(selMoveRight, SIGNAL(triggered()), this, SLOT(moveSelectionRight()));
 	this->addAction( selMoveRight );
 
+	this->statusBar()->addWidget( &messageLabel, 10 );
+	Message::instance()->assignMonitor( &messageLabel );
+	messageLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+
+	this->statusBar()->addWidget( &messageMousePosLabel, 0 );
+	messageMousePosLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+
+	this->statusBar()->addWidget( &messageGeometryLabel, 0 );
+	messageGeometryLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
+	//	messageLabel.setPalette(
 
 	newReport();
 }
@@ -602,6 +613,7 @@ void mainWindow::cut()
 mainWindow::~mainWindow()
 {
     delete Grid::instance();
+    delete Message::instance();
 }
 
 
@@ -933,6 +945,10 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 
     PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
+    if (dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject()))
+	disconnect (dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject()), SIGNAL(geometryChanged(QObject*,QRectF)),
+		    this, SLOT(showStatusBarItemGeometry(QObject*, QRectF)) );
+
     if (page)
 	if (page->selecter()->itemSelected( object, pos ,key))
 	{
@@ -958,6 +974,13 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 	QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
 	undoStack->push( addCommand );
 	lw->setCurrentRow( -1 );
+    }
+
+    if (dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject()))
+    {
+	connect (dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject()), SIGNAL(geometryChanged(QObject*,QRectF)),
+		    this, SLOT(showStatusBarItemGeometry(QObject*, QRectF)) );
+	this->showStatusBarItemGeometry( page->selecter()->activeObject(), dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject())->geometry() );
     }
 }
 
@@ -1129,6 +1152,8 @@ inline Report::ReportEngine * mainWindow::reportEngine()
 
 void mainWindow::moveSelectionUp()
 {
+    Message::instance()->show("mainWindow::moveSelectionUp()");
+
     PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
     if (!view )
 	return;
@@ -1137,6 +1162,8 @@ void mainWindow::moveSelectionUp()
 
 void mainWindow::moveSelectionDown()
 {
+    Message::instance()->show("mainWindow::moveSelectionDown()");
+
     PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
     if (!view )
 	return;
@@ -1146,6 +1173,8 @@ void mainWindow::moveSelectionDown()
 
 void mainWindow::moveSelectionLeft()
 {
+    Message::instance()->show("mainWindow::moveSelectionLeft()");
+
     PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
     if (!view )
 	return;
@@ -1155,6 +1184,8 @@ void mainWindow::moveSelectionLeft()
 
 void mainWindow::moveSelectionRight()
 {
+    Message::instance()->show("mainWindow::moveSelectionRight()");
+
     PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
     if (!view )
 	return;
@@ -1162,3 +1193,7 @@ void mainWindow::moveSelectionRight()
     view->selecter()->setPos( QPointF( Grid::instance()->adjustX( view->selecter()->pos().x() + Grid::instance()->deltaX()+1 ),  view->selecter()->pos().y() ) );
 }
 
+void mainWindow::showStatusBarItemGeometry(QObject*obj, QRectF rect)
+{
+    messageGeometryLabel.setText(QString("%1(x:%2 y:%3 h:%4 w:%5)").arg(obj->objectName()).arg(rect.x()/10).arg(rect.y()/10).arg(rect.width()/10).arg(rect.height()/10));
+}

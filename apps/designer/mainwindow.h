@@ -91,6 +91,9 @@ private:
 	QUndoView *undoView;
 	QToolBar *itemLayoutToolbar;
 	QDomDocument lastCopyGroup;
+	QLabel messageLabel;
+	QLabel messageGeometryLabel;
+	QLabel messageMousePosLabel;
 //	Grid m_grid;
 
 public slots:
@@ -137,6 +140,7 @@ protected slots:
 	void moveSelectionDown();
 	void moveSelectionLeft();
 	void moveSelectionRight();
+	void showStatusBarItemGeometry(QObject*, QRectF rect);
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 
