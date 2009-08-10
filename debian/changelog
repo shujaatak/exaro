@@ -1,3 +1,21 @@
+exaro (1.90.2) unstable; urgency=low
+
+  * fix .so version.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Sun, 09 Aug 2009 17:11:02 +0000
+
+exaro (1.90.1) unstable; urgency=low
+
+  * fix .so version.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Sat, 08 Aug 2009 11:40:30 +0000
+
+exaro (1.90.0-1) unstable; urgency=low
+
+  * Debian testing/sid and (*)ubuntu debug packages
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Thu, 06 Aug 2009 21:57:37 +0300
+ 
 exaro (1.90.0) unstable; urgency=low
 
   * On linux show backtrace symbols.

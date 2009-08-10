@@ -18,8 +18,8 @@ if (WIN32)
 endif(WIN32)
 
 add_library(Report SHARED ${Report_SRCS})
-set_target_properties(Report PROPERTIES	VERSION ${EXARO_VERSION}
-                                        SOVERSION ${EXARO_VERSION})
+set_target_properties(Report PROPERTIES	SOVERSION "${EXARO_VERSION_MAJOR}.${EXARO_VERSION_MINOR}"
+                                        VERSION ${EXARO_VERSION})
 target_link_libraries(Report ${QT_LIBRARIES})
 
 install(TARGETS Report ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -11,3 +11,8 @@ NJOBS += -j$(shell if [ -f /proc/cpuinfo ]; \
                     else echo 1; fi)
 
 DEB_MAKE_ENVVARS := MAKEFLAGS="-j 3 "
+
+DEB_DBG_PACKAGE_exaro := exaro-dbg
+DEB_DBG_PACKAGE_libexaro := exaro-dbg
+DEB_DBG_PACKAGE_exaro-plugins := exaro-dbg
+
