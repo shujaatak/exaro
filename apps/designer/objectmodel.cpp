@@ -80,7 +80,7 @@ QModelIndex ObjectModel::parent( const QModelIndex & index ) const
 
 int ObjectModel::rowCount ( const QModelIndex & parent ) const
 {
-	if (!m_rootObject->object)
+	if (!m_rootObject || !m_rootObject->object)
 		return 0;
 	if (parent.isValid())
 			return reinterpret_cast<ObjectStruct *>(parent.internalPointer())->object->children().size();
