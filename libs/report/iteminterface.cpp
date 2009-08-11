@@ -57,6 +57,7 @@ ItemInterface::ItemInterface(QGraphicsItem* parent, QObject * parentObject): QOb
 	m_width = 20/UNIT; // 20 mm
 	m_height = 20/UNIT; // 20 mm
 	m_opacity = 100;
+	m_rotate = 0;
 	m_enabled = true;
 	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemClipsChildrenToShape);
 	expBegin = "[";
@@ -427,6 +428,15 @@ bool ItemInterface::prPaint(QPainter * painter, QPointF translate, const QRectF 
     option.exposedRect = dynamic_cast<BandInterface *>(this) ? QRectF(0, 0, geometry().width(), geometry().height()) : geometry();
     translate += option.exposedRect.topLeft() + QPointF(offsetX + _offsetX, offsetY + _offsetY);
 //    painter->setClipRect(clipRect);
+
+    if (m_rotate)
+    {
+	QPointF p = option.exposedRect.center();
+	painter->translate(p.x(), p.y());
+	painter->rotate( m_rotate );
+	painter->translate( -p.x(), -p.y() );
+    }
+
     paint(painter, &option);
     painter->restore();
 
@@ -628,5 +638,22 @@ void ItemInterface::setPosition(qreal x, qreal y)
 void ItemInterface::setPosition(QPointF pos)
 {
     setPos(pos);
+    emit geometryChanged(this, geometry());
+}
+
+qreal ItemInterface::rotate()
+{
+    return m_rotate;
+}
+
+void ItemInterface::setRotate(qreal angle)
+{
+    m_rotate = angle;
+
+    QPointF p = boundingRect().center();
+    setTransform(QTransform().translate(p.x(), p.y()).rotate(m_rotate).translate( -p.x(), -p.y()));
+
+    update();
+
     emit geometryChanged(this, geometry());
 }

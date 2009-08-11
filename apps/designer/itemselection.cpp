@@ -36,6 +36,8 @@
 #define BOUND 0
 #define SIZE 20
 
+#define DEBUG
+
 // ----------- ItemHandle
 ItemHandle::ItemHandle(Type t, ItemSelection *s) :
     QGraphicsItem (s),
@@ -581,13 +583,16 @@ void ItemSelection::updateGeometry()
     if (!m_item)
         return;
 
-    QPointF p = m_item->scenePos();
-    setPos(QPointF ( p.x() - BOUND, p.y() - BOUND ) );
-
     prepareGeometryChange();
-    m_boundingRect = QRectF(0 ,0 , m_item->boundingRect().width() + 2*BOUND, m_item->boundingRect().height() + 2*BOUND);
 
-    const QRectF r(QPointF(BOUND,BOUND), m_item->boundingRect().size());
+    m_boundingRect= m_item->sceneBoundingRect();
+    QPointF p = m_boundingRect.topLeft();
+    setPos(QPointF ( p.x() - BOUND, p.y() - BOUND ) );
+    const QRectF r(QPointF(BOUND,BOUND), m_boundingRect.size());
+
+    m_boundingRect = QRectF(0 ,0 , m_boundingRect.width() + 2*BOUND, m_boundingRect.height() + 2*BOUND);
+
+    update();
 
     const int w = SIZE;
     const int h = SIZE;
@@ -668,6 +673,7 @@ Report::ItemInterface *ItemSelection::item() const
 
 void ItemSelection::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
+#ifndef DEBUG
     painter->save();
     m_item->paint(painter, option, widget);
     foreach (QGraphicsItem * item, m_item->childItems())
@@ -678,10 +684,11 @@ void ItemSelection::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
 	painter->restore();
     }
     painter->restore();
-//
-//    painter->save();
-//    painter->setOpacity( 0.1 );
-//    painter->fillRect( this->boundingRect(), QBrush(Qt::red));
-//    painter->restore();
+#else
+    painter->save();
+    painter->setOpacity( 0.3 );
+    painter->fillRect( this->boundingRect(), QBrush(Qt::red));
+    painter->restore();
+#endif
 }
 
