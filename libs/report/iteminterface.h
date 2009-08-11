@@ -99,6 +99,8 @@ class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 	*/
 	Q_PROPERTY(int opacity READ opacity WRITE setOpacity)
 
+	Q_PROPERTY(qreal rotate READ rotate WRITE setRotate)
+
 public:
 	/**
 	* Frame enum
@@ -410,6 +412,8 @@ public:
 	 */
 	virtual void setBackgroundMode(BGMode bgMode);
 
+	virtual qreal rotate();
+	virtual void setRotate(qreal angle);
 
 
 	virtual bool isEnabled();
@@ -510,6 +514,7 @@ private:
 	qreal m_width, m_height;
  	qreal m_minWidth, m_minHeight;
 	int m_opacity;
+	qreal m_rotate;
 	qreal m_stretch;
 	bool m_enabled;
 	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
