@@ -53,6 +53,7 @@ void OptionsDialog::storeAll()
 	s.setValue( "Options/margin", sbBandsMargin->value());
 	s.setValue( "Options/grid" , cbGrid->isChecked() );
 	s.setValue( "Options/gridStep", sbGridStep->value());
+	s.setValue( "Options/peFont", l_peFont->text());
 }
 
 void OptionsDialog::restoreAll()
@@ -65,5 +66,21 @@ void OptionsDialog::restoreAll()
 	sbBandsMargin->setValue( s.value( "Options/margin", 0 ).toInt() );
 	cbGrid->setChecked ( s.value( "Options/grid", true ).toBool());
 	sbGridStep->setValue( s.value( "Options/gridStep", 1).toInt() );
+	l_peFont->setText( s.value( "Options/peFont", "").toString() );
+	    QFont f;
+	    f.fromString(l_peFont->text() );
+	    l_peFont->setFont( f );
 }
 
+void OptionsDialog::on_bChangeFontPE_clicked()
+{
+    bool ok;
+    QFont font;
+    font.fromString(l_peFont->text() );
+    font = QFontDialog::getFont (&ok, font );
+    if (ok)
+    {
+	l_peFont->setText(font.toString());
+	l_peFont->setFont(font);
+    }
+}

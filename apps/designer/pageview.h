@@ -66,8 +66,12 @@ public slots:
     void setZoom(qreal zoom);
     void setZoomFitToPage();
 
+signals:
+    void addItem(Report::ItemInterface*,QPointF);
+
 private:
     void setActiveRange(QRect rect);
+//    Report::ItemInterface * findItemByClassName(QString name);
 
 protected:
 //    virtual void resizeEvent ( QResizeEvent * event );
@@ -90,22 +94,29 @@ private:
     QRect m_range;
     Selecter * m_selecter;
     mainWindow * m_mw;
+
+friend class GraphicsView;
 };
 
 class GraphicsView: public QGraphicsView
 {
     Q_OBJECT
 public:
-    GraphicsView ( QGraphicsScene * scene, QWidget * parent = 0 ): QGraphicsView(scene, parent) {};
+    GraphicsView ( QGraphicsScene * scene, QWidget * parent = 0 );
 signals:
     void mousePositionChanged (QPoint);
     void selectionMoved(Report::ItemInterface *, QPointF);
+    void addItem(Report::ItemInterface *, QPointF pos);
 protected:
-    void mouseMoveEvent ( QMouseEvent * e )
-    {
-	emit mousePositionChanged ( e->pos () );
-	QGraphicsView::mouseMoveEvent( e );
-    }
+    void mouseMoveEvent ( QMouseEvent * e );
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dragLeaveEvent ( QDragLeaveEvent * event );
+    void dropEvent(QDropEvent *event);
+private:
+    Report::ItemInterface * m_dragSourceItem;
+    QGraphicsItem * m_lastCheckedItem;
+    bool m_canDrop;
 };
 
 

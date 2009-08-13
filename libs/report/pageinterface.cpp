@@ -266,6 +266,8 @@ void PageInterface::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 			    dynamic_cast<Report::ItemInterface *>(item)->selectItem(movingItem->mapFromScene(event->scenePos()), event->modifiers());
 
+			    if (dynamic_cast<Report::BandInterface *>(item))
+				movingItem = 0;
 			    break;
 			}
 		    }

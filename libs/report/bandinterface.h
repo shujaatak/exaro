@@ -145,6 +145,9 @@ public:
 
 	virtual void setHeight(qreal height);
 
+	virtual qreal rotate(){return .0;}
+	virtual void setRotate(qreal) {}
+
 	/**
 	 * Return the query name
 	 * @return query name

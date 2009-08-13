@@ -183,9 +183,11 @@ const QMap<QString, ItemInterface*> & ReportEngine::items() const
 
 /*const*/ ItemInterface * ReportEngine::findItemByClassName(const char * name)
 {
+	      qDebug("seek for \'%s\'", name);
     foreach (ItemInterface * item, m_items)
     {
-	if (item->metaObject()->className() == name)
+	qDebug("check \'%s\'", item->metaObject()->className());
+	if (QString(item->metaObject()->className()) == QString(name))
 	    return item;
     }
     return 0;
