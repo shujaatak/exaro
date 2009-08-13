@@ -31,7 +31,7 @@
 // the distance in pixels of a mouse position considered outside the rule
 const int OutsideRulerThreshold = 20;
 
-/*
+
 void RulerTabChooser::mousePressEvent(QMouseEvent *)
 {
     switch(m_type) {
@@ -98,7 +98,7 @@ static int compareTabs(QRuler::Tab &tab1, QRuler::Tab &tab2)
 {
     return tab1.position < tab2.position;
 }
-*/
+
 
 
 QRectF HorizontalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPainter &painter)
@@ -140,7 +140,7 @@ QRectF HorizontalPaintingStrategy::drawBackground(const QRulerPrivate *d, QPaint
     return rectangle;
 }
 
-/*
+
 void HorizontalPaintingStrategy::drawTabs(const QRulerPrivate *d, QPainter &painter)
 {
     if (! d->showTabs)
@@ -153,10 +153,10 @@ void HorizontalPaintingStrategy::drawTabs(const QRulerPrivate *d, QPainter &pain
     foreach (const QRuler::Tab & t, d->tabs) {
         qreal x;
         if (d->rightToLeft)
-            x = d->viewConverter->documentToViewX(d->activeRangeEnd - t.position)
+	    x = d->activeRangeEnd - t.position
                     + qMin(0, d->offset);
         else
-            x = d->viewConverter->documentToViewX(d->activeRangeStart + t.position)
+	    x = d->activeRangeStart + t.position
                     + qMin(0, d->offset);
 
         polygon.clear();
@@ -191,7 +191,7 @@ void HorizontalPaintingStrategy::drawTabs(const QRulerPrivate *d, QPainter &pain
     }
     //painter.setRenderHint( QPainter::Antialiasing, false );
 }
-*/
+
 
 void HorizontalPaintingStrategy::drawMeasurements(const QRulerPrivate *d, QPainter &painter, const QRectF &rectangle)
 {
@@ -621,22 +621,22 @@ QRulerPrivate ::QRulerPrivate (QRuler *parent, qreal scale, Qt::Orientation o)
     firstLineIndent(0),
     paragraphIndent(0),
     endIndent(0),
-    //showTabs(false),
-    //tabMoved(false),
+    showTabs(false),
+    tabMoved(false),
     originalIndex(-1),
     currentIndex(0),
     rightToLeft(false),
     selected(None),
     selectOffset(0),
-    //tabChooser(0),
+    tabChooser(0),
     normalPaintingStrategy(o == Qt::Horizontal ?
             (PaintingStrategy*)new HorizontalPaintingStrategy() : (PaintingStrategy*)new VerticalPaintingStrategy()),
     distancesPaintingStrategy((PaintingStrategy*)new HorizontalDistancesPaintingStrategy()),
     paintingStrategy(normalPaintingStrategy),
     ruler(parent)
 {
-//    if(orientation == Qt::Horizontal)
-//        tabChooser = new RulerTabChooser(parent);
+    if(orientation == Qt::Horizontal)
+	tabChooser = new RulerTabChooser(parent);
 }
 
 QRulerPrivate ::~QRulerPrivate ()
@@ -732,15 +732,15 @@ int QRulerPrivate ::hotSpotIndex(const QPoint & pos) {
     return -1;
 }
 
-/*
+
 void QRulerPrivate ::emitTabChanged()
 {
     QRuler::Tab tab;
     if (currentIndex >= 0)
-        tab = tabs[currentIndex];
+	tab = tabs[currentIndex];
     emit ruler->tabChanged(originalIndex, currentIndex >= 0 ? &tab : 0);
 }
-*/
+
 
 QRuler::QRuler(QWidget* parent, Qt::Orientation orientation, qreal  scale /*, const KoViewConverter* viewConverter*/)
   : QWidget(parent)
@@ -803,7 +803,7 @@ void QRuler::paintEvent(QPaintEvent* event)
         d->paintingStrategy->drawIndents(d, painter);
         painter.restore();
     }
-//    d->paintingStrategy->drawTabs(d, painter);
+    d->paintingStrategy->drawTabs(d, painter);
 }
 
 QSize QRuler::minimumSizeHint() const
@@ -882,12 +882,12 @@ qreal QRuler::endIndent() const
     return d->endIndent;
 }
 
-/*
+
 QWidget *QRuler::tabChooser()
 {
     return d->tabChooser;
 }
-*/
+
 
 void QRuler::setShowSelectionBorders(bool show)
 {
@@ -904,7 +904,7 @@ void QRuler::updateSelectionBorders(qreal first, qreal second)
         update();
 }
 
-/*
+
 void QRuler::setShowTabs(bool show)
 {
     d->showTabs = show;
@@ -923,7 +923,7 @@ QList<QRuler::Tab> QRuler::tabs() const
 
     return answer;
 }
-*/
+
 void QRuler::setPopupActionList(const QList<QAction*> &popupActionList)
 {
     d->popupActions = popupActionList;
@@ -936,7 +936,7 @@ QList<QAction*> QRuler::popupActionList() const
 
 void QRuler::mousePressEvent ( QMouseEvent* ev )
 {
-//    d->tabMoved = false;
+    d->tabMoved = false;
     d->selected = QRulerPrivate ::None;
     if (ev->button() == Qt::RightButton && !d->popupActions.isEmpty())
         QMenu::exec(d->popupActions, ev->globalPos());
@@ -947,26 +947,26 @@ void QRuler::mousePressEvent ( QMouseEvent* ev )
 
     QPoint pos = ev->pos();
 
-//    if (d->showTabs) {
-//        int i = 0;
-//        int x;
-//        foreach (const Tab & t, d->tabs) {
-//            if (d->rightToLeft)
-//                x = int(d->m_scale * (d->activeRangeEnd - t.position)
-//                        + d->offset);
-//            else
-//                x = int(d->m_scale * (d->activeRangeStart + t.position)
-//                        + d->offset);
-//            if (pos.x() >= x-6 && pos.x() <= x+6) {
-//		d->selected = QRulerPrivate ::Tab;
-//                d->selectOffset = x - pos.x();
-//                d->currentIndex = i;
-//                break;
-//            }
-//            i++;
-//        }
-//        d->originalIndex = d->currentIndex;
-//    }
+    if (d->showTabs) {
+	int i = 0;
+	int x;
+	foreach (const Tab & t, d->tabs) {
+	    if (d->rightToLeft)
+		x = int(d->m_scale * (d->activeRangeEnd - t.position)
+			+ d->offset);
+	    else
+		x = int(d->m_scale * (d->activeRangeStart + t.position)
+			+ d->offset);
+	    if (pos.x() >= x-6 && pos.x() <= x+6) {
+		d->selected = QRulerPrivate ::Tab;
+		d->selectOffset = x - pos.x();
+		d->currentIndex = i;
+		break;
+	    }
+	    i++;
+	}
+	d->originalIndex = d->currentIndex;
+    }
 
     if (d->selected == QRulerPrivate ::None)
         d->selected = d->selectionAtPosition(ev->pos(), &d->selectOffset);
@@ -978,15 +978,15 @@ void QRuler::mousePressEvent ( QMouseEvent* ev )
         }
     }
 
-    if (/*d->showTabs && */d->selected == QRulerPrivate ::None) {
+    if (d->showTabs && d->selected == QRulerPrivate ::None) {
         // still haven't found something so let assume the user wants to add a tab
 	qreal tabpos = d->m_scale * (pos.x() - d->offset)
                     - d->activeRangeStart;
-//        Tab t = {tabpos, d->tabChooser->type()};
-//        d->tabs.append(t);
+	Tab t = {tabpos, d->tabChooser->type()};
+	d->tabs.append(t);
         d->selectOffset = 0;
 	d->selected = QRulerPrivate ::Tab;
-//        d->currentIndex = d->tabs.count() - 1;
+	d->currentIndex = d->tabs.count() - 1;
         d->originalIndex = -1; // new!
         update();
     }
@@ -1004,18 +1004,18 @@ void QRuler::mousePressEvent ( QMouseEvent* ev )
 void QRuler::mouseReleaseEvent ( QMouseEvent* ev )
 {
     ev->accept();
-//    if (d->selected == QRulerPrivate ::Tab) {
-//        if (d->originalIndex >= 0 && !d->tabMoved) {
-//            int type = d->tabs[d->currentIndex].type;
-//            type++;
-//            if (type > 3)
-//                type = 0;
-//            d->tabs[d->currentIndex].type = static_cast<QTextOption::TabType> (type);
-//            update();
-//        }
-//        d->emitTabChanged();
-//    }
-    /*else*/ if( d->selected != QRulerPrivate ::None)
+    if (d->selected == QRulerPrivate ::Tab) {
+	if (d->originalIndex >= 0 && !d->tabMoved) {
+	    int type = d->tabs[d->currentIndex].type;
+	    type++;
+	    if (type > 3)
+		type = 0;
+	    d->tabs[d->currentIndex].type = static_cast<QTextOption::TabType> (type);
+	    update();
+	}
+	d->emitTabChanged();
+    }
+    else if( d->selected != QRulerPrivate ::None)
         emit indentsChanged(true);
     else
         ev->ignore();
@@ -1090,41 +1090,41 @@ void QRuler::mouseMoveEvent ( QMouseEvent* ev )
             d->endIndent = activeLength - d->paragraphIndent;;
         emit indentsChanged(false);
         break;
-//    case QRulerPrivate ::Tab:
-//        d->tabMoved = true;
-//        if (d->currentIndex < 0) { // tab is deleted.
-//            if (ev->pos().y() < height()) { // reinstante it.
-//                d->currentIndex = d->tabs.count();
-//                d->tabs.append(d->deletedTab);
-//            }
-//            else
-//                break;
-//        }
-//        if (d->rightToLeft)
-//            d->tabs[d->currentIndex].position = d->activeRangeEnd -
-//                d->m_scale * (pos.x() + d->selectOffset - d->offset);
-//        else
-//            d->tabs[d->currentIndex].position = d->m_scale * (pos.x() + d->selectOffset
-//                - d->offset) - d->activeRangeStart;
-//        if( ! (ev->modifiers() & Qt::ShiftModifier))
-//            d->tabs[d->currentIndex].position = d->doSnapping(d->tabs[d->currentIndex].position);
-//        if (d->tabs[d->currentIndex].position < 0)
-//            d->tabs[d->currentIndex].position = 0;
-//        if (d->tabs[d->currentIndex].position > activeLength)
-//            d->tabs[d->currentIndex].position = activeLength;
-//
-//        if (ev->pos().y() > height() + OutsideRulerThreshold ) { // moved out of the ruler, delete it.
-//            d->deletedTab = d->tabs.takeAt(d->currentIndex);
-//            d->currentIndex = -1;
-//            // was that a temporary added tab?
-//            if( d->originalIndex == -1 )
-//            {
-//                emit guideLineCreated( d->orientation, d->orientation == Qt::Horizontal ? ev->pos().y() : ev->pos().x() );
-//            }
-//        }
-//
-//        d->emitTabChanged();
-//        break;
+    case QRulerPrivate ::Tab:
+	d->tabMoved = true;
+	if (d->currentIndex < 0) { // tab is deleted.
+	    if (ev->pos().y() < height()) { // reinstante it.
+		d->currentIndex = d->tabs.count();
+		d->tabs.append(d->deletedTab);
+	    }
+	    else
+		break;
+	}
+	if (d->rightToLeft)
+	    d->tabs[d->currentIndex].position = d->activeRangeEnd -
+		d->m_scale * (pos.x() + d->selectOffset - d->offset);
+	else
+	    d->tabs[d->currentIndex].position = d->m_scale * (pos.x() + d->selectOffset
+		- d->offset) - d->activeRangeStart;
+	if( ! (ev->modifiers() & Qt::ShiftModifier))
+	    d->tabs[d->currentIndex].position = d->doSnapping(d->tabs[d->currentIndex].position);
+	if (d->tabs[d->currentIndex].position < 0)
+	    d->tabs[d->currentIndex].position = 0;
+	if (d->tabs[d->currentIndex].position > activeLength)
+	    d->tabs[d->currentIndex].position = activeLength;
+
+	if (ev->pos().y() > height() + OutsideRulerThreshold ) { // moved out of the ruler, delete it.
+	    d->deletedTab = d->tabs.takeAt(d->currentIndex);
+	    d->currentIndex = -1;
+	    // was that a temporary added tab?
+	    if( d->originalIndex == -1 )
+	    {
+		emit guideLineCreated( d->orientation, d->orientation == Qt::Horizontal ? ev->pos().y() : ev->pos().x() );
+	    }
+	}
+
+	d->emitTabChanged();
+	break;
     case QRulerPrivate ::HotSpot:
         qreal newPos;
         if (d->orientation == Qt::Horizontal)

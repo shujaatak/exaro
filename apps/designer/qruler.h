@@ -35,210 +35,6 @@ class QPaintEvent;
 class QRulerPrivate;
 class QRuler;
 
-/*
-class RulerTabChooser : public QWidget {
-public:
-    RulerTabChooser(QWidget *parent) : QWidget(parent), m_type(QTextOption::LeftTab) {}
-    ~RulerTabChooser() {}
-
-    inline QTextOption::TabType type() {return m_type;}
-    void mousePressEvent(QMouseEvent *);
-
-    void paintEvent(QPaintEvent *);
-
-private:
-    QTextOption::TabType m_type;
-};
-*/
-
-class PaintingStrategy {
-public:
-    /// constructor
-    PaintingStrategy() {}
-    /// destructor
-    ~PaintingStrategy() {}
-
-    /**
-     * Draw the background of the ruler.
-     * @param ruler the ruler to draw on.
-     * @param painter the painter we can paint with.
-     */
-    virtual QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter) = 0;
-
-    /**
-     * Draw the indicators for text-tabs.
-     * @param ruler the ruler to draw on.
-     * @param painter the painter we can paint with.
-     */
-    //virtual void drawTabs(const QRulerPrivate *ruler, QPainter &painter) = 0;
-
-    /**
-     * Draw the indicators for the measurements which typically are drawn every [unit].
-     * @param ruler the ruler to draw on.
-     * @param painter the painter we can paint with.
-     * @param rectangle
-     */
-    virtual void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle) = 0;
-
-    /**
-     * Draw the indicators for the indents of a text paragraph
-     * @param ruler the ruler to draw on.
-     * @param painter the painter we can paint with.
-     */
-    virtual void drawIndents(const QRulerPrivate *ruler, QPainter &painter) = 0;
-
-    /**
-     *returns the size suggestion for a ruler with this strategy.
-     */
-    virtual QSize sizeHint(const QRulerPrivate *ruler) = 0;
-};
-
-class HorizontalPaintingStrategy : public PaintingStrategy {
-public:
-    HorizontalPaintingStrategy() : lengthInPixel(1) {}
-    QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter);
-    //void drawTabs(const QRulerPrivate *ruler, QPainter &painter);
-    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
-    void drawIndents(const QRulerPrivate *ruler, QPainter &painter);
-    QSize sizeHint(const QRulerPrivate *ruler);
-
-private:
-    qreal lengthInPixel;
-};
-
-class VerticalPaintingStrategy : public PaintingStrategy {
-public:
-    VerticalPaintingStrategy() : lengthInPixel(1) {}
-
-    QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter);
-    //void drawTabs(const QRulerPrivate *, QPainter &) {}
-    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
-    void drawIndents(const QRulerPrivate *, QPainter &) { }
-    QSize sizeHint(const QRulerPrivate *ruler);
-
-private:
-    qreal lengthInPixel;
-};
-
-class HorizontalDistancesPaintingStrategy : public HorizontalPaintingStrategy {
-public:
-    HorizontalDistancesPaintingStrategy() {}
-
-    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
-
-private:
-    void drawDistanceLine(const QRulerPrivate *d, QPainter &painter, const qreal start, const qreal end);
-};
-
-class QRulerPrivate {
-public:
-    QRulerPrivate(QRuler *parent, qreal scale, Qt::Orientation orientation);
-    ~QRulerPrivate();
-
-    void emitTabChanged();
-
-    QUnit unit;
-    const Qt::Orientation orientation;
-    //const KoViewConverter * const viewConverter;
-
-    int offset;
-    qreal rulerLength;
-    qreal activeRangeStart;
-    qreal activeRangeEnd;
-
-    int mouseCoordinate;
-    int showMousePosition;
-
-    bool showSelectionBorders;
-    qreal firstSelectionBorder;
-    qreal secondSelectionBorder;
-
-    bool showIndents;
-    qreal firstLineIndent;
-    qreal paragraphIndent;
-    qreal endIndent;
-
-    //bool showTabs;
-    //bool tabMoved; // set to true on first move of a selected tab
-    //QList<QRuler::Tab> tabs;
-    int originalIndex; //index of selected tab before we started dragging it.
-    int currentIndex; //index of selected tab or selected HotSpot - only valid when selected indicates tab or hotspot
-    //QRuler::Tab deletedTab;
-
-    struct HotSpotData {
-	qreal position;
-	int id;
-    };
-    QList<HotSpotData> hotspots;
-
-    bool rightToLeft;
-    enum Selection {
-	None,
-	Tab,
-	FirstLineIndent,
-	ParagraphIndent,
-	EndIndent,
-	HotSpot
-    };
-    Selection selected;
-    int selectOffset;
-
-    QList<QAction*> popupActions;
-
-    //RulerTabChooser *tabChooser;
-
-    // Cached painting strategies
-    PaintingStrategy * normalPaintingStrategy;
-    PaintingStrategy * distancesPaintingStrategy;
-
-    // Current painting strategy
-    PaintingStrategy * paintingStrategy;
-
-    QRuler *ruler;
-
-    qreal numberStepForUnit() const;
-    /// @return The rounding of value to the nearest multiple of stepValue
-    qreal doSnapping(const qreal value) const;
-    Selection selectionAtPosition(const QPoint & pos, int *selectOffset = 0);
-    int hotSpotIndex(const QPoint & pos);
-
-    QFont m_font;
-    qreal m_scale;
-
-    friend class VerticalPaintingStrategy;
-    friend class HorizontalPaintingStrategy;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Decorator widget to draw a single ruler around a canvas.
@@ -258,8 +54,8 @@ public:
 
     /// For paragraphs each tab definition is represented by this struct.
     struct Tab {
-        qreal position;    ///< distance in point from the start of the text-shape
-        QTextOption::TabType type;       ///< Determine which type is used.
+	qreal position;    ///< distance in point from the start of the text-shape
+	QTextOption::TabType type;       ///< Determine which type is used.
     };
 
     /// The ruler's unit
@@ -375,18 +171,18 @@ public slots:
      * Set whether the ruler should show tabs
      * @param show show selection borders if true, default is false.
      */
-//    void setShowTabs(bool show);
+    void setShowTabs(bool show);
 
     /**
      * Update the tabs
      * @param tabs a list of tabs that is shown on the ruler the first selection border in points
      */
-//    void updateTabs(const QList<Tab> &tabs);
+    void updateTabs(const QList<Tab> &tabs);
 
     /***
      * Return the list of tabs set on this ruler.
      */
-    //QList<Tab> tabs() const;
+    QList<Tab> tabs() const;
 
     /**
      * Clear all previously set hotspots.
@@ -452,5 +248,189 @@ private:
     QRulerPrivate * const d;
     friend class QRulerPrivate;
 };
+
+
+
+
+
+
+
+
+
+
+
+class RulerTabChooser : public QWidget {
+public:
+    RulerTabChooser(QWidget *parent) : QWidget(parent), m_type(QTextOption::LeftTab) {}
+    ~RulerTabChooser() {}
+
+    inline QTextOption::TabType type() {return m_type;}
+    void mousePressEvent(QMouseEvent *);
+
+    void paintEvent(QPaintEvent *);
+
+private:
+    QTextOption::TabType m_type;
+};
+
+
+class PaintingStrategy {
+public:
+    /// constructor
+    PaintingStrategy() {}
+    /// destructor
+    ~PaintingStrategy() {}
+
+    /**
+     * Draw the background of the ruler.
+     * @param ruler the ruler to draw on.
+     * @param painter the painter we can paint with.
+     */
+    virtual QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter) = 0;
+
+    /**
+     * Draw the indicators for text-tabs.
+     * @param ruler the ruler to draw on.
+     * @param painter the painter we can paint with.
+     */
+    virtual void drawTabs(const QRulerPrivate *ruler, QPainter &painter) = 0;
+
+    /**
+     * Draw the indicators for the measurements which typically are drawn every [unit].
+     * @param ruler the ruler to draw on.
+     * @param painter the painter we can paint with.
+     * @param rectangle
+     */
+    virtual void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle) = 0;
+
+    /**
+     * Draw the indicators for the indents of a text paragraph
+     * @param ruler the ruler to draw on.
+     * @param painter the painter we can paint with.
+     */
+    virtual void drawIndents(const QRulerPrivate *ruler, QPainter &painter) = 0;
+
+    /**
+     *returns the size suggestion for a ruler with this strategy.
+     */
+    virtual QSize sizeHint(const QRulerPrivate *ruler) = 0;
+};
+
+class HorizontalPaintingStrategy : public PaintingStrategy {
+public:
+    HorizontalPaintingStrategy() : lengthInPixel(1) {}
+    QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter);
+    void drawTabs(const QRulerPrivate *ruler, QPainter &painter);
+    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
+    void drawIndents(const QRulerPrivate *ruler, QPainter &painter);
+    QSize sizeHint(const QRulerPrivate *ruler);
+
+private:
+    qreal lengthInPixel;
+};
+
+class VerticalPaintingStrategy : public PaintingStrategy {
+public:
+    VerticalPaintingStrategy() : lengthInPixel(1) {}
+
+    QRectF drawBackground(const QRulerPrivate *ruler, QPainter &painter);
+    void drawTabs(const QRulerPrivate *, QPainter &) {}
+    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
+    void drawIndents(const QRulerPrivate *, QPainter &) { }
+    QSize sizeHint(const QRulerPrivate *ruler);
+
+private:
+    qreal lengthInPixel;
+};
+
+class HorizontalDistancesPaintingStrategy : public HorizontalPaintingStrategy {
+public:
+    HorizontalDistancesPaintingStrategy() {}
+
+    void drawMeasurements(const QRulerPrivate *ruler, QPainter &painter, const QRectF &rectangle);
+
+private:
+    void drawDistanceLine(const QRulerPrivate *d, QPainter &painter, const qreal start, const qreal end);
+};
+
+class QRulerPrivate {
+public:
+    QRulerPrivate(QRuler *parent, qreal scale, Qt::Orientation orientation);
+    ~QRulerPrivate();
+
+    void emitTabChanged();
+
+    QUnit unit;
+    const Qt::Orientation orientation;
+    //const KoViewConverter * const viewConverter;
+
+    int offset;
+    qreal rulerLength;
+    qreal activeRangeStart;
+    qreal activeRangeEnd;
+
+    int mouseCoordinate;
+    int showMousePosition;
+
+    bool showSelectionBorders;
+    qreal firstSelectionBorder;
+    qreal secondSelectionBorder;
+
+    bool showIndents;
+    qreal firstLineIndent;
+    qreal paragraphIndent;
+    qreal endIndent;
+
+    bool showTabs;
+    bool tabMoved; // set to true on first move of a selected tab
+    QList<QRuler::Tab> tabs;
+    int originalIndex; //index of selected tab before we started dragging it.
+    int currentIndex; //index of selected tab or selected HotSpot - only valid when selected indicates tab or hotspot
+    QRuler::Tab deletedTab;
+
+    struct HotSpotData {
+	qreal position;
+	int id;
+    };
+    QList<HotSpotData> hotspots;
+
+    bool rightToLeft;
+    enum Selection {
+	None,
+	Tab,
+	FirstLineIndent,
+	ParagraphIndent,
+	EndIndent,
+	HotSpot
+    };
+    Selection selected;
+    int selectOffset;
+
+    QList<QAction*> popupActions;
+
+    RulerTabChooser *tabChooser;
+
+    // Cached painting strategies
+    PaintingStrategy * normalPaintingStrategy;
+    PaintingStrategy * distancesPaintingStrategy;
+
+    // Current painting strategy
+    PaintingStrategy * paintingStrategy;
+
+    QRuler *ruler;
+
+    qreal numberStepForUnit() const;
+    /// @return The rounding of value to the nearest multiple of stepValue
+    qreal doSnapping(const qreal value) const;
+    Selection selectionAtPosition(const QPoint & pos, int *selectOffset = 0);
+    int hotSpotIndex(const QPoint & pos);
+
+    QFont m_font;
+    qreal m_scale;
+
+    friend class VerticalPaintingStrategy;
+    friend class HorizontalPaintingStrategy;
+};
+
 
 #endif

@@ -39,6 +39,9 @@
 #include "qunit.h"
 #include "selecter.h"
 #include "mainwindow.h"
+#include "message.h"
+
+#include <QGLWidget>
 
 #define _scale 0.283465  // make scene ratio depend on rules
 
@@ -49,6 +52,8 @@ PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt
 	m_range(QRect()),
 	m_mw(mw)
 {
+//    setAcceptDrops(true);
+
     m_view = new GraphicsView ( m_scene, this );
     m_view->centerOn( 0, 0 );
     m_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -69,7 +74,7 @@ PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt
 
     setLayout(gridLayout);
 
-    //	gridLayout->addWidget(m_horizontalRuler->tabChooser(), 0, 0);
+    gridLayout->addWidget(m_horizontalRuler->tabChooser(), 0, 0);
     gridLayout->addWidget(m_horizontalRuler, 0, 1);
     gridLayout->addWidget(m_verticalRuler, 1, 0);
     gridLayout->addWidget(m_view , 1, 1);
@@ -77,10 +82,19 @@ PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt
     connect ( m_view->horizontalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doHorizontalScroll(int) ) );
     connect ( m_view->verticalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doVerticalScroll(int) ) );
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
+    connect ( m_view, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SIGNAL(addItem(Report::ItemInterface*,QPointF)) );
 
     m_selecter = new Selecter(scene, m_mw);
     connect ( m_selecter, SIGNAL(itemMoved(Report::ItemInterface, QPointF)), this, SIGNAL(selectionMoved(Report::ItemInterface, QPointF)) );
     connect ( m_scene , SIGNAL(destroyed()), this, SLOT (sceneDestroyed()));
+
+//    m_horizontalRuler->setShowTabs(true);
+//    m_horizontalRuler->setFirstLineIndent(200);
+//    m_horizontalRuler->setEndIndent(300);
+//    m_horizontalRuler->setParagraphIndent(400);
+//    m_horizontalRuler->setHotSpot(250, 0);
+//    m_horizontalRuler->setShowSelectionBorders(true);
+//    m_horizontalRuler->updateSelectionBorders(100, 300);
 
     QTimer::singleShot(0, this, SLOT ( setZoomFitToPage())) ;
 }
@@ -201,4 +215,80 @@ void PageView::afterOuterChanging()
 {
     if (m_selecter)
 	m_selecter->restore();
+}
+
+
+
+
+
+///-----------GraphicsView
+
+GraphicsView::GraphicsView ( QGraphicsScene * scene, QWidget * parent )
+	: QGraphicsView(scene, parent)
+	, m_dragSourceItem(0)
+{
+    this->setAcceptDrops( true );
+//    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+//    setViewport(new QGLWidget(this));
+}
+
+void GraphicsView::mouseMoveEvent ( QMouseEvent * e )
+{
+    QGraphicsView::mouseMoveEvent( e );
+    emit mousePositionChanged ( e->pos () );
+}
+
+void GraphicsView::dragEnterEvent(QDragEnterEvent *event)
+{
+//    qDebug("GraphicsView::dragEnterEvent - mimetext = %s",qPrintable(event->mimeData()->text()));
+    event->acceptProposedAction();
+    m_canDrop = false;
+    m_lastCheckedItem = 0;
+
+    if (dynamic_cast<PageView*>(this->parent()))
+	m_dragSourceItem = dynamic_cast<Report::ItemInterface*>((dynamic_cast<PageView*>(this->parent()))->m_mw->reportEngine()->findItemByClassName( qPrintable(event->mimeData()->text().section("::",1,1) )) );
+}
+
+void GraphicsView::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->ignore();
+    m_canDrop = false;
+    if((!scene()) || (!m_dragSourceItem))
+	return;
+
+    // speedup
+    if (m_lastCheckedItem == this->itemAt( event->pos() ) )
+	return;
+
+    qDebug("is Band = %i", (int)dynamic_cast<Report::BandInterface*>(m_dragSourceItem));
+
+    bool itemExist = false;
+    foreach (QGraphicsItem* item, items(event->pos()))
+	if (dynamic_cast<Report::ItemInterface *>(item) )
+	{
+	    itemExist = true;
+	    if (dynamic_cast<Report::ItemInterface *>(item)->canContain(m_dragSourceItem) )
+	    {
+		event->acceptProposedAction();
+		m_canDrop = true;
+		return;
+	    }
+	}
+
+    if ((!itemExist) && dynamic_cast<Report::BandInterface *>(m_dragSourceItem))
+    {
+	event->acceptProposedAction();
+	m_canDrop = true;
+    }
+}
+
+void GraphicsView::dragLeaveEvent ( QDragLeaveEvent * event )
+{
+
+}
+
+void GraphicsView::dropEvent(QDropEvent *event)
+{
+    if (m_canDrop)
+	emit addItem(m_dragSourceItem, this->mapToScene(event->pos() ) );
 }

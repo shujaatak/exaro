@@ -48,6 +48,7 @@
 #include "selecter.h"
 #include "grid.h"
 #include "message.h"
+#include "itemstoolbar.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -166,7 +167,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	connect( m_pe, SIGNAL( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ),
 	                this, SLOT( propertyChanged( QObject *, const QString & , const QVariant & , const QVariant & ) ) );
 
-	connect (m_objectInspector, SIGNAL(pressed(QModelIndex)), this, SLOT(on_m_objectInspector_pressed(QModelIndex)));
+	connect (m_objectInspector, SIGNAL(pressed(QModelIndex)), this, SLOT(objectInspector_pressed(QModelIndex)));
 
 	m_contextMenu.addAction( actionCopy );
 	m_contextMenu.addAction( actionCut );
@@ -227,9 +228,6 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_smTemplate = 0;
 	m_smReport = 0;
-	setupActions();
-
-	restoreSettings();
 
 	m_wdataset = new Report::DesignerDatasetEditor( &m_reportEngine,  m_tw);
 	m_tw->addTab(m_wdataset , tr("Data"));
@@ -268,63 +266,83 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	messageGeometryLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
 	//	messageLabel.setPalette(
 
+	m_tbitems = new ItemsToolBar(this);
+	this->addToolBar(Qt::LeftToolBarArea, m_tbitems );
+
+	setupActions();
+	restoreSettings();
 	newReport();
 }
 
-void mainWindow::restoreSettings()
+void mainWindow::restoreSettings(bool withState)
 {   
-	QSettings s;
+    QSettings s;
 
-	QString iSize = s.value( "Options/iconSize" ).toString();
-	int h, w;
-	h = iSize.section( "x", 0, 0 ).toInt();
-	w = iSize.section( "x", 1, 1 ).toInt();
-	if ( h == 0 or w == 0 )
-		toolBar->setIconSize( QSize( 16, 16 ) );
-	else
-		toolBar->setIconSize( QSize( w, h ) );
-
+    QString iSize = s.value( "Options/iconSize" ).toString();
+    int h, w;
+    h = iSize.section( "x", 0, 0 ).toInt();
+    w = iSize.section( "x", 1, 1 ).toInt();
+    if ( h == 0 or w == 0 )
+    {
+	toolBar->setIconSize( QSize( 16, 16 ) );
+	toolBarTools->setIconSize( QSize( 16, 16 ) );
+	toolBarProperties->setIconSize( QSize( 16, 16 ) );
+    }
+    else
+    {
+	toolBar->setIconSize( QSize( w, h ) );
+	toolBarTools->setIconSize( QSize( w, h ) );
+	toolBarProperties->setIconSize( QSize( w, h ) );
+    }
+    if (withState)
+    {
 	s.beginGroup( "Main_window" );
 	restoreGeometry( s.value( "Geometry", saveGeometry() ).toByteArray() );
 	restoreState( s.value( "State", saveState() ).toByteArray() );
 	s.endGroup();
+    }
 
-	Report::LayoutManager::setMargin( s.value( "Options/margin", 0 ).toInt() * 10 );
-	Report::BandInterface::setTitleEnabled( s.value( "Options/drawTitles", true ).toBool() );
+    Report::LayoutManager::setMargin( s.value( "Options/margin", 0 ).toInt() * 10 );
+    Report::BandInterface::setTitleEnabled( s.value( "Options/drawTitles", true ).toBool() );
 
-	for (int i=STATIC_TABS; i<m_tw->count(); i++)
-	{
-	    foreach (QObject * obj, dynamic_cast<PageView*>(m_tw->widget( i ))->scene()->findChildren<Report::BandInterface*>() )
-		if (dynamic_cast<Report::BandInterface*> (obj))
-		    dynamic_cast<Report::BandInterface*> (obj)->showTitle( ( s.value( "Options/drawTitles", true ).toBool()));
-	    Report::LayoutManager::updatePositions(dynamic_cast<PageView*>(m_tw->widget( i ))->scene() );
-	    dynamic_cast<PageView*>(m_tw->widget( i ))->selecter()->updateSelection();
-	}
+    for (int i=STATIC_TABS; i<m_tw->count(); i++)
+    {
+	foreach (QObject * obj, dynamic_cast<PageView*>(m_tw->widget( i ))->scene()->findChildren<Report::BandInterface*>() )
+	    if (dynamic_cast<Report::BandInterface*> (obj))
+		dynamic_cast<Report::BandInterface*> (obj)->showTitle( ( s.value( "Options/drawTitles", true ).toBool()));
+	Report::LayoutManager::updatePositions(dynamic_cast<PageView*>(m_tw->widget( i ))->scene() );
+	dynamic_cast<PageView*>(m_tw->widget( i ))->selecter()->updateSelection();
+    }
 
-	Grid::instance()->setDelta(  s.value( "Options/gridStep", 1).toInt() * 10 );
-	Grid::instance()->snap( s.value( "Options/grid", true ).toBool() );
+    Grid::instance()->setDelta(  s.value( "Options/gridStep", 1).toInt() * 10 );
+    Grid::instance()->snap( s.value( "Options/grid", true ).toBool() );
+
+    QFont f;
+    f.fromString( s.value( "Options/peFont", "").toString() );
+    m_pe->setFont( f );
+    m_pe->setSizeHint(QFontMetrics(f).lineSpacing()+4);
 }
 
 
 void mainWindow::setupActions()
 {
-	actionOpen_report->setShortcuts( QKeySequence::Open );
-	actionSave_report->setShortcuts( QKeySequence::Save );
-	actionNew_page->setShortcuts( QKeySequence::New );
-	actionRemove_page->setShortcuts( QKeySequence::Close );
-	actionDelete->setShortcuts( QKeySequence::Delete );
+    actionOpen_report->setShortcuts( QKeySequence::Open );
+    actionSave_report->setShortcuts( QKeySequence::Save );
+    actionNew_page->setShortcuts( QKeySequence::New );
+    actionRemove_page->setShortcuts( QKeySequence::Close );
+    actionDelete->setShortcuts( QKeySequence::Delete );
 
-	actionCut->setShortcuts( QKeySequence::Cut );
-	actionCopy->setShortcuts( QKeySequence::Copy );
-	actionPaste->setShortcuts( QKeySequence::Paste );
-	actionUndo->setShortcuts( QKeySequence::Undo );
-	actionRedo->setShortcuts( QKeySequence::Redo );
-	actionZoom_in->setShortcuts( QKeySequence::ZoomIn );
-	actionZoom_out->setShortcuts( QKeySequence::ZoomOut );
-	connect( undoStack, SIGNAL( canUndoChanged( bool ) ), actionUndo, SLOT( setEnabled( bool ) ) );
-	connect( undoStack, SIGNAL( canRedoChanged( bool ) ), actionRedo, SLOT( setEnabled( bool ) ) );
-	actionUndo->setEnabled( undoStack->canUndo() );
-	actionRedo->setEnabled( undoStack->canRedo() );
+    actionCut->setShortcuts( QKeySequence::Cut );
+    actionCopy->setShortcuts( QKeySequence::Copy );
+    actionPaste->setShortcuts( QKeySequence::Paste );
+    actionUndo->setShortcuts( QKeySequence::Undo );
+    actionRedo->setShortcuts( QKeySequence::Redo );
+    actionZoom_in->setShortcuts( QKeySequence::ZoomIn );
+    actionZoom_out->setShortcuts( QKeySequence::ZoomOut );
+    connect( undoStack, SIGNAL( canUndoChanged( bool ) ), actionUndo, SLOT( setEnabled( bool ) ) );
+    connect( undoStack, SIGNAL( canRedoChanged( bool ) ), actionRedo, SLOT( setEnabled( bool ) ) );
+    actionUndo->setEnabled( undoStack->canUndo() );
+    actionRedo->setEnabled( undoStack->canRedo() );
 }
 
 void mainWindow::saveItem()
@@ -728,8 +746,11 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 		pageView = new PageView ( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) , this, this);
 		int lastTab = m_tw->addTab(( QWidget* ) pageView, dynamic_cast<Report::PageInterface*>( pageView->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
+
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 //	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
+		connect (pageView, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SLOT(addItem(Report::ItemInterface*,QPointF))) ;
+
 		foreach (QObject * obj, m_report->children()[p]->children())
 			connectItem( obj );
 		setMagnetActions( dynamic_cast<Report::PageInterface*>( pageView->scene() ) );
@@ -842,7 +863,7 @@ void mainWindow::options()
 {
 	OptionsDialog d( this );
 	d.exec();
-	restoreSettings();
+	restoreSettings(false);
 }
 
 
@@ -905,8 +926,7 @@ void mainWindow::zoomOriginal()
 {
 	if ( dynamic_cast<PageView*>( m_tw->currentWidget() ) )
 	{
-	    //		dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->resetMatrix();
-	    dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoom(1.0);
+	    dynamic_cast<PageView*>( m_tw->currentWidget() )->setZoomFitToPage();  // original = 1.0
 	    dynamic_cast<PageView*>( m_tw->currentWidget() )->view()->centerOn( 0, 0 );
 	}
 }
@@ -984,6 +1004,9 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
     }
 }
 
+//void mainWindow::itemDropedOn( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
+
+
 void mainWindow::removePage()
 {
     if (m_tw->currentIndex() < STATIC_TABS)
@@ -1033,6 +1056,8 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 		pageView = new PageView( static_cast<QGraphicsScene*>( m_reportEngine.pages()[0]->createInstance( m_report ) ) , this, this );
 	    else
 		pageView = new PageView( static_cast<QGraphicsScene*>(page), this, this);
+
+	    connect (pageView, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SLOT(addItem(Report::ItemInterface*,QPointF))) ;
 	    }
 	else
 	{
@@ -1136,7 +1161,7 @@ void mainWindow::refreshReportBeholders(Report::ReportInterface* report)
 	m_objectModel.setRootObject( report );
 }
 
-void mainWindow::on_m_objectInspector_pressed(const QModelIndex & index)
+void mainWindow::objectInspector_pressed(const QModelIndex & index)
 {
     qDebug("on_m_objectInspector_clicked");
     Report::ItemInterface* item = dynamic_cast<Report::ItemInterface*>(reinterpret_cast<ObjectModel::ObjectStruct *>( index.internalPointer() )->object);
@@ -1144,7 +1169,7 @@ void mainWindow::on_m_objectInspector_pressed(const QModelIndex & index)
 	item->selectItem( QPointF(10,10), QApplication::keyboardModifiers ());
 }
 
-inline Report::ReportEngine * mainWindow::reportEngine()
+Report::ReportEngine * mainWindow::reportEngine()
 {
     return &m_reportEngine;
 }
@@ -1196,4 +1221,30 @@ void mainWindow::moveSelectionRight()
 void mainWindow::showStatusBarItemGeometry(QObject*obj, QRectF rect)
 {
     messageGeometryLabel.setText(QString("%1(x:%2 y:%3 h:%4 w:%5)").arg(obj->objectName()).arg(rect.x()/10).arg(rect.y()/10).arg(rect.width()/10).arg(rect.height()/10));
+}
+
+void mainWindow::addItem(Report::ItemInterface * item , QPointF pos)
+{
+    PageView * view = dynamic_cast<PageView*>( sender() );
+    Report::PageInterface* page;
+    if (view)
+	page = dynamic_cast<Report::PageInterface*>( view->scene());
+
+    if (!page)
+	return;
+
+    /// FIXME: workaround for fix adding item
+    bool selectDone = false;
+    foreach (QGraphicsItem *item, page->items( pos ) )
+	if (dynamic_cast<Report::ItemInterface*>(item))
+	{
+	    dynamic_cast<Report::ItemInterface*>(item)->selectItem();
+	    selectDone = true;
+	}
+    if (!selectDone)
+	this->itemSelected( page, pos, Qt::NoModifier);
+    /// ------
+
+    QUndoCommand *addCommand = new AddCommand( page, item->metaObject()->className(), pos , this );
+    undoStack->push( addCommand );
 }

@@ -304,4 +304,7 @@ QVariant BandInterface::itemChange ( GraphicsItemChange change, const QVariant &
     return QGraphicsItem::itemChange(change, value);
 }
 
+//qreal BandInterface::rotate(){return 0;}
+//virtual void setRotate(qreal angle)};
+
 }

@@ -45,6 +45,8 @@ void AddCommand::redo()
 	QObject * m_parent = view->activeObject() ?  view->activeObject() :  m_page ;
 
 	Report::ItemInterface* itemExample = m_mainWindow->m_reportEngine.findItemByClassName( m_itemClassName );
+	qDebug("need item class name \'%s\'", m_itemClassName );
+			qDebug("crearted item class name \'%s\'", itemExample->metaObject()->className());
 
 	Report::ItemInterface *m_item = 0;
 

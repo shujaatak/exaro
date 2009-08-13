@@ -30,6 +30,7 @@ private slots:
     void storeAll();
     void restoreAll();
     void needAccept();
+    void on_bChangeFontPE_clicked();
 
 };
 

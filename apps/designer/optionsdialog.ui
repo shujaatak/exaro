@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Options</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Path</string>
@@ -40,7 +40,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Interface</string>
@@ -89,7 +89,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3" colspan="2">
+      <item row="0" column="3">
        <widget class="QCheckBox" name="cbGrid">
         <property name="text">
          <string>Grid</string>
@@ -127,6 +127,19 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="5" colspan="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>317</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="2" column="0" colspan="2">
        <widget class="QCheckBox" name="drawSelection">
         <property name="layoutDirection">
@@ -143,6 +156,20 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="3" colspan="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>PropertyEditor font:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5" colspan="2">
+       <widget class="QLabel" name="l_peFont">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="cbBandTitle">
         <property name="layoutDirection">
@@ -156,23 +183,30 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="5">
-       <spacer name="horizontalSpacer">
+      <item row="3" column="3" colspan="3">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>317</width>
+          <width>219</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
+      <item row="3" column="6">
+       <widget class="QPushButton" name="bChangeFontPE">
+        <property name="text">
+         <string>change..</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -185,7 +219,7 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="1">
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

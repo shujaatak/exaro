@@ -37,6 +37,7 @@ class QTreeView;
 class NameValidator;
 class QUndoStack;
 class QUndoView;
+class ItemsToolBar;
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
 {
@@ -47,7 +48,7 @@ public:
 	~mainWindow();
 
 	void closeEvent(QCloseEvent *event);
-	inline Report::ReportEngine * reportEngine();
+	Report::ReportEngine * reportEngine();
 
 protected:
 	void keyReleaseEvent(QKeyEvent * event);
@@ -62,6 +63,7 @@ private:
 	void _deletePage_(int index);
 	void setupActions();
 	void refreshReportBeholders(Report::ReportInterface* report);
+	void restoreSettings(bool withState = true);
 
 private:
 	ObjectModel m_objectModel;
@@ -94,6 +96,7 @@ private:
 	QLabel messageLabel;
 	QLabel messageGeometryLabel;
 	QLabel messageMousePosLabel;
+	ItemsToolBar * m_tbitems;
 //	Grid m_grid;
 
 public slots:
@@ -134,13 +137,13 @@ protected slots:
 	void on_actionBandUp_triggered();
 	void on_actionBandDown_triggered();
 	void on_actionLastConnect_triggered();
-	void restoreSettings();
-	void on_m_objectInspector_pressed(const QModelIndex & index);
+	void objectInspector_pressed(const QModelIndex & index);
 	void moveSelectionUp();
 	void moveSelectionDown();
 	void moveSelectionLeft();
 	void moveSelectionRight();
 	void showStatusBarItemGeometry(QObject*, QRectF rect);
+	void addItem(Report::ItemInterface *, QPointF);
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 
@@ -152,6 +155,8 @@ signals:
 	friend class NewPageCommand;
 	friend class RemovePageCommand;
 	friend class AddDomObject;
+
+	friend class ItemsToolBar;
 //friend class ChangePageCommand;
 };
 
