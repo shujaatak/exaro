@@ -140,7 +140,7 @@ QString Memo::toolBoxText()
 
 QString Memo::toolBoxGroup()
 {
-	return tr("Memo");
+	return tr("Text");
 }
 
 QObject * Memo::createInstance(QGraphicsItem* parent, QObject* parentObject)

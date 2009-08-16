@@ -71,12 +71,6 @@ signals:
 
 private:
     void setActiveRange(QRect rect);
-//    Report::ItemInterface * findItemByClassName(QString name);
-
-protected:
-//    virtual void resizeEvent ( QResizeEvent * event );
-//    virtual void scrollContentsBy ( int dx, int dy );
-//    virtual void mouseMoveEvent ( QMouseEvent * e );
 
 private slots:
     void doHorizontalScroll(int value);

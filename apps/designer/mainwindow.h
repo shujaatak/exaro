@@ -64,6 +64,7 @@ private:
 	void setupActions();
 	void refreshReportBeholders(Report::ReportInterface* report);
 	void restoreSettings(bool withState = true);
+	void refreshSelectionActions();
 
 private:
 	ObjectModel m_objectModel;
@@ -71,7 +72,7 @@ private:
 	Report::ReportEngine m_reportEngine;
 	QString m_saveFile, m_designerTool;
 	QTabWidget *m_tw;
-	QToolBox * m_tb;
+//	QToolBox * m_tb;
 	PropertyEditor::PropertyEditor *m_pe;
 	Report::DesignerDatasetEditor * m_wdataset;
 	Report::DesignerScriptWidget *m_dscript;
@@ -80,7 +81,7 @@ private:
 //	QObject * m_lastSelectedObject;
 //	QPointF m_lastSelectedObjectPos;
 	QMenu	m_contextMenu;
-	QDockWidget * m_dwToolBox;
+//	QDockWidget * m_dwToolBox;
 	QDockWidget * m_dwPropertyEditor;
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
@@ -96,7 +97,7 @@ private:
 	QLabel messageLabel;
 	QLabel messageGeometryLabel;
 	QLabel messageMousePosLabel;
-	ItemsToolBar * m_tbitems;
+	ItemsToolBar * toolBarItems;
 //	Grid m_grid;
 
 public slots:
@@ -144,6 +145,10 @@ protected slots:
 	void moveSelectionRight();
 	void showStatusBarItemGeometry(QObject*, QRectF rect);
 	void addItem(Report::ItemInterface *, QPointF);
+	void on_actionAlign_Selection_Top_triggered();
+	void on_actionAlign_Selection_Bottom_triggered();
+	void on_actionAlign_Selection_Left_triggered();
+	void on_actionAlign_Selection_Right_triggered();
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 

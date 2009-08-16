@@ -189,6 +189,11 @@
    </attribute>
    <addaction name="actionBandUp"/>
    <addaction name="actionBandDown"/>
+   <addaction name="separator"/>
+   <addaction name="actionAlign_Selection_Top"/>
+   <addaction name="actionAlign_Selection_Bottom"/>
+   <addaction name="actionAlign_Selection_Left"/>
+   <addaction name="actionAlign_Selection_Right"/>
   </widget>
   <action name="actionRemove_page">
    <property name="icon">
@@ -541,6 +546,54 @@
    </property>
    <property name="toolTip">
     <string>Connect last predefined database</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Left">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/band_align_left.png</normaloff>:/images/band_align_left.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Left</string>
+   </property>
+   <property name="toolTip">
+    <string>Press for align selection to left side</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Right">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/band_align_right.png</normaloff>:/images/band_align_right.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Right</string>
+   </property>
+   <property name="toolTip">
+    <string>Press for align selection to right side</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Top">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/band_align_top.png</normaloff>:/images/band_align_top.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Top</string>
+   </property>
+   <property name="toolTip">
+    <string>Press for align selection to top side</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Bottom">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/band_align_bottom.png</normaloff>:/images/band_align_bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Bottom</string>
+   </property>
+   <property name="toolTip">
+    <string>Press for align selection to bottom side</string>
    </property>
   </action>
  </widget>

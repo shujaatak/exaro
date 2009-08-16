@@ -241,7 +241,7 @@ QList<Report::ItemInterface *> Selecter::selectedItems()
     return list;
 }
 
-bool Selecter::haveSelection()
+bool Selecter::hasSelection()
 {
     return (bool)items.count();
 }
@@ -297,4 +297,9 @@ void Selecter::setPos(QPointF pos)
 	 connect ( m_guide , SIGNAL (geometryChanged(QObject*,QRectF)), this, SLOT (guideGeometryChanged(QObject*,QRectF)) );
 //     m_boundingRect.setTopLeft( m_boundingRect.topLeft() + dp );
 	 needRectRefresh = true;
+}
+
+int Selecter::selectedItemsCount()
+{
+    return items.count();
 }
