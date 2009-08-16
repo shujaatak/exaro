@@ -69,7 +69,6 @@ void Message::show(QString str, int sec)
 	dynamic_cast<QLabel *>(m_monitor)->setText( str );
     }
 
-
     timer->start( sec * 1000 );
 }
 

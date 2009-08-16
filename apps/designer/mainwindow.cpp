@@ -68,12 +68,12 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	setUnifiedTitleAndToolBarOnMac( true );
 #endif
 
-	m_tb = new QToolBox( this );
-	m_dwToolBox = new QDockWidget( tr( "Tool Box" ) , this );
-	m_dwToolBox->setObjectName( "Tool Box" );
-	m_dwToolBox->setWidget( m_tb );
-	m_dwToolBox->setAllowedAreas( Qt::AllDockWidgetAreas );
-	addDockWidget( Qt::LeftDockWidgetArea, m_dwToolBox );
+//	m_tb = new QToolBox( this );
+//	m_dwToolBox = new QDockWidget( tr( "Tool Box" ) , this );
+//	m_dwToolBox->setObjectName( "Tool Box" );
+//	m_dwToolBox->setWidget( m_tb );
+//	m_dwToolBox->setAllowedAreas( Qt::AllDockWidgetAreas );
+//	addDockWidget( Qt::LeftDockWidgetArea, m_dwToolBox );
 
 	m_pe = new PropertyEditor::PropertyEditor( this );
 	m_dwPropertyEditor = new QDockWidget( tr( "Property Editor" ) , this );
@@ -189,36 +189,36 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_nameValidator->setRootObject( m_report );
 	m_saveFile = "";
 
-	for ( int i = 0;i < m_reportEngine.items().uniqueKeys().size();i++ )
-	{
-		m_tb->addItem( new QListWidget( this ), m_reportEngine.items().uniqueKeys()[i] );
-		m_tb->setCurrentIndex( m_tb->count() - 1 );
+//	for ( int i = 0;i < m_reportEngine.items().uniqueKeys().size();i++ )
+//	{
+//		m_tb->addItem( new QListWidget( this ), m_reportEngine.items().uniqueKeys()[i] );
+//		m_tb->setCurrentIndex( m_tb->count() - 1 );
+//
+//		for ( int j = 0;j < m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] ).count();j++ )
+//			new QListWidgetItem( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] )[j]->toolBoxIcon(), m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] )[j]->toolBoxText(), dynamic_cast<QListWidget*>( m_tb->currentWidget() ) );
+//
+//		dynamic_cast<QListWidget*>( m_tb->currentWidget() )->setCurrentRow( -1 );
+//	}
 
-		for ( int j = 0;j < m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] ).count();j++ )
-			new QListWidgetItem( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] )[j]->toolBoxIcon(), m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[i] )[j]->toolBoxText(), dynamic_cast<QListWidget*>( m_tb->currentWidget() ) );
+//	m_tb->setCurrentIndex( 0 );
 
-		dynamic_cast<QListWidget*>( m_tb->currentWidget() )->setCurrentRow( -1 );
-	}
-
-	m_tb->setCurrentIndex( 0 );
-//	m_lastSelectedObject = 0;
 	if ( 2 == qApp->arguments().size() )
 		openReport( qApp->arguments()[1] );
 
-	m_dwToolBox->toggleViewAction()->setIcon( QIcon( ":/images/button_tool.png" ) );
+//	m_dwToolBox->toggleViewAction()->setIcon( QIcon( ":/images/button_tool.png" ) );
 	m_dwPropertyEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_property.png" ) );
 	m_dwUiEditor->toggleViewAction()->setIcon( QIcon( ":/images/button_uieditor.png" ) );
 	m_dwObjectInspector->toggleViewAction()->setIcon( QIcon( ":/images/button_objects.png" ) );
 	m_dwUndoView->toggleViewAction()->setIcon( QIcon( ":/images/button_commands.png" ) );
 
 	menuTools->addSeparator();
-	menuTools->addAction( m_dwToolBox->toggleViewAction() );
+//	menuTools->addAction( m_dwToolBox->toggleViewAction() );
 	menuTools->addAction( m_dwPropertyEditor->toggleViewAction() );
 	menuTools->addAction( m_dwUiEditor->toggleViewAction() );
 	menuTools->addAction( m_dwObjectInspector->toggleViewAction() );
 	menuTools->addAction( m_dwUndoView->toggleViewAction() );
 
-	toolBarTools->addAction( m_dwToolBox->toggleViewAction() );
+//	toolBarTools->addAction( m_dwToolBox->toggleViewAction() );
 	toolBarTools->addAction( m_dwPropertyEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwUiEditor->toggleViewAction() );
 	toolBarTools->addAction( m_dwObjectInspector->toggleViewAction() );
@@ -266,8 +266,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	messageGeometryLabel.setFrameStyle(QFrame::Panel | QFrame::Sunken);
 	//	messageLabel.setPalette(
 
-	m_tbitems = new ItemsToolBar(this);
-	this->addToolBar(Qt::LeftToolBarArea, m_tbitems );
+	toolBarItems = new ItemsToolBar(this);
+	this->addToolBar(Qt::LeftToolBarArea, toolBarItems );
 
 	setupActions();
 	restoreSettings();
@@ -287,12 +287,14 @@ void mainWindow::restoreSettings(bool withState)
 	toolBar->setIconSize( QSize( 16, 16 ) );
 	toolBarTools->setIconSize( QSize( 16, 16 ) );
 	toolBarProperties->setIconSize( QSize( 16, 16 ) );
+	toolBarItems->setIconSize( QSize( 16, 16 ) );
     }
     else
     {
 	toolBar->setIconSize( QSize( w, h ) );
 	toolBarTools->setIconSize( QSize( w, h ) );
 	toolBarProperties->setIconSize( QSize( w, h ) );
+	toolBarItems->setIconSize( QSize( w, h ) );
     }
     if (withState)
     {
@@ -933,10 +935,10 @@ void mainWindow::zoomOriginal()
 
 void mainWindow::keyReleaseEvent( QKeyEvent * event )
 {
-	QListWidget * lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
-
-	if ( lw )
-		lw-> setCurrentRow( -1 );
+//	QListWidget * lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
+//
+//	if ( lw )
+//		lw-> setCurrentRow( -1 );
 
 	QMainWindow::keyReleaseEvent( event );
 }
@@ -948,6 +950,7 @@ void mainWindow::newPage()
 
 	QUndoCommand *newPageCommand = new NewPageCommand( this );
 	undoStack->push( newPageCommand );
+	refreshSelectionActions();
 }
 
 void mainWindow::selectLastObject()
@@ -961,7 +964,7 @@ void mainWindow::selectLastObject()
 
 void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifiers  key )
 {
-    QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
+//    QListWidget* lw = dynamic_cast<QListWidget*>( m_tb->currentWidget() );
 
     PageView* page = dynamic_cast<PageView*>( m_tw->widget( m_tw->currentIndex() ) );
 
@@ -982,19 +985,20 @@ void mainWindow::itemSelected( QObject *object, QPointF pos, Qt::KeyboardModifie
 		selectObject( item, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
 
 	    selectObject( selObj, m_objectModel.index( 0, 0 ), QItemSelectionModel::Select );
+	    refreshSelectionActions();
 	}
 
-    if ( lw && lw->currentRow() > -1 )
-    {
-	const char* needClassName = ( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()] )[lw->currentRow()] )->metaObject()->className();
-	QPointF absPos = dynamic_cast<Report::PageInterface*>( object ) ? pos : dynamic_cast<Report::ItemInterface*>( object )->mapToScene( pos );
-	Report::PageInterface* page = dynamic_cast<Report::PageInterface*>( object ) ? dynamic_cast<Report::PageInterface*>( object )
-				      : dynamic_cast<Report::PageInterface*>( dynamic_cast<Report::ItemInterface*>( object )->scene() );
-
-	QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
-	undoStack->push( addCommand );
-	lw->setCurrentRow( -1 );
-    }
+//    if ( lw && lw->currentRow() > -1 )
+//    {
+//	const char* needClassName = ( m_reportEngine.items().values( m_reportEngine.items().uniqueKeys()[m_tb->currentIndex()] )[lw->currentRow()] )->metaObject()->className();
+//	QPointF absPos = dynamic_cast<Report::PageInterface*>( object ) ? pos : dynamic_cast<Report::ItemInterface*>( object )->mapToScene( pos );
+//	Report::PageInterface* page = dynamic_cast<Report::PageInterface*>( object ) ? dynamic_cast<Report::PageInterface*>( object )
+//				      : dynamic_cast<Report::PageInterface*>( dynamic_cast<Report::ItemInterface*>( object )->scene() );
+//
+//	QUndoCommand *addCommand = new AddCommand( page, needClassName, absPos, this );
+//	undoStack->push( addCommand );
+//	lw->setCurrentRow( -1 );
+//    }
 
     if (dynamic_cast<Report::ItemInterface*>(page->selecter()->activeObject()))
     {
@@ -1013,6 +1017,7 @@ void mainWindow::removePage()
 	return;
     QUndoCommand *removePageCommand = new RemovePageCommand( this, m_tw->currentIndex() );
     undoStack->push( removePageCommand );
+    refreshSelectionActions();
 }
 
 void mainWindow::currentChanged( int index )
@@ -1026,6 +1031,8 @@ void mainWindow::currentChanged( int index )
     actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
     if (dynamic_cast<PageView*>( m_tw->widget( index )))
 	m_pe->setObject( dynamic_cast<Report::PageInterface*>( dynamic_cast<PageView*>( m_tw->widget( index ) )->scene() ) );
+
+    refreshSelectionActions();
 }
 
 void mainWindow::itemMoved( QObject *movedItem, QPointF movedFromPosition )
@@ -1247,4 +1254,113 @@ void mainWindow::addItem(Report::ItemInterface * item , QPointF pos)
 
     QUndoCommand *addCommand = new AddCommand( page, item->metaObject()->className(), pos , this );
     undoStack->push( addCommand );
+}
+
+void mainWindow::refreshSelectionActions()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    bool b = view->selecter()->selectedItemsCount() > 1;
+
+    actionAlign_Selection_Bottom->setEnabled( b );
+    actionAlign_Selection_Top->setEnabled( b );
+    actionAlign_Selection_Left->setEnabled( b );
+    actionAlign_Selection_Right->setEnabled( b );
+}
+
+void mainWindow::on_actionAlign_Selection_Top_triggered()
+{
+    qDebug("alignSelectionTop_triggered()");
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+    qreal d = 99999999;
+
+    foreach (Report::ItemInterface * item, list)
+	if (item->geometry().top() < d )
+	    d = item->geometry().top();
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+    {
+	QRectF rect = item->geometry();
+	rect.moveTop( d );
+	item->setGeometry( rect );
+    }
+    view->afterOuterChanging();
+}
+
+void mainWindow::on_actionAlign_Selection_Bottom_triggered()
+{
+    qDebug("alignSelectionBottom_triggered()");
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+    qreal d = 0;
+    foreach (Report::ItemInterface * item, list)
+	if (item->geometry().bottom() >d)
+	    d = item->geometry().bottom();
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+    {
+	QRectF rect = item->geometry();
+	rect.moveBottom( d );
+	item->setGeometry( rect );
+    }
+    view->afterOuterChanging();
+}
+
+void mainWindow::on_actionAlign_Selection_Left_triggered()
+{
+    qDebug("alignSelectionLeft_triggered()");
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+    qreal d = 99999999;
+
+    foreach (Report::ItemInterface * item, list)
+	if (item->geometry().left() < d )
+	    d = item->geometry().left();
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+    {
+	QRectF rect = item->geometry();
+	rect.moveLeft( d );
+	item->setGeometry( rect );
+    }
+    view->afterOuterChanging();
+}
+
+void mainWindow::on_actionAlign_Selection_Right_triggered()
+{
+    qDebug("alignSelectionRight_triggered()");
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+    qreal d = 0;
+    foreach (Report::ItemInterface * item, list)
+	if (item->geometry().right() >d)
+	    d = item->geometry().right();
+
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+    {
+	QRectF rect = item->geometry();
+	rect.moveRight( d );
+	item->setGeometry( rect );
+    }
+    view->afterOuterChanging();
 }

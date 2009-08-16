@@ -52,8 +52,6 @@ PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt
 	m_range(QRect()),
 	m_mw(mw)
 {
-//    setAcceptDrops(true);
-
     m_view = new GraphicsView ( m_scene, this );
     m_view->centerOn( 0, 0 );
     m_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -107,13 +105,6 @@ PageView::~PageView()
 //	delete m_selecter;
 //    }
 }
-/*
-void PageView::resizeEvent ( QResizeEvent * event )
-{
-    m_horizontalRuler->setRulerLength(m_scene->width() * m_zoom * _scale );
-    m_verticalRuler->setRulerLength(  m_scene->height()* m_zoom * _scale );
-}
-*/
 
 void PageView::sceneDestroyed()
 {
@@ -181,7 +172,7 @@ bool PageView::hasSelection()
 {
     if (!m_selecter)
 	return false;
-    return m_selecter->haveSelection()?true:false;
+    return m_selecter->hasSelection()?true:false;
 }
 
 QList<Report::ItemInterface *> PageView::selectedItems()
@@ -240,7 +231,6 @@ void GraphicsView::mouseMoveEvent ( QMouseEvent * e )
 
 void GraphicsView::dragEnterEvent(QDragEnterEvent *event)
 {
-//    qDebug("GraphicsView::dragEnterEvent - mimetext = %s",qPrintable(event->mimeData()->text()));
     event->acceptProposedAction();
     m_canDrop = false;
     m_lastCheckedItem = 0;
@@ -259,8 +249,6 @@ void GraphicsView::dragMoveEvent(QDragMoveEvent *event)
     // speedup
     if (m_lastCheckedItem == this->itemAt( event->pos() ) )
 	return;
-
-    qDebug("is Band = %i", (int)dynamic_cast<Report::BandInterface*>(m_dragSourceItem));
 
     bool itemExist = false;
     foreach (QGraphicsItem* item, items(event->pos()))

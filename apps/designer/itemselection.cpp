@@ -36,7 +36,7 @@
 #define BOUND 0
 #define SIZE 20
 
-#define DEBUG
+//#define DEBUG
 
 // ----------- ItemHandle
 ItemHandle::ItemHandle(Type t, ItemSelection *s) :
@@ -674,16 +674,25 @@ Report::ItemInterface *ItemSelection::item() const
 void ItemSelection::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 #ifndef DEBUG
+    /*
     painter->save();
+
+    painter->translate( boundingRect().center());
+    painter->rotate( m_item->rotate() );
+    painter->translate( -m_item->boundingRect().center());
+
     m_item->paint(painter, option, widget);
     foreach (QGraphicsItem * item, m_item->childItems())
     {
 	painter->save();
-	painter->translate( item->pos() );
+//	painter->translate( item->boundingRect().center());
+//	painter->rotate( item->rotate() );
+//	painter->translate( -item->boundingRect().center());
 	item->paint(painter, option, widget);
 	painter->restore();
     }
     painter->restore();
+    */
 #else
     painter->save();
     painter->setOpacity( 0.3 );

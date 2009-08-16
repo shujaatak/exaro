@@ -69,8 +69,9 @@ public:
     void restore();
     void reset();
 
-    bool haveSelection();
+    bool hasSelection();
     QList<Report::ItemInterface *> selectedItems();
+    int selectedItemsCount();
     
 private:
     void append (Report::ItemInterface * item);

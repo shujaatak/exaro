@@ -1,4 +1,35 @@
+/***************************************************************************
+ *   This file is part of the eXaro project                                *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
+ **                   GNU General Public License Usage                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+ *                                                                         *
+ **                  GNU Lesser General Public License                    **
+ *                                                                         *
+ *   This library is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU Lesser General Public License as        *
+ *   published by the Free Software Foundation, either version 3 of the    *
+ *   License, or (at your option) any later version.                       *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library.                                      *
+ *   If not, see <http://www.gnu.org/licenses/>.                           *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ ****************************************************************************/
 #include "itemstoolbar.h"
+#include <QTimer>
+
+#define ICONSDIR "../share/icons/"
 
 ItemsToolBar::ItemsToolBar(mainWindow * mw)
 	:QToolBar( mw )
@@ -6,11 +37,21 @@ ItemsToolBar::ItemsToolBar(mainWindow * mw)
 {
     m_mw = mw;
     this->setObjectName("ItemsToolBar");
-
+    this->setWindowTitle(tr ("Items ToolBar"));
+    QString category;
+    bool allIconsExists = true;
     for ( int i = 0;i < m_mw->m_reportEngine.items().uniqueKeys().size();i++ )
     {
-	QAction * newItem = new QAction(/*QIcon(":/images/edit.png"),*/ m_mw->m_reportEngine.items().uniqueKeys()[i], this );
+	category = m_mw->m_reportEngine.items().uniqueKeys()[i];
+	QIcon icon(QCoreApplication::applicationDirPath () + "/" + ICONSDIR + "/exaro_" + category + ".png");
+
+	QAction * newItem = new QAction(icon, category, this );
+
+	if (icon.isNull())
+	    allIconsExists = false;
+
 	addAction( newItem );
+
 	Menu * menu = new Menu( this );
 	for ( int j = 0;j < m_mw->m_reportEngine.items().values( m_mw->m_reportEngine.items().uniqueKeys()[i] ).count();j++ )
 	{
@@ -19,7 +60,11 @@ ItemsToolBar::ItemsToolBar(mainWindow * mw)
 
 	menus[newItem->text()] = menu;
 	connect ( newItem, SIGNAL(hovered()), this, SLOT(showItems()) );
+	connect ( newItem, SIGNAL(triggered()), this, SLOT(showItems()) );
     }
+
+    if (!allIconsExists)
+	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
 }
 
@@ -29,8 +74,24 @@ void ItemsToolBar::showItems()
 	m_menu->hide();
     m_menu = menus[((QAction*)sender())->text()];
 
-    m_menu->popup(  mapToGlobal( QPoint(this->geometry().width() - 5, widgetForAction((QAction*)sender())->pos().y()) ) );
+    if (orientation () == Qt::Vertical)
+	m_menu->popup(  mapToGlobal( QPoint(this->geometry().width() , widgetForAction((QAction*)sender())->pos().y()) ) );
+    else
+	m_menu->popup(  mapToGlobal( QPoint(widgetForAction((QAction*)sender())->pos().x(), this->geometry().height()) ) );
 }
+
+void ItemsToolBar::leaveEvent ( QEvent * event )
+{
+    QToolBar::leaveEvent(event);
+    QTimer::singleShot(100,this,SLOT(tryHideMenu()));
+}
+
+void ItemsToolBar::tryHideMenu()
+{
+    if (!m_menu->underMouse())
+	m_menu->hide();
+}
+
 
 
 //-------------Menu
@@ -51,8 +112,6 @@ void Menu::mousePressEvent ( QMouseEvent * event )
     QAction * action = actionAt ( event->pos());
     if (!action)
 	return;
-//    qDebug("mouse pos = %i x %i", event->pos().x(), event->pos().y());
-//    qDebug("item = %s", qPrintable((actionAt ( event->pos()))->text()) );
 
     if (event->button() == Qt::LeftButton) {
 
