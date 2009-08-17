@@ -194,6 +194,9 @@
    <addaction name="actionAlign_Selection_Bottom"/>
    <addaction name="actionAlign_Selection_Left"/>
    <addaction name="actionAlign_Selection_Right"/>
+   <addaction name="separator"/>
+   <addaction name="actionAlign_Selection_Height"/>
+   <addaction name="actionAlign_Selection_Width"/>
   </widget>
   <action name="actionRemove_page">
    <property name="icon">
@@ -594,6 +597,27 @@
    </property>
    <property name="toolTip">
     <string>Press for align selection to bottom side</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Height">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/align_height.png</normaloff>:/images/align_height.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Height</string>
+   </property>
+  </action>
+  <action name="actionAlign_Selection_Width">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/align_weight.png</normaloff>:/images/align_weight.png</iconset>
+   </property>
+   <property name="text">
+    <string>Align Selection Width</string>
+   </property>
+   <property name="toolTip">
+    <string>Align Selection Width</string>
    </property>
   </action>
  </widget>
