@@ -149,6 +149,8 @@ protected slots:
 	void on_actionAlign_Selection_Bottom_triggered();
 	void on_actionAlign_Selection_Left_triggered();
 	void on_actionAlign_Selection_Right_triggered();
+	void on_actionAlign_Selection_Height_triggered();
+	void on_actionAlign_Selection_Width_triggered();
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 

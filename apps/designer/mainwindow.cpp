@@ -1268,6 +1268,8 @@ void mainWindow::refreshSelectionActions()
     actionAlign_Selection_Top->setEnabled( b );
     actionAlign_Selection_Left->setEnabled( b );
     actionAlign_Selection_Right->setEnabled( b );
+    actionAlign_Selection_Width->setEnabled( b );
+    actionAlign_Selection_Height->setEnabled( b );
 }
 
 void mainWindow::on_actionAlign_Selection_Top_triggered()
@@ -1362,5 +1364,50 @@ void mainWindow::on_actionAlign_Selection_Right_triggered()
 	rect.moveRight( d );
 	item->setGeometry( rect );
     }
+    view->afterOuterChanging();
+}
+
+void mainWindow::on_actionAlign_Selection_Height_triggered()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+
+    Report::ItemInterface * aItem = dynamic_cast<Report::ItemInterface *>(view->activeObject());
+    if (!aItem)
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+	if (item != aItem)
+	{
+	    QRectF rect = item->geometry();
+	    rect.setHeight( aItem->geometry().height() );
+	    item->setGeometry( rect );
+	}
+    view->afterOuterChanging();
+}
+
+void mainWindow::on_actionAlign_Selection_Width_triggered()
+{
+    PageView* view = dynamic_cast<PageView*>(m_tw->widget( m_tw->currentIndex()) );
+    if (!view )
+	return;
+    Report::ItemInterface * aItem = dynamic_cast<Report::ItemInterface * >(view->activeObject());
+    if (!aItem)
+	return;
+
+    QList<Report::ItemInterface *> list = view->selectedItems();
+
+    view->beforeOuterChanging();
+    foreach (Report::ItemInterface * item, list)
+	if (item != aItem)
+	{
+	    QRectF rect = item->geometry();
+	    rect.setWidth( aItem->geometry().width() );
+	    item->setGeometry( rect );
+	}
     view->afterOuterChanging();
 }
