@@ -1,3 +1,10 @@
+exaro (2.0.0) unstable; urgency=low
+
+  * 2.0.0 Release
+  * Added arabic and French translations thanks to thannks to Mohamed Tahar BADI.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Tue, 18 Aug 2009 21:39:39 +0300
+
 exaro (1.90.2) unstable; urgency=low
 
   * fix .so version.
