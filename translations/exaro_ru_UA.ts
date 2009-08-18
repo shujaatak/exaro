@@ -30,12 +30,12 @@
 <context>
     <name>Barcode</name>
     <message>
-        <location filename="../plugins/report/items/barcode/barcode.cpp" line="315"/>
+        <location filename="../plugins/report/items/barcode/barcode.cpp" line="502"/>
         <source>Barcode</source>
         <translation>Штрихкод</translation>
     </message>
     <message>
-        <location filename="../plugins/report/items/barcode/barcode.cpp" line="320"/>
+        <location filename="../plugins/report/items/barcode/barcode.cpp" line="507"/>
         <source>Shapes</source>
         <translation>Фигуры</translation>
     </message>
@@ -469,62 +469,62 @@
 <context>
     <name>OptionsDialog</name>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="13"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="14"/>
         <source>Options</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="19"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="20"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="25"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="26"/>
         <source>designer:</source>
         <translation>дизайнер:</translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="35"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="36"/>
         <source>Browse...</source>
         <translation>Выбрать...</translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="45"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="46"/>
         <source>Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="53"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="60"/>
         <source>Icon size:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="64"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="77"/>
         <source>12 x 12</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="69"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="82"/>
         <source>16 x 16</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="74"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="87"/>
         <source>24 x 24</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="79"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="92"/>
         <source>32 x 32</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="84"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="97"/>
         <source>48 x 48</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/optionsdialog.ui" line="100"/>
+        <location filename="../apps/designer/optionsdialog.ui" line="113"/>
         <source>Draw selection border around items</source>
         <translation>Рисовать рамку для выделения</translation>
     </message>
@@ -930,7 +930,7 @@
         <translation>Импорт расширений: %1</translation>
     </message>
     <message>
-        <location filename="../libs/report/reportinterface.cpp" line="498"/>
+        <location filename="../libs/report/reportinterface.cpp" line="496"/>
         <source>Can&apos;t create temporary files</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
@@ -1166,35 +1166,34 @@ p, li { white-space: pre-wrap; }
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;BogDan Vatra&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;bogdan@licentia.eu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;bogdan@licentia.eu&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Alexander Mikhalov&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;alexmi3@rambler.ru&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Florina Nacu&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;nacuflorina@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enrico Detoma&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  &lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;  Developer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../apps/designer/aboutdialog.ui" line="152"/>
-        <source>License</source>
-        <translation>Лицензионное соглашение</translation>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;BogDan Vatra&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  &lt;/span&gt;&lt;a href=&quot;bogdan@licentia.eu&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;bogdan@licentia.eu&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  Developer.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Alexander Mikhalov&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  &lt;/span&gt;&lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;alexmi3@rambler.ru&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  Developer.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Florina Nacu&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  &lt;/span&gt;&lt;a href=&quot;alexmi3@rambler.ru&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;nacuflorina@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  Developer.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Enrico Detoma&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  &lt;/span&gt;&lt;a href=&quot;enrico.detoma@poste.it&quot;&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;enrico.detoma@poste.it&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  Developer.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:9pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Mohamed Tahar BADI&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;  &lt;/span&gt;&lt;span style=&quot; font-size:9pt; text-decoration: underline; color:#0000ff;&quot;&gt;mtbadi39@yahoo.fr&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt; color:#000000;&quot;&gt;  Arabic and Frech translations.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="../apps/designer/aboutdialog.ui" line="158"/>
+        <location filename="../apps/designer/aboutdialog.ui" line="162"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;(c) 2008-2009&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt; eXaro &lt;/span&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;team http://exaro.sourceforge.net/&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;GNU GENERAL PUBLIC LICENSE&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;Version 3, 29 June 2007 &lt;/span&gt;&lt;/p&gt;
@@ -1307,7 +1306,12 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;section17&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;1&lt;/span&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;7. Interpretation of Sections 15 and 16. &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee. &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;END OF TERMS AND CONDITIONS &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../apps/designer/aboutdialog.ui" line="156"/>
+        <source>License</source>
+        <translation>Лицензионное соглашение</translation>
     </message>
     <message>
         <location filename="../apps/designer/aboutdialog.ui" line="33"/>
@@ -1705,65 +1709,65 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>mainWindow</name>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="362"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="363"/>
         <source>eXaro</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="362"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="363"/>
         <source>Save changes ?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="519"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="520"/>
         <source>Report name</source>
         <translation>Имя отчета</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="310"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="628"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="311"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="629"/>
         <location filename="../apps/designer/mainwindow.ui" line="219"/>
         <source>Open report</source>
         <translation>Открыть отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="629"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="630"/>
         <source>Report (*.bdrt)</source>
         <translation>Отчет (*.bdrt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="725"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="735"/>
         <location filename="../apps/designer/mainwindow.ui" line="231"/>
         <source>Save report</source>
         <translation>Сохранить отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="72"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="73"/>
         <source>Tool Box</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="78"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="79"/>
         <source>Property Editor</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="86"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="87"/>
         <source>Query Editor</source>
         <translation>Запросы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="93"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="94"/>
         <source>Ui Editor</source>
         <translation>Формы</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="107"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="108"/>
         <source>Object Inspector</source>
         <translation>Объекты</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="210"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="211"/>
         <source>report name</source>
         <translation>Имя отчета</translation>
     </message>
@@ -2015,47 +2019,47 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="64"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="526"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="65"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="527"/>
         <source>eXaro v%1 unsaved report</source>
         <translation>eXaro v%1 несохраненный отчет</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="115"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="119"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="116"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="120"/>
         <source>Command List</source>
         <translation>Список комманд</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="288"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="289"/>
         <source>Save item</source>
         <translation>Сохранить элемент</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="289"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="311"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="290"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="312"/>
         <source>Item (*.bdrti)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="618"/>
-        <location filename="../apps/designer/mainwindow.cpp" line="736"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="619"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="747"/>
         <source>eXaro v%1 (%2)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="643"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="644"/>
         <location filename="../apps/designer/mainwindow.ui" line="483"/>
         <source>Open template</source>
         <translation>Открыть шаблон</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="644"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="645"/>
         <source>Exaro Template (*.extt)</source>
         <translation>Шаблон eXaro (*.extt)</translation>
     </message>
     <message>
-        <location filename="../apps/designer/mainwindow.cpp" line="726"/>
+        <location filename="../apps/designer/mainwindow.cpp" line="736"/>
         <source>Report (*.bdrt);;Template (*.extt)</source>
         <translation>Отчет (*.bdrt);;Шаблон (*.extt)</translation>
     </message>
