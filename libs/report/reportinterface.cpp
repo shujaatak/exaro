@@ -487,8 +487,6 @@ bool ReportInterface::exec()
 	if (m_scriptEngine->hasUncaughtException())
 		QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(m_scriptEngine->uncaughtExceptionLineNumber()), m_scriptEngine->uncaughtException().toString());
 
-
-
 	emit beforeExec();
 
 	m_doc.appendChild(m_doc.createComment("Author '" + author() + "'"));
