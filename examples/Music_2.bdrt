@@ -49,7 +49,7 @@
                     <properties>
                         <objectName type="QString" >detailheader_1</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,602,1798,288</geometry>
+                        <geometry type="QRectF" >150,572,1798,288</geometry>
                         <frame type="int" >0</frame>
                         <frameBorder type="QPen" >
                             <brush type="QBrush" >
@@ -72,6 +72,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >0</order>
                         <indentationTop type="int" >10</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -86,7 +87,7 @@
                             <properties>
                                 <objectName type="QString" >memo_5</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >125.354,2.0833,1252,97</geometry>
+                                <geometry type="QRectF" >26.1422,20.4559,1252,97</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -109,6 +110,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >[query_0."artist"]</text>
@@ -120,7 +122,7 @@
                             <properties>
                                 <objectName type="QString" >picture</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >1390.99,11.1656,397,269</geometry>
+                                <geometry type="QRectF" >1372.61,7.49109,397,269</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -143,6 +145,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <howToPaintPicture type="int" >3</howToPaintPicture>
                                 <drawTextType type="int" >0</drawTextType>
                                 <pixmap type="QPixmap" ></pixmap>
@@ -160,7 +163,7 @@
                     <properties>
                         <objectName type="QString" >detailheader</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,980,1798,79</geometry>
+                        <geometry type="QRectF" >150,940,1798,79</geometry>
                         <frame type="int" >8</frame>
                         <frameBorder type="QPen" >
                             <brush type="QBrush" >
@@ -183,6 +186,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >1</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -220,6 +224,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >[query_0."album"]</text>
@@ -233,7 +238,7 @@
                     <properties>
                         <objectName type="QString" >detail</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,1149,1798,57</geometry>
+                        <geometry type="QRectF" >150,1099,1798,57</geometry>
                         <frame type="int" >0</frame>
                         <frameBorder type="QPen" >
                             <brush type="QBrush" >
@@ -256,6 +261,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >2</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -272,7 +278,7 @@
                             <properties>
                                 <objectName type="QString" >memo_3</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >2.74173,5.88747,55,52.3841</geometry>
+                                <geometry type="QRectF" >2.74173,5.88747,55,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -295,6 +301,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >[_line_]</text>
@@ -306,7 +313,7 @@
                             <properties>
                                 <objectName type="QString" >memo_13</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >59.4371,9.27157,709,45</geometry>
+                                <geometry type="QRectF" >59.4371,5.88747,709,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -329,6 +336,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >[query_0."title"]</text>
@@ -340,7 +348,7 @@
                             <properties>
                                 <objectName type="QString" >memo_14</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >774.662,8.88746,121,47</geometry>
+                                <geometry type="QRectF" >774.662,5.88747,121,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -363,6 +371,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >[query_0."lenght"]</text>
@@ -376,7 +385,7 @@
                     <properties>
                         <objectName type="QString" >detailfooter</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,1296,1798,58</geometry>
+                        <geometry type="QRectF" >150,1236,1798,58</geometry>
                         <frame type="int" >0</frame>
                         <frameBorder type="QPen" >
                             <brush type="QBrush" >
@@ -399,6 +408,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >3</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -410,7 +420,7 @@
                             <properties>
                                 <objectName type="QString" >memo_4</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >122.188,8.9375,708,45</geometry>
+                                <geometry type="QRectF" >122.188,6.13,708,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -433,6 +443,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Quantity = [count()]</text>
@@ -444,7 +455,7 @@
                             <properties>
                                 <objectName type="QString" >memo_6</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >1076.19,7.9375,713,45</geometry>
+                                <geometry type="QRectF" >1233.54,6.13,713,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -467,6 +478,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Total lenght [sum(query_0."lenght")]</text>
@@ -480,7 +492,7 @@
                     <properties>
                         <objectName type="QString" >title</objectName>
                         <enabled type="bool" >true</enabled>
-                        <geometry type="QRectF" >150,292,1798,220</geometry>
+                        <geometry type="QRectF" >150,282,1798,210</geometry>
                         <frame type="int" >0</frame>
                         <frameBorder type="QPen" >
                             <brush type="QBrush" >
@@ -503,6 +515,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >0</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -535,6 +548,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >132</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Songs</text>
@@ -546,7 +560,7 @@
                             <properties>
                                 <objectName type="QString" >rectangle</objectName>
                                 <enabled type="bool" >true</enabled>
-                                <geometry type="QRectF" >10.02,153.91,1777,59</geometry>
+                                <geometry type="QRectF" >10.02,153.91,1777,50</geometry>
                                 <frame type="int" >0</frame>
                                 <frameBorder type="QPen" >
                                     <brush type="QBrush" >
@@ -569,6 +583,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <xRadius type="double" >0</xRadius>
                                 <yRadius type="double" >0</yRadius>
                             </properties>
@@ -577,7 +592,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_12</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >2.1875,3.188,75,48</geometry>
+                                        <geometry type="QRectF" >2.1875,2.911,75,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -600,6 +615,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >№</text>
@@ -611,7 +627,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_1</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >80.23,2.911,672,50</geometry>
+                                        <geometry type="QRectF" >80.23,2.911,672,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -634,6 +650,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >Title</text>
@@ -645,7 +662,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_2</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >749.63,7.306,129,48.9375</geometry>
+                                        <geometry type="QRectF" >749.63,2.911,129,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -668,6 +685,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >Lenght</text>
@@ -679,7 +697,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_11</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >880.188,7.188,75,48</geometry>
+                                        <geometry type="QRectF" >880.188,2.911,75,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -702,6 +720,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >№</text>
@@ -713,7 +732,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_7</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >958.229,6.911,672,50</geometry>
+                                        <geometry type="QRectF" >958.229,2.911,672,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -736,6 +755,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >Title</text>
@@ -747,7 +767,7 @@
                                     <properties>
                                         <objectName type="QString" >memo_8</objectName>
                                         <enabled type="bool" >true</enabled>
-                                        <geometry type="QRectF" >1631.63,6.306,129,48.9375</geometry>
+                                        <geometry type="QRectF" >1631.63,2.911,129,40</geometry>
                                         <frame type="int" >0</frame>
                                         <frameBorder type="QPen" >
                                             <brush type="QBrush" >
@@ -770,6 +790,7 @@
                                         </backgroundBrush>
                                         <backgroundMode type="int" >0</backgroundMode>
                                         <opacity type="int" >100</opacity>
+                                        <rotate type="double" >0</rotate>
                                         <textFlags type="int" >0</textFlags>
                                         <sizePolicy type="int" >0</sizePolicy>
                                         <text type="QString" >Lenght</text>
@@ -808,6 +829,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >0</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -840,6 +862,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Music Cathalog</text>
@@ -876,6 +899,7 @@
                         </backgroundBrush>
                         <backgroundMode type="int" >0</backgroundMode>
                         <opacity type="int" >100</opacity>
+                        <rotate type="double" >0</rotate>
                         <order type="int" >0</order>
                         <indentationTop type="int" >0</indentationTop>
                         <indentationBottom type="int" >0</indentationBottom>
@@ -908,6 +932,7 @@
                                 </backgroundBrush>
                                 <backgroundMode type="int" >0</backgroundMode>
                                 <opacity type="int" >100</opacity>
+                                <rotate type="double" >0</rotate>
                                 <textFlags type="int" >0</textFlags>
                                 <sizePolicy type="int" >0</sizePolicy>
                                 <text type="QString" >Page №[_page_]</text>

@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -50,6 +52,7 @@ class KONTAMABIL_EXPORTS ReportEngine : public QObject
 
 public:
 	ReportEngine(QObject *parent = 0);
+	ReportEngine(QString &pluginPath, QObject *parent=0 );
 
 	~ReportEngine();
 
@@ -119,6 +122,7 @@ public:
 	DataSet * findDatasetByClassName(QString name);
 private:
 	static bool cmpBands(BandInterface * b1, BandInterface * b2);
+	void initMe(QString pluginPath);
 
 private:
 	QMap<QString, ItemInterface*> m_items;

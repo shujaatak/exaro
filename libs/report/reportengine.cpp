@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -38,7 +40,7 @@
 #include <QMetaProperty>
 #include <QBuffer>
 
-#include <limits.h>
+//#include <limits.h>
 
 #include "reportengine.h"
 #include "globals.h"
@@ -49,80 +51,87 @@ namespace Report
 ReportEngine::ReportEngine(QObject *parent)
 		: QObject(parent)
 {
-	QDir pluginsDir = QDir(qApp->applicationDirPath());
+    qDebug("ReportEngine CONSTRUCTOR 1");
+    initMe(QString(EXARO_PLUGINS_PATH));
+}
+
+ReportEngine::ReportEngine(QString &pluginPath, QObject *parent )
+		: QObject(parent)
+{
+    qDebug("ReportEngine CONSTRUCTOR 2");
+    initMe(pluginPath);
+}
+
+void ReportEngine::initMe(QString pluginPath)
+{
+    QDir pluginsDir = pluginPath;
 
 #if defined(Q_OS_WIN)
 
-	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-		pluginsDir.cdUp();
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+	pluginsDir.cdUp();
 
 #elif defined(Q_OS_MAC)
-	if (pluginsDir.dirName() == "MacOS")
-	{
-		pluginsDir.cdUp();
-		pluginsDir.cd("PlugIns");
-	}
-
-#else
-	pluginsDir.cd("../lib");
+    if (pluginsDir.dirName() == "MacOS")
+    {
+	pluginsDir.cdUp();
+	pluginsDir.cd("PlugIns");
+    }
 
 #endif
-	pluginsDir.cd("report");
 
-	QStringList paths=qApp->libraryPaths();
+    qDebug("Loading plugins...");
 
-	paths<<pluginsDir.absolutePath();
+    pluginsDir.cd("report");
+    qDebug("Plugins path = %s", qPrintable(pluginsDir.absolutePath()));
 
-	qApp->setLibraryPaths(paths);
-
-	qDebug("Plugins path = %s", qPrintable(pluginsDir.absolutePath()));
-	qDebug("Loading plugins...");
-
-	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+    foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+    {
+	qDebug("   %s", qPrintable(fileName));
+	QPluginLoader loader;
+	loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+	loader.setFileName(pluginsDir.absoluteFilePath(fileName));
+	if (!loader.load())
 	{
-	    qDebug("   %s", qPrintable(fileName));
-		QPluginLoader loader;
-		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
-		loader.setFileName(pluginsDir.absoluteFilePath(fileName));
-		if (!loader.load())
-		{
-			qCritical() << loader.errorString();
-			continue;
-		}
-		QObject *plugin = loader.instance();
-
-		if (plugin)
-		{
-			if (dynamic_cast<Report::ItemInterface*>(plugin))
-				m_items.insertMulti((dynamic_cast<Report::ItemInterface*>(plugin))->toolBoxGroup(), dynamic_cast<Report::ItemInterface*>(plugin));
-
-			if (dynamic_cast<Report::PageInterface*>(plugin))
-				m_pages.push_back(dynamic_cast<Report::PageInterface*>(plugin));
-
-			if (dynamic_cast<Report::ReportInterface*>(plugin))
-				m_reports.push_back(dynamic_cast<Report::ReportInterface*>(plugin));
-		}
-		else
-			qCritical() << plugin << loader.errorString();
+	    qCritical() << loader.errorString();
+	    continue;
 	}
-	qDebug("Done!");
+	QObject *plugin = loader.instance();
 
-	pluginsDir.cd("dataset");
-
-	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+	if (plugin)
 	{
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
-		QObject *plugin = loader.instance();
-		if (plugin)
-		{
-			if (dynamic_cast<DataSet*>(plugin))
-				m_datasets.push_back(dynamic_cast<DataSet*>(plugin));
-		}
-		else
-			qCritical() << plugin << loader.errorString();
-	}
+	    if (dynamic_cast<Report::ItemInterface*>(plugin))
+		m_items.insertMulti((dynamic_cast<Report::ItemInterface*>(plugin))->toolBoxGroup(), dynamic_cast<Report::ItemInterface*>(plugin));
 
+	    if (dynamic_cast<Report::PageInterface*>(plugin))
+		m_pages.push_back(dynamic_cast<Report::PageInterface*>(plugin));
+
+	    if (dynamic_cast<Report::ReportInterface*>(plugin))
+		m_reports.push_back(dynamic_cast<Report::ReportInterface*>(plugin));
+	}
+	else
+	    qCritical() << plugin << loader.errorString();
+    }
+
+    pluginsDir.cd("dataset");
+    qDebug("Plugins path = %s", qPrintable(pluginsDir.absolutePath()));
+
+    foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+    {
+	qDebug("   %s", qPrintable(fileName));
+	QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+	loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+	QObject *plugin = loader.instance();
+	if (plugin)
+	{
+	    if (dynamic_cast<DataSet*>(plugin))
+		m_datasets.push_back(dynamic_cast<DataSet*>(plugin));
+	}
+	else
+	    qCritical() << plugin << loader.errorString();
+    }
+    qDebug("Done!");
+    qDebug("ReportEngine initMe done!");
 }
 
 bool ReportEngine::saveReport(const QString & fileName, ReportInterface * report)

@@ -7,12 +7,13 @@ set(Report_SRCS bandinterface.cpp    iteminterface.cpp     paintdevice.cpp    re
 		exportinterface.cpp  pagegraphicsitem.cpp  previewdialog.cpp  searchwidget.cpp
 		globals.cpp          pageinterface.cpp     previewwidget.cpp  dataset.cpp dataseteditor.cpp
 		fakepaintdevice.cpp  fakepaintengine.cpp   layoutmanager.cpp
-		paintinterface.cpp	processdialog.cpp bandtitle.cpp grid.cpp message.cpp)
+		paintinterface.cpp	processdialog.cpp bandtitle.cpp grid.cpp message.cpp exaro.cpp)
 QT4_WRAP_CPP(Report_SRCS bandinterface.h    iteminterface.h    reportengine.h
 			reportinterface.h
 			exportinterface.h  previewdialog.h  searchwidget.h
 			pageinterface.h     previewwidget.h  dataset.h   dataseteditor.h
-			layoutmanager.h	paintinterface.h processdialog.h bandtitle.h grid.h message.h)
+			layoutmanager.h	paintinterface.h processdialog.h bandtitle.h grid.h message.h
+			exaro.h)
 QT4_WRAP_UI(Report_SRCS processdialog.ui) 			
 QT4_ADD_RESOURCES(Report_SRCS preview.qrc)
 
@@ -26,4 +27,4 @@ set_target_properties(Report PROPERTIES	VERSION ${EXARO_VERSION}
 target_link_libraries(Report ${QT_LIBRARIES})
 
 install(TARGETS Report ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES bandinterface.h exportinterface.h  iteminterface.h  pageinterface.h  reportinterface.h reportengine.h globals.h dataset.h layoutmanager.h DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
+install(FILES bandinterface.h exportinterface.h  iteminterface.h  pageinterface.h  reportinterface.h reportengine.h globals.h dataset.h layoutmanager.h grid.h paintinterface.h bandtitle.h processdialog.h paintdevice.h exaro.h DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)

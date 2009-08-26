@@ -25,6 +25,10 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" )
 
 include(SetPaths.cmake)
 
+add_definitions (-DEXARO_PLUGINS_PATH=\"${LIB_INSTALL_DIR}\")
+
+
+
 if(UNIX)
   find_package(SharedMimeInfo REQUIRED)
 endif(UNIX)

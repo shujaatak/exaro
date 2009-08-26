@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -69,42 +71,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 {
 	initMyResource();
 
-
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
-	QDir pluginsDir = QDir(qApp->applicationDirPath());
-
-#if defined(Q_OS_WIN)
-
-	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-		pluginsDir.cdUp();
-
-#elif defined(Q_OS_MAC)
-	if (pluginsDir.dirName() == "MacOS")
-	{
-		pluginsDir.cdUp();
-		pluginsDir.cdUp();
-		pluginsDir.cdUp();
-	}
-
-#else
-	pluginsDir.cd("../lib");
-#endif
-	pluginsDir.cd("report/export");
-
-	foreach(QString fileName, pluginsDir.entryList(QDir::Files))
-	{
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
-		QObject *plugin = loader.instance();
-		if (plugin)
-		{
-			if (dynamic_cast<ExportInterface*>(plugin))
-				m_exports.push_back(dynamic_cast<ExportInterface*>(plugin));
-		}
-		else
-			qCritical() << plugin << loader.errorString();
-	}
-
 
 	m_searchWidget = new SearchWidget(this);
 	m_searchWidget->setIconSize(QSize(32, 32));
@@ -118,7 +85,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	toolbar->setFloatable( false );
 
 	m_previewWidget = new PreviewWidget(this);
-
 
 	QAction * act = toolbar->addAction(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
 	act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
@@ -218,37 +184,77 @@ PreviewDialog::~PreviewDialog()
 	delete m_doc;
 }
 
+void PreviewDialog::loadExportPlugins()
+{
+    QDir pluginsDir = m_pluginsPath.isEmpty()? QString(EXARO_PLUGINS_PATH) : m_pluginsPath;
+
+#if defined(Q_OS_WIN)
+
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+	pluginsDir.cdUp();
+
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS")
+    {
+	pluginsDir.cdUp();
+	pluginsDir.cdUp();
+	pluginsDir.cdUp();
+    }
+#endif
+
+    qDebug("Loading plugins...");
+    pluginsDir.cd("report/export");
+
+    qDebug("Plugins path = %s", qPrintable(pluginsDir.absolutePath()));
+
+    foreach(QString fileName, pluginsDir.entryList(QDir::Files))
+    {
+	qDebug("   %s", qPrintable(fileName));
+	QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+	loader.setLoadHints(QLibrary::ResolveAllSymbolsHint|QLibrary::ExportExternalSymbolsHint);
+	QObject *plugin = loader.instance();
+	if (plugin)
+	{
+	    if (dynamic_cast<ExportInterface*>(plugin))
+		m_exports.push_back(dynamic_cast<ExportInterface*>(plugin));
+	}
+	else
+	    qCritical() << plugin << loader.errorString();
+    }
+}
+
 void PreviewDialog::exportDocument()
 {
-	QDialog d;
-	QVBoxLayout * vlayout = new QVBoxLayout;
-	QListWidget * list = new QListWidget(&d);
+    loadExportPlugins();
+    QDialog d;
+    QVBoxLayout * vlayout = new QVBoxLayout;
+    QListWidget * list = new QListWidget(&d);
 
-	foreach(ExportInterface* ei, m_exports)
-		list->addItem(ei->exportFormat());
+    foreach(ExportInterface* ei, m_exports)
+	list->addItem(ei->exportFormat());
 
-	if (list->count())
-		list->item(0)->setSelected(true);
+    if (list->count())
+	list->item(0)->setSelected(true);
 
-	vlayout->addWidget(new QLabel(tr("Please select an export format"), &d));
-	vlayout->addWidget(list);
-	QHBoxLayout * hlayout = new QHBoxLayout;
-	hlayout->addStretch(10);
+    vlayout->addWidget(new QLabel(tr("Please select an export format"), &d));
+    vlayout->addWidget(list);
+    QHBoxLayout * hlayout = new QHBoxLayout;
+    hlayout->addStretch(10);
 
-	QPushButton * but = new QPushButton(tr("&Ok"), &d);
-	connect(but, SIGNAL(pressed()), &d, SLOT(accept()));
-	hlayout->addWidget(but);
+    QPushButton * but = new QPushButton(tr("&Ok"), &d);
+    connect(but, SIGNAL(pressed()), &d, SLOT(accept()));
+    hlayout->addWidget(but);
 
-	but = new QPushButton(tr("&Cancel"), &d);
-	connect(but, SIGNAL(pressed()), &d, SLOT(reject()));
-	hlayout->addWidget(but);
+    but = new QPushButton(tr("&Cancel"), &d);
+    connect(but, SIGNAL(pressed()), &d, SLOT(reject()));
+    hlayout->addWidget(but);
 
-	vlayout->addLayout(hlayout);
-	d.setLayout(vlayout);
-	d.setWindowTitle(tr("Export format"));
+    vlayout->addLayout(hlayout);
+    d.setLayout(vlayout);
+    d.setWindowTitle(tr("Export format"));
 
-	if (d.exec() == QDialog::Accepted && list->currentRow() != -1)
-		m_exports[list->currentRow()]->execExport(m_exportNode);
+    if (d.exec() == QDialog::Accepted && list->currentRow() != -1)
+	m_exports[list->currentRow()]->execExport(m_exportNode);
 }
 
 void PreviewDialog::setVisible(bool visible)
