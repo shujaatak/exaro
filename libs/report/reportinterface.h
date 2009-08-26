@@ -166,7 +166,6 @@ public:
 	 * @param queries report queries
 	 */
 	void setDatasets(QList<DataSet *> datasets);
-//	void setQueries(QVariantMap queries);
 	void addDataset(DataSet * dataset);
 	
 	/**

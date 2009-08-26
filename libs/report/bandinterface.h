@@ -170,11 +170,6 @@ public:
 	void resetAgregateValues();
 	int agregateCounter();
 
-//	virtual QString joinTo();			// return band to which current is joined
-//	virtual void setJoinTo(QString bandName);	// can be useful in some cases inside band
-//	static BandInterface::TitlePosition titlePosition();
-//	static void setTitlePosition (BandInterface::TitlePosition pos);
-//	Report::BandTitle * title();
 	void showTitle(bool b = true);
 	void hideTitle();
 	QRectF titleGeometry();

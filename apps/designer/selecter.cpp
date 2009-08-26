@@ -250,6 +250,7 @@ void Selecter::reset()
 {
     free();
     m_activeObject = 0;
+    m_guide = 0;
 }
 
 void Selecter::updateSelection()

@@ -285,7 +285,6 @@ void PaintInterface::prepareCurrentPage()
 
 void PaintInterface::postprocessCurrentPage()
 {
-    qDebug("PaintInterface::postprocessCurrentPage()");
     emit closePageBefore();
 
     foreach(BandInterface * band, listTop)

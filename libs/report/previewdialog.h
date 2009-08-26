@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -37,7 +39,7 @@
 
 #include "exportinterface.h"
 
-class QSplashScreen;
+//class QSplashScreen;
 
 namespace Report
 {
@@ -56,6 +58,8 @@ class PreviewDialog : public QDialog
 public:
 	PreviewDialog(QWidget *parent = 0);
 	~PreviewDialog();
+
+	void setPluginsPath(QString pluginsPath);
 	void setExportDocument(QDomNode m_exportNode);
 	void setDocument(QIODevice * docNode);
 	void setVisible(bool visible);
@@ -65,6 +69,7 @@ protected:
 	void accept();
 	void reject();
 	void drawSelection(QGraphicsItem * parent, QRectF & rect);
+	void loadExportPlugins();
 #if 0
 	void switchPaintingSystem();
 #endif
@@ -101,6 +106,7 @@ private:
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
 	bool askBeforeExit;
+	QString m_pluginsPath;
 };
 
 }

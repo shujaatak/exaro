@@ -88,7 +88,7 @@ void ItemsToolBar::leaveEvent ( QEvent * event )
 
 void ItemsToolBar::tryHideMenu()
 {
-    if (!m_menu->underMouse())
+    if ((m_menu) && (!m_menu->underMouse()))
 	m_menu->hide();
 }
 

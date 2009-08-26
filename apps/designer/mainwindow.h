@@ -38,6 +38,7 @@ class NameValidator;
 class QUndoStack;
 class QUndoView;
 class ItemsToolBar;
+class PageView;
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
 {
@@ -72,16 +73,12 @@ private:
 	Report::ReportEngine m_reportEngine;
 	QString m_saveFile, m_designerTool;
 	QTabWidget *m_tw;
-//	QToolBox * m_tb;
 	PropertyEditor::PropertyEditor *m_pe;
 	Report::DesignerDatasetEditor * m_wdataset;
 	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;
-//	QObject * m_lastSelectedObject;
-//	QPointF m_lastSelectedObjectPos;
 	QMenu	m_contextMenu;
-//	QDockWidget * m_dwToolBox;
 	QDockWidget * m_dwPropertyEditor;
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
@@ -98,7 +95,7 @@ private:
 	QLabel messageGeometryLabel;
 	QLabel messageMousePosLabel;
 	ItemsToolBar * toolBarItems;
-//	Grid m_grid;
+	PageView * m_lastView, *m_currentView;
 
 public slots:
 	void selectLastObject();
@@ -127,7 +124,7 @@ protected slots:
 	void paste();
 	void del();
 	void cut();
-	void objectChanged(const QModelIndex & current, const QModelIndex & previous);
+	void objectInspectorObjectChanged(const QModelIndex & current, const QModelIndex & previous);
 	void about();
 	void options();
 	void saveItem();
