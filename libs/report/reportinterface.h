@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -62,6 +64,8 @@ namespace Report
 */
 
 class PaintDevice;
+class PreviewDialog;
+
 class KONTAMABIL_EXPORTS ReportInterface : public QObject
 {
 
@@ -257,6 +261,8 @@ signals:
 	void afterExec();
 
 	void showProcess(QString str);
+
+	void beforePreviewShow(Report::PreviewDialog*);
 protected:
 //	virtual void paintPage();
 //	virtual void paintBand(BandInterface * band);
@@ -291,21 +297,12 @@ private:
 	QString m_name;
 	QString m_author;
 	QString m_script;
-//	QVariantMap m_queries;
 	QVariantMap m_uis;
 	double m_version;
-//	QList<BandInterface *> m_pageHeaderBands;
-//	QList<BandInterface *> m_titleBands;
-//	QList<BandInterface *> m_detailContainerBands;
-//	QList<BandInterface *> m_summaryBands;
-//	QList<BandInterface *> m_pageFooterBands;
-//	QList<BandInterface *> m_pageOverlayBands;
 	QObjectList m_objectList;
 	FunctionValues m_functionValues;
 	ReportValues m_values;
 	qreal m_currentHeight, m_currentTop, m_currentBottom;
-//	PageInterface * m_currentPage;
-//	QSplashScreen m_splashScreen;
 	QSqlDatabase m_sqlDatabase;
 	QStringList m_uiPluginsPaths;
 

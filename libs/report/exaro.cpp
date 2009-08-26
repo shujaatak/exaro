@@ -1,5 +1,25 @@
 #include "exaro.h"
+#include <reportengine.h>
+#include <previewdialog.h>
 
+Exaro * Exaro::m_instance = 0;
+
+Exaro * Exaro::instance()
+{
+    if (!m_instance)
+	m_instance = new Exaro();
+
+    return Exaro::m_instance;
+}
+
+void Exaro::deleteInstance()
+{
+    if (m_instance)
+    {
+	delete m_instance;
+	m_instance = 0;
+    }
+}
 
 Exaro::Exaro(QObject * parent)
 	:QObject(parent)
@@ -20,6 +40,9 @@ void Exaro::initMe()
 {
 //    m_lastReportId = 0;
     m_report = 0;
+    m_iconSize = 0;
+    m_askBeforeExit = 0;
+    m_buttonStyle = Qt::ToolButtonIconOnly;
 }
 
 void Exaro::setDatabase(QSqlDatabase db)
@@ -47,12 +70,30 @@ bool Exaro::show()
     m_report = m_reportEngine->loadReport(m_fileName);
     m_report->setDatabase(m_database);
     m_report->setParent( this );
+//    if (m_iconSize)
+	connect(m_report, SIGNAL(beforePreviewShow(Report::PreviewDialog*)), this, SLOT(beforePreviewShow(Report::PreviewDialog*)) );
+
     m_report->exec();
 }
 
 void Exaro::setFile(QString fileName)
 {
     m_fileName = fileName;
+}
+
+void Exaro::setIconSize(int size)
+{
+    m_iconSize = size;
+}
+
+void Exaro::setToolButtonStyle (Qt::ToolButtonStyle style)
+{
+    m_buttonStyle = style;
+}
+
+void Exaro::setAskBeforeExit(bool b)
+{
+    m_askBeforeExit = b;
 }
 
 QString Exaro::lastError()
@@ -63,6 +104,14 @@ QString Exaro::lastError()
 Report::ReportEngine * Exaro::engine()
 {
     return m_reportEngine;
+}
+
+void Exaro::beforePreviewShow(Report::PreviewDialog* d)
+{
+    qDebug("setup Priveiw");
+    d->setIconSize(m_iconSize);
+    d->setAskBeforeExit( m_askBeforeExit );
+    d->setToolButtonStyle(m_buttonStyle);
 }
 
 /*
