@@ -41,9 +41,9 @@
 
 //class QSplashScreen;
 
+class QToolBar;
 namespace Report
 {
-
 
 class Document;
 class Page;
@@ -64,6 +64,10 @@ public:
 	void setDocument(QIODevice * docNode);
 	void setVisible(bool visible);
 	void setSpaceBetweenPages(int spaceBetweenPages=50);
+
+	void setIconSize(int s);
+	void setToolButtonStyle (Qt::ToolButtonStyle style);
+	void setAskBeforeExit(bool b);
 
 protected:
 	void accept();
@@ -89,6 +93,7 @@ signals:
 	void textNotFound();
 
 private:
+	QToolBar * toolbar;
 	QSpinBox * m_zoomSpinBox;
 	QDomNode m_exportNode;
 	QIODevice * m_docDevice;

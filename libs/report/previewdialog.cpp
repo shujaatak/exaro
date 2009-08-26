@@ -78,7 +78,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	m_searchWidget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	m_searchWidget->hide();
 
-	QToolBar * toolbar = new QToolBar(this);
+	toolbar = new QToolBar(this);
 	toolbar->setIconSize(QSize(32, 32));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
@@ -535,6 +535,23 @@ void PreviewDialog::reject()
     }
     else
 	QDialog::reject();
+}
+
+void PreviewDialog::setIconSize(int s)
+{
+    toolbar->setIconSize(QSize(s,s));
+    m_searchWidget->setIconSize(QSize(s,s));
+}
+
+void PreviewDialog::setToolButtonStyle (Qt::ToolButtonStyle style)
+{
+    toolbar->setToolButtonStyle(style);
+    m_searchWidget->setToolButtonStyle(style);
+}
+
+void PreviewDialog::setAskBeforeExit(bool b)
+{
+    askBeforeExit = b;
 }
 
 }

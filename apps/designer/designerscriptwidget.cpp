@@ -20,6 +20,7 @@
 
 #include "designerscriptwidget.h"
 #include "scriptsyntaxhighlighter.h"
+#include "editor/scriptedit.h"
 
 namespace Report
 {
@@ -30,10 +31,11 @@ DesignerScriptWidget::DesignerScriptWidget(QWidget* parent)
 	//setWindowTitle(tr("Script editor"));
 	//resize(602, 399);
 	gridLayout = new QGridLayout(this);
-	plainTextEdit = new QPlainTextEdit(this);
+//	plainTextEdit = new QPlainTextEdit(this);
+	textEdit = new ScriptEdit( this );
 	//QToolBar * tb = new QToolBar(this);
 	//gridLayout->addWidget(tb, 0, 0, 1, 1);
-	gridLayout->addWidget(plainTextEdit, 1, 0, 1, 1);
+	gridLayout->addWidget(textEdit, 1, 0, 1, 1);
 	//horizontalLayout = new QHBoxLayout();
 	//horizontalSpacer = new QSpacerItem(178, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
 	//horizontalLayout->addItem(horizontalSpacer);
@@ -76,24 +78,27 @@ DesignerScriptWidget::DesignerScriptWidget(QWidget* parent)
 	connect(m_undoAction, SIGNAL(triggered()), plainTextEdit, SLOT(undo()));
 	connect(m_redoAction, SIGNAL(triggered()), plainTextEdit, SLOT(redo()));
 */
-	m_syntax = new ScriptSyntaxHighlighter(plainTextEdit->document());
+//	m_syntax = new ScriptSyntaxHighlighter(textEdit->document());
+
+//	UserVariableChacker * m_varChecker = new UserVariableChacker (this);
+//	m_varChecker->setDocument(plainTextEdit->document());
 
 }
 
 QString DesignerScriptWidget::text()
 {
-	return plainTextEdit->toPlainText();
+	return textEdit->toPlainText();
 }
 
 void DesignerScriptWidget::setText(const QString & string)
 {
-	plainTextEdit->setPlainText(string);
+	textEdit->setPlainText(string);
 }
 
 bool DesignerScriptWidget::isValid()
 {
 	QScriptEngine se(this);
-	return se.canEvaluate(plainTextEdit->toPlainText());
+	return se.canEvaluate(textEdit->toPlainText());
 }
 
 /*

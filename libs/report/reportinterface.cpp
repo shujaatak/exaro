@@ -2,6 +2,8 @@
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2008 by BogDan Vatra                                    *
  *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexander                              *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -231,11 +233,9 @@ void ReportInterface::previewFinished()
 	PreviewDialog d;
 	d.setDocument(pdf_file);
 	d.setExportDocument(m_exportNode);
-//	m_splashScreen.finish(&d);
+	emit beforePreviewShow(&d);
 	d.exec();
     }
-//    else
-//	m_splashScreen.finish(0);
     m_doc.clear();
     delete m_scriptEngine;
     m_scriptEngine=0;
