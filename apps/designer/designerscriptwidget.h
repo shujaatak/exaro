@@ -43,9 +43,6 @@ public:
 
 	bool isValid();
 
-//protected:
-//	void accept();
-
 private slots:
 	void validate();
 
@@ -67,32 +64,6 @@ private:
 	QAction * m_cutAction;
 	ScriptSyntaxHighlighter * m_syntax;
 };
-
-/*
-class UserVariableChacker: public QSyntaxHighlighter
-{
-public:
-    UserVariableChacker ( QTextDocument * parent ): QSyntaxHighlighter (parent){}
-    UserVariableChacker  ( QObject * parent ) : QSyntaxHighlighter (parent) {}
-
-protected:
-    void highlightBlock(const QString &text)
-    {
-	QTextCharFormat myClassFormat;
-	myClassFormat.setFontWeight(QFont::Bold);
-	myClassFormat.setForeground(Qt::darkMagenta);
-	QString pattern = "\\$\\w+";
-
-	QRegExp expression(pattern);
-	int index = text.indexOf(expression);
-	while (index >= 0) {
-	    int length = expression.matchedLength();
-	    setFormat(index, length, myClassFormat);
-	    index = text.indexOf(expression, index + length);
-	}
-    }
-};
-*/
 
 }
 #endif
