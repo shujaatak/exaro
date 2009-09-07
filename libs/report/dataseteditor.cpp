@@ -1,7 +1,9 @@
 /***************************************************************************
  *   This file is part of the eXaro project                                *
- *   Copyright (C) 2009 by Alexander Mikhalov  (aka alFoX)                 *
- *              alexmi3@rambler.ru                                         *
+ *   Copyright (C) 2008 by BogDan Vatra                                    *
+ *   bog_dan_ro@yahoo.com                                                  *
+ *   Copyright (C) 2009 by Mikhalov Alexaner                               *
+ *   alexmi3@rambler.ru                                                    *
  **                   GNU General Public License Usage                    **
  *                                                                         *
  *   This library is free software: you can redistribute it and/or modify  *
@@ -37,4 +39,4 @@ DataSetEditor::DataSetEditor(QWidget * parent)
 
 void DataSetEditor::setDataset(Report::DataSet* dtst) {m_dataset = dtst;}
 Report::DataSet * DataSetEditor::dataset() {return m_dataset;}
-void DataSetEditor::sync() {};
+void DataSetEditor::sync() {}

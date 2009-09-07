@@ -40,7 +40,7 @@
 #include <QScriptEngine>
 
 #include "globals.h"
-#include "paintinterface.h"
+//#include "paintinterface.h"
 #include "grid.h"
 
 /** @namespace Report */
@@ -51,8 +51,9 @@ namespace Report
 class SqlQuery;
 class ReportInterface;
 class PaintInterface;
+class DataSet;
 
-class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
+class EXARO_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 	Q_ENUMS(BGMode)
@@ -519,7 +520,7 @@ private:
 	bool m_enabled;
 	QString expBegin, expEnd;	    //expression delimeter for check and execute scripts in text
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(ItemInterface::Frames);
+Q_DECLARE_OPERATORS_FOR_FLAGS(ItemInterface::Frames)
 }
 
 Q_DECLARE_INTERFACE(Report::ItemInterface, "Report.ItemInterface/1.0");

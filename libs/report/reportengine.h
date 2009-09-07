@@ -46,7 +46,7 @@
 namespace Report
 {
 
-class KONTAMABIL_EXPORTS ReportEngine : public QObject
+class EXARO_EXPORTS ReportEngine : public QObject
 {
 	Q_OBJECT
 

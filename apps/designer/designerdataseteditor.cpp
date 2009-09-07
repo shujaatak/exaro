@@ -28,6 +28,8 @@
  ****************************************************************************/
 
 #include <QStackedWidget>
+#include <QMessageBox>
+#include <QInputDialog>
 
 #include "designerdataseteditor.h"
 #include "reportinterface.h"
@@ -110,10 +112,17 @@ void DesignerDatasetEditor::setReport(ReportInterface * report)
 	    currentEditor->setDataset(dtst);
 	    gridLayoutEditors->addWidget( currentEditor );
 	}
+
+//	foreach (QString var, dtst->variables())
+//	    emit addVar(var);
     }
 
     resetConnection();
     refreshButtons();
+
+    if (currentEditor)
+	foreach (QString var, currentEditor->dataset()->variables())
+	    currentVars.append( var );
 }
 
 void DesignerDatasetEditor::resetConnection()
@@ -197,6 +206,7 @@ void DesignerDatasetEditor::on_bDatasetExec_clicked()
     datasetTable->show();
     datasetTable->resizeColumnsToContents();
     datasetTable->resizeRowsToContents();
+    emit refreshVariables();
 }
 
 void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem * current, QListWidgetItem * previous )
@@ -206,8 +216,11 @@ void DesignerDatasetEditor::on_m_listWidget_currentItemChanged ( QListWidgetItem
 	return;
 
     if (previous && currentEditor)
+    {
 	sync();
-//	currentEditor->sync();
+	emit refreshVariables();
+    }
+
 
     DataSet * dtst = m_report->findChild<DataSet *>(current->text());
     Q_ASSERT(dtst);
@@ -329,6 +342,8 @@ void DesignerDatasetEditor::deleteItem()
     }
     else
 	qWarning("Cant find dataset named \'%s\'", qPrintable(m_listWidget->currentItem()->text()));
+
+    emit refreshVariables();
 }
 
 void DesignerDatasetEditor::sync()
@@ -341,5 +356,35 @@ void DesignerDatasetEditor::sync()
     currentEditor->dataset()->setFilterCondition( leCondition->text() );
     currentEditor->dataset()->setFilterColumn( sbFilterColumn->value() ) ;
 }
+
+QStringList DesignerDatasetEditor::variables()
+{
+    QStringList list;
+    foreach (DataSet *dtst, m_report->findChildren<DataSet *>())
+	foreach (QString var, dtst->variables())
+	    if (!list.contains( var ) )
+		list.append( var );
+    return list;
+}
+
+/*
+void DesignerDatasetEditor::refreshVariables()
+{
+    if (!currentEditor)
+	return;
+
+    QStringList list = currentEditor->dataset()->variables();
+
+    for (int i=0; i<currentVars.size(); i++)
+	if (!list.contains(currentVars.at(i)))
+	    emit removeVar(currentVars.at(i));
+
+    for (int i=0; i<list.size(); i++)
+	if (!currentVars.contains(list.at(i)))
+	    emit addVar(list.at(i));
+
+    currentVars = list;
+}
+*/
 
 }

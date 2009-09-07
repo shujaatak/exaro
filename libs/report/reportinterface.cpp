@@ -31,7 +31,6 @@
 
 #include "reportinterface.h"
 #include "pageinterface.h"
-//#include "sqlquery.h"
 
 #include <QBuffer>
 #include <QWidget>
@@ -43,16 +42,18 @@
 #include <QPrintPreviewWidget>
 #include <QSqlField>     
 #include <QMessageBox>
-
 #include <QTemporaryFile>
 #include <QDir>
-#include "paintdevice.h"
+#include <QTimer>
 
+#include "paintdevice.h"
 #include "previewdialog.h"
 #include "globals.h"
-
 #include "paintinterface.h"
+#include "bandinterface.h"
+#include "dataset.h"
 
+#define TIMER_DELAY 2000
 
 static QScriptValue getSetDateFormat(QScriptContext *context, QScriptEngine *engine)
 {
@@ -79,29 +80,40 @@ namespace Report
 ReportInterface::ReportInterface(QObject *parent)
 		: QObject(parent), /*m_printer(0),*/ m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
 {
-	m_reportCanceled = false;
-	paintInterface = 0;
-	processDialog = 0;
-	m_version = 0.0;
+    m_reportCanceled = false;
+    paintInterface = 0;
+    m_version = 0.0;
+
+    processDialog = new ProcessDialog();
+    processDialog->setModal(true);
+    connect(this, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
+
+    processDialogTimer = new QTimer(this);
+    processDialogTimer->setSingleShot( true );
+    connect(processDialogTimer, SIGNAL(timeout()), this, SLOT(timedShowProcess()));
 }
 
 ReportInterface::~ReportInterface()
 {
+    delete processDialog;
+
+    if (paintInterface)
+	delete paintInterface;
 }
 
 
 void ReportInterface::addOrderedBand(QList<BandInterface *> & m_bands, BandInterface * band)
 {
-	int sz = m_bands.size();
-	for (int i = 0;i < m_bands.size();i++)
-		if (m_bands[i]->order() > band->order())
-		{
-			m_bands.insert(i, band);
-			break;
-		}
+    int sz = m_bands.size();
+    for (int i = 0;i < m_bands.size();i++)
+	if (m_bands[i]->order() > band->order())
+	{
+	m_bands.insert(i, band);
+	break;
+    }
 
-	if (sz == m_bands.size())
-		m_bands.push_back(band);
+    if (sz == m_bands.size())
+	m_bands.push_back(band);
 }
 
 
@@ -154,76 +166,85 @@ void ReportInterface::scriptException(const QScriptValue & exception )
 
 bool ReportInterface::exec()
 {
-	m_reportCanceled=false;
+    m_reportCanceled=false;
 
-	if (processDialog) delete processDialog;
-	processDialog = new ProcessDialog();
-	processDialog->setModal(true);
-	connect(this, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
-	processDialog->show();
+    processDialogTimer->start( TIMER_DELAY );
+
+    m_scriptEngine = new QScriptEngine(this);
+    setReportFunction("dateFormat", ::getSetDateFormat,2);
+
+    foreach(QString extention, m_scriptEngine->availableExtensions())
+	if (!m_scriptEngine->importedExtensions().contains(extention))
+	{
+	    emit showProcess(tr("Importing extension: %1").arg(extention));
+	    qApp->processEvents();
+	    m_scriptEngine->importExtension(extention);
+	}
+
+    // prepare datasets
+    foreach(Report::DataSet * dtst, datasets())
+    {
+	m_scriptEngine->globalObject().setProperty(dtst->objectName(), m_scriptEngine->newQObject(dtst), QScriptValue::ReadOnly);
 	qApp->processEvents();
+    }
 
-	m_scriptEngine = new QScriptEngine(this);
-	setReportFunction("dateFormat", ::getSetDateFormat,2);
-	foreach(QString extention, m_scriptEngine->availableExtensions())
-		if (!m_scriptEngine->importedExtensions().contains(extention))
-		{
-			emit showProcess(tr("Importing extension: %1").arg(extention));
-			qApp->processEvents();
-			m_scriptEngine->importExtension(extention);
-		}
+    //prepare uis
+    QUiLoader loader;
+    foreach(QString path, m_uiPluginsPaths)
+    {
+	loader.addPluginPath( path );
+	qApp->processEvents();
+    }
 
-	// prepare queries
-	foreach(Report::DataSet * dtst, datasets())
-	{
-	    m_scriptEngine->globalObject().setProperty(dtst->objectName(), m_scriptEngine->newQObject(dtst), QScriptValue::ReadOnly);
-	    qApp->processEvents();
-	}
+    foreach(QString key, m_uis.keys())
+    {
+	QBuffer buf(this);
+	buf.setData(m_uis[key].toByteArray());
+	buf.open(QBuffer::ReadOnly);
+	QWidget *widget = loader.load(&buf);
+	widget->setObjectName( key );
+	if (widget)
+	    m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
+	else
+	    qDebug("ERROR while making UI!!!");
+	qApp->processEvents();
+    }
 
-	//prepare uis
-	QUiLoader loader;
-	foreach(QString path, m_uiPluginsPaths)
-	{
-	    loader.addPluginPath( path );
-	    qApp->processEvents();
-	}
+    setScriptEngineGlobalVariables();
 
-	foreach(QString key, m_uis.keys())
-	{
-		QBuffer buf(this);
-		buf.setData(m_uis[key].toByteArray());
-		buf.open(QBuffer::ReadOnly);
-		QWidget *widget = loader.load(&buf);
-		if (widget)
-			m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
-		qApp->processEvents();
-	}
+    connect(m_scriptEngine, SIGNAL(signalHandlerException(QScriptValue)), SLOT(scriptException(QScriptValue)));
 
-	setScriptEngineGlobalVariables();
+    QString script = this->script();
+    foreach (QString var, this->scriptVars().keys())
+	script.replace( "$" + var + "$", var);
 
-	connect(m_scriptEngine, SIGNAL(signalHandlerException(QScriptValue)), SLOT(scriptException(QScriptValue)));
+    m_scriptEngine->evaluate(script);
+    if (m_scriptEngine->hasUncaughtException())
+	QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(m_scriptEngine->uncaughtExceptionLineNumber()), m_scriptEngine->uncaughtException().toString());
 
-	m_scriptEngine->evaluate(m_script);
-	if (m_scriptEngine->hasUncaughtException())
-		QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(m_scriptEngine->uncaughtExceptionLineNumber()), m_scriptEngine->uncaughtException().toString());
+    emit beforeExec();
 
-	emit beforeExec();
+    if (paintInterface) delete paintInterface;
+    paintInterface = new PaintInterface(this);
 
-	if (paintInterface) delete paintInterface;
-	paintInterface = new PaintInterface(this);
-	connect(paintInterface, SIGNAL(finished ()), this, SLOT(previewFinished()));
-	connect(paintInterface, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
+    connect(paintInterface, SIGNAL(finished ()), this, SLOT(previewFinished()));
+    connect(paintInterface, SIGNAL(showProcess(QString)), processDialog, SLOT(showProcess(QString)));
 
-	paintInterface->start();
+    m_scriptEngine->globalObject().setProperty("report", m_scriptEngine->newQObject(paintInterface), QScriptValue::ReadOnly);
+
+    paintInterface->start();
+}
+
+void ReportInterface::timedShowProcess()
+{
+    processDialog->show();
+    qApp->processEvents();
 }
 
 void ReportInterface::previewFinished()
 {
-    //paintInterface->deleteLater();
-    delete paintInterface;
-    paintInterface = 0;
-    delete processDialog;
-    processDialog = 0;
+    processDialogTimer->stop();
+    processDialog->hide();
 
     emit afterExec();
 
@@ -237,6 +258,10 @@ void ReportInterface::previewFinished()
 	d.exec();
     }
     m_doc.clear();
+
+    delete paintInterface;
+    paintInterface = 0;
+
     delete m_scriptEngine;
     m_scriptEngine=0;
 //    return !m_reportCanceled;
@@ -375,6 +400,11 @@ void ReportInterface::setReportGlobalValue(QString name, QVariant value, const Q
 	m_values[name]=rv;
 }
 
+ReportInterface::ReportValues * ReportInterface::reportGlobalValues()
+{
+    return & m_values;
+}
+
 void ReportInterface::setReportFunction(const QString & name, const QScriptEngine::FunctionSignature & function, int args, const QScriptValue::PropertyFlags & flags) 
 {
 	FunctionValue fv;
@@ -382,6 +412,15 @@ void ReportInterface::setReportFunction(const QString & name, const QScriptEngin
 	fv.args=args;
 	fv.flags=flags;
 	m_functionValues[name]=fv;
+}
+
+QVariantMap ReportInterface::scriptVars()
+{
+   return m_scriptVars;
+}
+void ReportInterface::setScriptVars(QVariantMap vars)
+{
+    m_scriptVars = vars;
 }
 
 }

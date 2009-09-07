@@ -109,4 +109,6 @@ void DataSet::setFilter ( const int col, const QString & str, Qt::CaseSensitivit
    emit afterSetFilter (col, str);
 }
 
+QStringList  DataSet::variables(){QStringList();}
+
 }

@@ -49,6 +49,8 @@
 #include "grid.h"
 #include "message.h"
 #include "itemstoolbar.h"
+#include "variableseditor.h"
+#include "designerdataseteditor.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -109,6 +111,15 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_dwUndoView->setWidget( undoView );
 	m_dwUndoView->setAllowedAreas( Qt::AllDockWidgetAreas );
 	addDockWidget( Qt::BottomDockWidgetArea, m_dwUndoView );
+
+	m_varsWidget = new VariablesEditor(this);
+
+	m_dwVarsList = new QDockWidget( tr( "Variables List" ), this );
+	m_dwVarsList->setObjectName( "Variables List" );
+	m_dwVarsList->setWidget( m_varsWidget );
+	m_dwVarsList->setAllowedAreas( Qt::AllDockWidgetAreas );
+	addDockWidget( Qt::BottomDockWidgetArea, m_dwVarsList );
+	connect (m_varsWidget, SIGNAL(variableChanged(QString,QString)), this, SLOT(userVariableChanged(QString,QString)) );
 
 	m_tw = new QTabWidget( this );
 	setCentralWidget( m_tw );
@@ -209,9 +220,15 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	m_wdataset = new Report::DesignerDatasetEditor( &m_reportEngine,  m_tw);
 	m_tw->addTab(m_wdataset , tr("Data"));
+	connect ( m_wdataset, SIGNAL( refreshVariables() ), this, SLOT(refreshVariables()) );
+//	connect ( m_wdataset, SIGNAL(addVar(QString)), m_varsWidget, SLOT(addVar(QString)));
+//	connect ( m_wdataset, SIGNAL(removeVar(QString)), m_varsWidget, SLOT(removeVar(QString)));
 
 	m_dscript = new Report::DesignerScriptWidget( m_tw );
 	m_tw->addTab(m_dscript, tr("Script"));
+	connect ( m_dscript, SIGNAL( refreshVariables() ), this, SLOT(refreshVariables()) );
+//	connect ( m_dscript, SIGNAL(addVar(QString)), m_varsWidget, SLOT(addVar(QString)));
+//	connect ( m_dscript, SIGNAL(removeVar(QString)), m_varsWidget, SLOT(removeVar(QString)));
 
 	QAction * selMoveUp = new QAction(this);
 	selMoveUp->setShortcut( QKeySequence (Qt::ALT + Qt::Key_Up) );
@@ -662,6 +679,7 @@ void mainWindow::newReport( bool notAsk )
     undoStack->clear();
     setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
     newPage();
+    refreshVariables();
 }
 
 void mainWindow::connectItem( QObject * obj )
@@ -738,12 +756,16 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 	m_tw->setCurrentIndex(lastTab);
     }
 
+    m_dscript->setText(m_report->script());
+//    m_dscript->setVariables( m_report->scriptVars() );
+
     actionRemove_page->setEnabled( m_tw->count() > STATIC_TABS + 1);
     m_tw->setCurrentIndex( STATIC_TABS );
 
     m_saveFile = report;
     undoStack->clear();
     setWindowTitle( tr( "eXaro v%1 (%2)" ).arg( EXARO_VERSION ).arg(report) );
+    refreshVariables(m_report->scriptVars());
 }
 
 void mainWindow::openReport( bool notAsk)
@@ -862,6 +884,10 @@ void mainWindow::saveReport()
 
     m_wdataset ->sync();
     m_report->setUis( m_dui->uis() );
+
+    m_report->setScript( m_dscript->text() );
+//    m_report->setScriptVars( m_varsWidget->variables() );
+    m_report->setScriptVars( m_varsWidget->varsMap() );
 
     if ( !m_reportEngine.saveReport( m_saveFile, m_report ) )
 	throw( QString( "Can't save the report" ) );
@@ -1398,4 +1424,34 @@ void mainWindow::on_actionAlign_Selection_Width_triggered()
 	    item->setGeometry( rect );
 	}
     m_currentView->afterOuterChanging();
+}
+
+void mainWindow::userVariableChanged(QString var, QString value)
+{
+    qDebug("mainWindow::userVariableChanged");
+    if (!m_report)
+	return;
+
+    m_report->setReportGlobalValue( var , value );
+}
+
+void mainWindow::refreshVariables()
+{
+    qDebug("mainWindow::refreshVariables()");
+    QStringList list;
+
+    foreach (QString var, m_dscript->variables())
+	if (!list.contains(var))
+	    list.append( var );
+
+    foreach (QString var, m_wdataset->variables())
+	if (!list.contains(var))
+	    list.append( var );
+
+   m_varsWidget->setVariables( list );
+}
+
+void mainWindow::refreshVariables(QVariantMap vars)
+{
+   m_varsWidget->setVarsMap( vars );
 }

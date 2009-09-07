@@ -25,7 +25,6 @@
 #include "reportengine.h"
 #include "ui_mainwindow.h"
 #include "propertyeditor.h"
-#include "designerdataseteditor.h"
 #include "designerscriptwidget.h"
 #include "designeruiwidget.h"
 #include "objectmodel.h"
@@ -39,6 +38,12 @@ class QUndoStack;
 class QUndoView;
 class ItemsToolBar;
 class PageView;
+class VariablesEditor;
+
+namespace Report
+{
+    class DesignerDatasetEditor;
+}
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
 {
@@ -78,12 +83,14 @@ private:
 	Report::DesignerScriptWidget *m_dscript;
 	Report::DesignerUiWidget * m_dui;
 	Report::ReportInterface* m_report;
+	VariablesEditor *m_varsWidget;
 	QMenu	m_contextMenu;
 	QDockWidget * m_dwPropertyEditor;
 	QDockWidget * m_dwQueryEditor;
 	QDockWidget * m_dwUiEditor;
 	QDockWidget * m_dwObjectInspector;
 	QDockWidget * m_dwUndoView;
+	QDockWidget * m_dwVarsList;
 	QSignalMapper * m_smTemplate;
 	NameValidator * m_nameValidator;
 	QSignalMapper * m_smReport;
@@ -99,6 +106,7 @@ private:
 
 public slots:
 	void selectLastObject();
+//	void varListChanged(QStringList);
 
 protected slots:
 	void newPage();
@@ -148,6 +156,9 @@ protected slots:
 	void on_actionAlign_Selection_Right_triggered();
 	void on_actionAlign_Selection_Height_triggered();
 	void on_actionAlign_Selection_Width_triggered();
+	void userVariableChanged(QString var, QString value);
+	void refreshVariables();
+	void refreshVariables(QVariantMap vars);
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 

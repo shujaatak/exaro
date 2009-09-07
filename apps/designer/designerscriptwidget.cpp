@@ -16,11 +16,13 @@
 
 #include <QToolBar>
 #include <QScriptEngine>
-#include <QMessageBox>
+#include <QTableWidget>
+#include <QSplitter>
 
 #include "designerscriptwidget.h"
 #include "scriptsyntaxhighlighter.h"
 #include "editor/scriptedit.h"
+#include <message.h>
 
 namespace Report
 {
@@ -29,15 +31,26 @@ DesignerScriptWidget::DesignerScriptWidget(QWidget* parent)
 		: QWidget(parent)
 {
 	gridLayout = new QGridLayout(this);
+//	QSplitter *splitter = new QSplitter(Qt::Vertical, this);
+
 	textEdit = new ScriptEdit( this );
 	QToolBar * tb = new QToolBar(this);
+//	varsWidget = new QTableWidget();
+//	varsWidget->setColumnCount(2);
+//	QStringList h;
+//	h << tr("Variable") << tr ("Value");
+//	varsWidget->setHorizontalHeaderLabels(h);
+
+//	textEdit->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::MinimumExpanding );
+//	varsWidget->setSizePolicy( QSizePolicy::Preferred ,QSizePolicy::Minimum)  ;
+
+//	splitter->addWidget(textEdit);
+//	splitter->addWidget(varsWidget);
+//	splitter->setStretchFactor(0, 1);
+
 	gridLayout->addWidget(tb, 0, 0, 1, 1);
 	gridLayout->addWidget(textEdit, 1, 0, 1, 1);
-	horizontalLayout = new QHBoxLayout();
-	horizontalSpacer = new QSpacerItem(178, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
-	horizontalLayout->addItem(horizontalSpacer);
 
-	gridLayout->addLayout(horizontalLayout, 2, 0, 1, 1);
 	QMetaObject::connectSlotsByName(this);
 
 	m_copyAction = tb->addAction(QIcon(":/images/editcopy.png"), tr("Copy"));
@@ -69,31 +82,36 @@ DesignerScriptWidget::DesignerScriptWidget(QWidget* parent)
 
 	connect(m_undoAction, SIGNAL(triggered()), textEdit , SLOT(undo()));
 	connect(m_redoAction, SIGNAL(triggered()), textEdit , SLOT(redo()));
+
+//	varsWidget->hide();
 }
 
 QString DesignerScriptWidget::text()
 {
-	return textEdit->toPlainText();
+    return textEdit->toPlainText();
 }
 
 void DesignerScriptWidget::setText(const QString & string)
 {
-	textEdit->setPlainText(string);
+    textEdit->setPlainText(string);
 }
 
 bool DesignerScriptWidget::isValid()
 {
-	QScriptEngine se(this);
-	return se.canEvaluate(textEdit->toPlainText());
+    QScriptEngine se(this);
+//     qDebug("Error = ", qPrintable(QScriptEngine::checkSyntax (textEdit->toPlainText()).errorMessage()));
+//    qDebug("script \n %s", qPrintable(textEdit->toPlainText()));
+    return se.canEvaluate(textEdit->toPlainText());
 }
 
 void DesignerScriptWidget::validate()
 {
-	if (isValid())
-		QMessageBox::information(this, tr("Ok"), tr("the script it's ok"), QMessageBox::Ok);
-	else
-		QMessageBox::critical(this, tr("Error"), tr("the script is invalid"), QMessageBox::Ok);
+    if (isValid())
+	Message::instance()->show(tr("the script it's ok"));
+    else
+	Message::instance()->show(tr("the script is invalid"));
 
+    emit refreshVariables();
 }
 
 DesignerScriptWidget::~DesignerScriptWidget()
@@ -101,5 +119,50 @@ DesignerScriptWidget::~DesignerScriptWidget()
 	delete m_syntax;
 }
 
+QStringList DesignerScriptWidget::variables()
+{
+    QStringList list;
+
+    QRegExp rx("\\$(\\w{1,10})\\$");
+    QString str = textEdit->toPlainText();
+    int pos = 0;
+
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+	if (!list.contains(rx.cap(1)) )
+	    list.append(rx.cap(1));
+	pos += rx.matchedLength();
+    }
+
+    return list;
+}
+
+
+/*
+void DesignerScriptWidget::refreshVariables()
+{
+    QStringList list;
+
+    QRegExp rx("\\$(\\w{1,10})\\$");
+    QString str = textEdit->toPlainText();
+    int pos = 0;
+
+    while ((pos = rx.indexIn(str, pos)) != -1) {
+	if (!list.contains(rx.cap(1)) )
+	    list.append(rx.cap(1));
+	pos += rx.matchedLength();
+    }
+
+
+    for (int i=0; i<varList.size(); i++)
+	if (!list.contains(varList.at(i)))
+	    emit removeVar(varList.at(i));
+
+    for (int i=0; i<list.size(); i++)
+	if (!varList.contains(list.at(i)))
+	    emit addVar(list.at(i));
+
+    varList = list;
+}
+*/
 
 }

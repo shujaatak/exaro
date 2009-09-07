@@ -50,7 +50,7 @@ Selecter::~Selecter()
 
 QObject * Selecter::activeObject()
 {
-	return m_activeObject;
+    return m_activeObject;
 }
 
 

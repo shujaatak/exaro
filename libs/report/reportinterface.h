@@ -46,12 +46,10 @@
 #include <QSplashScreen>
 #include <QSqlDatabase>
 
-
-#include "pageinterface.h"
-
-#include "bandinterface.h"
 #include "globals.h"
 #include "processdialog.h"
+
+class QTemporaryFile;
 
 /** \namespace Report */
 namespace Report
@@ -65,15 +63,19 @@ namespace Report
 
 class PaintDevice;
 class PreviewDialog;
+class DataSet;
+class BandInterface;
+class PaintInterface;
 
-class KONTAMABIL_EXPORTS ReportInterface : public QObject
+
+class EXARO_EXPORTS ReportInterface : public QObject
 {
 
 	Q_OBJECT
 	Q_PROPERTY(QString name READ name WRITE setName)
 	Q_PROPERTY(QString author READ author WRITE setAuthor)
 	Q_PROPERTY(QString script READ script WRITE setScript DESIGNABLE false)
-//	Q_PROPERTY(QVariantMap queries READ queries WRITE setQueries DESIGNABLE false)
+	Q_PROPERTY(QVariantMap scriptVars READ scriptVars WRITE setScriptVars DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
 	Q_PROPERTY(int version READ version WRITE setVersion DESIGNABLE false)
 public:
@@ -159,6 +161,17 @@ public:
 	virtual void setScript(const QString & script);
 
 	/**
+	 * Return report script user defined variables
+	 * @return variables list
+	 */
+	virtual QVariantMap scriptVars();
+	/**
+	 * Set report script user defined variables
+	 * @return variables list
+	 */
+	virtual void setScriptVars(QVariantMap vars);
+
+	/**
 	 * Return the report queries
 	 * @return queries
 	 */
@@ -208,6 +221,7 @@ public:
 	 * @param flags value flags
 	 */
 	void setReportGlobalValue(QString name, QVariant value, const QScriptValue::PropertyFlags & flags = QScriptValue::KeepExistingFlags );
+	ReportInterface::ReportValues * reportGlobalValues();
 
 	/**
 	 * Adds a funtion to the engine.
@@ -291,12 +305,14 @@ private:
 private slots:
 	void scriptException(const QScriptValue & exception );
 	void previewFinished();
+	void timedShowProcess();
 
 private:
 	bool m_reportCanceled;
 	QString m_name;
 	QString m_author;
 	QString m_script;
+	QVariantMap m_scriptVars;
 	QVariantMap m_uis;
 	double m_version;
 	QObjectList m_objectList;
@@ -309,6 +325,7 @@ private:
 	PaintInterface * paintInterface;
 	ProcessDialog * processDialog;
 	QTemporaryFile * pdf_file;
+	QTimer * processDialogTimer;
 
 	friend class PaintInterface;
 };

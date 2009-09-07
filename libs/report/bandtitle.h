@@ -34,10 +34,12 @@
 
 #include <QGraphicsItem>
 #include <QString>
-#include <bandinterface.h>
+//#include <bandinterface.h>
 
 namespace Report
 {
+
+class BandInterface;
 
 class BandTitle : public QGraphicsItem
 {
@@ -45,7 +47,7 @@ class BandTitle : public QGraphicsItem
 	BandTitle( BandInterface * parentBand, const QSizeF & size, const QString & text, QGraphicsItem * parent=0 );
 
 	void setSize(QSizeF size);
-	inline const QSizeF & size(){return m_size;};
+	inline const QSizeF & size(){return m_size;}
 	QRectF boundingRect() const;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 	void setCaption(QString str);

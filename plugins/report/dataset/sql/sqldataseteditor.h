@@ -47,6 +47,7 @@ public:
 
     void setDataset(Report::DataSet* dtst);
     void sync();
+//    QStringList variables();
 protected:
     virtual void changeEvent(QEvent *e);
 

@@ -30,21 +30,20 @@
 #ifndef PAINTINTERFACE_H
 #define PAINTINTERFACE_H
 
-#include <QObject>
+#include <QThread>
 #include <QScriptEngine>
 #include <QPainter>
-#include "dataset.h"
+#include "bandinterface.h"
 #include "layoutmanager.h"
-
-#include "pageinterface.h"
-#include "paintdevice.h"
-
 
 namespace Report
 {
 
 class PageInterface;
 class ReportInterface;
+class PaintDevice;
+class DataSet;
+//class BandInterface;
 
 class PaintInterface : public QThread
 {

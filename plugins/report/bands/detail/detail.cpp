@@ -34,6 +34,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include "reportinterface.h"
+#include "paintinterface.h"
 #include "dataset.h"
 #include <qmath.h>
 
@@ -51,7 +52,7 @@ Detail::Detail(QGraphicsItem* parent, QObject* parentObject)
     , m_numColumns(1)
     , m_currentColumn (0)
     , m_datasetFilterColumn (0)
-    , darkRow(false)
+    , darkRow(true) // it be changed to !darkRow in prData()
     , m_isZebra(false)
     , m_columnAlignType(caHorizontal)
     , m_isFakePass (false)
@@ -74,7 +75,7 @@ bool Detail::prInit(Report::PaintInterface * paintInterface)
 	Report::BandInterface * band = this->reportObject()->findChild<Report::BandInterface *>(m_joinTo);
 	if (!band)
 	    return true;
-	connect ( band, SIGNAL (afterPrint(QObject *)) , this, SLOT (joinToSlot(QObject *)) );
+	connect ( band, SIGNAL (afterPrint(QObject *)), this, SLOT (joinToSlot(QObject *)) );
     }
 
     if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
@@ -136,7 +137,7 @@ bool Detail::prReset()
     }
 
     m_currentColumn = 0;
-    darkRow = false;
+    darkRow = true;  // it be changed to !darkRow in prData()
     offsetX = 0;
     _offsetX = 0;
     m_isFakePass = false;
@@ -219,6 +220,7 @@ void Detail::setDatasetFilterColumn(int column)
 
 void Detail::joinToSlot(QObject * item)
 {
+    qDebug("Detail::joinToSlot(%s)", qPrintable(item->objectName()));
     darkRow = false;
     Report::DataSet * dtst = this->m_dataset.isEmpty() ? 0 : this->reportObject()->findChild<Report::DataSet *>(this->m_dataset);
     if (!m_datasetFilter.isEmpty() && !(m_datasetFilterColumn == 0))
@@ -251,21 +253,21 @@ void Detail::joinToSlot(QObject * item)
 
 void Detail::checkCurrentBand(Report::BandInterface* band)
 {
-    qDebug("check band = %s", qPrintable(band->objectName()));
+//    qDebug("check band = %s", qPrintable(band->objectName()));
     if ( (m_numColumns > 1) && (m_columnAlignType == caVertical) )
     {
 	if (m_lastPage == m_paintInterface->currentPageNumber() || (m_lastPage== -1))
 	{
 	    if (m_paintInterface->lastProcessedBand() != this && band == this ) // first detail row
 	    {
-		qDebug("check band range start -----");
+//		qDebug("check band range start -----");
 		cashedData.dsFirst = m_paintInterface->currentDatasetRow();
 		m_isFakePass = true;
-		qDebug("first row = %i", cashedData.dsFirst);
+//		qDebug("first row = %i", cashedData.dsFirst);
 	    }
 	    if (m_paintInterface->lastProcessedBand() == this && band != this)  // last detail row
 	    {
-		qDebug("check band range end -----");
+//		qDebug("check band range end -----");
 		paintVerticalColumns();
 	    }
 	}
@@ -273,11 +275,11 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
 	{
 	    if (band == this)	// new page - so need new block
 	    {
-		qDebug("New Page detected - range begin -----");
+//		qDebug("New Page detected - range begin -----");
 		if (!m_isFakePass)
 		    cashedData.dsFirst = m_paintInterface->currentDatasetRow() ;
 		m_isFakePass = true;
-		qDebug("first row = %i", cashedData.dsFirst);
+//		qDebug("first row = %i", cashedData.dsFirst);
 	    }
 	}
 
@@ -288,7 +290,7 @@ void Detail::checkCurrentBand(Report::BandInterface* band)
 
 void Detail::closePageBefore()
 {
-    qDebug("Detail::closePageBefore()   ===========================");
+//    qDebug("Detail::closePageBefore()   ===========================");
     if (m_isFakePass)
     {
 	paintVerticalColumns();
@@ -301,7 +303,7 @@ void Detail::closePageBefore()
 
 void Detail::paintVerticalColumns()
 {
-    qDebug("Detail::paintVerticalColumns()");
+//    qDebug("Detail::paintVerticalColumns()");
     Report::DataSet* dtst = this->reportObject()->findChild<Report::DataSet*> (m_dataset);
     Q_ASSERT(dtst);
 
@@ -311,13 +313,13 @@ void Detail::paintVerticalColumns()
     m_currentColumn = 0;
 
     int rows = qCeil ((double)cashedData.param.count() / (double)m_numColumns);
-    qDebug("rows = %i, count = %i", rows, cashedData.param.count());
+//    qDebug("rows = %i, count = %i", rows, cashedData.param.count());
     for (int i = 0; i < cashedData.param.count() ; i++)
     {
 	int col = i / rows;
 	int trNum = (i - rows * col) * m_numColumns /*+ col*/;
 	m_currentColumn = col + 1;
-	qDebug("i=%i    currRow = %i   curCol = %i", i, trNum, col);
+//	qDebug("i=%i    currRow = %i   curCol = %i", i, trNum, col);
 	dtst->seek( i + cashedData.dsFirst );
 	m_paintInterface->setDetailNumber(cashedData.param.at(i).lineNum);
 	if (this->prData())
@@ -343,20 +345,12 @@ QRectF Detail::boundingRect() const
 
 void Detail::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-//    QRectF rect = (option->type == QStyleOption::SO_GraphicsItem) ? boundingRect() : option->exposedRect;
-//
-//    setupPainter(painter);
-//
-//    painter->fillRect(rect,painter->brush());
-//
 
-    if ( option->type != QStyleOption::SO_GraphicsItem &&  darkRow && m_currentColumn  <= 1)
+    if ( option->type != QStyleOption::SO_GraphicsItem && m_isZebra && darkRow && m_currentColumn  <= 1)
 	painter->fillRect(rect,QBrush(QColor(0,0,0,20)));
 
     if (option->type == QStyleOption::SO_GraphicsItem)
     {
-//	drawSelection(painter, rect);
-//	drawTitle(tr("Detail"), TitleLeft, Qt::AlignCenter);
 	if (m_numColumns > 1 )
 	{
 	    QPen p(Qt::DashLine);
@@ -366,23 +360,6 @@ void Detail::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option,
 		painter->drawLine(rect.left() + deltaX*i, rect.top(), rect.left() + deltaX*i, rect.bottom() );
 	}
     }
-
-//    adjustRect(rect);
-
-//    if (frame()&DrawLeft)
-//	painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
-//
-//    if (frame()&DrawRight)
-//	painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
-//
-//    if (frame()&DrawTop)
-//	painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
-//
-//    if (frame()&DrawBottom)
-//	painter->drawLine(rect.left(), rect.bottom(), rect.right(), rect.bottom());
-
-//    if (option->type == QStyleOption::SO_GraphicsItem &&  m_currentColumn > 1)
-//	painter->translate((qreal)rect.width() / (qreal)m_numColumns , 0);
 }
 
 bool Detail::prPaint(QPainter * painter, QPointF translate, const QRectF & clipRect)
