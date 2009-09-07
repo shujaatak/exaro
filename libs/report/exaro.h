@@ -30,6 +30,8 @@ public:
     void setIconSize(int size);
     void setAskBeforeExit(bool b);
     void setToolButtonStyle (Qt::ToolButtonStyle style);
+    QStringList variables();
+    void setVar(QString name, QVariant value);
 //    Report::ReportInterface* lastReport();
 
 private:

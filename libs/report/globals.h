@@ -36,12 +36,12 @@
 #include <QPainterPath>
 #ifdef WIN32
 #ifdef LIB_EXPORTS
-#define KONTAMABIL_EXPORTS __declspec(dllexport)
+#define EXARO_EXPORTS __declspec(dllexport)
 #else
-#define KONTAMABIL_EXPORTS __declspec(dllimport)
+#define EXARO_EXPORTS __declspec(dllimport)
 #endif
 #else
-#define KONTAMABIL_EXPORTS
+#define EXARO_EXPORTS
 #endif
 
 //0.1 MM
@@ -50,9 +50,9 @@
 namespace Report
 {
 
-KONTAMABIL_EXPORTS QDomElement variantToDom(QDomDocument * doc, const QString & name, const QVariant & value);
-KONTAMABIL_EXPORTS QVariant domToVariant(const QDomElement & dom);
-KONTAMABIL_EXPORTS bool typeIsNumber(QVariant::Type type);
+EXARO_EXPORTS QDomElement variantToDom(QDomDocument * doc, const QString & name, const QVariant & value);
+EXARO_EXPORTS QVariant domToVariant(const QDomElement & dom);
+EXARO_EXPORTS bool typeIsNumber(QVariant::Type type);
 
 }
 Q_DECLARE_METATYPE(QPainterPath);

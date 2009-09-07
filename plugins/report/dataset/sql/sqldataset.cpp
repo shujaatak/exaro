@@ -93,7 +93,16 @@ void SqlDataset::setText(QString str)
 bool SqlDataset::populate()
 {
     emit beforePopulate();
-    m_model->setQuery(m_queryText);
+    QString script = m_queryText;
+    qDebug("parent = %i", (int)parent());
+    if (dynamic_cast<Report::ReportInterface*> (this->parent()))
+	foreach (QString str, this->variables())
+	{
+	    qDebug("replacing \'%s\'  on \'%s\'", qPrintable(":"+str),
+		   qPrintable(((Report::ReportInterface*)parent())->reportGlobalValues()->value( str ).value.toString()));
+	    script.replace( ":"+str, ((Report::ReportInterface*)parent())->reportGlobalValues()->value( str ).value.toString());
+	}
+    m_model->setQuery(script);
     bool ret = !m_model->lastError().isValid();
     if ( !QSqlDatabase::database().driver()->hasFeature(QSqlDriver::QuerySize))
 	while (m_model->canFetchMore())
@@ -199,6 +208,22 @@ QVariant SqlDataset::lookbackValue(int index) const
 QVariant SqlDataset::lookbackValue(const QString & field) const
 {
     return m_currentRow-1 < 0  ?  m_fmodel->data( m_fmodel->index(m_currentRow - 1, m_model->record().indexOf(field) ) )  : QVariant::Invalid;
+}
+
+QStringList SqlDataset::variables()
+{
+    QStringList list;
+
+    QRegExp rx("\\:(\\w{1,10})");
+    int pos = 0;
+
+    while ((pos = rx.indexIn(m_queryText, pos)) != -1) {
+	if (!list.contains(rx.cap(1)) )
+	    list.append(rx.cap(1));
+	pos += rx.matchedLength();
+    }
+
+    return list;
 }
 
 Q_EXPORT_PLUGIN2(sqlDataset, SqlDataset)

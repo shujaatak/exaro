@@ -37,11 +37,15 @@ class Message: public QObject
 {
     Q_OBJECT
 public:
+    enum MessageType {mNormal, mWarning, mCritical};
+
     Message();
     static Message * instance();
 
     void show( QString str, int sec = 20);
+    void show( MessageType type, QString str, int sec = 20);
     void assignMonitor(QWidget * w);
+
 
 public slots:
     void hide();

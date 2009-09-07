@@ -34,6 +34,7 @@
 #include <dataseteditor.h>
 #include <QtSql>
 #include <QSortFilterProxyModel>
+#include <reportinterface.h>
 
 class SqlDataset : public Report::DataSet
 {
@@ -69,6 +70,7 @@ public:
 
 	QString	    text();
 	void	    setText(QString str);
+	QStringList variables();
 
 private:
 	int m_currentRow;

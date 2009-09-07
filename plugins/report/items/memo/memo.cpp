@@ -36,60 +36,60 @@
 
 inline void initMyResource()
 {
-	Q_INIT_RESOURCE(memo);
+    Q_INIT_RESOURCE(memo);
 }
 
 Memo::Memo(QGraphicsItem* parent, QObject* parentObject) : ItemInterface(parent, parentObject), m_textFlags(0), m_text(tr("Memo item")),m_sizePolicy(None)
 {
-	initMyResource();
-	setWidth(25/UNIT);
-	setHeight(5/UNIT);
-	m_font=QFont("Serif");
-	m_font.setPointSizeF(3.5);
-	m_font.setStyleStrategy(QFont::PreferMatch);
-	m_font.setStyleStrategy(QFont::ForceOutline);
+    initMyResource();
+    setWidth(25/UNIT);
+    setHeight(5/UNIT);
+    m_font=QFont("Serif");
+    m_font.setPointSizeF(3.5);
+    m_font.setStyleStrategy(QFont::PreferMatch);
+    m_font.setStyleStrategy(QFont::ForceOutline);
 }
 
 Memo::SizePolicy Memo::sizePolicy()
 {
-	return m_sizePolicy;
+    return m_sizePolicy;
 }
 void Memo::setSizePolicy(SizePolicy sizePolicy)
 {
-	m_sizePolicy=sizePolicy;
+    m_sizePolicy=sizePolicy;
 }
 
 Memo::TextFlags Memo::textFlags()
 {
-	return m_textFlags;
+    return m_textFlags;
 }
 
 void Memo::setTextFlags(TextFlags textFlags)
 {
-	m_textFlags = textFlags;
-	update();
+    m_textFlags = textFlags;
+    update();
 }
 
 QString Memo::text()
 {
-	return m_text;
+    return m_text;
 }
 
 void Memo::setText(const QString &text)
 {
-	m_text = text;
-	update();
+    m_text = text;
+    update();
 }
 
 QFont Memo::font()
 {
-	return m_font;
+    return m_font;
 }
 
 void Memo::setFont(const QFont & font)
 {
-	m_font = font;
-	update();
+    m_font = font;
+    update();
 }
 
 QColor Memo::textColor()
@@ -106,7 +106,7 @@ void Memo::setTextColor(const QColor & color)
 
 QRectF Memo::boundingRect() const
 {
-	return QRectF(0, 0, width(), height());
+    return QRectF(0, 0, width(), height());
 }
 
 bool Memo::prInit(Report::PaintInterface * paintInterface)
@@ -116,36 +116,36 @@ bool Memo::prInit(Report::PaintInterface * paintInterface)
 
 void Memo::_paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QRectF & rect,  QWidget * /*widget*/)
 {
-	QFont f=font();
-	f.setPixelSize(font().pointSizeF()/UNIT);
-	painter->setFont(f);
+    QFont f=font();
+    f.setPixelSize(font().pointSizeF()/UNIT);
+    painter->setFont(f);
 
-	painter->setPen(m_textColor);
-	if (option->type == QStyleOption::SO_GraphicsItem)
-	    painter->drawText(rect, textFlags(), m_text);
-	else
-	    if (scriptEngine())
-		painter->drawText(rect, textFlags(), processString(m_text));
+    painter->setPen(m_textColor);
+    if (option->type == QStyleOption::SO_GraphicsItem)
+	painter->drawText(rect, textFlags(), m_text);
+    else
+	if (scriptEngine())
+	    painter->drawText(rect, textFlags(), processString(m_text));
 }
 
 QIcon Memo::toolBoxIcon()
 {
-	return QIcon(":/memo.png");
+    return QIcon(":/memo.png");
 };
 
 QString Memo::toolBoxText()
 {
-	return tr("Memo");
+    return tr("Memo");
 }
 
 QString Memo::toolBoxGroup()
 {
-	return tr("Text");
+    return tr("Text");
 }
 
 QObject * Memo::createInstance(QGraphicsItem* parent, QObject* parentObject)
 {
-	return new Memo(parent, parentObject);
+    return new Memo(parent, parentObject);
 }
 
 Q_EXPORT_PLUGIN2(memo, Memo)

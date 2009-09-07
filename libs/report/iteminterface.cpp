@@ -36,9 +36,13 @@
 #include <QSqlField>
 #include <QPainterPath>
 #include <QSettings>
+#include <QStyleOptionGraphicsItem>
 
 #include "iteminterface.h"
+#include "bandinterface.h"
 #include "reportinterface.h"
+#include "pageinterface.h"
+#include "dataset.h"
 
 #define CORNERSIZE 20
 
@@ -495,37 +499,50 @@ bool ItemInterface::stringToField (QString str, QString * query, QString * field
 
 QString ItemInterface::processString(QString str)
 {
-    while (str.contains(expBegin))
+    if (str.contains(expBegin))
     {
-	QString firstPart = str.section(expBegin,0,0);
+	QString cleanPart = str.section(expBegin,0,0);
 	QString secondPart = str.section(expBegin,1);
-	QString insertion = secondPart.section(expEnd,0,0);
+	QString expression = secondPart.section(expEnd,0,0);
 
-	QString fourPart = secondPart.section(expEnd,1);
+	QString uncheckedPart = secondPart.section(expEnd,1);
 
-	insertion = calculateAgregateFunctions(insertion, this);
+	#warning 'TODO: emplement expression validation'
+	expression = calculateAgregateFunctions(expression, this); // only expression func(ds."field";arg) is valid
 
 	QRegExp reField("\\w+\\b*\\.{1}\\\".*\\\"");
 	reField.setMinimal(true);
 
+	bool needEvaluate = false;
+	bool haveField = false;
 	int pos = 0;
-	while ((pos = reField.indexIn(insertion, pos)) != -1)
+	while ((pos = reField.indexIn(expression, pos)) != -1)
 	{
+	    // workaround to prevent calculate string dataset field such as "1998-03-02". It's shown as 1993.
+	    haveField = true;
+	    if (reField.cap(0) != expression)
+		needEvaluate = true;
+
 	    QString dataset = reField.cap(0).section(".",0,0);
 	    QString field = reField.cap(0).section(".",1,1).remove("\"");
-	    insertion.replace(reField.cap(0), datasetField(dataset,field).toString());
+	    expression.replace(reField.cap(0), datasetField(dataset,field).toString());
 	    pos += reField.matchedLength();
 	}
-	
-	QString evaluateStr;
-	#warning 'FIXMI: need optimize checking for script present'
-	if (scriptEngine()->canEvaluate(insertion))
-		evaluateStr = scriptEngine()->evaluate(insertion).toString();
-	if (!scriptEngine()->hasUncaughtException())
-	    insertion = evaluateStr;
-//	else qWarning("QtScript has exeption in:\n%s",qPrintable(evaluateStr));
+	if (!haveField)
+	   needEvaluate = true;
+	qDebug("string = \'%s\'     evaluate = %i", qPrintable(expression), (int)needEvaluate);
 
-	str = firstPart + insertion + fourPart;
+	if (needEvaluate)
+	{
+	    QString evaluateStr;
+	    #warning 'FIXMI: need optimize checking for script present'
+	    if (scriptEngine()->canEvaluate(expression))
+		    evaluateStr = scriptEngine()->evaluate(expression).toString();
+	    if (!scriptEngine()->hasUncaughtException())
+		expression = evaluateStr;
+	    //	else qWarning("QtScript has exeption in:\n%s",qPrintable(evaluateStr));
+	}
+	str = cleanPart + expression + processString(uncheckedPart);
     }
     return str;
 }
@@ -572,28 +589,28 @@ QString ItemInterface::calculateAgregateFunctions(QString str, ItemInterface* it
 
 	if (func == "sum")
 	{
-	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    QString arg = args.contains(";") ? args.section(";",0,0) : args.trimmed(); //first argument
 	    foreach (qreal val, item->agregateValues(arg))
 		result += val;
 	};
 
 	if (func == "avg")
 	{
-	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    QString arg = args.contains(";") ? args.section(";",0,0) : args.trimmed(); //first argument
 	    foreach (qreal val, item->agregateValues(arg))
 		result += val;
 	    result = result / (qreal)item->agregateCounter();
 	};
 	if (func == "min")
 	{
-	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    QString arg = args.contains(";") ? args.section(";",0,0) : args.trimmed(); //first argument
 	    result = INT_MAX;
 	    foreach (qreal val, item->agregateValues(arg))
 		result = qMin(result,val);
 	};
 	if (func == "max")
 	{
-	    QString arg = args.contains(",") ? args.section(",",0,0) : args.trimmed(); //first argument
+	    QString arg = args.contains(";") ? args.section(";",0,0) : args.trimmed(); //first argument
 	    foreach (qreal val, item->agregateValues(arg))
 		result = qMax(result,val);
 	};

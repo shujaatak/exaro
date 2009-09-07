@@ -10,13 +10,15 @@ set(exaro_SRCS aboutdialog.cpp          exaroapplication.cpp  designerscriptwidg
 		designeruitype.cpp       objectmodel.cpp
 		designeruiwidget.cpp     optionsdialog.cpp newdatasetdialog.cpp qruler.cpp qunit.cpp
 		namevalidator.cpp command.cpp pageview.cpp selecter.cpp itemselection.cpp itemstoolbar.cpp
-		editor/textedit.cpp editor/tabsettings.cpp editor/scriptedit.cpp editor/scripthighlighter.cpp)
+		editor/textedit.cpp editor/tabsettings.cpp editor/scriptedit.cpp editor/scripthighlighter.cpp
+		variableseditor.cpp )
 QT4_WRAP_CPP(exaro_SRCS aboutdialog.h          designeruiwidget.h
 			designerpage.h         exaroapplication.h  designerscriptwidget.h
 			designerdataseteditor.h  mainwindow.h        scriptsyntaxhighlighter.h
 			designeruitype.h       objectmodel.h       sqldatabasedialog.h optionsdialog.h
 			namevalidator.h newdatasetdialog.h qruler.h  qunit.h pageview.h selecter.h itemselection.h
-			itemstoolbar.h editor/textedit.h editor/tabsettings.h editor/scriptedit.h editor/scripthighlighter.h)
+			itemstoolbar.h editor/textedit.h editor/tabsettings.h editor/scriptedit.h editor/scripthighlighter.h
+			variableseditor.h)
 QT4_WRAP_UI(exaro_SRCS aboutdialog.ui          designeruitype.ui    mainwindow.ui
 			designerdataseteditor.ui  designeruiwidget.ui  sqldatabasedialog.ui	optionsdialog.ui
 			newdatasetdialog.ui)

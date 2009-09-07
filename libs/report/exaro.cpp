@@ -67,7 +67,7 @@ bool Exaro::show()
 	return false;
     }
 
-    m_report = m_reportEngine->loadReport(m_fileName);
+    //m_report = m_reportEngine->loadReport(m_fileName);
     m_report->setDatabase(m_database);
     m_report->setParent( this );
 //    if (m_iconSize)
@@ -79,6 +79,7 @@ bool Exaro::show()
 void Exaro::setFile(QString fileName)
 {
     m_fileName = fileName;
+    m_report = m_reportEngine->loadReport(m_fileName);
 }
 
 void Exaro::setIconSize(int size)
@@ -112,6 +113,16 @@ void Exaro::beforePreviewShow(Report::PreviewDialog* d)
     d->setIconSize(m_iconSize);
     d->setAskBeforeExit( m_askBeforeExit );
     d->setToolButtonStyle(m_buttonStyle);
+}
+
+QStringList Exaro::variables()
+{
+    return m_report->scriptVars().keys();
+}
+
+void Exaro::setVar(QString name, QVariant value)
+{
+    m_report->setReportGlobalValue(name, value);
 }
 
 /*

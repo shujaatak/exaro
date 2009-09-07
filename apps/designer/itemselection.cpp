@@ -31,6 +31,8 @@
 
 #include <QtGui/QMouseEvent>
 #include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QCursor>
 #include "grid.h"
 
 #define BOUND 0

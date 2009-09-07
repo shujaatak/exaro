@@ -48,7 +48,7 @@ class ItemInterface;
 *
 * This is the base class for all page(s) object(s).
 */
-class KONTAMABIL_EXPORTS PageInterface : public QGraphicsScene
+class EXARO_EXPORTS PageInterface : public QGraphicsScene
 {
 	Q_OBJECT
 

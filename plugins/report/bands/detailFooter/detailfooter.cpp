@@ -33,6 +33,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "detailfooter.h"
+#include "dataset.h"
 
 inline void initMyResource()
 {

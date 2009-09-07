@@ -5,6 +5,7 @@
         <name type="QString" >Имя отчета</name>
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
+        <scriptVars type="QStringList" />
         <uis type="QVariantMap" />
         <version type="int" >3</version>
         <menuGroup type="int" >90</menuGroup>

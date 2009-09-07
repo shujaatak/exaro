@@ -39,6 +39,9 @@ class DataSetEditor;
 
 namespace Report
 {
+
+class ReportInterface;
+    
 class DataSet : public QObject
 {
     Q_OBJECT
@@ -78,6 +81,7 @@ public:
 	void	    setFilterCondition(QString str);
 	int	    filterColumn();
 	void	    setFilterColumn(int col);
+	virtual	QStringList  variables();
 
 signals:
 	void beforeNext();

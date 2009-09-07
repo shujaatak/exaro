@@ -74,3 +74,23 @@ void SqlDatasetEditor::sync()
     dynamic_cast<SqlDataset*> (m_dataset)->setText( m_ui->textEdit->toPlainText());
 }
 
+//QStringList SqlDatasetEditor::variables()
+//{
+//    Q_ASSERT(dtst);
+//    if (! dynamic_cast<SqlDataset*> (m_dataset))
+//	return QStringList();
+//
+//    QStringList list;
+//
+//    QRegExp rx("\\:(\\w{1,10})");
+//    QString str = dynamic_cast<SqlDataset*> (m_dataset)->text();
+//    int pos = 0;
+//
+//    while ((pos = rx.indexIn(str, pos)) != -1) {
+//	if (!list.contains(rx.cap(1)) )
+//	    list.append(rx.cap(1));
+//	pos += rx.matchedLength();
+//    }
+//
+//    return list;
+//}

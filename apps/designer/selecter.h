@@ -102,7 +102,7 @@ private:
 class GraphicsItemGroup: public QGraphicsItemGroup
 {
     protected:
-    void paint ( QPainter * /*painter*/, const QStyleOptionGraphicsItem * /*option*/, QWidget * /*widget*/) {};
+    void paint ( QPainter * /*painter*/, const QStyleOptionGraphicsItem * /*option*/, QWidget * /*widget*/) {}
 };
 
 

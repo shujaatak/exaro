@@ -23,9 +23,11 @@
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSpacerItem>
+#include <QStringList>
 
 class ScriptSyntaxHighlighter;
 class ScriptEdit;
+class QTableWidget;
 
 namespace Report
 {
@@ -42,8 +44,15 @@ public:
 	void setText(const QString & string);
 
 	bool isValid();
+//	void refreshVariables();
+	QStringList variables();
 
-private slots:
+signals:
+//	void removeVar(QString var);
+//	void addVar(QString var);
+	void refreshVariables();
+
+public slots:
 	void validate();
 
 private:
@@ -63,6 +72,7 @@ private:
 	QAction * m_pasteAction;
 	QAction * m_cutAction;
 	ScriptSyntaxHighlighter * m_syntax;
+	QStringList varList;
 };
 
 }

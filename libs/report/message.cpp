@@ -58,6 +58,11 @@ void Message::assignMonitor(QWidget * w)
 
 void Message::show(QString str, int sec)
 {
+    show(mNormal, str, sec);
+}
+
+void Message::show( MessageType type, QString str, int sec)
+{
     if (!m_monitor)
     {
 	qDebug("Message:: %s",qPrintable(str));

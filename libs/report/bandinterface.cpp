@@ -37,6 +37,7 @@
 #include "layoutmanager.h"
 
 #include <limits.h>
+#include "bandtitle.h"
 
 namespace Report
 {

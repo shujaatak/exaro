@@ -30,6 +30,8 @@
  ****************************************************************************/
 
 #include "bandtitle.h"
+#include "bandinterface.h"
+#include <QPainter>
 
 namespace Report
 {

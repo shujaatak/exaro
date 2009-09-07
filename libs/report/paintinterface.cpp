@@ -33,6 +33,7 @@
 #include <paintdevice.h>
 #include "reportinterface.h"
 #include "pageinterface.h"
+#include "dataset.h"
 
 
 using namespace Report;

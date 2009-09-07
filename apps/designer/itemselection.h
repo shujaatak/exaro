@@ -1,8 +1,3 @@
-#ifndef ITEMSELECTION_H
-#define ITEMSELECTION_H
-
-//#include "formeditor_global.h"
-//#include <invisible_widget_p.h>
 /***************************************************************************
  *   This file is part of the eXaro project                                *
  *   Copyright (C) 2009 by Mikhalov Alexaner                               *
@@ -31,11 +26,15 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  ****************************************************************************/
+#ifndef ITEMSELECTION_H
+#define ITEMSELECTION_H
+
 
 #include "iteminterface.h"
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
+#include <QGraphicsItem>
 
 class QMouseEvent;
 class QPaintEvent;
