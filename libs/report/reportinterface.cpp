@@ -137,10 +137,10 @@ void ReportInterface::paintPage(PageInterface * page)
 		}
 	}
 
+	prepareCurrentPage();
 
 	if (!m_detailContainerBands.size())
 	{
-		prepareCurrentPage();
 		foreach(BandInterface * band, m_summaryBands)
 			paintBand(band);
 		paintOverlays();
@@ -152,7 +152,6 @@ void ReportInterface::paintPage(PageInterface * page)
 		QList<BandInterface *> detailHeaders;
 		QList<BandInterface *> details;
 		QList<BandInterface *> detailFooters;
-		prepareCurrentPage();
 
 		m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
 
