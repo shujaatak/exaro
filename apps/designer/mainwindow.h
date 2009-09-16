@@ -43,6 +43,7 @@ class VariablesEditor;
 namespace Report
 {
     class DesignerDatasetEditor;
+    class ItemHelper;
 }
 
 class mainWindow : public QMainWindow, private Ui::mainWindow
@@ -103,6 +104,7 @@ private:
 	QLabel messageMousePosLabel;
 	ItemsToolBar * toolBarItems;
 	PageView * m_lastView, *m_currentView;
+	Report::ItemHelper * m_itemHelper;
 
 public slots:
 	void selectLastObject();
@@ -159,6 +161,8 @@ protected slots:
 	void userVariableChanged(QString var, QString value);
 	void refreshVariables();
 	void refreshVariables(QVariantMap vars);
+	void itemDoubleClicked(Report::ItemInterface * item);
+	void showItemPropertiesDialog();
 signals:
 	void setCurrentIndex(const QModelIndex & , QItemSelectionModel::SelectionFlags);
 

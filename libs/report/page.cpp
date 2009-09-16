@@ -574,4 +574,9 @@ QPainterPath Page::readPath()
 	return p;
 }
 
+QPrinter::Orientation Page::paperOrientation() const
+{
+    return m_pageStruct.orientation;
+}
+
 }

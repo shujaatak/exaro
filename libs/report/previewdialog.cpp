@@ -69,119 +69,100 @@ namespace Report
 PreviewDialog::PreviewDialog(QWidget *parent)
 		: QDialog(parent), m_previewWidget(0), m_doc(0), m_searchPage(0),m_spaceBetweenPages(50)
 {
-	initMyResource();
+    initMyResource();
 
-	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
+    setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
 
-	m_searchWidget = new SearchWidget(this);
-	m_searchWidget->setIconSize(QSize(32, 32));
-	m_searchWidget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	m_searchWidget->hide();
+    m_searchWidget = new SearchWidget(this);
+    m_searchWidget->setIconSize(QSize(32, 32));
+    m_searchWidget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    m_searchWidget->hide();
 
-	toolbar = new QToolBar(this);
-	toolbar->setIconSize(QSize(32, 32));
-	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    toolbar = new QToolBar(this);
+    toolbar->setIconSize(QSize(32, 32));
+    toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-	toolbar->setFloatable( false );
+    toolbar->setFloatable( false );
 
-	m_previewWidget = new PreviewWidget(this);
+    m_previewWidget = new PreviewWidget(this);
 
-	QAction * act = toolbar->addAction(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
-	act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
-	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomIn()));
+    QAction * act = toolbar->addAction(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
+    act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
+    connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomIn()));
 
-	m_zoomSpinBox = new QSpinBox;
-	toolbar->addWidget(m_zoomSpinBox);
-	m_zoomSpinBox->setSuffix(" %");
-	m_zoomSpinBox->setMinimum(25);
-	m_zoomSpinBox->setMaximum(400);
-	m_zoomSpinBox->setSingleStep(5);
-	m_zoomSpinBox->setValue(100);
+    m_zoomSpinBox = new QSpinBox;
+    toolbar->addWidget(m_zoomSpinBox);
+    m_zoomSpinBox->setSuffix(" %");
+    m_zoomSpinBox->setMinimum(25);
+    m_zoomSpinBox->setMaximum(400);
+    m_zoomSpinBox->setSingleStep(5);
+    m_zoomSpinBox->setValue(100);
 
-	connect(m_previewWidget, SIGNAL(zoomChanged(int)), m_zoomSpinBox, SLOT(setValue(int)));
-	connect(m_zoomSpinBox, SIGNAL(valueChanged(int)), m_previewWidget, SLOT(zoomTo(int)));
+    connect(m_previewWidget, SIGNAL(zoomChanged(int)), m_zoomSpinBox, SLOT(setValue(int)));
+    connect(m_zoomSpinBox, SIGNAL(valueChanged(int)), m_previewWidget, SLOT(zoomTo(int)));
 
-	act = toolbar->addAction(QIcon(":/images/zoom-out.png"), tr("Zoom out"));
-	act->setShortcut(QKeySequence(QKeySequence::ZoomOut));
-	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomOut()));
+    act = toolbar->addAction(QIcon(":/images/zoom-out.png"), tr("Zoom out"));
+    act->setShortcut(QKeySequence(QKeySequence::ZoomOut));
+    connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomOut()));
 
-	toolbar->addSeparator();
+    toolbar->addSeparator();
 
-	act = toolbar->addAction(QIcon(":/images/go-first.png"), tr("First page"));
-	act->setShortcut(QKeySequence(Qt::Key_Home));
-	connect(act, SIGNAL(triggered(bool)), SLOT(firstPage()));
+    act = toolbar->addAction(QIcon(":/images/go-first.png"), tr("First page"));
+    act->setShortcut(QKeySequence(Qt::Key_Home));
+    connect(act, SIGNAL(triggered(bool)), SLOT(firstPage()));
 
-	act = toolbar->addAction(QIcon(":/images/go-previous.png"), tr("Read previous"));
-	act->setShortcut(QKeySequence(Qt::Key_PageUp));
-	connect(act, SIGNAL(triggered(bool)), SLOT(readPrevious()));
+    act = toolbar->addAction(QIcon(":/images/go-previous.png"), tr("Read previous"));
+    act->setShortcut(QKeySequence(Qt::Key_PageUp));
+    connect(act, SIGNAL(triggered(bool)), SLOT(readPrevious()));
 
-	act = toolbar->addAction(QIcon(":/images/go-next.png"), tr("Read next"));
-	act->setShortcut(QKeySequence(Qt::Key_PageDown));
-	connect(act, SIGNAL(triggered(bool)), SLOT(readNext()));
+    act = toolbar->addAction(QIcon(":/images/go-next.png"), tr("Read next"));
+    act->setShortcut(QKeySequence(Qt::Key_PageDown));
+    connect(act, SIGNAL(triggered(bool)), SLOT(readNext()));
 
-	act = toolbar->addAction(QIcon(":/images/go-last.png"), tr("Last page"));
-	act->setShortcut(QKeySequence(Qt::Key_End));
-	connect(act, SIGNAL(triggered(bool)), SLOT(lastPage()));
+    act = toolbar->addAction(QIcon(":/images/go-last.png"), tr("Last page"));
+    act->setShortcut(QKeySequence(Qt::Key_End));
+    connect(act, SIGNAL(triggered(bool)), SLOT(lastPage()));
 
-	toolbar->addSeparator();
+    toolbar->addSeparator();
 
-	act = toolbar->addAction(QIcon(":/images/export.png"), tr("Export"));
-	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
-	connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
+    act = toolbar->addAction(QIcon(":/images/export.png"), tr("Export"));
+    act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
 
-	toolbar->addSeparator();
+    toolbar->addSeparator();
 
-	act = toolbar->addAction(QIcon(":/images/edit-find.png"), tr("Search"));
-	act->setShortcut(QKeySequence(QKeySequence::Find));
-	connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
-	connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
-	connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
-	connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
-	connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
-	connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
+    act = toolbar->addAction(QIcon(":/images/edit-find.png"), tr("Search"));
+    act->setShortcut(QKeySequence(QKeySequence::Find));
+    connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
+    connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
+    connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
+    connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
+    connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
+    connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
 
-	toolbar->addSeparator();
+    toolbar->addSeparator();
 
-	act = toolbar->addAction(QIcon(":/images/print.png"), tr("Print"));
-	act->setShortcut(QKeySequence(QKeySequence::Print));
-	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
+    act = toolbar->addAction(QIcon(":/images/print.png"), tr("Print"));
+    act->setShortcut(QKeySequence(QKeySequence::Print));
+    connect(act, SIGNAL(triggered(bool)), SLOT(print()));
 
-#if 0 
-	toolbar->addSeparator();
+    toolbar->addSeparator();
+    act = toolbar->addAction(QIcon(":/images/quit.png"), tr("Quit"));
+    act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
 
-	act = toolbar->addAction(QIcon(":/images/switch-painting-system.png"), tr("Switch painting system"));
-	act->setCheckable(true);
-	QSettings s;
-	act->setChecked(s.value("eXaro/previewImage",true).toBool());
-	connect(act, SIGNAL(triggered(bool)), SLOT(switchPaintingSystem()));
-#endif
-
-	toolbar->addSeparator();
-	act = toolbar->addAction(QIcon(":/images/quit.png"), tr("Quit"));
-	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-	connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
-
-	QVBoxLayout * vlayout = new QVBoxLayout;
-	vlayout->addWidget(toolbar);
-	vlayout->addWidget(m_previewWidget);
-	vlayout->addWidget(m_searchWidget);
-	setLayout(vlayout);
-
-	QSettings s;
-	restoreGeometry( s.value( "Preview/Geometry", saveGeometry() ).toByteArray() );
-	if (s.contains("Preview/AskBeforeExit"))
-	    askBeforeExit = s.value( "Preview/AskBeforeExit").toBool();
-	else
-	    askBeforeExit = true;
+    QVBoxLayout * vlayout = new QVBoxLayout;
+    vlayout->addWidget(toolbar);
+    vlayout->addWidget(m_previewWidget);
+    vlayout->addWidget(m_searchWidget);
+    setLayout(vlayout);
 }
 
 PreviewDialog::~PreviewDialog()
 {
-    	QSettings s;
-	s.setValue( "Preview/Geometry", saveGeometry() );
-	foreach(pageStruct pag, m_pages)
-		delete pag.page;
-	delete m_doc;
+    foreach(pageStruct pag, m_pages)
+	delete pag.page;
+    delete m_doc;
 }
 
 void PreviewDialog::loadExportPlugins()
@@ -267,121 +248,150 @@ void PreviewDialog::setVisible(bool visible)
 
 void PreviewDialog::print()
 {
-	QPrinter printer;
-	QPrintDialog d(&printer, this);
+    if (!m_doc->numPages())
+	return;
+    bool showPrintDialog=m_showPrintDialog;
+    int i=0;
+    QPrinter * printer=0;
+    QPainter painter;
+
+    newOrientation:
+
+    delete printer;
+    printer = new QPrinter();
+    if (!m_printerName.isEmpty())
+	printer->setPrinterName(m_printerName);
+    printer->setPaperSize(m_pages[i].page->pageSize()*UNIT,QPrinter::Millimeter);
+    printer->setOrientation(m_pages[i].page->paperOrientation());
+    printer->setPageMargins(0,0,0,0,QPrinter::Millimeter);
+    if (!m_reportName.isEmpty())
+	printer->setDocName(m_reportName);
+
+    if (showPrintDialog)
+    {
+	QPrintDialog d(printer, this);
 	if (d.exec() == QDialog::Rejected)
-		return;
-	QPainter painter;
-	painter.begin(&printer);
-	for (int i = 0;i < m_doc->numPages();i++)
+	    return;
+    }
+    showPrintDialog=false;
+    bool firstPage=true;
+    painter.begin(printer);
+    for (;i < m_doc->numPages();i++)
+    {
+	Page * p = m_pages[i].page;
+	if (p->paperOrientation()!=printer->orientation())
 	{
-		Page * p = m_pages[i].page;
-		if (i)
-			printer.newPage();
-		else
-		{
-			printer.setPaperSize(p->pageSize()*UNIT,QPrinter::Millimeter);
-			printer.setFullPage(true);
-		}
-		painter.resetTransform();
-		painter.scale((double)printer.paperSize(QPrinter::DevicePixel).width()/p->pageSize().width(),(double)printer.paperSize(QPrinter::DevicePixel).height()/p->pageSize().height());
-		p->render(&painter, QRectF(printer.pageRect(QPrinter::Millimeter).x()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).y()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).width()/UNIT,
-					printer.pageRect(QPrinter::Millimeter).height()/UNIT));
+	    painter.end();
+	    goto newOrientation;
 	}
-	painter.end();
+
+	if (!firstPage)
+	    printer->newPage();
+
+	printer->setFullPage(true);
+	firstPage=false;
+
+	painter.resetTransform();
+	painter.scale((double)printer->paperSize(QPrinter::DevicePixel).width()*UNIT/(double)printer->paperSize(QPrinter::Millimeter).width(),
+		      (double)printer->paperSize(QPrinter::DevicePixel).height()*UNIT/(double)printer->paperSize(QPrinter::Millimeter).height());
+	p->render(&painter, QRectF(printer->pageRect(QPrinter::Millimeter).x()/UNIT,
+				   printer->pageRect(QPrinter::Millimeter).y()/UNIT,
+				   printer->pageRect(QPrinter::Millimeter).width()/UNIT,
+				   printer->pageRect(QPrinter::Millimeter).height()/UNIT));
+    }
+    painter.end();
+    delete printer;
 }
 
 void PreviewDialog::clearSelection()
 {
-	foreach(QGraphicsItem * item, m_previewWidget->scene()->items())
-		if (dynamic_cast<QGraphicsRectItem *>(item))
-			delete item;
+    foreach(QGraphicsItem * item, m_previewWidget->scene()->items())
+	if (dynamic_cast<QGraphicsRectItem *>(item))
+	    delete item;
 }
 
 void PreviewDialog::drawSelection(QGraphicsItem *  parent, QRectF & rect)
 {
-	QGraphicsRectItem * r = new QGraphicsRectItem(rect, parent);
-	QBrush b;
-	b.setColor(QColor(25, 25, 25, 100));
-	b.setStyle(Qt::SolidPattern);
-	r->setBrush(b);
-	QPen p;
-	p.setWidth(0);
-	p.setBrush(b);
-	r->setPen(p);
-	m_previewWidget->ensureVisible(r);
+    QGraphicsRectItem * r = new QGraphicsRectItem(rect, parent);
+    QBrush b;
+    b.setColor(QColor(25, 25, 25, 100));
+    b.setStyle(Qt::SolidPattern);
+    r->setBrush(b);
+    QPen p;
+    p.setWidth(0);
+    p.setBrush(b);
+    r->setPen(p);
+    m_previewWidget->ensureVisible(r);
 }
 
 void PreviewDialog::searchNext(const QString& text)
 {
-	if (!m_pages.size())
-	{
-		emit(textNotFound());
-		return;
-	}
-
-	clearSelection();
-
-	if (!m_searchPage)
-		m_searchPage = m_pages[0].page;
-
-	int i = 0;
-	for (;i < m_pages.size();i++)
-		if (m_searchPage == m_pages[i].page)
-			break;
-
-	for (;i < m_pages.size();i++)
-	{
-		QRectF rect;
-		if (m_pages[i].page->search(text, rect, Report::Page::NextResult))
-		{
-			drawSelection(m_pages[i].previewItem, rect);
-			m_searchPage = m_pages[i].page;
-			return;
-		}
-	}
-	m_searchPage = 0;
+    if (!m_pages.size())
+    {
 	emit(textNotFound());
+	return;
+    }
+
+    clearSelection();
+
+    if (!m_searchPage)
+	m_searchPage = m_pages[0].page;
+
+    int i = 0;
+    for (;i < m_pages.size();i++)
+	if (m_searchPage == m_pages[i].page)
+	    break;
+
+    for (;i < m_pages.size();i++)
+    {
+	QRectF rect;
+	if (m_pages[i].page->search(text, rect, Report::Page::NextResult))
+	{
+	    drawSelection(m_pages[i].previewItem, rect);
+	    m_searchPage = m_pages[i].page;
+	    return;
+	}
+    }
+    m_searchPage = 0;
+    emit(textNotFound());
 }
 
 void PreviewDialog::searchPrevious(const QString& text)
 {
-	if (!m_pages.size())
-	{
-		emit(textNotFound());
-		return;
-	}
-
-	clearSelection();
-
-	if (!m_searchPage)
-		m_searchPage = m_pages[m_pages.size()-1].page;
-
-	int i = m_pages.size() - 1;
-	for (;i >= 0;i--)
-		if (m_searchPage == m_pages[i].page)
-			break;
-
-	for (;i >= 0;i--)
-	{
-		QRectF rect;
-		if (m_pages[i].page->search(text, rect, Report::Page::PreviousResult))
-		{
-			drawSelection(m_pages[i].previewItem, rect);
-			m_searchPage = m_pages[i].page;
-			return;
-		}
-	}
-	m_searchPage = 0;
+    if (!m_pages.size())
+    {
 	emit(textNotFound());
+	return;
+    }
+
+    clearSelection();
+
+    if (!m_searchPage)
+	m_searchPage = m_pages[m_pages.size()-1].page;
+
+    int i = m_pages.size() - 1;
+    for (;i >= 0;i--)
+	if (m_searchPage == m_pages[i].page)
+	    break;
+
+    for (;i >= 0;i--)
+    {
+	QRectF rect;
+	if (m_pages[i].page->search(text, rect, Report::Page::PreviousResult))
+	{
+	    drawSelection(m_pages[i].previewItem, rect);
+	    m_searchPage = m_pages[i].page;
+	    return;
+	}
+    }
+    m_searchPage = 0;
+    emit(textNotFound());
 }
 
 void PreviewDialog::firstPage()
 {
-	if (m_pages.size())
-		m_previewWidget->ensureVisible(m_pages[0].previewItem);
+    if (m_pages.size())
+	m_previewWidget->ensureVisible(m_pages[0].previewItem);
 }
 
 void PreviewDialog::lastPage()
@@ -392,135 +402,91 @@ void PreviewDialog::lastPage()
 
 void PreviewDialog::readPrevious()
 {
-	QGraphicsItem * item = 0;
-	for (int i = 0;i < m_previewWidget->viewport()->rect().height();i++)
-		if ((item = m_previewWidget->itemAt(m_previewWidget->viewport()->rect().width() / 2, i)))
-			break;
-	if (!item)
-		return;
+    QGraphicsItem * item = 0;
+    for (int i = 0;i < m_previewWidget->viewport()->rect().height();i++)
+	if ((item = m_previewWidget->itemAt(m_previewWidget->viewport()->rect().width() / 2, i)))
+	    break;
+    if (!item)
+	return;
 
-	for (int i = 0;i < m_pages.size();i++)
-		if (item == m_pages[i].previewItem)
-		{
-			if (i > 0)
-				m_previewWidget->ensureVisible(m_pages[i-1].previewItem);
-			break;
-		}
+    for (int i = 0;i < m_pages.size();i++)
+	if (item == m_pages[i].previewItem)
+	{
+	if (i > 0)
+	    m_previewWidget->ensureVisible(m_pages[i-1].previewItem);
+	break;
+    }
 }
 
 void PreviewDialog::readNext()
 {
-	QGraphicsItem * item = 0;
-	for (int i = m_previewWidget->viewport()->rect().height();i;i--)
-		if ((item = m_previewWidget->itemAt(m_previewWidget->viewport()->rect().width() / 2, i)))
-			break;
-	if (!item)
-		return;
+    QGraphicsItem * item = 0;
+    for (int i = m_previewWidget->viewport()->rect().height();i;i--)
+	if ((item = m_previewWidget->itemAt(m_previewWidget->viewport()->rect().width() / 2, i)))
+	    break;
+    if (!item)
+	return;
 
-	for (int i = 0;i < m_pages.size();i++)
-		if (item == m_pages[i].previewItem)
-		{
-			if (i + 1 < m_pages.size())
-				m_previewWidget->ensureVisible(m_pages[i+1].previewItem);
-			break;
-		}
+    for (int i = 0;i < m_pages.size();i++)
+	if (item == m_pages[i].previewItem)
+	{
+	if (i + 1 < m_pages.size())
+	    m_previewWidget->ensureVisible(m_pages[i+1].previewItem);
+	break;
+    }
 }
 
 void PreviewDialog::setSpaceBetweenPages(int spaceBetweenPages)
 {
-	m_spaceBetweenPages=spaceBetweenPages;
+    m_spaceBetweenPages=spaceBetweenPages;
 }
 
 void PreviewDialog::setExportDocument(QDomNode exportNode)
 {
-	m_exportNode=exportNode;
+    m_exportNode=exportNode;
 }
 
 void PreviewDialog::setDocument(QIODevice * doc)
 {
-	m_docDevice=doc;
-	int y = m_spaceBetweenPages;
-	int w = 0;
-	bool useImage;
-#if 0
-	QSettings s;
-	useImage=s.value("eXaro/previewImage",true).toBool();
-#endif
-	foreach(pageStruct pag, m_pages)
-		delete pag.page;
+    m_docDevice=doc;
+    int y = m_spaceBetweenPages;
+    int w = 0;
 
-	m_pages.clear();
+    foreach(pageStruct pag, m_pages)
+	delete pag.page;
 
-	delete m_previewWidget->scene();
+    m_pages.clear();
 
-	delete m_doc;
-	m_doc = new Document(doc);
+    delete m_previewWidget->scene();
 
-	QGraphicsScene * previewScene = new QGraphicsScene(this);
+    delete m_doc;
+    m_doc = new Document(doc);
 
-	previewScene->setBackgroundBrush(QBrush(Qt::gray));
-	m_previewWidget->setScene(previewScene);
-	m_previewWidget->resetTransform();
-	m_previewWidget->scale((double)QDesktopWidget().screen()->width()/(screen_widthMM*10),(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
-	for (int i = 0;i < m_doc->numPages();i++)
-	{
-		pageStruct pag;
-		pag.page = m_doc->page(i);
-#if 0
-		if (useImage)
-		{
-			QSizeF sz=pag.page->pageSize();
-			sz.setWidth(sz.width()*(double)QDesktopWidget().screen()->width()/(screen_widthMM*10)+.5);
-			sz.setHeight(sz.height()*(double)QDesktopWidget().screen()->height()/(screen_heightMM*10)+.5);
-			QPixmap pm(sz.toSize());
-			QPainter pt;
-			pt.begin(&pm);
-			pt.fillRect(0, 0, pag.page->pageSize().width(), pag.page->pageSize().height(), QBrush(Qt::white));
-			pt.scale(((double)QDesktopWidget().screen()->width()/(screen_widthMM*10)),((double)QDesktopWidget().screen()->height()/(screen_heightMM*10)));
-			pag.page->render(&pt, QRectF(0,0,sz.toSize().width(), sz.toSize().height()));
-			pt.end();
-			pag.previewItem = previewScene->addPixmap(pm);
-			pag.previewItem->setFlag(QGraphicsItem::ItemIsMovable);
-		}
-		else
-#endif
-			pag.previewItem= new PageGraphicsItem(pag.page);
+    QGraphicsScene * previewScene = new QGraphicsScene(this);
 
-		previewScene->addItem(pag.previewItem);
-		pag.previewItem->setPos(0, y);
-		pag.previewItem->setZValue(0);
-		m_pages.push_back(pag);
+    previewScene->setBackgroundBrush(QBrush(Qt::gray));
+    m_previewWidget->setScene(previewScene);
+    m_previewWidget->resetTransform();
+    m_previewWidget->scale((double)QDesktopWidget().screen()->width()/(screen_widthMM*10),(double)QDesktopWidget().screen()->height()/(screen_heightMM*10));
+    for (int i = 0;i < m_doc->numPages();i++)
+    {
+	pageStruct pag;
+	pag.page = m_doc->page(i);
 
-		if (w<pag.previewItem->boundingRect().width())
-			w=pag.previewItem->boundingRect().width();
+	pag.previewItem= new PageGraphicsItem(pag.page);
 
-		y += m_spaceBetweenPages + pag.previewItem->boundingRect().height();
-	}
-	previewScene->setSceneRect(0,0,w,y);
+	previewScene->addItem(pag.previewItem);
+	pag.previewItem->setPos(0, y);
+	pag.previewItem->setZValue(0);
+	m_pages.push_back(pag);
+
+	if (w<pag.previewItem->boundingRect().width())
+	    w=pag.previewItem->boundingRect().width();
+
+	y += m_spaceBetweenPages + pag.previewItem->boundingRect().height();
+    }
+    previewScene->setSceneRect(0,0,w,y);
 }
-#if 0
-void PreviewDialog::switchPaintingSystem()
-{
-	QSettings s;
-	s.setValue("eXaro/previewImage",!(s.value("eXaro/previewImage",true).toBool()));
-	int vscrollTo=0, hscrollTo=0 ;
-
-	if (m_previewWidget->verticalScrollBar())
-		vscrollTo=m_previewWidget->verticalScrollBar()->value();
-
-	if (m_previewWidget->horizontalScrollBar())
-		hscrollTo=m_previewWidget->horizontalScrollBar()->value();
-
-	setDocument(m_docDevice);
-	m_previewWidget->zoomTo(m_zoomSpinBox->value());
-
-	if (m_previewWidget->verticalScrollBar())
-		m_previewWidget->verticalScrollBar()->setValue(vscrollTo);
-
-	if (m_previewWidget->horizontalScrollBar())
-		m_previewWidget->horizontalScrollBar()->setValue(hscrollTo);
-}
-#endif
 
 void PreviewDialog::accept()
 {
@@ -528,13 +494,28 @@ void PreviewDialog::accept()
 
 void PreviewDialog::reject()
 {
-    if (askBeforeExit)
-    {
-	if (QMessageBox::question(this, tr("Quit ?"), tr("Realy quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-		QDialog::reject();
-    }
-    else
+    if (!m_showExitConfirm || QMessageBox::question(this, tr("Quit ?"), tr("Really quit?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 	QDialog::reject();
+}
+
+void PreviewDialog::setPrinterName(const QString & name)
+{
+    m_printerName = name;
+}
+
+void PreviewDialog::setShowPrintDialog(bool show)
+{
+    m_showPrintDialog = show;
+}
+
+void PreviewDialog::setShowExitConfirm(bool show)
+{
+    m_showExitConfirm = show;
+}
+
+void PreviewDialog::setReportName(const QString & name)
+{
+    m_reportName = name;
 }
 
 void PreviewDialog::setIconSize(int s)
@@ -547,11 +528,6 @@ void PreviewDialog::setToolButtonStyle (Qt::ToolButtonStyle style)
 {
     toolbar->setToolButtonStyle(style);
     m_searchWidget->setToolButtonStyle(style);
-}
-
-void PreviewDialog::setAskBeforeExit(bool b)
-{
-    askBeforeExit = b;
 }
 
 }

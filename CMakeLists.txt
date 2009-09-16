@@ -1,4 +1,5 @@
 # (c) 2008 by BogDan Vatra < bogdan@licentia.eu >
+# (c) 2009 by Mikhalov Alexander < alexmi3@rambler.ru >
 
 cmake_minimum_required(VERSION 2.6)
 project(exaro-package)
@@ -14,7 +15,7 @@ set (EXARO_LICENSE "GPL")
 message("*** eXaro use ${EXARO_LICENSE} license ***")
 
 set (EXARO_VERSION_MAJOR 2)
-set (EXARO_VERSION_MINOR 60)
+set (EXARO_VERSION_MINOR 70)
 set (EXARO_VERSION_RELEASE 0)
 set (EXARO_VERSION "${EXARO_VERSION_MAJOR}.${EXARO_VERSION_MINOR}.${EXARO_VERSION_RELEASE}" )
 

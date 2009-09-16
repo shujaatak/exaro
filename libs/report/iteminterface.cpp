@@ -43,6 +43,7 @@
 #include "reportinterface.h"
 #include "pageinterface.h"
 #include "dataset.h"
+#include "itemhelper.h"
 
 #define CORNERSIZE 20
 
@@ -673,4 +674,9 @@ void ItemInterface::setRotate(qreal angle)
     update();
 
     emit geometryChanged(this, geometry());
+}
+
+ItemHelper * ItemInterface::createHelper()
+{
+    return 0;
 }

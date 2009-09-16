@@ -71,6 +71,7 @@ void VariablesEditor::setVarsMap(QVariantMap list)
 	}
 	row++;
     }
+    m_table->resizeRowsToContents ();
 }
 
 

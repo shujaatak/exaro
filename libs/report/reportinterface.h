@@ -78,13 +78,20 @@ class EXARO_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QVariantMap scriptVars READ scriptVars WRITE setScriptVars DESIGNABLE false)
 	Q_PROPERTY(QVariantMap uis READ uis WRITE setUis DESIGNABLE false)
 	Q_PROPERTY(int version READ version WRITE setVersion DESIGNABLE false)
+	Q_PROPERTY(QString printerName READ printerName WRITE setPrinterName DESIGNABLE false)
+	Q_PROPERTY(bool showPrintDialog READ showPrintDialog WRITE setShowPrintDialog DESIGNABLE false)
+	Q_PROPERTY(bool showPrintPreview READ showPrintPreview WRITE setShowPrintPreview DESIGNABLE false)
+	Q_PROPERTY(bool showExitConfirm READ showExitConfirm WRITE setShowExitConfirm DESIGNABLE false)
+
 public:
+
 	struct FunctionValue
 	{
 		QScriptEngine::FunctionSignature function;
 		int args;
 		QScriptValue::PropertyFlags flags;
 	};
+
 	typedef QMap<QString, FunctionValue> FunctionValues;
 
 	struct ReportValue
@@ -92,14 +99,21 @@ public:
 		QVariant value;
 		QScriptValue::PropertyFlags flags;
 	};
+
 	typedef QMap<QString, ReportValue> ReportValues;
+
 public:
+
 	/**
 	 * ReportInterface constructor
 	 * @param parent parent object
 	 */
 	ReportInterface(QObject *parent = 0);
 
+	/**
+	 * ReportInterface destructor
+	 * @param
+	 */
 	virtual ~ReportInterface();
 
 	/**
@@ -108,13 +122,13 @@ public:
 	 */
 	virtual bool exec();
 
-
 	/**
 	 * Return report name
 	 * @return report name
 	 * @see setName()
 	 */
 	QString name();
+
 	/**
 	 * Set the report name.
 	 * @param name report name
@@ -128,6 +142,7 @@ public:
 	 * @see setAuthor()
 	 */
 	QString author();
+
 	/**
 	 * Set report author
 	 * @param author report author
@@ -154,6 +169,7 @@ public:
 	 * @return report script
 	 */
 	QString script();
+
 	/**
 	 * Set the report script
 	 * @param script report script
@@ -165,6 +181,7 @@ public:
 	 * @return variables list
 	 */
 	virtual QVariantMap scriptVars();
+
 	/**
 	 * Set report script user defined variables
 	 * @return variables list
@@ -172,17 +189,21 @@ public:
 	virtual void setScriptVars(QVariantMap vars);
 
 	/**
-	 * Return the report queries
-	 * @return queries
+	 * Return the report datasets
+	 * @return datasets
 	 */
 	QList<DataSet *> datasets();
 
-//	QVariantMap queries();
 	/**
-	 * Sets the report queries
-	 * @param queries report queries
+	 * Sets the report datasets
+	 * @param datasets report datasets
 	 */
 	void setDatasets(QList<DataSet *> datasets);
+
+	/**
+	 * Add dataset to report datasets
+	 * @param dataset appended dataset
+	 */
 	void addDataset(DataSet * dataset);
 	
 	/**
@@ -190,11 +211,60 @@ public:
 	 * @return
 	 */
 	QVariantMap uis();
+
 	/**
 	 * Sets the report uis. The uis can be used in script to interact with the user.
 	 * @param uis
 	 */
 	void setUis(QVariantMap uis);
+
+	/**
+	 * Returns the name of the default printer to be used to print the report
+	 * @return default printer name
+	 */
+	QString printerName();
+
+	/**
+	 * Sets the name of the default printer to be used to print the report
+	 * @param name default printer name
+	 */
+	void setPrinterName(const QString & name);
+
+	/**
+	 * Tells if print dialog should be shown or not before printing
+	 * @return bool true if print dialog should be shown before printing
+	 */
+	bool showPrintDialog();
+
+	/**
+	 * Sets if print dialog should be shown or not before printing
+	 * @param show true if print dialog should be shown before printing
+	 */
+	void setShowPrintDialog(bool show);
+
+	/**
+	 * Tells if print preview should be shown or not before printing
+	 * @return bool true if print preview should be shown before printing
+	 */
+	bool showPrintPreview();
+
+	/**
+	 * Sets if print preview should be shown or not before printing
+	 * @param show true if print preview should be shown before printing
+	 */
+	void setShowPrintPreview(bool show);
+
+	/**
+	 * Tells if exit confirm should be shown or not when closing the print preview
+	 * @return bool true if exit confirm should be shown when closing the print preview
+	 */
+	bool showExitConfirm();
+
+	/**
+	 * Sets if exit confirm should be shown or not when closing the print preview
+	 * @param show true if exit confirm should be shown when closing the print preview
+	 */
+	void setShowExitConfirm(bool show);
 
 	/**
 	 * Return the script engine
@@ -261,7 +331,6 @@ public slots:
 	 * Call this slot to cancel the report execution
 	 */
 	void cancelReport();
-//	void showProcess(QString str);
 
 signals:
 	/**
@@ -277,16 +346,11 @@ signals:
 	void showProcess(QString str);
 
 	void beforePreviewShow(Report::PreviewDialog*);
-protected:
-//	virtual void paintPage();
-//	virtual void paintBand(BandInterface * band);
-	virtual void setScriptEngineGlobalVariables();
-//	virtual	void paintOverlays();
 
 protected:
-//	PaintDevice * m_printer;
-//
-//	QPainter m_painter;
+	virtual void setScriptEngineGlobalVariables();
+
+protected:
 	QDomDocument m_doc;
 	QDomNode m_exportNode;
 	QScriptEngine * m_scriptEngine;
@@ -294,11 +358,7 @@ protected:
 private:
 	void setReportObjectsToScriptEngineGlobalVariables(QObject * object);
 	void addOrderedBand(QList<BandInterface *> & m_bands, BandInterface * band);
-//	void newPage();
-//	void prepareCurrentPage();
-//	bool canPaint(BandInterface * band);
 	void exportRecord(const QSqlRecord & record, QDomElement & el);
-//	void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
 	void cleanUpObjects();
 	bool isNumber(QVariant::Type type);
 
@@ -326,6 +386,10 @@ private:
 	ProcessDialog * processDialog;
 	QTemporaryFile * pdf_file;
 	QTimer * processDialogTimer;
+	QString m_printerName;
+	bool m_showPrintDialog;
+	bool m_showPrintPreview;
+	bool m_showExitConfirm;
 
 	friend class PaintInterface;
 };

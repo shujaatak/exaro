@@ -7,13 +7,14 @@ set(Report_SRCS bandinterface.cpp    iteminterface.cpp     paintdevice.cpp    re
 		exportinterface.cpp  pagegraphicsitem.cpp  previewdialog.cpp  searchwidget.cpp
 		globals.cpp          pageinterface.cpp     previewwidget.cpp  dataset.cpp dataseteditor.cpp
 		fakepaintdevice.cpp  fakepaintengine.cpp   layoutmanager.cpp
-		paintinterface.cpp	processdialog.cpp bandtitle.cpp grid.cpp message.cpp exaro.cpp)
+		paintinterface.cpp	processdialog.cpp bandtitle.cpp grid.cpp message.cpp exaro.cpp
+		itemhelper.cpp)
 QT4_WRAP_CPP(Report_SRCS bandinterface.h    iteminterface.h    reportengine.h
 			reportinterface.h
 			exportinterface.h  previewdialog.h  searchwidget.h
 			pageinterface.h     previewwidget.h  dataset.h   dataseteditor.h
 			layoutmanager.h	paintinterface.h processdialog.h bandtitle.h grid.h message.h
-			exaro.h)
+			exaro.h itemhelper.h)
 QT4_WRAP_UI(Report_SRCS processdialog.ui) 			
 QT4_ADD_RESOURCES(Report_SRCS preview.qrc)
 

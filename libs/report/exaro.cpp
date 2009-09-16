@@ -111,8 +111,9 @@ void Exaro::beforePreviewShow(Report::PreviewDialog* d)
 {
     qDebug("setup Priveiw");
     d->setIconSize(m_iconSize);
-    d->setAskBeforeExit( m_askBeforeExit );
+    d->setShowExitConfirm( m_askBeforeExit );
     d->setToolButtonStyle(m_buttonStyle);
+	d->setShowExitConfirm( false );
 }
 
 QStringList Exaro::variables()

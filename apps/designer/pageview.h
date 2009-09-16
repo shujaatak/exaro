@@ -68,6 +68,7 @@ public slots:
 
 signals:
     void addItem(Report::ItemInterface*,QPointF);
+    void doubleClick(Report::ItemInterface*);
 
 private:
     void setActiveRange(QRect rect);
@@ -101,8 +102,10 @@ signals:
     void mousePositionChanged (QPoint);
     void selectionMoved(Report::ItemInterface *, QPointF);
     void addItem(Report::ItemInterface *, QPointF pos);
+    void doubleClick(Report::ItemInterface*);
 protected:
     void mouseMoveEvent ( QMouseEvent * e );
+    void mouseDoubleClickEvent ( QMouseEvent * event );
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent ( QDragLeaveEvent * event );

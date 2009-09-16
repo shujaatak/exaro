@@ -33,6 +33,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "memo.h"
+#include "memohelper.h"
 
 inline void initMyResource()
 {
@@ -146,6 +147,13 @@ QString Memo::toolBoxGroup()
 QObject * Memo::createInstance(QGraphicsItem* parent, QObject* parentObject)
 {
     return new Memo(parent, parentObject);
+}
+
+Report::ItemHelper * Memo::createHelper()
+{
+    qDebug("Memo::createHelper()");
+
+    return new MemoHelper();
 }
 
 Q_EXPORT_PLUGIN2(memo, Memo)

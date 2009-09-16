@@ -80,7 +80,11 @@ namespace Report
 ReportInterface::ReportInterface(QObject *parent)
 		: QObject(parent), /*m_printer(0),*/ m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
 {
-    m_reportCanceled = false;
+    m_reportCanceled = false;	
+	m_showPrintDialog = true;
+	m_showPrintPreview = true;
+	m_showExitConfirm = false;
+
     paintInterface = 0;
     m_version = 0.0;
 
@@ -198,16 +202,16 @@ bool ReportInterface::exec()
 
     foreach(QString key, m_uis.keys())
     {
-	QBuffer buf(this);
-	buf.setData(m_uis[key].toByteArray());
-	buf.open(QBuffer::ReadOnly);
-	QWidget *widget = loader.load(&buf);
-	widget->setObjectName( key );
-	if (widget)
-	    m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
-	else
-	    qDebug("ERROR while making UI!!!");
-	qApp->processEvents();
+		QBuffer buf(this);
+		buf.setData(m_uis[key].toByteArray());
+		buf.open(QBuffer::ReadOnly);
+		QWidget *widget = loader.load(&buf);
+		widget->setObjectName( key );
+		if (widget)
+			m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
+		else
+			qDebug("ERROR while making UI!!!");
+		qApp->processEvents();
     }
 
     setScriptEngineGlobalVariables();
@@ -252,10 +256,19 @@ void ReportInterface::previewFinished()
     if (!m_reportCanceled)
     {
 	PreviewDialog d;
+	d.setPrinterName(m_printerName);
+	d.setShowPrintDialog(m_showPrintDialog);
+	d.setShowExitConfirm(m_showExitConfirm);
+	d.setToolButtonStyle( Qt::ToolButtonIconOnly );
+	d.setIconSize(24);
 	d.setDocument(pdf_file);
 	d.setExportDocument(m_exportNode);
 	emit beforePreviewShow(&d);
-	d.exec();
+	d.setReportName(name());
+	if (m_showPrintPreview)
+		d.exec();
+	else
+		d.print();
     }
     m_doc.clear();
 
@@ -418,9 +431,50 @@ QVariantMap ReportInterface::scriptVars()
 {
    return m_scriptVars;
 }
+
 void ReportInterface::setScriptVars(QVariantMap vars)
 {
     m_scriptVars = vars;
+}
+
+QString ReportInterface::printerName()
+{
+	return m_printerName;
+}
+
+void ReportInterface::setPrinterName(const QString & name)
+{
+	m_printerName = name;
+}
+
+bool ReportInterface::showPrintDialog()
+{
+	return m_showPrintDialog;
+}
+
+void ReportInterface::setShowPrintDialog(bool show)
+{
+	m_showPrintDialog = show;
+}
+
+bool ReportInterface::showPrintPreview()
+{
+	return m_showPrintPreview;
+}
+
+void ReportInterface::setShowPrintPreview(bool show)
+{
+	m_showPrintPreview = show;
+}
+
+bool ReportInterface::showExitConfirm()
+{
+	return m_showExitConfirm;
+}
+
+void ReportInterface::setShowExitConfirm(bool show)
+{
+	m_showExitConfirm = show;
 }
 
 }
