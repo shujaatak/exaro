@@ -5,9 +5,13 @@
         <name type="QString" >Имя отчета</name>
         <author type="QString" >(c) 2008 BogDan</author>
         <script type="QString" ></script>
-        <scriptVars type="QStringList" />
+        <scriptVars type="QVariantMap" />
         <uis type="QVariantMap" />
         <version type="int" >3</version>
+        <printerName type="QString" ></printerName>
+        <showPrintDialog type="bool" >true</showPrintDialog>
+        <showPrintPreview type="bool" >true</showPrintPreview>
+        <showExitConfirm type="bool" >false</showExitConfirm>
         <menuGroup type="int" >90</menuGroup>
         <order type="int" >90</order>
         <menus type="QStringList" >

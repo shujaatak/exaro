@@ -51,6 +51,7 @@
 #include "itemstoolbar.h"
 #include "variableseditor.h"
 #include "designerdataseteditor.h"
+#include "itemhelper.h"
 
 #define ROWS_IN_MENU  10
 #define STATIC_TABS	2
@@ -66,6 +67,7 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
 
 	m_lastView = m_currentView = 0;
+	m_itemHelper = 0;
 
 #ifdef Q_OS_MAC
 	toolBar->setFloatable( false );
@@ -174,6 +176,11 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	connect (m_objectInspector, SIGNAL(pressed(QModelIndex)), this, SLOT(objectInspector_pressed(QModelIndex)));
 
+	QAction * actionShowItemPropertiesDialog = new QAction(tr("Item properties..."),this);
+	actionShowItemPropertiesDialog->setShortcut( QKeySequence (Qt::ALT + Qt::Key_O) );
+	connect(actionShowItemPropertiesDialog, SIGNAL(triggered()), this, SLOT(showItemPropertiesDialog()));
+	this->addAction( actionShowItemPropertiesDialog );
+
 	m_contextMenu.addAction( actionCopy );
 	m_contextMenu.addAction( actionCut );
 	m_contextMenu.addAction( actionPaste );
@@ -185,6 +192,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 	m_contextMenu.addSeparator();
 	m_contextMenu.addAction( actionSave_item_as );
 	m_contextMenu.addAction( actionOpen_item_from );
+	m_contextMenu.addSeparator();
+	m_contextMenu.addAction( actionShowItemPropertiesDialog );
 
 	m_report = m_reportEngine.reports()[0]->createInstance( 0 );
 	m_report->setObjectName( "report" );
@@ -680,6 +689,7 @@ void mainWindow::newReport( bool notAsk )
     setWindowTitle( tr( "eXaro v%1 unsaved report" ).arg( EXARO_VERSION ) );
     newPage();
     refreshVariables();
+    undoStack->clear();
 }
 
 void mainWindow::connectItem( QObject * obj )
@@ -748,6 +758,8 @@ void mainWindow::openReport( const QString & report, bool notAsk)
 	connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ), this, SLOT( itemSelected( QObject *, QPointF, Qt::KeyboardModifiers ) ) );
 	//	        connect(m_report->children()[p], SIGNAL(itemMoved(QObject*, QPointF)), this, SLOT (itemMoved(QObject*, QPointF)) );
 	connect (pageView, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SLOT(addItem(Report::ItemInterface*,QPointF))) ;
+	connect (pageView, SIGNAL(doubleClick(Report::ItemInterface *)), this, SLOT(itemDoubleClicked(Report::ItemInterface*)) ) ;
+
 
 	foreach (QObject * obj, m_report->children()[p]->children())
 	    connectItem( obj );
@@ -1066,6 +1078,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 		pageView = new PageView( static_cast<QGraphicsScene*>(page), this, this);
 
 	    connect (pageView, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SLOT(addItem(Report::ItemInterface*,QPointF))) ;
+	    connect (pageView, SIGNAL(doubleClick(Report::ItemInterface *)), this, SLOT(itemDoubleClicked(Report::ItemInterface*)) ) ;
 	    }
 	else
 	{
@@ -1454,4 +1467,38 @@ void mainWindow::refreshVariables()
 void mainWindow::refreshVariables(QVariantMap vars)
 {
    m_varsWidget->setVarsMap( vars );
+}
+
+void mainWindow::itemDoubleClicked(Report::ItemInterface * item)
+{
+    qDebug("mainWindow::itemDoubleClicked (%s)", qPrintable(item->objectName()));
+    m_itemHelper = item->createHelper();
+    if (m_itemHelper)
+    {
+//	m_itemHelper->setParent(
+	m_itemHelper->setItem( item );
+	m_itemHelper->exec();
+
+	delete m_itemHelper;
+	m_itemHelper = 0;
+    }
+}
+
+void mainWindow::showItemPropertiesDialog()
+{
+    if (!m_currentView )
+		return;
+    Report::ItemInterface * item = dynamic_cast<Report::ItemInterface * >(m_currentView->activeObject());
+    if (!item)
+		return;
+
+	m_itemHelper = item->createHelper();
+    if (m_itemHelper)
+    {
+		m_itemHelper->setItem( item );
+		m_itemHelper->exec();
+
+		delete m_itemHelper;
+		m_itemHelper = 0;
+    }
 }

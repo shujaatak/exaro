@@ -62,6 +62,9 @@ void PaintInterface::run()
 	throw QString(tr("Can't create temporary files"));
 
     m_printer = new PaintDevice(m_report->pdf_file);
+#warning "TODO"
+//	if (!m_printerName.isEmpty())
+//			m_printer->setPrinterName(m_printerName);
     m_report->m_exportNode = m_report->m_doc.createElement("export");
     m_painter.begin(m_printer);
     m_painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);

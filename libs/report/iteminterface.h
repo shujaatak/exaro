@@ -52,6 +52,7 @@ class SqlQuery;
 class ReportInterface;
 class PaintInterface;
 class DataSet;
+class ItemHelper;
 
 class EXARO_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
@@ -442,6 +443,7 @@ public:
 	virtual QList<qreal> agregateValues(QString value);
 	virtual int agregateCounter();
 
+	virtual ItemHelper * createHelper();
 
 	double offsetX, offsetY;    //use in script for more flexible control item's children painting
 

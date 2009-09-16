@@ -39,9 +39,8 @@
 
 #include "exportinterface.h"
 
-//class QSplashScreen;
-
 class QToolBar;
+
 namespace Report
 {
 
@@ -64,19 +63,18 @@ public:
 	void setDocument(QIODevice * docNode);
 	void setVisible(bool visible);
 	void setSpaceBetweenPages(int spaceBetweenPages=50);
-
+	void setPrinterName(const QString & name);
+	void setShowPrintDialog(bool show);
+	void setShowExitConfirm(bool show);
+	void setReportName(const QString & name);
 	void setIconSize(int s);
 	void setToolButtonStyle (Qt::ToolButtonStyle style);
-	void setAskBeforeExit(bool b);
 
 protected:
 	void accept();
 	void reject();
 	void drawSelection(QGraphicsItem * parent, QRectF & rect);
 	void loadExportPlugins();
-#if 0
-	void switchPaintingSystem();
-#endif
 
 public slots:
 	void clearSelection();
@@ -110,7 +108,10 @@ private:
 	QList <pageStruct> m_pages;
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
-	bool askBeforeExit;
+	QString m_printerName;
+	bool m_showPrintDialog;
+	bool m_showExitConfirm;
+	QString m_reportName;
 	QString m_pluginsPath;
 };
 

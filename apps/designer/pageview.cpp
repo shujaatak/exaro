@@ -81,6 +81,7 @@ PageView::PageView(QGraphicsScene * scene, mainWindow * mw, QWidget * parent, Qt
     connect ( m_view->verticalScrollBar() , SIGNAL (valueChanged(int)), this, SLOT(doVerticalScroll(int) ) );
     connect ( m_view, SIGNAL ( mousePositionChanged(QPoint) ), this, SLOT ( mousePositionChanged(QPoint) ) );
     connect ( m_view, SIGNAL(addItem(Report::ItemInterface*,QPointF)), this, SIGNAL(addItem(Report::ItemInterface*,QPointF)) );
+    connect ( m_view, SIGNAL(doubleClick(Report::ItemInterface*)), this, SIGNAL(doubleClick(Report::ItemInterface*)) );
 
     m_selecter = new Selecter(scene, m_mw);
     connect ( m_selecter, SIGNAL(itemMoved(Report::ItemInterface, QPointF)), this, SIGNAL(selectionMoved(Report::ItemInterface, QPointF)) );
@@ -227,6 +228,16 @@ void GraphicsView::mouseMoveEvent ( QMouseEvent * e )
 {
     QGraphicsView::mouseMoveEvent( e );
     emit mousePositionChanged ( e->pos () );
+}
+
+void GraphicsView::mouseDoubleClickEvent ( QMouseEvent * event )
+{
+    foreach (QGraphicsItem* item, items(event->pos()))
+	if (dynamic_cast<Report::ItemInterface *>(item) )
+	{
+	    emit doubleClick(static_cast<Report::ItemInterface *>(item));
+	    return;
+	}
 }
 
 void GraphicsView::dragEnterEvent(QDragEnterEvent *event)

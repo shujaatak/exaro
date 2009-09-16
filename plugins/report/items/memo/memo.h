@@ -31,7 +31,12 @@
 #define MEMO_H
 
 #include <iteminterface.h>
+//#include <itemhelper.h>
 
+namespace Report
+{
+    class ItemHelper;
+}
 
 class Memo : public Report::ItemInterface
 {
@@ -89,7 +94,7 @@ public:
 	 * @see font()
 	 */
 	virtual void setFont(const QFont & font);
-
+	virtual Report::ItemHelper * createHelper();
 
 	QRectF boundingRect() const;
 
