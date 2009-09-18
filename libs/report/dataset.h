@@ -34,6 +34,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
+#include "globals.h"
 
 class DataSetEditor;
 
@@ -42,7 +43,7 @@ namespace Report
 
 class ReportInterface;
     
-class DataSet : public QObject
+class EXARO_EXPORTS DataSet : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString parentDataset READ parentDataset WRITE setParentDataset)
