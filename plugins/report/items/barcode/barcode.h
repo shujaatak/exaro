@@ -25,7 +25,7 @@ class Barcode : public Report::ItemInterface
 	Q_OBJECT
 	Q_INTERFACES(Report::ItemInterface);
 
-	Q_ENUMS(BarcodeTypes PaintTypes FrameTypes /*DrawTextTypes*/ MsiPlessey AztecResize InputMode Pdf_ECC MaxiCodeEncodingMode BarcodeChannelChannels CodeoneSymbolSize QrResize MicroQrResize DataMatrixEncodingMode DataMatrixECC200Size DataMatrixNonECC200Size);
+	Q_ENUMS(BarcodeTypes PaintTypes FrameTypes /*DrawTextTypes*/ MsiPlessey AztecResize InputMode Pdf_ECC MaxiCodeEncodingMode BarcodeChannelChannels CodeoneSymbolSize QrResize MicroQrResize DataMatrixEncodingMode DataMatrixECC200Size DataMatrixNonECC200Size Code39CheckDigit);
 	Q_PROPERTY(PaintTypes howToPaintBarcode READ paintType WRITE setPaintType)
 	Q_PROPERTY(FrameTypes frameType READ frameType WRITE setFrameType)
 	Q_PROPERTY(BarcodeTypes barcodeType READ barcodeType WRITE setBarcodeType)
