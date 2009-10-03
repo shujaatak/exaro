@@ -511,6 +511,7 @@ bool ReportInterface::exec()
 				m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
 				m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
 				paintPage(dynamic_cast<PageInterface*>(obj));
+				first=false;
 			}
 		}
 		m_painter.end();
