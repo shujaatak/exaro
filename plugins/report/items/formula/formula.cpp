@@ -35,6 +35,8 @@
 #include <reportinterface.h>
 
 #include "formula.h"
+#include "globals.h"
+
 
 inline void initMyResource()
 {

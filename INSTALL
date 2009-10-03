@@ -1,0 +1,37 @@
+        INSTALLING eXaro
+
+1.  Unpack the archive if you have not done so already:
+
+        tar xvfa exaro-X.Y.Z.tar.lzma          # unpack it
+
+    This creates the directory exaro-X.Y.Z containing the files
+    from the archive.
+
+2. Before you jump to build eXaro you should install the fllowing librraries:
+
+ - propertyEditor http://code.google.com/p/propertyeditor/downloads/list it is used to build the report designer.
+ - Zint http://www.zint.org.uk/  it is used to build barcode plugin, remember this plugin is build only if you choose GPL license for eXaro.
+ - quazip http://sourceforge.net/projects/quazip/ (you can download a "cmaked" snapshot from http://code.google.com/p/exaro/downloads/list) 
+    it is used to build ods export plugin.
+ 
+3. Configure and build
+  We will use shadow builds for this. Shadow building means building outside the source directory tree. 
+  It is of course possible to build eXaro inside the source tree, but use shadow builds anyway. 
+  You will thank me later: With shadow builds you can have several different build configurations side by side.
+
+Create a build directory, and cd into it:
+
+ $ mkdir build
+ $ cd build
+
+Running the configure script from inside the build directory sets up the shadow build:
+ $ cmake ../exaro-X.Y.Z [ -DCMAKE_INSTALL_PREFIX=_install_prefix ]
+ 
+Now compile eXaro
+ $ make [-jnumber_of_cpus+1 ]
+
+In order to use eXaro you have to install it. To do this type:
+ $ sudo make install
+
+
+4. That's all. eXaro is now installed. We hope you will enjoy using eXaro!

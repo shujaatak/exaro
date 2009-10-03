@@ -33,6 +33,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "text.h"
+#include "globals.h"
 
 inline void initMyResource()
 {
