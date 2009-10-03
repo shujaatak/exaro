@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>896</width>
-     <height>29</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -99,6 +99,7 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionOptions"/>
+    <addaction name="actionUse_OpenGL"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -171,6 +172,8 @@
    <addaction name="actionEdit_script"/>
    <addaction name="actionExecute"/>
    <addaction name="actionSetup_a_database"/>
+   <addaction name="separator"/>
+   <addaction name="actionUse_OpenGL"/>
   </widget>
   <widget class="QToolBar" name="toolBarTools">
    <property name="windowTitle">
@@ -535,14 +538,16 @@
     <string>Toolbars</string>
    </property>
   </action>
-  <action name="actionA">
-   <property name="text">
-    <string>a</string>
+  <action name="actionUse_OpenGL">
+   <property name="checkable">
+    <bool>true</bool>
    </property>
-  </action>
-  <action name="actionA_2">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/opengl.png</normaloff>:/images/opengl.png</iconset>
+   </property>
    <property name="text">
-    <string>a</string>
+    <string>Use OpenGL</string>
    </property>
   </action>
  </widget>

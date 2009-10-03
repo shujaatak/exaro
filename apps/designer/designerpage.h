@@ -35,7 +35,7 @@ public:
 	void setNode(QDomNode *pageNode);
 
 public:
-	static QGraphicsView * newDesignerPage(QDomNode *pageNode);
+	static QGraphicsView * newDesignerPage(QDomNode *pageNode, bool useOpenGL);
 };
 
 #endif

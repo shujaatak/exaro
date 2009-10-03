@@ -17,6 +17,7 @@
 #include <QPrinter>
 #include <QPalette>
 #include <QGraphicsView>
+#include <QGLWidget>
 #include "designerpage.h"
 
 DesignerPage::DesignerPage(QDomNode *pageNode, QObject *parent)
@@ -44,10 +45,11 @@ void DesignerPage::setNode(QDomNode *pageNode)
 	setSceneRect(a.paperRect());
 }
 
-QGraphicsView * DesignerPage::newDesignerPage(QDomNode *pageNode)
+QGraphicsView * DesignerPage::newDesignerPage(QDomNode *pageNode, bool useOpenGL)
 {
 
 	QGraphicsView * gw = new QGraphicsView(new DesignerPage(pageNode));
+	gw->setViewport(useOpenGL?(new QGLWidget):(new QWidget));
 	gw->setAutoFillBackground(true);
 	gw->setBackgroundRole(QPalette::Base);
 	QPalette pal = gw->palette();

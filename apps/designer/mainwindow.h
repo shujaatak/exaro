@@ -89,6 +89,7 @@ private:
 
 public slots:
 	void selectLastObject();
+    void useOpenGL(bool);
 
 protected slots:
 	void newPage();
