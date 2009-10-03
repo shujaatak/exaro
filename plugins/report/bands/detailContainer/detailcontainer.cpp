@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
+#include "globals.h"
 #include "detailcontainer.h"
 
 inline void initMyResource()

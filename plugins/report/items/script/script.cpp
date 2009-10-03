@@ -31,8 +31,10 @@
 #include <QBrush>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QScriptEngine>
 
 #include "script.h"
+#include "globals.h"
 
 inline void initMyResource()
 {

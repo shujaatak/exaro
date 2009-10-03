@@ -35,6 +35,7 @@
 //#include <QGLPixelBuffer>
 
 #include "barchart.h"
+#include "globals.h"
 
 inline void initMyResource()
 {

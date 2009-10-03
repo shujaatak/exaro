@@ -38,6 +38,7 @@
 #include "iteminterface.h"
 #include "reportinterface.h"
 #include "sqlquery.h"
+#include "globals.h"
 
 using namespace Report;
 
