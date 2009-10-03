@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
+#include "globals.h"
 #include "overlay.h"
 
 inline void initMyResource()

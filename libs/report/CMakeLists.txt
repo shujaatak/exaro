@@ -23,4 +23,4 @@ set_target_properties(Report PROPERTIES	SOVERSION "${EXARO_VERSION_MAJOR}.${EXAR
 target_link_libraries(Report ${QT_LIBRARIES})
 
 install(TARGETS Report ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES bandinterface.h exportinterface.h  iteminterface.h  pageinterface.h  reportinterface.h reportengine.h globals.h sqlquery.h DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
+install(FILES bandinterface.h exportinterface.h  iteminterface.h  pageinterface.h  reportinterface.h reportengine.h exaroexports.h globals.h sqlquery.h DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)

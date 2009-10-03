@@ -36,6 +36,7 @@
 
 #include "pageinterface.h"
 #include "bandinterface.h"
+#include "globals.h"
 
 
 namespace Report

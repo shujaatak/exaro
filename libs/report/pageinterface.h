@@ -34,8 +34,8 @@
 #include <QList>
 #include <QMenu>
 
-#include "globals.h"
 #include "iteminterface.h"
+#include "exaroexports.h"
 
 /** \namespace Report */
 namespace Report
@@ -46,7 +46,7 @@ namespace Report
 *
 * This is the base class for all page(s) object(s).
 */
-class KONTAMABIL_EXPORTS PageInterface : public QGraphicsScene
+class EXARO_EXPORTS PageInterface : public QGraphicsScene
 {
 	Q_OBJECT
 

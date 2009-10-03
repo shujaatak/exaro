@@ -32,6 +32,7 @@
 
 #include "bandinterface.h"
 #include "pageinterface.h"
+#include "globals.h"
 
 #include <limits.h>
 

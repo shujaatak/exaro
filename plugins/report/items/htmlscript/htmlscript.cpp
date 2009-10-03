@@ -41,6 +41,7 @@
 #endif
 
 #include "htmlscript.h"
+#include "globals.h"
 
 inline void initMyResource()
 {

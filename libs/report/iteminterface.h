@@ -35,9 +35,9 @@
 #include <QBrush>
 #include <QPen>
 #include <QFont>
-#include <QScriptEngine>
+#include "exaroexports.h"
+class QScriptEngine;
 
-#include "globals.h"
 
 /** @namespace Report */
 
@@ -128,7 +128,7 @@ Q_EXPORT_PLUGIN2(rectangle, Rectangle)
 * Yes it's that simple !!!
 */
 
-class KONTAMABIL_EXPORTS ItemInterface: public QObject, public QGraphicsItem
+class EXARO_EXPORTS ItemInterface: public QObject, public QGraphicsItem
 {
 	Q_OBJECT
 

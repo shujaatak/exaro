@@ -37,6 +37,7 @@
 #include <QKeySequence>
 #include <QMetaProperty>
 #include <QBuffer>
+#include <QDomDocument>
 
 #include <limits.h>
 

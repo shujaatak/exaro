@@ -38,12 +38,12 @@
 #include "pageinterface.h"
 #include "iteminterface.h"
 #include "bandinterface.h"
-#include "globals.h"
+
 
 namespace Report
 {
 
-class KONTAMABIL_EXPORTS ReportEngine : public QObject
+class EXARO_EXPORTS ReportEngine : public QObject
 {
 	Q_OBJECT
 
