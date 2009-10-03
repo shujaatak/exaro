@@ -71,7 +71,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 		: QDialog(parent), m_previewWidget(0), m_doc(0), m_searchPage(0),m_spaceBetweenPages(50)
 {
 	initMyResource();
-
+	QSettings s;
 
 	m_showPrintDialog = true;
 	m_showExitConfirm = true;
@@ -184,6 +184,11 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	act = toolbar->addAction(QIcon(":/images/print.png"), tr("Print"));
 	act->setShortcut(QKeySequence(QKeySequence::Print));
 	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
+
+	act = toolbar->addAction(QIcon(":/images/switch-painting-opengl.png"), tr("Use OpenGL"));
+	act->setCheckable(true);
+	connect(act, SIGNAL(toggled(bool)), m_previewWidget, SLOT(toggleOpenGl(bool)));
+	act->setChecked(s.value("eXaro/useOpenGL", false).toBool());
 
 	toolbar->addSeparator();
 	act = toolbar->addAction(QIcon(":/images/quit.png"), tr("Quit"));

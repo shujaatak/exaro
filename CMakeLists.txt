@@ -71,7 +71,7 @@ set( QT_USE_QTXML TRUE )
 set( QT_USE_QTSQL TRUE )
 set( QT_USE_QTSCRIPT TRUE )
 set( QT_USE_QTWEBKIT TRUE )
-#set( QT_USE_QTOPENGL TRUE )
+set( QT_USE_QTOPENGL TRUE )
 
 include( ${QT_USE_FILE} )
 include_directories(

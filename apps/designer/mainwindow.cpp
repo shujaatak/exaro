@@ -27,6 +27,7 @@
 #include <QItemSelectionModel>
 #include <QMetaClassInfo>
 #include <QUndoView>
+#include <QGLWidget>
 
 #include <QPluginLoader>
 #include <QFileDialog>
@@ -185,7 +186,8 @@ mainWindow::mainWindow( QWidget* parent, Qt::WFlags fl )
 
 	connect( actionUndo, SIGNAL( triggered( bool ) ), m_undoStack, SLOT( undo() ) );
 	connect( actionRedo, SIGNAL( triggered( bool ) ), m_undoStack, SLOT( redo() ) );
-
+	connect( actionUse_OpenGL, SIGNAL(toggled(bool)), SLOT(useOpenGL(bool)));
+	
 	connect( m_tw, SIGNAL( currentChanged( int ) ), SLOT( currentChanged( int ) ) );
 
 	connect( this, SIGNAL( setCurrentIndex( const QModelIndex&, QItemSelectionModel::SelectionFlags ) ), selectionModel, SLOT( setCurrentIndex( const QModelIndex&, QItemSelectionModel::SelectionFlags ) ) );
@@ -554,6 +556,7 @@ void mainWindow::setupReport()
 
 		dynamic_cast<Report::PageInterface*>( m_report->children()[p] )->setContextMenu( &m_contextMenu );
 		gw = new QGraphicsView( dynamic_cast<QGraphicsScene*>( m_report->children()[p] ) );
+		gw->setViewport(actionUse_OpenGL->isChecked()?(new QGLWidget):(new QWidget));
 		m_tw->addTab(( QWidget* ) gw, dynamic_cast<Report::PageInterface*>( gw->scene() )->objectName() );
 		dynamic_cast<QGraphicsScene*>( m_report->children()[p] )->update();
 		connect( m_report->children()[p], SIGNAL( itemSelected( QObject *, QPointF ) ), this, SLOT( itemSelected( QObject *, QPointF ) ) );
@@ -893,6 +896,7 @@ int mainWindow::_createNewPage_(Report::PageInterface* page,int afterIndex, QStr
 			gw->setPalette(pal);
 			gw->scene()->setBackgroundBrush(QPixmap(":/images/background.png"));
 	*/
+	gw->setViewport(actionUse_OpenGL->isChecked()?(new QGLWidget):(new QWidget));
 	QString nameOfPage = pageName.isNull() ? Report::ReportEngine::uniqueName( dynamic_cast<Report::PageInterface*>( gw->scene() )->metaObject()->className() , m_report ) : pageName;
 
 	dynamic_cast<Report::PageInterface*>( gw->scene() )->setObjectName( nameOfPage );
@@ -930,6 +934,14 @@ void mainWindow::_deletePage_( int index )
 		m_pe->setObject( m_report );
 	m_objectModel.setRootObject( m_report );
 }
+
+
+void mainWindow::useOpenGL(bool openGL)
+{
+	for (int i=0;i<m_tw->count();i++)
+		dynamic_cast<QGraphicsView*>( m_tw->widget( i ) )->setViewport(openGL?(new QGLWidget):(new QWidget));
+}
+
 
 void mainWindow::loadToolBars()
 {

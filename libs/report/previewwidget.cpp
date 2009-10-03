@@ -29,6 +29,7 @@
 
 #include <QSettings>
 #include <QDesktopWidget>
+#include <QGLWidget>
 #include "previewwidget.h"
 
 namespace Report
@@ -48,6 +49,13 @@ PreviewWidget::PreviewWidget(QWidget *parent)
 
 PreviewWidget::~PreviewWidget()
 {
+}
+
+void PreviewWidget::toggleOpenGl(bool useOpenGL)
+{
+	QSettings s;
+	s.setValue("eXaro/useOpenGL", useOpenGL);
+	setViewport(useOpenGL?(new QGLWidget):(new QWidget));
 }
 
 void PreviewWidget::zoomIn()

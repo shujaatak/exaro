@@ -50,6 +50,7 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void zoomTo(int);
+	void toggleOpenGl(bool useOpenGL);
 
 signals:
 	void zoomChanged(int);
