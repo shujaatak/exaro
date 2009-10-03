@@ -95,7 +95,6 @@ void ReportInterface::paintPage(PageInterface * page)
 	if (!page || m_reportCanceled)
 		return;
 
-
 	m_currentPage = page;
 
 	m_pageHeaderBands.clear();
@@ -112,7 +111,6 @@ void ReportInterface::paintPage(PageInterface * page)
 		BandInterface * band = dynamic_cast<BandInterface *>(obj);
 		if (!band)
 			continue;
-
 		switch (band->bandType())
 		{
 			case BandInterface::PageHeader:
@@ -203,7 +201,6 @@ void ReportInterface::paintPage(PageInterface * page)
 
 		if (!detailQuery->isValid())
 			detailQuery->first();
-
 		QDomElement qryElement = m_doc.createElement("query");
 		qryElement.setAttribute("name", detailQuery->objectName());
 		QDomElement rowElement = m_doc.createElement("row");
@@ -504,10 +501,10 @@ bool ReportInterface::exec()
 		bool first=true;
 		foreach(QObject * obj, children())
 		{
-			if (!first)
-				m_printer->newPage();
 			if (dynamic_cast<PageInterface*>(obj))
 			{
+				if (!first)
+					m_printer->newPage();
 				m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
 				m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
 				paintPage(dynamic_cast<PageInterface*>(obj));
