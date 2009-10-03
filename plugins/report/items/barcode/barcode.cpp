@@ -19,9 +19,11 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QFontMetricsF>
+#include <QScriptEngine>
 
 #include "barcode.h"
 #include "qzint.h"
+#include "globals.h"
 
 using namespace Zint;
 

@@ -34,6 +34,7 @@
 #include <QFontMetricsF>
 
 #include "picture.h"
+#include "globals.h"
 
 inline void initMyResource()
 {

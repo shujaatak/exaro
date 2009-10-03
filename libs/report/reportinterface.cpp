@@ -41,9 +41,12 @@
 #include <QPrintPreviewWidget>
 #include <QSqlField>     
 #include <QMessageBox>
-
+#include <QScriptEngine>
+#include <QScriptValue>
 #include <QTemporaryFile>
 #include <QDir>
+#include <QUiLoader>
+
 #include "paintdevice.h"
 
 #include "previewdialog.h"
@@ -90,7 +93,7 @@ void ReportInterface::addOrderedBand(QList<BandInterface *> & m_bands, BandInter
 		m_bands.push_back(band);
 }
 
-void ReportInterface::paintPage(PageInterface * page)
+void ReportInterface::paintPage(PageInterface * page, QDomDocument & doc, QDomNode & exportNode)
 {
 	if (!page || m_reportCanceled)
 		return;
@@ -201,14 +204,14 @@ void ReportInterface::paintPage(PageInterface * page)
 
 		if (!detailQuery->isValid())
 			detailQuery->first();
-		QDomElement qryElement = m_doc.createElement("query");
+		QDomElement qryElement = doc.createElement("query");
 		qryElement.setAttribute("name", detailQuery->objectName());
-		QDomElement rowElement = m_doc.createElement("row");
+		QDomElement rowElement = doc.createElement("row");
 		for (int i = 0;i < detailQuery->record().count();i++)
 		{
-			QDomElement field = m_doc.createElement("field");
+			QDomElement field = doc.createElement("field");
 			field.setAttribute("type", "columnName");
-			field.appendChild(m_doc.createTextNode(detailQuery->record().fieldName(i)));
+			field.appendChild(doc.createTextNode(detailQuery->record().fieldName(i)));
 			rowElement.appendChild(field);
 		}
 		qryElement.appendChild(rowElement);
@@ -255,12 +258,12 @@ void ReportInterface::paintPage(PageInterface * page)
 				}
 				paintBand(band);
 			}
-			exportRecord(detailQuery->record(), qryElement);
+			exportRecord(detailQuery->record(), doc, qryElement);
 			first=false;
 		}
 		while (detailQuery->next());
 
-		m_exportNode.appendChild(qryElement);
+		exportNode.appendChild(qryElement);
 
 		detailQuery->last();
 		foreach(BandInterface * band, detailFooters)
@@ -319,14 +322,14 @@ void ReportInterface::prepareCurrentPage()
 		paintBand(band);
 }
 
-void ReportInterface::exportRecord(const QSqlRecord & record, QDomElement & el)
+void ReportInterface::exportRecord(const QSqlRecord & record,  QDomDocument & doc, QDomElement & el)
 {
-	QDomElement rowElement = m_doc.createElement("row");
+	QDomElement rowElement = doc.createElement("row");
 	for (int i = 0;i < record.count();i++)
 	{
-		QDomElement field = m_doc.createElement("field");
+		QDomElement field = doc.createElement("field");
 		field.setAttribute("type", typeIsNumber(record.field(i).value().type()) ? QString("float") : QString("string"));
-		field.appendChild(m_doc.createTextNode(record.field(i).value().toString()));
+		field.appendChild(doc.createTextNode(record.field(i).value().toString()));
 		rowElement.appendChild(field);
 	}
 	el.appendChild(rowElement);
@@ -485,6 +488,8 @@ bool ReportInterface::exec()
 
 	emit beforeExec();
 
+	QDomDocument m_doc;
+	QDomNode m_exportNode;
 	m_doc.appendChild(m_doc.createComment("Author '" + author() + "'"));
 
 	QTemporaryFile pdf_file(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf");
@@ -507,7 +512,7 @@ bool ReportInterface::exec()
 					m_printer->newPage();
 				m_printer->setPaperSize(dynamic_cast<PageInterface*>(obj)->paperRect().size());
 				m_printer->setPaperOrientation((QPrinter::Orientation)dynamic_cast<PageInterface*>(obj)->orientation());
-				paintPage(dynamic_cast<PageInterface*>(obj));
+				paintPage(dynamic_cast<PageInterface*>(obj), m_doc, m_exportNode);
 				first=false;
 			}
 		}

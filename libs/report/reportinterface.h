@@ -34,22 +34,19 @@
 #include <QMap>
 #include <QList>
 #include <QVariant>
-#include <QDomDocument>
 #include <QPainter>
 #include <QFile>
-#include <QScriptEngine>
-#include <QScriptValue>
-#include <QUiLoader>
-#include <QSqlRecord>
 #include <QSplashScreen>
+#include <QSqlRecord>
 #include <QSqlDatabase>
-
+#include <QScriptEngine>
 
 #include "pageinterface.h"
 
 #include "bandinterface.h"
-#include "globals.h"
-
+class QDomDocument;
+class QDomNode;
+class QDomElement;
 
 /** \namespace Report */
 namespace Report
@@ -62,7 +59,7 @@ namespace Report
 */
 
 class PaintDevice;
-class KONTAMABIL_EXPORTS ReportInterface : public QObject
+class EXARO_EXPORTS ReportInterface : public QObject
 {
 
 	Q_OBJECT
@@ -320,7 +317,7 @@ signals:
 
 
 protected:
-	virtual void paintPage(PageInterface * page);
+	virtual void paintPage(PageInterface * page, QDomDocument & doc, QDomNode & exportNode );
 	virtual void paintBand(BandInterface * band);
 	virtual void setScriptEngineGlobalVariables();
 	virtual	void paintOverlays();
@@ -329,8 +326,6 @@ protected:
 	PaintDevice * m_printer;
 
 	QPainter m_painter;
-	QDomDocument m_doc;
-	QDomNode m_exportNode;
 	QScriptEngine * m_scriptEngine;
 
 private:
@@ -339,7 +334,7 @@ private:
 	void newPage();
 	void prepareCurrentPage();
 	bool canPaint(BandInterface * band);
-	void exportRecord(const QSqlRecord & record, QDomElement & el);
+	void exportRecord(const QSqlRecord & record,  QDomDocument & doc, QDomElement & el);
 	void paintObjects(ItemInterface * item, QPointF translate, const QRectF & clipRect);
 	void cleanUpObjects();
 	bool isNumber(QVariant::Type type);
