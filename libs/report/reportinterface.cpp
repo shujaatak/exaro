@@ -229,6 +229,17 @@ void ReportInterface::paintPage(PageInterface * page, QDomDocument & doc, QDomNo
 					if (!canPaint(band))
 						newPage();
 					detailQuery->previous();
+                                        //reset Preview
+                                        for(int i= detailFooters.indexOf(band); (i-1)>=0; i--)
+                                        {
+                                            BandInterface * bandPreview=detailFooters.at(i-1);
+                                            if((bandPreview->order() < band->order())
+                                                && bandPreview->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()))
+                                            {
+                                                paintBand(bandPreview);
+                                                bandPreview->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()));
+                                            }
+                                        }
 					paintBand(band);
 					detailQuery->next();
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
@@ -241,6 +252,14 @@ void ReportInterface::paintPage(PageInterface * page, QDomDocument & doc, QDomNo
 						newPage();
 					paintBand(band);
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
+                                        //reset Next
+                                        foreach(BandInterface * bandNext, detailHeaders)
+                                            if((bandNext->order() > band->order())
+                                                && bandNext->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()))
+                                            {
+                                                    paintBand(bandNext);
+                                                    bandNext->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()));
+                                             }
 					if (band->resetDetailNumber())
 						m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
 				}
