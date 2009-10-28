@@ -79,7 +79,7 @@ void Detail::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, 
 		painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
 
 	if (frame()&DrawRight)
-		painter->drawLine(rect.right(), rect.top(), rect.right(), rect.bottom());
+                painter->drawLine(rect.right()-2, rect.top(), rect.right()-2, rect.bottom());
 
 	if (frame()&DrawTop)
 		painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
