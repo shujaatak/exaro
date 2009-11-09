@@ -200,6 +200,8 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
 	setLayout(vlayout);
+        setWindowModality(Qt::ApplicationModal);
+        showMaximized();
 }
 
 PreviewDialog::~PreviewDialog()
