@@ -74,6 +74,8 @@ class EXARO_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(bool showSplashScreen READ showSplashScreen WRITE setShowSplashScreen DESIGNABLE false)
 	Q_PROPERTY(QPixmap splashScreenPixmap READ splashScreenPixmap WRITE setSplashScreenPixmap DESIGNABLE false)
 	Q_PROPERTY(bool showExitConfirm READ showExitConfirm WRITE setShowExitConfirm DESIGNABLE false)
+        Q_PROPERTY(bool showAfterClose READ showAfterClose WRITE setShowAfterClose)
+
 public:
 	struct FunctionValue
 	{
@@ -130,6 +132,20 @@ public:
 	 * @see author()
 	 */
 	void setAuthor(const QString & author);
+
+        /**
+         * The report m_showAfterClose.
+         * @return report m_showAfterClose
+         * @see setShowAfterClose()
+         */
+
+        bool showAfterClose();
+        /**
+         * Set report m_showAfterClose
+         * @param showAfterClose report showAfterClose
+         * @see showAfterClose()
+         */
+        void setShowAfterClose(const bool showAfterClose);
 
 	/**
 	 * Before you add a object to report call this method to see if the report can containt the object.
@@ -303,6 +319,7 @@ public slots:
 	 * Call this slot to cancel the report execution
 	 */
 	void cancelReport();
+        void showReport();
 
 signals:
 	/**
@@ -346,6 +363,7 @@ private:
 	bool m_reportCanceled;
 	QString m_name;
 	QString m_author;
+        bool m_showAfterClose;
 	QString m_script;
 	QVariantMap m_queries;
 	QVariantMap m_uis;
