@@ -65,7 +65,7 @@ namespace Report
 {
 
 ReportInterface::ReportInterface(QObject *parent)
-		: QObject(parent), m_printer(0), m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
+                : QObject(parent), m_showAfterClose(false), m_printer(0), m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
 {
 	m_reportCanceled = false;
 	m_showPrintDialog = true;
@@ -449,6 +449,15 @@ void ReportInterface::scriptException(const QScriptValue & exception )
 	QMessageBox::critical(0,tr("Uncaught exception at line %1").arg(exception.engine()->uncaughtExceptionLineNumber()), exception.toString());
 }
 
+void ReportInterface::showReport()
+{
+    if(m_showAfterClose)
+    {        
+        delete m_scriptEngine;
+        m_scriptEngine=0;
+	exec();
+    }
+}
 bool ReportInterface::exec()
 {
 	m_reportCanceled=false;
@@ -544,7 +553,8 @@ bool ReportInterface::exec()
 	cleanUpObjects();
 	if (!m_reportCanceled)
 	{
-		PreviewDialog d;
+		PreviewDialog d;		
+                connect(&d, SIGNAL(rejected()), SLOT(showReport()));
 		d.setPrinterName(m_printerName);
 		d.setShowPrintDialog(m_showPrintDialog);
 		d.setShowExitConfirm(m_showExitConfirm);
@@ -559,7 +569,7 @@ bool ReportInterface::exec()
 			d.print();
 	}
 	else if (m_showSplashScreen)
-		m_splashScreen.finish(0);
+		m_splashScreen.finish(0);        
 	m_doc.clear();
 	delete m_scriptEngine;
 	m_scriptEngine=0;
@@ -615,6 +625,15 @@ void ReportInterface::setAuthor(const QString & author)
 	m_author = author;
 }
 
+bool ReportInterface::showAfterClose()
+{
+    return m_showAfterClose;
+}
+
+void ReportInterface::setShowAfterClose( const bool show)
+{
+    m_showAfterClose = show;
+}
 QVariantMap ReportInterface::queries()
 {
 	return m_queries;
