@@ -51,6 +51,7 @@
 
 #include "previewdialog.h"
 #include "globals.h"
+#include "message.h"
 
 
 static QScriptValue getSetDateFormat(QScriptContext *context, QScriptEngine *engine)
@@ -65,13 +66,14 @@ namespace Report
 {
 
 ReportInterface::ReportInterface(QObject *parent)
-                : QObject(parent), m_showAfterClose(false), m_printer(0), m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
+                : QObject(parent), m_printer(0), m_scriptEngine(0),m_sqlDatabase(QSqlDatabase::database())
 {
 	m_reportCanceled = false;
 	m_showPrintDialog = true;
 	m_showPrintPreview = true;
 	m_showSplashScreen = true;
 	m_showExitConfirm = true;
+        m_showAfterClose  = false;
 }
 
 ReportInterface::~ReportInterface()
@@ -505,7 +507,9 @@ bool ReportInterface::exec()
 		if (widget)
 			m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
 	}
-
+        Message _messageBox_;
+        m_scriptEngine->globalObject().setProperty("_messageBox_",
+                                      m_scriptEngine->newQObject(&_messageBox_));
 	setScriptEngineGlobalVariables();
 
 	connect(m_scriptEngine, SIGNAL(signalHandlerException(QScriptValue)), SLOT(scriptException(QScriptValue)));
