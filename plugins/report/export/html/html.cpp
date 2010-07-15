@@ -104,7 +104,7 @@ void Html::execExport(QDomNode & exportNode)
 		}
 		qryEl=qryEl.nextSiblingElement();
 	}
-	file.write(content.toString(4).toAscii());
+	file.write(content.toString(4).toUtf8());
 	file.close();
 	QMessageBox::information(0,tr("Export"),tr("Export done"),QMessageBox::Ok);
 }

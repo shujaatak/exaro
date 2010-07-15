@@ -59,34 +59,22 @@ void CsvTxt::execExport(QDomNode & exportNode)
 	if (!dirName.length())
 		return;
 
+#if defined(Q_WS_WIN)
+    if (dirName.right(1) != "\\")
+        dirName += "\\";
+#else
+    if (dirName.right(1) != "/")
+        dirName += "/";
+#endif
+
 	QDomElement qryEl=exportNode.firstChildElement("query");
 
 	QString delimiter;
 	QString quote;
 
-	if (ed.other->isChecked())
-		delimiter=ed.delimiter->text();
+    delimiter = ed.getDelimiter();
+    quote = ed.getQuote();
 
-	if (ed.comma->isChecked())
-		delimiter=",";
-
-	if (ed.semicolon->isChecked())
-		delimiter=";";
-
-	if (ed.space->isChecked())
-		delimiter=" ";
-
-	if (ed.tabulator->isChecked())
-		delimiter=QString(1,0x09);
-
-	if (ed.quote_3->isChecked())
-		quote=ed.quote->text();
-
-	if (ed.quote_1->isChecked())
-		quote="\"";
-
-	if (ed.quote_2->isChecked())
-		quote="'";
 
 	while(!qryEl.isNull())
 	{
@@ -113,7 +101,7 @@ void CsvTxt::execExport(QDomNode & exportNode)
 				field=field.nextSiblingElement();
 			}
 			line.remove(line.length()-1,1);
-			out<<line<<"\n";
+			out<<line.toUtf8()<<"\n";
 			rowNode=rowNode.nextSibling();
 		}
 		file.close();

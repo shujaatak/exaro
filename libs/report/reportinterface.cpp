@@ -475,12 +475,14 @@ bool ReportInterface::exec()
 	m_scriptEngine = new QScriptEngine(this);
 	setReportFunction("dateFormat", ::getSetDateFormat,2);
 	foreach(QString extention, m_scriptEngine->availableExtensions())
+    {
 		if (!m_scriptEngine->importedExtensions().contains(extention))
 		{
 			if (m_showSplashScreen)
 				m_splashScreen.showMessage(tr("Importing extension: %1").arg(extention));
 			m_scriptEngine->importExtension(extention);
 		}
+    }
 
 
 	// prepare queries
@@ -496,7 +498,9 @@ bool ReportInterface::exec()
 	//prepare uis
 	QUiLoader loader;
 	foreach(QString path, m_uiPluginsPaths)
+    {
 		loader.addPluginPath( path );
+    }
 
 	foreach(QString key, m_uis.keys())
 	{
@@ -526,7 +530,9 @@ bool ReportInterface::exec()
 
 	QTemporaryFile pdf_file(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf");
 	if (!pdf_file.open())
+    {
 		throw QString(tr("Can't create temporary files"));
+    }
 	if (!m_reportCanceled)
 	{
 		m_printer = new PaintDevice(&pdf_file);

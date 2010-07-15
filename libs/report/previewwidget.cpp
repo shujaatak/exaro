@@ -44,6 +44,14 @@ PreviewWidget::PreviewWidget(QWidget *parent)
 	m_zoomMin=m_currentZoom/4;
 	m_zoomMax=m_currentZoom*4;
 	m_zoomStep=m_currentZoom/4;
+
+#if defined(ANDROID)||defined(Q_WS_MAEMO_5)||defined(Q_WS_S60)||defined(Q_WS_SIMULATOR)
+    setDragMode(ScrollHandDrag);
+# if defined(ANDROID)
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+# endif
+#endif
 }
 
 

@@ -27,6 +27,64 @@ ExportSettingsDialog::~ExportSettingsDialog()
 {
 }
 
+QString ExportSettingsDialog::getDelimiter()
+{
+    QString result = ",";
+#if defined(MOBILE_UI)
+    if (delimiterCombo->currentIndex() == (delimiterCombo->count()-1))
+        result = delimiterEdit->text();
+    else
+        result = delimiterCombo->currentText();
+#else
+    if (other->isChecked())
+        result = delimiter->text();
+    if (comma->isChecked())
+        result = ",";
+    if (semicolon->isChecked())
+        result = ";";
+    if (space->isChecked())
+        result = " ";
+    if (tabulator->isChecked())
+        result = QString(1,0x09);
+#endif
+    return result;
+}
+
+QString ExportSettingsDialog::getQuote()
+{
+    QString result = "";
+#if defined(MOBILE_UI)
+    if (quoteCombo->currentIndex() == (quoteCombo->count()-1))
+        result = quoteEdit->text();
+    else
+        result = quoteCombo->currentText();
+#else
+    if (quote_3->isChecked())
+        result = quote->text();
+    
+    if (quote_1->isChecked())
+        result = "\"";
+    
+    if (quote_2->isChecked())
+        result = "'";
+#endif
+    return result;
+}
+
+
+#if defined(MOBILE_UI)
+void ExportSettingsDialog::on_delimiterCombo_currentIndexChanged(int index)
+{
+    delimiterEdit->setEnabled(index == (delimiterCombo->count()-1));
+}
+
+void ExportSettingsDialog::on_quoteCombo_currentIndexChanged(int index)
+{
+    quoteEdit->setEnabled(index == (quoteCombo->count()-1));
+}
+
+#endif
+
 /*$SPECIALIZATION$*/
 
 
