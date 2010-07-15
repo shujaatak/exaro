@@ -387,12 +387,12 @@ void ItemInterface::setHeight(qreal height)
 	emit(geometryChanged(geometry()));
 }
 
-double ItemInterface::stretch()
+qreal ItemInterface::stretch()
 {
 	return m_stretch;
 }
 
-void ItemInterface::setStretch(double val)
+void ItemInterface::setStretch(qreal val)
 {
 	if (val>m_stretch)
 	{

@@ -18,8 +18,12 @@
 #define EXPORTSETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QString>
+#if defined(MOBILE_UI)
+#include "ui_exportSettingsDialog_mobile.h"
+#else
 #include "ui_exportSettingsDialog.h"
-
+#endif
 class ExportSettingsDialog : public QDialog, public Ui::Dialog
 {
 	Q_OBJECT
@@ -27,17 +31,17 @@ class ExportSettingsDialog : public QDialog, public Ui::Dialog
 public:
 	ExportSettingsDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
 	~ExportSettingsDialog();
+
+    QString getDelimiter();
+
+    QString getQuote();
 	/*$PUBLIC_FUNCTIONS$*/
 
-public slots:
-	/*$PUBLIC_SLOTS$*/
-
-protected:
-	/*$PROTECTED_FUNCTIONS$*/
-
-protected slots:
-	/*$PROTECTED_SLOTS$*/
-
+private slots:
+#if defined(MOBILE_UI)
+    void on_delimiterCombo_currentIndexChanged(int index);
+    void on_quoteCombo_currentIndexChanged(int index);
+#endif
 };
 
 #endif
