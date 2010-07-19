@@ -60,11 +60,11 @@ void CsvTxt::execExport(QDomNode & exportNode)
 		return;
 
 #if defined(Q_WS_WIN)
-    if (dirName.right(1) != "\\")
-        dirName += "\\";
+	if (dirName.right(1) != "\\")
+		dirName += "\\";
 #else
-    if (dirName.right(1) != "/")
-        dirName += "/";
+	if (dirName.right(1) != "/")
+		dirName += "/";
 #endif
 
 	QDomElement qryEl=exportNode.firstChildElement("query");
@@ -72,8 +72,8 @@ void CsvTxt::execExport(QDomNode & exportNode)
 	QString delimiter;
 	QString quote;
 
-    delimiter = ed.getDelimiter();
-    quote = ed.getQuote();
+	delimiter = ed.getDelimiter();
+	quote = ed.getQuote();
 
 
 	while(!qryEl.isNull())

@@ -231,17 +231,17 @@ void ReportInterface::paintPage(PageInterface * page, QDomDocument & doc, QDomNo
 					if (!canPaint(band))
 						newPage();
 					detailQuery->previous();
-                                        //reset Preview
-                                        for(int i= detailFooters.indexOf(band); (i-1)>=0; i--)
-                                        {
-                                            BandInterface * bandPreview=detailFooters.at(i-1);
-                                            if((bandPreview->order() < band->order())
-                                                && bandPreview->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()))
-                                            {
-                                                paintBand(bandPreview);
-                                                bandPreview->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()));
-                                            }
-                                        }
+					//reset Preview
+					for(int i= detailFooters.indexOf(band); (i-1)>=0; i--)
+					{
+						BandInterface * bandPreview=detailFooters.at(i-1);
+						if((bandPreview->order() < band->order())
+							&& bandPreview->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()))
+						{
+							paintBand(bandPreview);
+							bandPreview->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandPreview->groupField()));
+						}
+					}
 					paintBand(band);
 					detailQuery->next();
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
@@ -254,14 +254,14 @@ void ReportInterface::paintPage(PageInterface * page, QDomDocument & doc, QDomNo
 						newPage();
 					paintBand(band);
 					band->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), band->groupField()));
-                                        //reset Next
-                                        foreach(BandInterface * bandNext, detailHeaders)
-                                            if((bandNext->order() > band->order())
-                                                && bandNext->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()))
-                                            {
-                                                    paintBand(bandNext);
-                                                    bandNext->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()));
-                                             }
+					//reset Next
+					foreach(BandInterface * bandNext, detailHeaders)
+						if((bandNext->order() > band->order())
+							&& bandNext->groupFieldValue() == detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()))
+						{
+								paintBand(bandNext);
+								bandNext->setGroupFieldValue(detailContainerBand->queryField(detailContainerBand->query(), bandNext->groupField()));
+						}
 					if (band->resetDetailNumber())
 						m_scriptEngine->globalObject().setProperty("_detailNumber_", QScriptValue(m_scriptEngine, 0), QScriptValue::ReadOnly);
 				}
@@ -453,12 +453,12 @@ void ReportInterface::scriptException(const QScriptValue & exception )
 
 void ReportInterface::showReport()
 {
-    if(m_showAfterClose)
-    {        
-        delete m_scriptEngine;
-        m_scriptEngine=0;
+	if(m_showAfterClose)
+	{        
+		delete m_scriptEngine;
+		m_scriptEngine=0;
 	exec();
-    }
+	}
 }
 bool ReportInterface::exec()
 {
@@ -498,9 +498,7 @@ bool ReportInterface::exec()
 	//prepare uis
 	QUiLoader loader;
 	foreach(QString path, m_uiPluginsPaths)
-    {
 		loader.addPluginPath( path );
-    }
 
 	foreach(QString key, m_uis.keys())
 	{
@@ -511,9 +509,8 @@ bool ReportInterface::exec()
 		if (widget)
 			m_scriptEngine->globalObject().setProperty(widget->objectName(), m_scriptEngine->newQObject(widget), QScriptValue::ReadOnly);
 	}
-        Message _messageBox_;
-        m_scriptEngine->globalObject().setProperty("_messageBox_",
-                                      m_scriptEngine->newQObject(&_messageBox_));
+	Message _messageBox_;
+	m_scriptEngine->globalObject().setProperty("_messageBox_", m_scriptEngine->newQObject(&_messageBox_));
 	setScriptEngineGlobalVariables();
 
 	connect(m_scriptEngine, SIGNAL(signalHandlerException(QScriptValue)), SLOT(scriptException(QScriptValue)));
@@ -530,9 +527,8 @@ bool ReportInterface::exec()
 
 	QTemporaryFile pdf_file(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf");
 	if (!pdf_file.open())
-    {
 		throw QString(tr("Can't create temporary files"));
-    }
+
 	if (!m_reportCanceled)
 	{
 		m_printer = new PaintDevice(&pdf_file);
@@ -563,8 +559,8 @@ bool ReportInterface::exec()
 	cleanUpObjects();
 	if (!m_reportCanceled)
 	{
-		PreviewDialog d;		
-                connect(&d, SIGNAL(rejected()), SLOT(showReport()));
+		PreviewDialog d;
+		connect(&d, SIGNAL(rejected()), SLOT(showReport()));
 		d.setPrinterName(m_printerName);
 		d.setShowPrintDialog(m_showPrintDialog);
 		d.setShowExitConfirm(m_showExitConfirm);
@@ -637,12 +633,12 @@ void ReportInterface::setAuthor(const QString & author)
 
 bool ReportInterface::showAfterClose()
 {
-    return m_showAfterClose;
+	return m_showAfterClose;
 }
 
 void ReportInterface::setShowAfterClose( const bool show)
 {
-    m_showAfterClose = show;
+	m_showAfterClose = show;
 }
 QVariantMap ReportInterface::queries()
 {

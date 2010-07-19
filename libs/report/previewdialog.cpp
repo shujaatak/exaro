@@ -1,31 +1,31 @@
 /***************************************************************************
- *   This file is part of the eXaro project                                *
- *   Copyright (C) 2008 by BogDan Vatra                                    *
- *   bog_dan_ro@yahoo.com                                                  *
- **                   GNU General Public License Usage                    **
- *                                                                         *
- *   This library is free software: you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation, either version 3 of the License, or     *
- *   (at your option) any later version.                                   *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
- *                                                                         *
- **                  GNU Lesser General Public License                    **
- *                                                                         *
- *   This library is free software: you can redistribute it and/or modify  *
- *   it under the terms of the GNU Lesser General Public License as        * 
- *   published by the Free Software Foundation, either version 3 of the    *
- *   License, or (at your option) any later version.                       *
- *   You should have received a copy of the GNU Lesser General Public      *
- *   License along with this library.                                      * 
- *   If not, see <http://www.gnu.org/licenses/>.                           *
- *                                                                         *
- *   This library is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- ****************************************************************************/
+*   This file is part of the eXaro project                                *
+*   Copyright (C) 2008 by BogDan Vatra                                    *
+*   bog_dan_ro@yahoo.com                                                  *
+**                   GNU General Public License Usage                    **
+*                                                                         *
+*   This library is free software: you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation, either version 3 of the License, or     *
+*   (at your option) any later version.                                   *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
+*                                                                         *
+**                  GNU Lesser General Public License                    **
+*                                                                         *
+*   This library is free software: you can redistribute it and/or modify  *
+*   it under the terms of the GNU Lesser General Public License as        * 
+*   published by the Free Software Foundation, either version 3 of the    *
+*   License, or (at your option) any later version.                       *
+*   You should have received a copy of the GNU Lesser General Public      *
+*   License along with this library.                                      * 
+*   If not, see <http://www.gnu.org/licenses/>.                           *
+*                                                                         *
+*   This library is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+****************************************************************************/
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -64,7 +64,7 @@
 #endif
 
 #ifndef LIB_INSTALL_DIR
-    #define LIB_INSTALL_DIR "../lib"
+# define LIB_INSTALL_DIR "../lib"
 #endif
 
 inline void initMyResource()
@@ -124,21 +124,21 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 
 #if defined(ANDROID)||defined(Q_WS_MAEMO_5)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-    m_searchWidget->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	m_searchWidget->setToolButtonStyle(Qt::ToolButtonIconOnly);
 #else
 	m_searchWidget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 #endif
 	m_searchWidget->hide();
 
-    m_previewWidget = new PreviewWidget(this);
+	m_previewWidget = new PreviewWidget(this);
 
 #if defined(Q_WS_MAEMO_5)
-    QAbstractKineticScroller *scroller = this->property("kineticScroller").value<QAbstractKineticScroller *>();
-    if (scroller)
-        scroller->setEnabled(true);
+	QAbstractKineticScroller *scroller = this->property("kineticScroller").value<QAbstractKineticScroller *>();
+	if (scroller)
+		scroller->setEnabled(true);
 #endif
 
-    QVBoxLayout * vlayout = new QVBoxLayout;
+	QVBoxLayout * vlayout = new QVBoxLayout;
 
 
 
@@ -154,113 +154,113 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 
 # if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-    QMenuBar * toolbar = new QMenuBar(this);
+	QMenuBar * toolbar = new QMenuBar(this);
 # else
 	QToolBar * toolbar = new QToolBar(this);
 	toolbar->setIconSize(QSize(32, 32));
-    toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
-    toolbar->setFloatable( false );
+	toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	toolbar->setFloatable( false );
 # endif
 
-    QAction * act;
+	QAction * act;
 
 # if defined(ANDROID)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
-    act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
-    connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomIn()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
+	act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
+	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomIn()));
 # endif
 
-    m_zoomSpinBox = new QSpinBox;
+	m_zoomSpinBox = new QSpinBox;
 # if defined(Q_WS_MAEMO_5)
-    m_zoomSpinBox->setMinimumWidth(150);
+	m_zoomSpinBox->setMinimumWidth(150);
 # else
-    m_zoomSpinBox->setMinimumWidth(87);
+	m_zoomSpinBox->setMinimumWidth(87);
 # endif
 
 
 # if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-    m_zoomSpinBox->setMinimumHeight(32);
-    vlayout->addWidget(m_zoomSpinBox);
+	m_zoomSpinBox->setMinimumHeight(32);
+	vlayout->addWidget(m_zoomSpinBox);
 # else
-    toolbar->addWidget(m_zoomSpinBox);
+	toolbar->addWidget(m_zoomSpinBox);
 # endif
-    m_zoomSpinBox->setSuffix(" %");
-    m_zoomSpinBox->setMinimum(25);
-    m_zoomSpinBox->setMaximum(400);
-    m_zoomSpinBox->setSingleStep(5);
-    m_zoomSpinBox->setValue(100);
+	m_zoomSpinBox->setSuffix(" %");
+	m_zoomSpinBox->setMinimum(25);
+	m_zoomSpinBox->setMaximum(400);
+	m_zoomSpinBox->setSingleStep(5);
+	m_zoomSpinBox->setValue(100);
 
-    connect(m_previewWidget, SIGNAL(zoomChanged(int)), m_zoomSpinBox, SLOT(setValue(int)));
-    connect(m_zoomSpinBox, SIGNAL(valueChanged(int)), m_previewWidget, SLOT(zoomTo(int)));
+	connect(m_previewWidget, SIGNAL(zoomChanged(int)), m_zoomSpinBox, SLOT(setValue(int)));
+	connect(m_zoomSpinBox, SIGNAL(valueChanged(int)), m_previewWidget, SLOT(zoomTo(int)));
 
 # if defined(ANDROID)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-out.png"), tr("Zoom out"));
-    act->setShortcut(QKeySequence(QKeySequence::ZoomOut));
-    connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomOut()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-out.png"), tr("Zoom out"));
+	act->setShortcut(QKeySequence(QKeySequence::ZoomOut));
+	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomOut()));
 # endif
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/print.png"), tr("Print"));
-    act->setShortcut(QKeySequence(QKeySequence::Print));
-    connect(act, SIGNAL(triggered(bool)), SLOT(print()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/print.png"), tr("Print"));
+	act->setShortcut(QKeySequence(QKeySequence::Print));
+	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/export.png"), tr("Export"));
-    act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
-    connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/export.png"), tr("Export"));
+	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+	connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
 
 # if defined(ANDROID)
-    vlayout->addWidget(toolbar);
-    toolbar = new QToolBar(this);
-    toolbar->setIconSize(QSize(32, 32));
-    toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	vlayout->addWidget(toolbar);
+	toolbar = new QToolBar(this);
+	toolbar->setIconSize(QSize(32, 32));
+	toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	toolbar->setFloatable( false );
 # endif
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-first.png"), tr("First page"));
-    act->setShortcut(QKeySequence(Qt::Key_Home));
-    connect(act, SIGNAL(triggered(bool)), SLOT(firstPage()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-first.png"), tr("First page"));
+	act->setShortcut(QKeySequence(Qt::Key_Home));
+	connect(act, SIGNAL(triggered(bool)), SLOT(firstPage()));
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-previous.png"), tr("Read previous"));
-    act->setShortcut(QKeySequence(Qt::Key_PageUp));
-    connect(act, SIGNAL(triggered(bool)), SLOT(readPrevious()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-previous.png"), tr("Read previous"));
+	act->setShortcut(QKeySequence(Qt::Key_PageUp));
+	connect(act, SIGNAL(triggered(bool)), SLOT(readPrevious()));
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-next.png"), tr("Read next"));
-    act->setShortcut(QKeySequence(Qt::Key_PageDown));
-    connect(act, SIGNAL(triggered(bool)), SLOT(readNext()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-next.png"), tr("Read next"));
+	act->setShortcut(QKeySequence(Qt::Key_PageDown));
+	connect(act, SIGNAL(triggered(bool)), SLOT(readNext()));
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-last.png"), tr("Last page"));
-    act->setShortcut(QKeySequence(Qt::Key_End));
-    connect(act, SIGNAL(triggered(bool)), SLOT(lastPage()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-last.png"), tr("Last page"));
+	act->setShortcut(QKeySequence(Qt::Key_End));
+	connect(act, SIGNAL(triggered(bool)), SLOT(lastPage()));
 
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/edit-find.png"), tr("Search"));
-    act->setShortcut(QKeySequence(QKeySequence::Find));
-    connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
-    connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
-    connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
-    connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
-    connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
-    connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/edit-find.png"), tr("Search"));
+	act->setShortcut(QKeySequence(QKeySequence::Find));
+	connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
+	connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
+	connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
+	connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
+	connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
+	connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
 
 # if !defined (Q_WS_MAEMO_5)
-    act = TOOLBAR_ADD_ACTION(QIcon(":/images/quit.png"), tr("Quit"));
-    act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-    connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
+	act = TOOLBAR_ADD_ACTION(QIcon(":/images/quit.png"), tr("Quit"));
+	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+	connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
 # endif
 
 # if defined (Q_WS_MAEMO_5)
-    vlayout->addWidget(m_previewWidget);
-    vlayout->addWidget(m_searchWidget);
-    vlayout->addWidget(toolbar);
+	vlayout->addWidget(m_previewWidget);
+	vlayout->addWidget(m_searchWidget);
+	vlayout->addWidget(toolbar);
 # else
-    vlayout->addWidget(toolbar);
-    vlayout->addWidget(m_previewWidget);
-    vlayout->addWidget(m_searchWidget);
+	vlayout->addWidget(toolbar);
+	vlayout->addWidget(m_previewWidget);
+	vlayout->addWidget(m_searchWidget);
 # endif
 
 #else
-    QToolBar * toolbar = new QToolBar(this);
-    toolbar->setIconSize(QSize(32, 32));
-    toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    toolbar->setFloatable( false );
+	QToolBar * toolbar = new QToolBar(this);
+	toolbar->setIconSize(QSize(32, 32));
+	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	toolbar->setFloatable( false );
 
 	QAction * act = toolbar->addAction(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
 	act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
@@ -336,10 +336,10 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
 #endif
-    
-    setLayout(vlayout);
-    setWindowModality(Qt::ApplicationModal);
-    showMaximized();
+	
+	setLayout(vlayout);
+	setWindowModality(Qt::ApplicationModal);
+	showMaximized();
 }
 
 PreviewDialog::~PreviewDialog()

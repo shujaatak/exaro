@@ -20,10 +20,11 @@
 #include <QDialog>
 #include <QString>
 #if defined(MOBILE_UI)
-#include "ui_exportSettingsDialog_mobile.h"
+# include "ui_exportSettingsDialog_mobile.h"
 #else
-#include "ui_exportSettingsDialog.h"
+# include "ui_exportSettingsDialog.h"
 #endif
+
 class ExportSettingsDialog : public QDialog, public Ui::Dialog
 {
 	Q_OBJECT
@@ -32,15 +33,15 @@ public:
 	ExportSettingsDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
 	~ExportSettingsDialog();
 
-    QString getDelimiter();
+	QString getDelimiter();
 
-    QString getQuote();
+	QString getQuote();
 	/*$PUBLIC_FUNCTIONS$*/
 
 private slots:
 #if defined(MOBILE_UI)
-    void on_delimiterCombo_currentIndexChanged(int index);
-    void on_quoteCombo_currentIndexChanged(int index);
+	void on_delimiterCombo_currentIndexChanged(int index);
+	void on_quoteCombo_currentIndexChanged(int index);
 #endif
 };
 
