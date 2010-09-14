@@ -75,6 +75,7 @@ class EXARO_EXPORTS ReportInterface : public QObject
 	Q_PROPERTY(QPixmap splashScreenPixmap READ splashScreenPixmap WRITE setSplashScreenPixmap DESIGNABLE false)
 	Q_PROPERTY(bool showExitConfirm READ showExitConfirm WRITE setShowExitConfirm DESIGNABLE false)
         Q_PROPERTY(bool showAfterClose READ showAfterClose WRITE setShowAfterClose)
+	Q_PROPERTY(QString customTempPath READ customTempPath WRITE setCustomTempPath DESIGNABLE false)
 
 public:
 	struct FunctionValue
@@ -313,6 +314,20 @@ public:
 	 * @param show true if exit confirm should be shown when closing the print preview
 	 */
 	void setShowExitConfirm(bool show);
+	
+	/**
+	* Returns the name of the default printer to be used to print the report
+	* @return custom temp dir path
+	*/
+	QString customTempPath();
+	
+	/**
+	* Sets the path to custom temp directory (will be used for temporary files).
+	* If empty, QDir::tempPath() will be used.
+	* @param path custom temp dir path
+	*/
+	void setCustomTempPath(const QString & path);
+	
 
 public slots:
 	/**
@@ -387,6 +402,7 @@ private:
 	bool m_showSplashScreen;
 	QPixmap m_splashScreenPixmap;
 	bool m_showExitConfirm;
+	QString m_customTempPath;
 };
 }
 Q_DECLARE_INTERFACE(Report::ReportInterface, "ro.bigendian.ReportDesigner.ReportInterface/1.0");

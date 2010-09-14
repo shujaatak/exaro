@@ -525,7 +525,7 @@ bool ReportInterface::exec()
 	QDomNode m_exportNode;
 	m_doc.appendChild(m_doc.createComment("Author '" + author() + "'"));
 
-	QTemporaryFile pdf_file(QDir::tempPath()+"/XXXXXXXXXXXXX.bdrtpf");
+	QTemporaryFile pdf_file((m_customTempPath.isEmpty()?QDir::tempPath():m_customTempPath))+"/XXXXXXXXXXXXX.bdrtpf");
 	if (!pdf_file.open())
 		throw QString(tr("Can't create temporary files"));
 
@@ -762,5 +762,15 @@ QPixmap ReportInterface::splashScreenPixmap()
 void ReportInterface::setSplashScreenPixmap(const QPixmap & pixmap)
 {
 	m_splashScreenPixmap = pixmap;
+}
+
+QString ReportInterface::customTempPath()
+{
+	return m_customTempPath;
+}
+
+void ReportInterface::setCustomTempPath(const QString & path)
+{
+	m_customTempPath = path;
 }
 }
