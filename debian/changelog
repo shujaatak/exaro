@@ -1,0 +1,58 @@
+exaro (2.0.0) unstable; urgency=low
+
+  * 2.0.0 Release
+  * Added arabic and French translations thanks to thannks to Mohamed Tahar BADI.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Tue, 18 Aug 2009 21:39:39 +0300
+
+exaro (1.90.2) unstable; urgency=low
+
+  * fix .so version.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Sun, 09 Aug 2009 17:11:02 +0000
+
+exaro (1.90.1) unstable; urgency=low
+
+  * fix .so version.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Sat, 08 Aug 2009 11:40:30 +0000
+
+exaro (1.90.0-1) unstable; urgency=low
+
+  * Debian testing/sid and (*)ubuntu debug packages
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Thu, 06 Aug 2009 21:57:37 +0300
+ 
+exaro (1.90.0) unstable; urgency=low
+
+  * On linux show backtrace symbols.
+  * Update the barcode plugin, now it's require zint v2.2+.
+  * More bugfixes.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Tue, 04 Aug 2009 19:04:51 +0300
+
+exaro (1.85.0) unstable; urgency=low
+
+  * New api on ReportInterface for:
+  * - Being able to specify a printer without the print dialog (via the setPrinterName method)
+  * - Being able to choose where to show the print preview or not
+  * - Being able to choose where to show the print dialog or not
+  * - Being able to disable the exit confirmation dialog from the preview
+  * - Being able to change/disable the splash screen when rendering the report
+  * Bullet-proof eXaro. Unhandled exception handler for Linux(1386, amd64) and for Win32 (both Mingw and MSVC).
+  * On linux search the plugins in LIB_INSTALL_DIR. This fix an issue on OpenSuse x86_64, sorry guys :)
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Wed, 06 May 2009 15:37:17 +0300
+
+exaro (1.80.0) unstable; urgency=low
+
+  * Debian sid packages
+  * Items selection is more pretty
+  * + formula item.
+  * + Italian translation
+  * + pie chart item
+  * + wizard. Now report can be generated very fast and easy.
+  * + bug fixes (windows crash, segfaults, etc.)
+  * + eXaro designer can now load helper toolbar plugins. eXaro now came with a font toolbar, which help you to set fonts more easy.
+
+ -- BogDan Vatra <bogdan@licentia.eu>  Sun, 19 Apr 2009 01:39:31 +0300

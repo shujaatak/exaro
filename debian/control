@@ -1,0 +1,42 @@
+Source: exaro
+Section: devel
+Priority: extra
+Maintainer: BogDan Vatra <bogdan@licentia.eu>
+Build-Depends: cdbs, debhelper (>= 7), cmake, libqt4-webkit, libqt4-dev, libqzint-dev, libquazip-dev, libpropertyeditor-dev
+Standards-Version: 3.8.1
+Homepage: http://exaro.sourceforge.net/
+
+Package: exaro
+Architecture: any
+Depends: propertyeditor-plugins, exaro-plugins,  ${shlibs:Depends}, ${misc:Depends}
+Description: eXaro it's a free reporting solution for Qt, released under GPLv3 license.
+ This package contains eXaro binaries and libraries.
+
+Package: exaro-plugins
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: eXaro it's a free reporting solution for Qt, released under GPLv3 license.
+ eXaro can be embedded very easy in any Qt application.
+ eXaro has an integrated preview with search and export (in different formats) capabilities
+
+Package: libexaro
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: eXaro it's a free reporting solution for Qt, released under GPLv3 license.
+ This package contains eXaro libraries.
+
+Package: libexaro-dev
+Section: libdevel
+Architecture: any
+Depends: libqt4-dev, libexaro (= ${binary:Version})
+Description: eXaro it's a free reporting solution for Qt, released under GPLv3 license.
+  This package contains development files for eXaro.
+
+Package: exaro-dbg
+Section: libs
+Architecture: any
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Debugging symbols for propertyeditor eXaro.
+ This package contains debugging files used to investigate problems with  eXaro.

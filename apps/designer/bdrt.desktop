@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=eXaro report
+Comment[ro]=Raport eXaro
+Hidden=false
+Icon=application-bdrt
+MimeType=application/bdrt
+Patterns=*.bdrt
+Type=MimeType

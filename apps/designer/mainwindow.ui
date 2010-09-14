@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>896</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>eXaro v1.0.1</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="report.qrc">
+    <normaloff>:/images/exaro.png</normaloff>:/images/exaro.png</iconset>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>16</width>
+    <height>16</height>
+   </size>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>896</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menuOpen_last_temlate">
+     <property name="title">
+      <string>Open last template</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuOpen_last_report">
+     <property name="title">
+      <string>Open last report</string>
+     </property>
+    </widget>
+    <addaction name="actionNew_report"/>
+    <addaction name="actionOpen_report"/>
+    <addaction name="menuOpen_last_report"/>
+    <addaction name="actionSave_report"/>
+    <addaction name="actionSave_report_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_template"/>
+    <addaction name="menuOpen_last_temlate"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuReport">
+    <property name="title">
+     <string>&amp;Report</string>
+    </property>
+    <addaction name="actionNew_page"/>
+    <addaction name="actionRemove_page"/>
+    <addaction name="separator"/>
+    <addaction name="actionEdit_script"/>
+    <addaction name="separator"/>
+    <addaction name="actionSetup_a_database"/>
+    <addaction name="separator"/>
+    <addaction name="actionExecute"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_item_from"/>
+    <addaction name="actionSave_item_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionLeft_magnet"/>
+    <addaction name="actionRight_magnet"/>
+    <addaction name="actionTop_magnet"/>
+    <addaction name="actionBottom_magnet"/>
+    <addaction name="actionVertical_magnet"/>
+    <addaction name="actionHorizontal_magnet"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>&amp;Settings</string>
+    </property>
+    <addaction name="actionOptions"/>
+    <addaction name="actionUse_OpenGL"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About_eXaro"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuToolboxes">
+     <property name="title">
+      <string>Toolboxes</string>
+     </property>
+    </widget>
+    <addaction name="actionZoom_in"/>
+    <addaction name="actionZoom_out"/>
+    <addaction name="actionZoom_WYSIWYG"/>
+    <addaction name="actionZoom_original"/>
+    <addaction name="separator"/>
+    <addaction name="menuToolboxes"/>
+    <addaction name="menuToolbars"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuReport"/>
+   <addaction name="menuTools"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>Main toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen_report"/>
+   <addaction name="actionSave_report"/>
+   <addaction name="actionNew_page"/>
+   <addaction name="actionRemove_page"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoom_in"/>
+   <addaction name="actionZoom_out"/>
+   <addaction name="actionZoom_original"/>
+   <addaction name="actionZoom_WYSIWYG"/>
+   <addaction name="separator"/>
+   <addaction name="actionLeft_magnet"/>
+   <addaction name="actionRight_magnet"/>
+   <addaction name="actionTop_magnet"/>
+   <addaction name="actionBottom_magnet"/>
+   <addaction name="actionVertical_magnet"/>
+   <addaction name="actionHorizontal_magnet"/>
+   <addaction name="actionEdit_script"/>
+   <addaction name="actionExecute"/>
+   <addaction name="actionSetup_a_database"/>
+   <addaction name="separator"/>
+   <addaction name="actionUse_OpenGL"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarTools">
+   <property name="windowTitle">
+    <string>Tools toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>RightToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionRemove_page">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/deletePage.png</normaloff>:/images/deletePage.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Remove page</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionNew_report">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/newReport.png</normaloff>:/images/newReport.png</iconset>
+   </property>
+   <property name="text">
+    <string>New report</string>
+   </property>
+  </action>
+  <action name="actionOpen_report">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/openReport.png</normaloff>:/images/openReport.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open report</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_report">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/saveReport.png</normaloff>:/images/saveReport.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save report</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/application_exit.png</normaloff>:/images/application_exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionNew_page">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/newPage.png</normaloff>:/images/newPage.png</iconset>
+   </property>
+   <property name="text">
+    <string>New page</string>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/zoom-in.png</normaloff>:/images/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/zoom-out.png</normaloff>:/images/zoom-out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionZoom_original">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/zoom-original.png</normaloff>:/images/zoom-original.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom original</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="actionEdit_script">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/javascript.png</normaloff>:/images/javascript.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit script</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionSave_report_as">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/saveReport.png</normaloff>:/images/saveReport.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save report as ...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionExecute">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/run.png</normaloff>:/images/run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Execute</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="actionSetup_a_database">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/configure.png</normaloff>:/images/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>Setup a database</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editcopy.png</normaloff>:/images/editcopy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editcut.png</normaloff>:/images/editcut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editpaste.png</normaloff>:/images/editpaste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editdelete.png</normaloff>:/images/editdelete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionLeft_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_left.png</normaloff>:/images/border_left.png</iconset>
+   </property>
+   <property name="text">
+    <string>Left magnet</string>
+   </property>
+  </action>
+  <action name="actionRight_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_right.png</normaloff>:/images/border_right.png</iconset>
+   </property>
+   <property name="text">
+    <string>Right magnet</string>
+   </property>
+  </action>
+  <action name="actionTop_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_top.png</normaloff>:/images/border_top.png</iconset>
+   </property>
+   <property name="text">
+    <string>Top magnet</string>
+   </property>
+  </action>
+  <action name="actionBottom_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_bottom.png</normaloff>:/images/border_bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Bottom magnet</string>
+   </property>
+  </action>
+  <action name="actionVertical_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_vertical.png</normaloff>:/images/border_vertical.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vertical magnet</string>
+   </property>
+  </action>
+  <action name="actionHorizontal_magnet">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/border_horizontal.png</normaloff>:/images/border_horizontal.png</iconset>
+   </property>
+   <property name="text">
+    <string>Horizontal magnet</string>
+   </property>
+  </action>
+  <action name="actionDesignerPath">
+   <property name="text">
+    <string>Set designer path</string>
+   </property>
+  </action>
+  <action name="action_About_eXaro">
+   <property name="text">
+    <string>&amp;About eXaro</string>
+   </property>
+  </action>
+  <action name="actionZoom_WYSIWYG">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/zoom-fit-best.png</normaloff>:/images/zoom-fit-best.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom WYSIWYG</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionOpen_template">
+   <property name="text">
+    <string>Open template</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options...</string>
+   </property>
+  </action>
+  <action name="actionSave_item_as">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/save-item-template.png</normaloff>:/images/save-item-template.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save item as ...</string>
+   </property>
+  </action>
+  <action name="actionOpen_item_from">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/open-item-template.png</normaloff>:/images/open-item-template.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open item from ...</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editundo.png</normaloff>:/images/editundo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/editredo.png</normaloff>:/images/editredo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionTool_bars">
+   <property name="text">
+    <string>Toolbars</string>
+   </property>
+  </action>
+  <action name="actionUse_OpenGL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="report.qrc">
+     <normaloff>:/images/opengl.png</normaloff>:/images/opengl.png</iconset>
+   </property>
+   <property name="text">
+    <string>Use OpenGL</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="report.qrc"/>
+ </resources>
+ <connections/>
+</ui>
