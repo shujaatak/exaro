@@ -30,7 +30,7 @@ ExportSettingsDialog::~ExportSettingsDialog()
 QString ExportSettingsDialog::getDelimiter()
 {
 	QString result = ",";
-	#if defined(MOBILE_UI)
+#if defined(MOBILE_UI)
 if (delimiterCombo->currentIndex() == (delimiterCombo->count()-1))
 		result = delimiterEdit->text();
 	else
