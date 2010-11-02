@@ -35,6 +35,7 @@
 #include <QGraphicsScene>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QRect>
 #include <QDir>
 #include <QApplication>
 #include <QPluginLoader>
@@ -43,9 +44,11 @@
 #include <QPushButton>
 #include <QSplashScreen>
 #include <QSettings>
-#include <QDesktopWidget>
 #include <QScrollBar>
-#include <QDebug>
+#include <QToolBar>
+#include <QtDebug>
+#include <QKeyEvent>
+#include <QDesktopWidget>
 
 #include "document.h"
 #include "page.h"
@@ -54,6 +57,8 @@
 #include "previewdialog.h"
 #include "previewwidget.h"
 #include "searchwidget.h"
+
+#define ICON_SIZE 48
 
 #if defined(Q_WS_MAEMO_5)
 # include <QAbstractKineticScroller>
@@ -80,8 +85,10 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 {
 	initMyResource();
 	QSettings s;
-
+	setObjectName("eXaroPreviewDialog");
+#if !defined(Q_OS_WINCE)
 	m_showPrintDialog = true;
+#endif
 	m_showExitConfirm = true;
 
 	setWindowFlags(windowFlags()|Qt::WindowMinMaxButtonsHint);
@@ -120,7 +127,7 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 
 	m_searchWidget = new SearchWidget(this);
-	m_searchWidget->setIconSize(QSize(32, 32));
+	m_searchWidget->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
 
 
 #if defined(ANDROID)||defined(Q_WS_MAEMO_5)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
@@ -139,47 +146,49 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 #endif
 
 	QVBoxLayout * vlayout = new QVBoxLayout;
-
-
+	vlayout->setMargin(0);
+	vlayout->setSpacing(0);
 
 #if defined(ANDROID)||defined(Q_WS_MAEMO_5)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
 
 //Macros for adding action to toolbar. Android and Maemo have QToolBar instance,
 //S60 and Simulator have MenuBar instance. addAction methods are slightly differ for them
 # if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-#  define TOOLBAR_ADD_ACTION(icon,name) toolbar->addAction(name)
+#  define TOOLBAR_ADD_ACTION(toolbar,icon,name) toolbar->addAction(name)
 # else
-#  define TOOLBAR_ADD_ACTION(icon,name) toolbar->addAction(icon,name)
+#  define TOOLBAR_ADD_ACTION(toolbar,icon,name) toolbar->addAction(icon,name)
 # endif
 
 
 # if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-	QMenuBar * toolbar = new QMenuBar(this);
+	QMenuBar *toolbar = new QMenuBar(this);
 # else
-	QToolBar * toolbar = new QToolBar(this);
-	toolbar->setIconSize(QSize(32, 32));
+	QToolBar *toolbar = new QToolBar(this);
+	toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
+	toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
 	toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	toolbar->setFloatable( false );
 # endif
+	toolbars.append(toolbar);
 
 	QAction * act;
 
 # if defined(ANDROID)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-in.png"), tr("Zoom in"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/zoom-in.png"), tr("Zoom in"));
 	act->setShortcut(QKeySequence(QKeySequence::ZoomIn));
 	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomIn()));
 # endif
 
 	m_zoomSpinBox = new QSpinBox;
+	m_zoomSpinBox->setSizePolicy(QSizePolicy(m_zoomSpinBox->sizePolicy().horizontalPolicy(), QSizePolicy::Expanding));
+	m_zoomSpinBox->setMinimumWidth(2 * (ICON_SIZE + 8));
 # if defined(Q_WS_MAEMO_5)
 	m_zoomSpinBox->setMinimumWidth(150);
-# else
-	m_zoomSpinBox->setMinimumWidth(87);
 # endif
 
 
 # if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-	m_zoomSpinBox->setMinimumHeight(32);
+	m_zoomSpinBox->setMinimumHeight(ICON_SIZE + 8);
 	vlayout->addWidget(m_zoomSpinBox);
 # else
 	toolbar->addWidget(m_zoomSpinBox);
@@ -194,71 +203,124 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	connect(m_zoomSpinBox, SIGNAL(valueChanged(int)), m_previewWidget, SLOT(zoomTo(int)));
 
 # if defined(ANDROID)||defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/zoom-out.png"), tr("Zoom out"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/zoom-out.png"), tr("Zoom out"));
 	act->setShortcut(QKeySequence(QKeySequence::ZoomOut));
 	connect(act, SIGNAL(triggered(bool)), m_previewWidget, SLOT(zoomOut()));
 # endif
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/print.png"), tr("Print"));
-	act->setShortcut(QKeySequence(QKeySequence::Print));
-	connect(act, SIGNAL(triggered(bool)), SLOT(print()));
+	if (QApplication::activeWindow()->width() > 6 * (ICON_SIZE+16))
+	{
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/print.png"), tr("Print"));
+		act->setShortcut(QKeySequence(QKeySequence::Print));
+		connect(act, SIGNAL(triggered(bool)), SLOT(print()));
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/export.png"), tr("Export"));
-	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
-	connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
-
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/export.png"), tr("Export"));
+		act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+		connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
+	}
 # if defined(ANDROID)
-	vlayout->addWidget(toolbar);
-	toolbar = new QToolBar(this);
-	toolbar->setIconSize(QSize(32, 32));
-	toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
-	toolbar->setFloatable( false );
+	if (QApplication::activeWindow()->width() < 12 * (ICON_SIZE+16))
+	{
+		toolbar = new QToolBar(this);
+		toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
+
+		toolbars.append(toolbar);
+		toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
+		toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+		toolbar->setFloatable( false );
+	}
 # endif
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-first.png"), tr("First page"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/go-first.png"), tr("First page"));
 	act->setShortcut(QKeySequence(Qt::Key_Home));
 	connect(act, SIGNAL(triggered(bool)), SLOT(firstPage()));
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-previous.png"), tr("Read previous"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/go-previous.png"), tr("Read previous"));
 	act->setShortcut(QKeySequence(Qt::Key_PageUp));
 	connect(act, SIGNAL(triggered(bool)), SLOT(readPrevious()));
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-next.png"), tr("Read next"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/go-next.png"), tr("Read next"));
 	act->setShortcut(QKeySequence(Qt::Key_PageDown));
 	connect(act, SIGNAL(triggered(bool)), SLOT(readNext()));
 
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/go-last.png"), tr("Last page"));
+	act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/go-last.png"), tr("Last page"));
 	act->setShortcut(QKeySequence(Qt::Key_End));
 	connect(act, SIGNAL(triggered(bool)), SLOT(lastPage()));
-
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/edit-find.png"), tr("Search"));
-	act->setShortcut(QKeySequence(QKeySequence::Find));
-	connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
-	connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
-	connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
-	connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
-	connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
-	connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
+	if (QApplication::activeWindow()->width() > 6 * (ICON_SIZE+16))
+	{
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/edit-find.png"), tr("Search"));
+		act->setShortcut(QKeySequence(QKeySequence::Find));
+		connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
+		connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
+		connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
+		connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
+		connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
+		connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
 
 # if !defined (Q_WS_MAEMO_5)
-	act = TOOLBAR_ADD_ACTION(QIcon(":/images/quit.png"), tr("Quit"));
-	act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-	connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/quit.png"), tr("Quit"));
+		act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+		connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
 # endif
+	}
+	else // We need 3rd toolbar
+	{
+# if defined(ANDROID)
+		toolbar = new QToolBar(this);
+		toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
+
+		toolbars.append(toolbar);
+		toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
+		toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+		toolbar->setFloatable( false );
+# endif
+
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/print.png"), tr("Print"));
+		act->setShortcut(QKeySequence(QKeySequence::Print));
+		connect(act, SIGNAL(triggered(bool)), SLOT(print()));
+
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/export.png"), tr("Export"));
+		act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+		connect(act, SIGNAL(triggered(bool)), SLOT(exportDocument()));
+
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/edit-find.png"), tr("Search"));
+		act->setShortcut(QKeySequence(QKeySequence::Find));
+		connect(act, SIGNAL(triggered(bool)), m_searchWidget, SLOT(show()));
+		connect(m_searchWidget, SIGNAL(searchNext(const QString&)), SLOT(searchNext(const QString&)));
+		connect(m_searchWidget, SIGNAL(searchPrevious(const QString&)), SLOT(searchPrevious(const QString&)));
+		connect(this, SIGNAL(textNotFound()), m_searchWidget, SLOT(notFound()));
+		connect(m_searchWidget, SIGNAL(closed()), SLOT(clearSelection()));
+		connect(m_searchWidget, SIGNAL(closed()), m_previewWidget, SLOT(setFocus()));
+
+# if !defined (Q_WS_MAEMO_5)
+		act = TOOLBAR_ADD_ACTION(toolbar, QIcon(":/images/quit.png"), tr("Quit"));
+		act->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+		connect(act, SIGNAL(triggered(bool)), SLOT(reject()));
+# endif
+
+	}
 
 # if defined (Q_WS_MAEMO_5)
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
-	vlayout->addWidget(toolbar);
+	for (int i = 0; i < toolbars.count(); ++i)
+	{
+		vlayout->addWidget(toolbars.at(i));
+	}
 # else
-	vlayout->addWidget(toolbar);
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
+	for (int i = 0; i < toolbars.count(); ++i)
+	{
+		vlayout->addWidget(toolbars.at(i));
+	}
 # endif
 
 #else
-	QToolBar * toolbar = new QToolBar(this);
-	toolbar->setIconSize(QSize(32, 32));
+	QToolBar *toolbar = new QToolBar(this);
+	toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
+
+	toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	toolbar->setFloatable( false );
 
@@ -336,7 +398,10 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	vlayout->addWidget(m_previewWidget);
 	vlayout->addWidget(m_searchWidget);
 #endif
-	
+	for (int i = 0; i < toolbars.count(); ++i)
+	{
+		toolbars.at(i)->hide();
+	}
 	setLayout(vlayout);
 	setWindowModality(Qt::ApplicationModal);
 	showMaximized();
@@ -394,7 +459,9 @@ void PreviewDialog::print()
 {
 	if (!m_doc->numPages())
 		return;
+#if !defined(Q_OS_WINCE)
 	bool showPrintDialog=m_showPrintDialog;
+#endif
 	int i=0;
 	QPrinter * printer=0;
 	QPainter painter;
@@ -411,6 +478,7 @@ newOrientation:
 	if (!m_reportName.isEmpty())
 		printer->setDocName(m_reportName);
 
+#if !defined(Q_OS_WINCE)
 	if (showPrintDialog)
 	{
 		QPrintDialog d(printer, this);
@@ -418,6 +486,8 @@ newOrientation:
 			return;
 	}
 	showPrintDialog=false;
+#endif
+
 	bool firstPage=true;
 	painter.begin(printer);
 	for (;i < m_doc->numPages();i++)
@@ -641,10 +711,12 @@ void PreviewDialog::setPrinterName(const QString & name)
 	m_printerName = name;
 }
 
+#if !defined(Q_OS_WINCE)
 void PreviewDialog::setShowPrintDialog(bool show)
 {
 	m_showPrintDialog = show;
 }
+#endif
 
 void PreviewDialog::setShowExitConfirm(bool show)
 {
@@ -655,4 +727,23 @@ void PreviewDialog::setReportName(const QString & name)
 {
 	m_reportName = name;
 }
+
+bool PreviewDialog::event(QEvent *event)
+{
+	if (event->type() == QEvent::KeyRelease)
+	{
+		QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+		if (keyEvent && keyEvent->key() == Qt::Key_TopMenu)
+		{
+			for (int i = 0; i < toolbars.count(); ++i)
+			{
+				toolbars.at(i)->setVisible(!toolbars.at(i)->isVisible());
+			}
+
+		}
+	}
+	return QDialog::event(event);
+}
+
+
 }
