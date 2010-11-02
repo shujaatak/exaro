@@ -30,10 +30,9 @@
 #include <QSettings>
 #include <QDesktopWidget>
 
-#if !defined(Q_OS_SYMBIAN)&&!defined(Q_WS_SIMULATOR)&&!defined(Q_WS_MAEMO_5)&&!defined(ANDROID)
-# include <QGLWidget>
+#if !defined(Q_OS_SYMBIAN)&&!defined(Q_WS_SIMULATOR)&&!defined(Q_WS_MAEMO_5)&&!defined(ANDROID)&&!defined(Q_OS_WINCE)
+#include <QGLWidget>
 #endif
-
 #include "previewwidget.h"
 
 namespace Report
@@ -68,7 +67,7 @@ void PreviewWidget::toggleOpenGl(bool useOpenGL)
 	QSettings s;
 	s.setValue("eXaro/useOpenGL", useOpenGL);
 
-#if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)||defined(Q_WS_MAEMO_5)||defined(ANDROID)
+#if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)||defined(Q_WS_MAEMO_5)||defined(ANDROID)||defined(Q_OS_WINCE)
 	setViewport(new QWidget);
 #else
 	setViewport(useOpenGL?(new QGLWidget):(new QWidget));
@@ -122,3 +121,4 @@ void PreviewWidget::setZoomMin(qreal min)
 }
 
 }
+

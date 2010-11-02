@@ -34,14 +34,20 @@
 #include <QIODevice>
 #include <QGraphicsPixmapItem>
 #include <QSpinBox>
+#include <QList>
 
 #include "exportinterface.h"
 
+
 class QSplashScreen;
+#if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
+class QMenuBar;
+#else
+class QToolBar;
+#endif
 
 namespace Report
 {
-
 
 class Document;
 class Page;
@@ -61,13 +67,16 @@ public:
 	void setVisible(bool visible);
 	void setSpaceBetweenPages(int spaceBetweenPages=50);
 	void setPrinterName(const QString & name);
+#if !defined(Q_OS_WINCE)
 	void setShowPrintDialog(bool show);
+#endif
 	void setShowExitConfirm(bool show);
 	void setReportName(const QString & name);
 
 protected:
 	void reject();
 	void drawSelection(QGraphicsItem * parent, QRectF & rect);
+	bool event(QEvent *event);
 
 public slots:
 	void clearSelection();
@@ -101,9 +110,18 @@ private:
 	QList<ExportInterface*> m_exports;
 	int m_spaceBetweenPages;
 	QString m_printerName;
+
+#if !defined(Q_OS_WINCE)
 	bool m_showPrintDialog;
+#endif
+
 	bool m_showExitConfirm;
 	QString m_reportName;
+#if defined(Q_OS_SYMBIAN)||defined(Q_WS_SIMULATOR)
+	QList<QMenuBar *> toolbars;
+#else
+	QList<QToolBar *> toolbars;
+#endif
 };
 
 }
