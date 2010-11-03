@@ -58,7 +58,11 @@
 #include "previewwidget.h"
 #include "searchwidget.h"
 
-#define ICON_SIZE 48
+#if defined(ANDROID)
+# define ICON_SIZE 48
+#else
+# define ICON_SIZE 32
+#endif
 
 #if defined(Q_WS_MAEMO_5)
 # include <QAbstractKineticScroller>
@@ -164,7 +168,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 	QMenuBar *toolbar = new QMenuBar(this);
 # else
 	QToolBar *toolbar = new QToolBar(this);
-	toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
 	toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
 	toolbar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	toolbar->setFloatable( false );
@@ -318,7 +321,6 @@ PreviewDialog::PreviewDialog(QWidget *parent)
 
 #else
 	QToolBar *toolbar = new QToolBar(this);
-	toolbar->setStyleSheet("QToolBar > QWidget:pressed{border-radius: 3px;background: orange;}");
 
 	toolbar->setIconSize(QSize(ICON_SIZE, ICON_SIZE));
 	toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
