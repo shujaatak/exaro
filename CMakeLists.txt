@@ -9,7 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #comment or remove the above line before release
 
 # please choose between GPL or LGPL license
-set (EXARO_LICENSE "GPL")
+set (EXARO_LICENSE "LGPL")
 
 message("*** eXaro use ${EXARO_LICENSE} license ***")
 

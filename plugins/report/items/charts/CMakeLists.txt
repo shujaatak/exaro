@@ -1,6 +1,6 @@
 # (c) 2008 by BogDan Vatra < bogdan@licentia.eu >
 
-add_subdirectory(areachart)
+#add_subdirectory(areachart)
 add_subdirectory(barchart)
 add_subdirectory(chartcontainer)
 add_subdirectory(chartinterface)
