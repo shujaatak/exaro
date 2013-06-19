@@ -15,6 +15,7 @@ details.  */
 #ifndef JAVA_SIGNAL_H
 #define JAVA_SIGNAL_H 1
 
+#include <unistd.h>
 #include <signal.h>
 #include <sys/syscall.h>
 
